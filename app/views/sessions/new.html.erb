@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" style="min-height:1px;"></div>
+    <div class="col-md-4">
+      <h2 class="form-signin-heading">Please sign in</h2>
+      <% if notice %><small style="color: red;"><%=notice%></small><% end %>
+
+      <%= form_tag("/login", class: "form-horizontal", role: "form") do %>
+        <div class="form-group">
+          <%= text_field_tag :login_id, params[:name], placeholder: "ID", class: "form-control" %>          
+        </div>
+        <div class="form-group">
+          <%= password_field_tag :password, params[:password], placeholder: "Password", class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <div class="checkbox"><label>
+            <%= check_box_tag "auto_login_option" %>Remember me
+          </label></div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-offset-3 col-md-3"> 
+            <%= submit_tag "Sign in", class: "btn btn-primary" %>
+          </div>
+          <div class="col-md-6">
+            <%= link_to 'Join us', new_user_path, class: "btn" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

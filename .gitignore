@@ -16,9 +16,22 @@ config/secrets.yml
 ## Environment normalisation:
 /.bundle
 /vendor/bundle
+/vendor/cache
 
 # these should all be checked in to normalise the environment:
 # Gemfile.lock, .ruby-version, .ruby-gemset
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
+
+# Ignore osx index
+.DS_Store
+
+# redis dump
+dump.rdb
+
+#server setting
+config/nginx.conf
+config/unicorn.rb
+config/unicorn_init.sh
+config/deploy.rb

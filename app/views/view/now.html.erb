@@ -1,0 +1,31 @@
+<div id="now_page" class="wrapper">
+  <!-- Info start  -->
+  <%=render "info" %>
+  <!-- Info end -->
+  <div class="col-md-9">
+    <div class="panel panel-info">
+      <div id="div-form" class="panel-heading">
+      <!-- form start -->
+        <%=render "form" %>
+      <!-- form End -->
+      </div>
+      <!-- Timeline start -->
+      <%=render "timeline" %>
+      <!-- Timeline End -->
+      <div class="panel-footer" id="div-loading" style="display:none;">로딩중입니다.</div>
+    </div>
+  </div>
+  <div class="col-md-3 visible-md visible-lg">
+    <div class="panel panel-info" id="current_users">
+    </div>
+    <div id="div-widget">
+      <!-- twitter widget start -->
+      <% if @app.show_widget == 1 %>
+      <%=render "widget" %>
+      <!-- twitter widget end -->
+      <% end %>
+    </div>
+  </div>
+</div>
+<div id="mobile-userlist-trigger" class="visible-xs  visible-sm mobile-userlist-trigger"><span class="glyphicon glyphicon-user"></span></div>
+<div id="mobile-userlist-div" class="panel panel-info" style="display:none;"></div>

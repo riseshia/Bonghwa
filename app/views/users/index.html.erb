@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 hidden-phone"></div>
+        <div class="col-md-6" style="background-color:#fff;">
+        <h3>가입자 명단</h3>
+
+        <table class="table table-striped">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Level</th>
+            <th>Recent logined</th>
+            <th></th>
+          </tr>
+
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.login_id %></td>
+            <td><%= user.name %></td>
+            <td><%= user.level %></td>
+            <td><%= (user.recent_login).strftime("%D %T") %></td>
+            <td><%= link_to 'Show', user %>
+             | <%= link_to 'Edit', edit_user_path(user) %>
+             | <%= level_up(user) %>
+             | <%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+        </table>
+
+        <br />
+
+        <%= will_paginate @users %>
+        </div>
+    </div>
+</div>

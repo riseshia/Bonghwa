@@ -1,0 +1,28 @@
+<%= form_for(@new_fw, :url => 'api/new', :html => { :multipart => true, :class => "form-horizontal", :role => "form" }) do |f| %>
+<fieldset>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <%= f.text_field :contents, placeholder: "New...", autocomplete: "off", class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="fileinput fileinput-new" data-provides="fileinput" style="margin: 0;">
+        <span class="btn btn-default btn-file" rel="tooltip" data-placement="right" data-original-title="3MB 이하. jpg, png, gif">
+          <span class="fileinput-new">Pic</span>
+            <span class="fileinput-exists">Change</span>
+            <%= file_field_tag :img, name: 'attach', accept: "image/*" %>
+        </span>
+        <span class="fileinput-filename"></span>
+        <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+        <%= check_box_tag "adult_check" %> 후방주의
+      </div>
+    </div>
+    <div class="col-sm-offset-4 col-sm-2" id="div-submit" style="text-align:right;">
+      <span id="remaining_count">150</span>
+      <%= f.submit "Refresh", id: "commit", class: "btn btn-primary", "data-loading-text" => "Wait...." %>
+      <%= f.hidden_field :prev_mt %>
+    </div>
+  </div>
+  </fieldset>
+<% end %> 

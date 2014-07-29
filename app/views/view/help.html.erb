@@ -1,0 +1,120 @@
+<div class="container" id="help">
+	<div class="row">
+		<div class="col-md-2 hidden-phone"></div>
+		<div class="col-md-8" style="background-color: #fff;">
+			<ul id="helpTab" class="nav nav-tabs">
+			  <li class="active"><a href="#main" data-toggle="tab">Main</a></li>
+			  <li><a href="#command" data-toggle="tab">Script</a></li>
+			</ul>
+		  <div class="tab-content">
+			  <div class="tab-pane active" id="main">
+				<section id="helpMainSection">
+			  	<h3>취급 설명서</h3>
+			  	<ul>
+			  		<li>덧글(이하 장작으로 통일합니다.)은 아래로 갈수록 과거의 장작입니다.</li>
+			  		<li>과거 장작을 보고 싶으시다면, 스크롤을 끝까지 내리고 잠시 기다려주세요. 자동으로 불러옵니다.</li>
+			  		<li>30초에 한번씩 따끈따끈한 장작을 받아오기 때문에, 실시간으로 확인하고 싶다고해서 새로고침을 하실 필요는 없습니다.</li>
+			  		<li>Live Stream이라는 기능을 제공합니다. 본래 30초에 한번씩 받아오는 새 장작은 타임라인에 바로 반영되는 것이 아니라, 타임라인 상단에 알림창 형식으로 나타나 있다가, 이 알림창을 클릭하면 타임라인에 반영이 됩니다. 그러나 Live Stream을 켜시면 알림창 없이 새 장작을 받아와서 곧바로 타임라인에 반영하게 됩니다. 네비바 상단의 'HotKey'에서 Live Stream을 클릭하거나, Hotkey를 직접 입력함으로서 On/Off를 할 수 있습니다.</li>
+			  		<li>Hotkey를 제공합니다. 네비바의 'HotKey'에서도 확인할 수 있으며, 상세한 내역은 아래의 표를 참고해주세요.</li>
+			  		<li>공지사항은 클릭하면 사라집니다.</li>
+			  	</ul>
+				</section><br/>
+				<section id="helpHotkeyTable">
+			  	<table class="table table-hover">
+				<caption><h4>Hotkey Table</h4></caption>
+				<thead>
+			  		<tr>
+			  			<th>Hotkey</th>
+			  			<th>Feature</th>
+			  		</tr>
+			  	</thead>
+			  	<tbody>
+			  		<tr>
+			  			<td>1(숫자)</td>
+			  			<td>Alarm Sound: 새 장작을 받아올 경우, 알림음을 재생합니다. 단, Live Stream의 경우, 새 장작으로 쌓이지 않고 곧바로 타임라인에 반영되기 때문에 이 옵션은 활성화하더라도 작동하지 않습니다.</td>
+			  		</tr>
+			  		<tr>
+			  			<td>2(숫자)</td>
+			  			<td>Image Auto Open: 이미 타임라인에 있는 장작, 그리고 앞으로 받아오는 모든 장작에 대해서, 이미지가 붙어있다면 항상 자동으로 열어줍니다. 옵션을 끄면 현재 열려 있는 이미지를 전부 닫습니다.</td>
+			  		</tr>
+			  		<tr>
+			  			<td>3(숫자)</td>
+			  			<td>Live Steam: 새로 받아오는 장작들을 곧바로 타임라인에 반영합니다. 이 옵션을 활성화할 경우, Alarm Sound 옵션이 무시되게 됩니다.</td>
+			  		</tr>
+			  		<tr>
+			  			<td>4(숫자)</td>
+			  			<td>Focus: 최상단으로 스크롤이 올라가며, 입력창에 포커스가 맞춰지게 됩니다.</td>
+			  		</tr>
+			  		<tr>
+			  			<td>Backspace</td>
+			  			<td>Refresh: 타임라인을 새로 읽어옵니다. 새로고침과 같은 효과를 가지지만 타임라인만을 다시 읽어오기 때문에 속도는 더 빠릅니다.</td>
+			  		</tr>
+			  	</tbody>
+			  	</table>
+				</section>
+			  </div>
+			  <div class="tab-pane" id="command">
+			  	<section id="helpScript">
+<table class="table table-hover">
+<h3>Command Infomation</h3>
+  <thead>
+    <tr class="info">
+      <th width="20%">Command</th>
+      <th width="80%">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+  	<tr class="info">
+  		<td colspan=2><b>사용자 명령어</b></td>
+  	</tr>
+    <tr>
+      <td>@'닉네임' '내용'</td>
+      <td>멘션 기능입니다. 특정 유저를 상대로 장작을 던집니다. 받는 유저는 @이름 부분이 강조되어 나타나서 읽기 편리해지며, 다른 장작을 클릭해 멘션을 한다면 이 대화의 내용을 확인하기 쉽도록 추적 기능을 추가로 제공합니다. 이 기능을 이용하시려면 멘션을 찍고 싶은 장작 작성자의 이름을 클릭하시면 됩니다. 추적할 내용이 있는 장작을 클릭하면 장작이 펴지며 로그를 보여줍니다.<br/>예시: '@관리자 관리자 일해라!' 라는 식으로 사용할 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td>!'닉네임' '내용'</td>
+      <td>귓속말 기능입니다. 특정 유저를 상대로 그 유저만 볼 수 있는 장작을 던질 수 있습니다.<br/>예시: '!관리자 일해라!'</td>
+    </tr>
+    <tr>
+      <td>/코인</td>
+      <td>동전을 던집니다. 앞면인지 뒷면인지 결과를 알려줍니다.</td>
+    </tr>
+    <tr>
+      <td>/주사위 [면수]</td>
+      <td>주사위를 굴립니다. '면수'를 생략할 경우, 기본값으로 설정되어있는 6면체로 굴린 뒤, 그 결과를 알려줍니다. 지정 가능한 면수는 2 이상, 100 이하입니다.<br/>예시: '/주사위 4'는 4면체 주사위를 굴리고 그 결과를 알려줍니다.</td>
+    </tr>
+    <tr>
+      <td>/'m'd'n'</td>
+      <td>확장된 주사위입니다. n개의 m면체 주사위를 굴리고 그 결과를 알려줍니다. 주사위는 1개에서 20개까지 굴릴 수 있으며, 면수는 2면에서 50면까지 지정할 수 있습니다.<br/>예시: '/6d4' 는 4개의 6면체 주사위를 굴립니다.</td>
+    </tr>
+    <tr>
+      <td>/등수</td>
+      <td>1달 전부터 지금까지의 사용 기록을 분석하여, 가장 많이 장작을 던진 상위 5명의 이름과 사용량을 출력합니다.</td>
+    </tr>
+    <tr>
+      <td>/내등수</td>
+      <td>1달 전부터 지금까지의 사용 기록을 분석하여, 사용자의 등수를 계산해 줍니다.</td>
+    </tr>
+    <tr>
+      <td>/닉 [변경할 닉네임]</td>
+      <td>닉네임을 변경합니다. 존재하거나, 이름에 공백이 존재하는 경우는 거부됩니다.</td>
+    </tr>
+    <tr class="info">
+  		<td colspan=2><b>관리자 명령어</b></td>
+  	</tr>
+    <tr>
+      <td>/공지추가 '내용'</td>
+      <td>관리자 명령어입니다. 상단에 '내용'으로 공지를 추가합니다.<br/>예시: '/공지추가 오늘도 좋은 하루 되세요!'는 '오늘도 좋은 하루 되세요!' 라는 글을 공지에 추가합니다.</td>
+    </tr>
+    <tr>
+      <td>/공지삭제 '번호'</td>
+      <td>관리자 명령어입니다. 상단에 걸려있는 공지의 번호를 매개로 넘겨주면, 공지를 삭제하고 더이상 보이지 않게 합니다.<br/>예시: '/공지삭제 1' 는 '1. ~~~' 공지를 삭제합니다.</td>
+    </tr>
+  </tbody>
+</table>
+			  	</section>
+			  </div>
+		  </div>
+		</div>
+	</div>
+</div>

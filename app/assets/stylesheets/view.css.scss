@@ -1,0 +1,167 @@
+// Place all the styles related to the view controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  padding-top: 50px;
+  background-color: rgb(247, 247, 249);
+}
+
+a {
+  color:rgb(0,0,0);
+}
+
+.wrapper {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.row {
+  padding: 0 15px;
+  margin: 0 -15px;
+}
+
+#div-form {
+  padding-top: 5px;
+  padding-bottom: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.form-group {
+  margin-bottom: 5px;
+}
+
+#timeline_stack {
+  text-align: center;
+  background-color: rgb(66, 139, 202);
+  padding: 5px;
+}
+
+#notice_stack_new {
+  color: rgb(10,10,10);
+}
+
+.tagged {
+  background-color: #E5F8FF;
+}
+
+.wrapper > .col-md-9, .wrapper > .col-md-3 {
+  margin-top: 10px;
+}
+
+.firewood {
+  padding-left: 0px;
+  padding-right: 0px;
+  word-wrap: break-word;
+}
+
+.firewood[is_dm] {
+  color: #888;
+}
+
+.time {
+  text-align: right;
+}
+
+.has-image, .delete, .link_url, .fw-tag {
+  color: #3A87AD;
+}
+
+.div-firewood {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.div-username  {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.div-mention {
+  border-top: 0px;
+  border-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 0px;
+  background-color: transparent;
+}
+
+.img-content .img-standard {
+  max-width:640px;
+  max-height:390px;
+}
+
+.img-content .img-mobile {
+  max-width:100%;
+}
+
+.img-content p {
+  text-align: center;
+}
+
+.text-warning {
+  color: #c7254e;
+}
+
+.top-fixed {
+  width: 100%;
+  top: 0px;
+  background-color: rgb(217, 237, 247);
+  border-bottom: 1px solid #ccc;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  h4 {
+    margin-top: 0px;
+  }
+}
+
+.alert {
+  min-width: 100px;
+  padding: 3px;
+  position: fixed;
+  z-index: 99;
+  display: none;
+}
+
+#mobile-userlist-div {
+  padding-top: 50px;
+
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  font-size: 1.3em;
+  overflow:auto;
+
+  ul {
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+.mobile-userlist-trigger {
+  position: fixed;
+  top: 80%;
+  right: 0px;
+  padding: 3px 5px 2px 5px;
+  margin-right: 15px;
+
+  background-color: #ddd;
+
+  span {
+    font-size: 2.0em;
+    text-align: right;
+    color: #4A97BD;
+  }
+}

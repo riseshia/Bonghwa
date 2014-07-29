@@ -7,4 +7,4 @@ Bonghwa is a private SNS for small group. At first, It was developed for its dev
 * Redis
 
 ## License
-MIT License
+[MIT License](http://opensource.org/licenses/MIT)

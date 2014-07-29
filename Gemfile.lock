@@ -55,6 +55,11 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     highline (1.6.20)
     hike (1.2.3)
     i18n (0.6.5)
@@ -182,6 +187,7 @@ DEPENDENCIES
   capistrano_rsync_with_remote_cache
   coffee-rails
   dalli
+  factory_girl_rails
   jquery-rails
   mysql2
   oj

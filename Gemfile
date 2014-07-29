@@ -57,4 +57,5 @@ gem 'oj'
 # To use debugger
 # gem 'debugger'
 
+# To provide file Upload
 gem "paperclip", "~> 3.0"

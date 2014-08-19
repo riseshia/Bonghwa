@@ -40,7 +40,7 @@ GEM
     capistrano_colors (0.5.5)
     capistrano_rsync_with_remote_cache (2.4.0)
       capistrano (>= 2.1.0)
-    capybara (2.1.0)
+    capybara (2.2.1)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -89,7 +89,7 @@ GEM
     net-ssh (2.7.0)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
-    nokogiri (1.6.2.1)
+    nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     oj (2.2.2)
     paperclip (3.5.2)
@@ -135,6 +135,8 @@ GEM
       redis-store (~> 1.1.0)
     redis-store (1.1.4)
       redis (>= 2.2)
+    rspec-collection_matchers (1.0.0)
+      rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.0.3)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.3)
@@ -196,10 +198,10 @@ DEPENDENCIES
   capistrano-ext
   capistrano_colors
   capistrano_rsync_with_remote_cache
-  capybara
+  capybara (~> 2.2.0)
   coffee-rails
   dalli
-  factory_girl_rails
+  factory_girl_rails (~> 4.0)
   jquery-rails
   mysql2
   oj
@@ -207,6 +209,7 @@ DEPENDENCIES
   protected_attributes
   rails (= 4.0.1)
   redis-rails
+  rspec-collection_matchers
   rspec-rails (~> 3.0.0)
   rvm-capistrano
   sass-rails

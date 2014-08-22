@@ -4,5 +4,6 @@ FactoryGirl.define do
 		name 			"user_name"
 		password	"userpwd"
 		password_confirmation "userpwd"
+    level     "1"
 	end
 end

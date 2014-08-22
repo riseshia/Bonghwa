@@ -5,7 +5,7 @@
       <h2 class="form-signin-heading">Please sign in</h2>
       <% if notice %><small style="color: red;"><%=notice%></small><% end %>
 
-      <%= form_tag("/login", class: "form-horizontal", role: "form") do %>
+      <%= form_tag("/login", class: "form-horizontal", id: "login_form", role: "form") do %>
         <div class="form-group">
           <%= text_field_tag :login_id, params[:name], placeholder: "ID", class: "form-control" %>          
         </div>

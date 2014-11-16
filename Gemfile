@@ -5,7 +5,6 @@ gem 'rails', '4.0.1'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
 gem 'mysql2'
 
 # Gems used only for assets and not required
@@ -13,19 +12,10 @@ gem 'mysql2'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
+  gem 'uglifier'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
-
-  gem 'uglifier'
-end
-
-# To test Project
-group :development, :test do
-  gem 'rspec-rails', '~> 3.0.0'
-  gem 'rspec-collection_matchers'
-  gem 'factory_girl_rails', "~> 4.0"
-  gem 'capybara', '~> 2.4.0'
 end
 
 gem 'jquery-rails'
@@ -47,10 +37,21 @@ gem 'rvm-capistrano'
 gem 'redis-rails'
 
 group :deployment do
-  gem 'capistrano', '2.15.5'
+  gem 'sqlite3'
+  gem 'capistrano', '~> 3.0'
+  gem 'capistrano-rails'
+  gem 'capistrano-unicorn-nginx'
   gem 'capistrano_colors'
   gem 'capistrano-ext'
   gem 'capistrano_rsync_with_remote_cache'
+end
+
+# To test Project
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-collection_matchers'
+  gem 'factory_girl_rails', "~> 4.0"
+  gem 'capybara', '~> 2.4.0'
 end
 
 # paging

@@ -33,6 +33,7 @@ config/unicorn.rb
 config/unicorn_init.sh
 config/deploy.rb
 config/database.yml
+config/secrets.yml
 
 ### OSX ###
 .DS_Store

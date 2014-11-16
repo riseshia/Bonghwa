@@ -28,18 +28,20 @@ gem 'bcrypt-ruby'
 
 gem 'protected_attributes'
 
+gem 'redis-rails'
+
 # Use unicorn as the app server
 gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'rvm-capistrano'
-
-gem 'redis-rails'
-
 group :deployment do
   gem 'sqlite3'
+  gem 'rvm-capistrano'
   gem 'capistrano', '~> 3.0'
   gem 'capistrano-rails'
+  gem 'capistrano-rails-console'
+  gem 'capistrano-rails-collection'
+  gem 'capistrano-rails-tail-log'
   gem 'capistrano-unicorn-nginx'
   gem 'capistrano_colors'
   gem 'capistrano-ext'

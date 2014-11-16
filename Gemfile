@@ -56,6 +56,10 @@ group :development, :test do
   gem 'capybara', '~> 2.4.0'
 end
 
+group :production do
+  gem 'rb-readline'
+end
+
 # paging
 gem 'will_paginate', '3.0.3'
 

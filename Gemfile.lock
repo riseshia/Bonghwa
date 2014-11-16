@@ -131,6 +131,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.12.0)
     rake (10.1.0)
+    rb-readline (0.5.1)
     redis (3.0.6)
     redis-actionpack (4.0.0)
       actionpack (~> 4)
@@ -229,6 +230,7 @@ DEPENDENCIES
   paperclip (~> 3.0)
   protected_attributes
   rails (= 4.0.1)
+  rb-readline
   redis-rails
   rspec-collection_matchers
   rspec-rails (~> 3.0.0)

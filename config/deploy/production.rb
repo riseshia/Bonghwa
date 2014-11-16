@@ -8,7 +8,7 @@ role :app, %w{shia@www.s-at.kr}
 role :web, %w{shia@www.s-at.kr}
 role :db,  %w{shia@www.s-at.kr}
 
-set :nginx_server_name, 'test'
+set :nginx_server_name, 'test.s-at.kr'
 set :unicorn_workers, 2
 
 # Extended Server Syntax

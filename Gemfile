@@ -54,6 +54,7 @@ group :development, :test do
   gem 'rspec-collection_matchers'
   gem 'factory_girl_rails', "~> 4.0"
   gem 'capybara', '~> 2.4.0'
+  gem 'capistrano-ssh-doctor', '~> 1.0'
 end
 
 group :production do

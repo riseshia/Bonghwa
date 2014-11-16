@@ -32,8 +32,7 @@ config/nginx.conf
 config/unicorn.rb
 config/unicorn_init.sh
 config/deploy.rb
-config/database.yml
-config/secrets.yml
+Capfile
 
 ### OSX ###
 .DS_Store

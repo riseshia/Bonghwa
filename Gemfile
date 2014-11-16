@@ -36,8 +36,8 @@ gem 'unicorn'
 # Deploy with Capistrano
 group :deployment do
   gem 'sqlite3'
-  gem 'rvm-capistrano'
   gem 'capistrano', '~> 3.0'
+  gem 'capistrano-rvm'
   gem 'capistrano-rails'
   gem 'capistrano-rails-console'
   gem 'capistrano-rails-collection'

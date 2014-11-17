@@ -53,5 +53,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
 # Ignore application configuration
 /config/application.yml

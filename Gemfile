@@ -33,6 +33,8 @@ gem 'redis-rails'
 # Use unicorn as the app server
 gem 'unicorn'
 
+gem 'figaro'
+
 # Deploy with Capistrano
 group :deployment do
   gem 'sqlite3'
@@ -46,16 +48,15 @@ group :deployment do
   gem 'capistrano_colors'
   gem 'capistrano-ext'
   gem 'capistrano_rsync_with_remote_cache'
+  gem 'capistrano-ssh-doctor', '~> 1.0'
 end
 
 # To test Project
 group :development, :test do
-  gem 'figaro'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'rspec-collection_matchers'
   gem 'factory_girl_rails', "~> 4.0"
   gem 'capybara', '~> 2.4.0'
-  gem 'capistrano-ssh-doctor', '~> 1.0'
 end
 
 group :production do

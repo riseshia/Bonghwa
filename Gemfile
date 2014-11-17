@@ -37,7 +37,6 @@ gem 'figaro'
 
 # Deploy with Capistrano
 group :deployment do
-  gem 'sqlite3'
   gem 'capistrano', '~> 3.0'
   gem 'capistrano-rvm'
   gem 'capistrano-rails'

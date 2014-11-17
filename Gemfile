@@ -65,9 +65,6 @@ end
 # paging
 gem 'will_paginate', '3.0.3'
 
-# Caching
-gem 'dalli'
-
 # json
 gem 'oj'
 

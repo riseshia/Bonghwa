@@ -75,7 +75,6 @@ GEM
       execjs
     coffee-script-source (1.6.3)
     colorize (0.7.3)
-    dalli (2.6.4)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
@@ -221,7 +220,6 @@ DEPENDENCIES
   capistrano_rsync_with_remote_cache
   capybara (~> 2.4.0)
   coffee-rails
-  dalli
   factory_girl_rails (~> 4.0)
   figaro
   jquery-rails

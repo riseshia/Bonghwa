@@ -208,7 +208,8 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby
-  capistrano (~> 3.0)
+  capistrano (~> 3.1)
+  capistrano-bundler
   capistrano-ext
   capistrano-rails
   capistrano-rails-collection

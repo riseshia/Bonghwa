@@ -314,14 +314,6 @@ class ApplicationController < ActionController::Base
         else
           result_str = "권한이 없습니다."
         end
-      # elsif arr[0] == "/리세"
-      #   if arr.size > 1
-      #     result = Oj.load(Net::HTTP.get(URI("http://localhost:4000/hear?user_id=#{session[:user_id]}&contents=#{CGI::escape(str.gsub("/리세 ", ""))}")))
-      #     @fw = Firewood.new
-      #     @fw.user_id = 0
-      #     @fw.user_name = "리세"
-      #     @fw.contents = "@#{@user.name} #{result['contents']}"
-      #   end
       end
 
       return result_str

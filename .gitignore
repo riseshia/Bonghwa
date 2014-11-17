@@ -31,7 +31,6 @@ config/unicorn.rb
 config/unicorn_init.sh
 config/deploy.rb
 Capfile
-*.env
 
 ### OSX ###
 .DS_Store
@@ -54,3 +53,5 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+# Ignore application configuration
+/config/application.yml

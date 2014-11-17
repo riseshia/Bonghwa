@@ -50,7 +50,7 @@ end
 
 # To test Project
 group :development, :test do
-  gem 'dotenv-rails'
+  gem 'figaro'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'rspec-collection_matchers'
   gem 'factory_girl_rails', "~> 4.0"

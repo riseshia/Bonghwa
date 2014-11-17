@@ -157,7 +157,8 @@ class ApiController < ApplicationController
   end
 
   def trace
-    limit = 50 if(params[:count].to_i > 50) # 최대값 제한.
+    limit = params[:count]
+    limit = 50 if(limit.to_i > 50) # 최대값 제한.
 
     type = params[:type]
     @firewoods = nil

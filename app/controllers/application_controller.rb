@@ -154,7 +154,11 @@ class ApplicationController < ActionController::Base
       @fw.user_name = "System"
       # @fw.rgb = "0,0,0"
       arr = str.split(' ')
-
+      arr = arr.reject do |el|
+        el.start_with?("#")
+      end
+      str = arr.join(' ')
+      
       @fw.contents = admin_script_excute(str)
       if @fw.contents.size != 0
         # 관리자 명령

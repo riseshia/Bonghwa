@@ -43,7 +43,6 @@ group :deployment do
   gem 'capistrano-rails-console'
   gem 'capistrano-rails-collection'
   gem 'capistrano-rails-tail-log'
-  gem 'capistrano-unicorn-nginx'
   gem 'capistrano_colors'
   gem 'capistrano-ext'
   gem 'capistrano_rsync_with_remote_cache'

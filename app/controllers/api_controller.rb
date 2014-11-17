@@ -157,8 +157,7 @@ class ApiController < ApplicationController
   end
 
   def trace
-    limit = params[:count]
-    limit = 50 if(limit.to_i > 50) # 최대값 제한.
+    limit = 50 if(params[:count].to_i > 50) # 최대값 제한.
 
     type = params[:type]
     @firewoods = nil
@@ -173,7 +172,7 @@ class ApiController < ApplicationController
     @fws = to_json(@firewoods)
     
     if request.xhr?
-      render json: Oj.dump('fws' => @fws)
+      render json: Oj.dump('fws' => @fws, 'users' => @users)
     else
       render :inline => "<textarea><%= Oj.dump('fws' => @fws, 'users' => @users) %></textarea>"
     end

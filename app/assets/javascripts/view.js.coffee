@@ -692,6 +692,9 @@ window.BWClient =
         temp[++h] = mt.name
         temp[++h] = '</a> : '
         temp[++h] = mt.contents
+        temp[++h] = '</small>'
+        temp[++h] = '<small class="pull-right">'
+        temp[++h] = mt.created_at
         temp[++h] = '</small></div>'
         ) for mt in mts
         temp[++h] = '</li>'
@@ -755,6 +758,8 @@ window.TagBuilder =
     for $mt in $mt_list when Number($mt.attr("data-id")) < Number($self.attr("data-id"))
       str += '<div class="mt-trace"><small>'
       str += $mt.find('.fw-main').html()
+      str += '</small><small class="pull-right">'
+      str += $mt.find('.time').text()
       str += '</small></div>'
     str += '</li>'
     # delete button 제거

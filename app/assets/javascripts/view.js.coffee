@@ -249,7 +249,7 @@ window.UITimeline =
     real_targets = (main_target + ' ') # 이름값 넣고
     (
       real_targets += ($(target).text() + ' ')
-    ) for target in $targets  when $(target).text() isnt main_target and $(target).text() isnt ms + BWUtil.userName
+    ) for target in $targets  when $(target).text() isnt main_target and $(target).text() isnt ms + BWUtil.userName()
 
     real_targets += $DOM.form_contents().val()
 
@@ -402,19 +402,21 @@ window.BWUtil =
   stackSize: 0 # 스택의 크기
   rawTitle: "" # 봉화의 타이틀
   pageType: 0 # 페이지 타입. now/mt/me 구분하고 ajax req 시에 첨부한다.
-  userName: ""
-  userName_r: ""
 
   initialize: ->
     BWUtil.rawTitle = $DOM.title().text()
-    BWUtil.userName = $.cookie('user_name')
-    BWUtil.userName_r = new RegExp("(@|!)(#{BWUtil.userName})")
     BWUtil.supportCheck()
     BWUtil.pageCheck()
 
     BWUtil.initGlobalVariable()
     BWUtil.bindHotkey()
     BWUtil.initHotkey()
+
+  userName: () ->
+    return $.cookie('user_name')
+
+  userName_r: () ->
+    return new RegExp("(@|!)(#{$.cookie('user_name')})")
 
   stackPush: (itemStr, size, lastId) ->
     BWUtil.stack = itemStr + BWUtil.stack
@@ -779,7 +781,7 @@ window.TagBuilder =
       fw.contents = fw.contents.replace(/^!([^\s]\S+)/g, "<span class='mt-target'>!$1</span>")
     else
       fw.contents = fw.contents.replace(/(^|\s)(@[^@!\s]+)/g, "$1<span class='mt-target'>$2</span>")
-    fw.contents = fw.contents.replace(BWUtil.userName_r, "$1<strong>$2</strong>") # 멘션, DM에 대한 강조 처리.
+    fw.contents = fw.contents.replace(BWUtil.userName_r(), "$1<strong>$2</strong>") # 멘션, DM에 대한 강조 처리.
 
     return fw
 

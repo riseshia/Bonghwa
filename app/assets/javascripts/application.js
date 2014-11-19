@@ -16,6 +16,7 @@
 //= require jquery.cookie
 //= require jquery.keycut
 //= require autolink
+//= require underscore-min
 //= require bootstrap.min
 //= require jasny-bootstrap.min
 //= require inOnScreen

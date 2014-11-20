@@ -11,13 +11,9 @@ window.$DOM =
     $('#firewood_contents')
   form_prev_mt: ->
     $('#firewood_prev_mt')
-  form_img_tag: ->
-    $('#img')
 
   op_img_auto_open: ->
     $('#img_auto_open_op')
-  op_alarm_sound: ->
-    $('#alarm_sound_op')
   op_live_stream: ->
     $('#live_stream_op')
   op_focus_hotkey: ->
@@ -71,7 +67,7 @@ window.UIForm =
 
   clear: ->
     $DOM.form().clearForm()
-    $DOM.form_img_tag().val("")
+    $('#img').val("")
     $('.fileinput-preview').html('')
     $('.fileinput').removeClass('fileinput-exists')
                    .addClass('fileinput-new')
@@ -82,9 +78,18 @@ window.UIForm =
     UIForm.update_count()
 
   initialize: ->
-    UIForm.init_input_length_counter()
+    # 카운터 기능을 초기화한다.
+    UIForm.count = $('#remaining_count')
+    UIForm.input = $DOM.form_contents()
+
+    # 입력글자수 체크
+    UIForm.input.bind('input keyup paste', ->
+      setTimeout(UIForm.update_count,10)
+    )
+
     # 툴팁 활성화.
     $('span[rel=tooltip]').tooltip()
+
     # Bind ajax form
     $DOM.form().submit( ->
       $(this).ajaxSubmit(BWClient.ajaxBasicOptions)
@@ -108,16 +113,6 @@ window.UIForm =
     if before isnt now
       UIForm.count.text(now)
 
-  # 카운터 기능을 초기화한다.
-  init_input_length_counter: ->
-    # count character
-    UIForm.count = $('#remaining_count')
-    UIForm.input = $DOM.form_contents()
-
-    UIForm.input.bind('input keyup paste', ->
-      setTimeout(UIForm.update_count,10)
-    )
-
   isEmpty: ->
     if $('div.fileinput-exists').length is 0
       str = $DOM.form_contents().val()
@@ -126,34 +121,28 @@ window.UIForm =
 
     return false
 
-
 window.UIUserList =
   update: (users) ->
-    unless UIUserList.has_users(users)
+    unless users.length isnt 0
       return false
 
     ($DOM.div_currents_users())[0].innerHTML = TagBuilder.userList(users)
 
-  has_users: (users) ->
-    users.length isnt 0
-
 window.UINotice =
   initialize: ->
+    $self = $(this)
     # 공지사항이 있으면 클릭 remove 바인드할것.
-    unless UINotice.isEmpty()
+    unless $DOM.notice().length is 0
       $DOM.notice().click( ->
-        $(this).slideUp( ->
-          $(this).remove()
+        $self.slideUp( ->
+          $self.remove()
         )
       )
 
     # 공자사항에 링크를 추가
     $DOM.notice_list().each( ->
-      $(this).html($(this).html().autoLink({ target: "_blank", rel: "nofollow"}))
+      $self.html($self.html().autoLink({ target: "_blank", rel: "nofollow"}))
     )
-
-  isEmpty: ->
-    $DOM.notice().length <= 0
 
 window.UITimeline =
   initialize: ->
@@ -193,7 +182,6 @@ window.UITimeline =
 
   append: (contents) ->
     $DOM.timeline().append(contents)
-    # 안된다면 .firewood 끌어와서 last로 붙일것.
 
   # Event : link click
   clickLinkUrl: (e) ->
@@ -266,7 +254,7 @@ window.UITimeline =
            .removeClass('mt-open')
            .find('.sub, .loading').slideUp( ->
              $(this).remove()
-      )
+           )
 
     return false
 
@@ -281,8 +269,6 @@ window.UITimeline =
     $mt_list = UITimeline.traceMtFromTL($self.attr("data-id"))
     img_tag = TagBuilder.imgTag($self)
 
-    str = ""
-
     # no mention
     if prev_id is "0" and img_tag is ""
       return true
@@ -295,6 +281,7 @@ window.UITimeline =
     $self.find('.loading')
          .slideDown(200)
 
+    str = ""
     if $mt_list.length > 0
       str = TagBuilder.mtListFromTimeline($mt_list, $self) + img_tag
       UITimeline.insertFWExpandResult($self, str)

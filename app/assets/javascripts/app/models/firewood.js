@@ -10,11 +10,11 @@ var app = app || {};
       prev_mt: 0,
       is_dm: 0,
       user_id: 0,
-      name: "Init name",
+      name: "initName",
       contents: "Init Contents",
       img_link: "0",
       created_at: "00/00/00 00:00:00",
       visible: false
-    },
+    }
   });
 })();

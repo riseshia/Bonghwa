@@ -944,7 +944,7 @@ $(document).ready( ->
   BWUtil.initialize()
   BWClient.initialize()
 
-  unless UINotice.isEmpty()
+  unless $DOM.notice().length is 0
     UINotice.initialize()
 
   # TL이 없다면 패스할것.

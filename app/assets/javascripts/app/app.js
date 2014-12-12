@@ -5,6 +5,8 @@ $(function () {
 
   // to avoid conflict with that of erb
   _.templateSettings = {
-    interpolate: /\{\{(.+?)\}\}/g
+    evaluate    : /\{\{(.+?)\}\}/g,
+    interpolate : /\{\{=(.+?)\}\}/g,
+    escape      : /\{\{-(.+?)\}\}/g
   };
 });

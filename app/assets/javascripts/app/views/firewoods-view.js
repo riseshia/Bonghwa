@@ -89,7 +89,7 @@ var app = app || {};
 
       if ( now < 0 ) {
         var str = $input.val();
-        this.$input.val(str.substr(0, this.maxCount));
+        $input.val(str.substr(0, this.maxCount));
         now = 0;
       }
 

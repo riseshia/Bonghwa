@@ -11,4 +11,5 @@ $(function () {
   'use strict';
 
   new app.FirewoodsView();
+  new app.UsersView();
 });

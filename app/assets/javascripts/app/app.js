@@ -1,12 +1,14 @@
 var app = app || {};
 
+// to avoid conflict with that of erb
+_.templateSettings = {
+  evaluate    : /\{\{([\s\S]+?)\}\}/g,
+  interpolate : /\{\{=([\s\S]+?)\}\}/g,
+  escape      : /\{\{-([\s\S]+?)\}\}/g
+};
+
 $(function () {
   'use strict';
 
-  // to avoid conflict with that of erb
-  _.templateSettings = {
-    evaluate    : /\{\{(.+?)\}\}/g,
-    interpolate : /\{\{=(.+?)\}\}/g,
-    escape      : /\{\{-(.+?)\}\}/g
-  };
+  new app.FirewoodsView();
 });

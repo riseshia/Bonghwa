@@ -4,9 +4,7 @@ var app = app || {};
   'use strict';
 
   var Firewoods = Backbone.Collection.extend({
-    model: app.Firewood,
-
-    comparator: 'id'
+    model: app.Firewood
   });
 
   app.firewoods = new Firewoods();

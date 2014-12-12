@@ -5,7 +5,7 @@ var app = app || {};
 
   app.Firewood = Backbone.Model.extend({
     defaults: {
-      // id: 0,
+      id: 0,
       mt_root: 0,
       prev_mt: 0,
       is_dm: 0,
@@ -13,7 +13,8 @@ var app = app || {};
       name: "Init name",
       contents: "Init Contents",
       img_link: "0",
-      created_at: "00/00/00 00:00:00"
+      created_at: "00/00/00 00:00:00",
+      visible: false
     },
   });
 })();

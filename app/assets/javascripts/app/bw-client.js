@@ -2,8 +2,9 @@ var app = app || {};
 
 (function () {
   'use strict';
-
-  app.BWClient = {
+  app.BWClient = {}
+  _.extend(app.BWClient, Backbone.Events);
+  _.extend(app.BWClient, {
     pullingTimer: null,
     pullingPeriod: 30000,
     sizeWhenBottomLoading: 50,
@@ -21,7 +22,7 @@ var app = app || {};
         $('#commit').button('loading');
         clearTimeout(self.pullingTimer);
         
-        if ( self.fwPostLock || self.isFormEmpty() ) {
+        if ( self.fwPostLock || app.FirewoodsView.isFormEmpty() ) {
           return false;
         }
 
@@ -29,7 +30,7 @@ var app = app || {};
       },
       success: function () {
         var self = app.BWClient;
-        self.formClear();
+        self.trigger('ajaxSuccess');
         self.fwPostLock = false;
         self.pulling();
       }
@@ -82,21 +83,7 @@ var app = app || {};
       //   if ( json.fws.length != 0 ) {
       //     mts = json.fws;
 
-      //     h = -1;
-      //     temp = [];
-      //     temp[++h] = '<li class="list-group-item div-mention">';
-      //     (temp[++h] = '<div class="mt-trace"><small><a href="#">';
-      //     temp[++h] = mt.name;
-      //     temp[++h] = '</a> : ';
-      //     temp[++h] = mt.contents;
-      //     temp[++h] = '</small>';
-      //     temp[++h] = '<small class="pull-right">';
-      //     temp[++h] = mt.created_at;
-      //     temp[++h] = '</small></div>';
-      //     ) for mt in mts;
-      //     temp[++h] = '</li>';
-      //     str = temp.join('');
-      //   }
+      //   build mention
 
       //   $self = $("div[data-id=#{app.BWClient.mtGetLock}]");
       //   // UITimeline.insertFWExpandResult($self, str + img_tag);
@@ -155,62 +142,8 @@ var app = app || {};
         .html("서버와의 접속이 끊어졌습니다. 새로고침 해주세요.")
         .slideDown();
       $('#title').html("새로고침 해주세요.");
-    },
-
-    // FormView 든 FirewoodsView든 뺄 코드
-    isFormEmpty: function () {
-      if ( $('div.fileinput-exists').length == 0 ) {
-        var str = $('#firewood_contents').val();
-        if ( str.length == 0 || str.search(/^\s+$/) != -1 ) {
-          return true;
-        }
-      }
-      return false;
-    },
-
-    formClear: function() {
-      $('#new_firewood').clearForm();
-      $('#img').val('');
-      $('.fileinput-preview').html('');
-      $('.fileinput')
-        .removeClass('fileinput-exists')
-        .addClass('fileinput-new');
-      $('.fileinput-filename').html('');
-      $('#commit').button('reset');
-      $('#firewood_prev_mt').val('');
-
-      this.update_count();
-    },
-
-    count:     0,
-    maxCount: 150,
-    update_count: function() {
-      var $input = $('#firewood_contents');
-      var before = this.count;
-      var now = this.maxCount - $input.val().length;
-  
-      if ( this.isFormEmpty() ) {
-        $('#commit').val('Refresh');
-      } else {
-        $('#commit').val('Submit');
-      }
-
-      if ( now < 0 ) {
-        var str = $input.val();
-        $input.val(str.substr(0, this.maxCount));
-        now = 0;
-      }
-
-      if ( before != now ) {
-        this.count = now;
-        $('#remaining_count').val(now);
-      }
     }
-  };
+  });
 
   $(document).ajaxError(app.BWClient.ajaxError);
-  $('#new_firewood').submit( function () {
-      $(this).ajaxSubmit(app.BWClient.ajaxBasicOptions);
-      return false;
-    })
 })();

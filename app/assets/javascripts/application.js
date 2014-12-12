@@ -22,4 +22,5 @@
 //= require jasny-bootstrap.min
 //= require inOnScreen
 //= require lab
+//= require app/app.js
 //= require_tree .

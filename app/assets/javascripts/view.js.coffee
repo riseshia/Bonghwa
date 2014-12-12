@@ -941,6 +941,8 @@ popup_alert = (error, option) ->
     .fadeOut(1000)
 
 $(document).ready( ->
+  return true if $('#lab_page').length isnt 0
+
   BWUtil.initialize()
   BWClient.initialize()
 

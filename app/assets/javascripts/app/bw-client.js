@@ -12,32 +12,26 @@ var app = app || {};
     logGetLock: false,
     mtGetLock: false,
 
-    preprocess: function (formData, jqForm, options) {
-      $('#commit').button('loading');
-      clearTimeout(this.pullingTimer);
-      
-      if ( this.fwPostLock || this.isFormEmpty() ) {
-        return false;
-      }
-
-      this.fwPostLock = true;
-    },
-
-    succeedSubmit: function (data) {
-      this.formClear();
-      this.fwPostLock = false;
-      this.pulling();
-    },
-
     ajaxBasicOptions: {
       url:           'api/new',
       type:          'post',
       dataType:      'json',
       beforeSubmit: function (formData, jqForm, options) {
-        this.preprocess(formData, jqForm, options);
+        var self = app.BWClient;
+        $('#commit').button('loading');
+        clearTimeout(self.pullingTimer);
+        
+        if ( self.fwPostLock || self.isFormEmpty() ) {
+          return false;
+        }
+
+        self.fwPostLock = true;
       },
       success: function () {
-        this.succeedSubmit();
+        var self = app.BWClient;
+        self.formClear();
+        self.fwPostLock = false;
+        self.pulling();
       }
     },
 
@@ -166,7 +160,7 @@ var app = app || {};
     // FormView 든 FirewoodsView든 뺄 코드
     isFormEmpty: function () {
       if ( $('div.fileinput-exists').length == 0 ) {
-        str = $('#firewood_contents').val();
+        var str = $('#firewood_contents').val();
         if ( str.length == 0 || str.search(/^\s+$/) != -1 ) {
           return true;
         }
@@ -191,9 +185,9 @@ var app = app || {};
     count:     0,
     maxCount: 150,
     update_count: function() {
-      $input = $('#firewood_contents');
-      before = this.count;
-      now = this.maxCount - $input.val().length;
+      var $input = $('#firewood_contents');
+      var before = this.count;
+      var now = this.maxCount - $input.val().length;
   
       if ( this.isFormEmpty() ) {
         $('#commit').val('Refresh');
@@ -202,7 +196,7 @@ var app = app || {};
       }
 
       if ( now < 0 ) {
-        str = $input.val();
+        var str = $input.val();
         $input.val(str.substr(0, this.maxCount));
         now = 0;
       }
@@ -215,4 +209,8 @@ var app = app || {};
   };
 
   $(document).ajaxError(app.BWClient.ajaxError);
+  $('#new_firewood').submit( function () {
+      $(this).ajaxSubmit(app.BWClient.ajaxBasicOptions);
+      return false;
+    })
 })();

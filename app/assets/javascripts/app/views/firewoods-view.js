@@ -12,10 +12,6 @@ var app = app || {};
       this.listenTo(app.firewoods, 'add:append', this.append);
     },
 
-    render: function () {
-
-    },
-
     // Event
     addAll: function () {
       this.$el.html('');

@@ -37,6 +37,8 @@
     <div class="fw-main">
       <a class="fw-username mt-clk" href="#">{{= name }}</a> : <span class="fw-contents">
       {{= contents }}
+      </span>
+      {{= Number($.cookie('user_id')) == user_id ? '<a href="#" class="delete">[x]</a>' : '' }}
     </div>
   </div>
   <div class="col-md-2 time"><small>{{= created_at }}</small></div>

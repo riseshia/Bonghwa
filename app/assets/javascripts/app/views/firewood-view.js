@@ -9,7 +9,8 @@ var app = app || {};
     template: _.template($('#fw-template').html()),
 
     events: {
-      'click .delete': 'delete'
+      'click .delete': 'delete',
+      'click .mt-clk': 'clkUsername'
     },
 
     render: function () {
@@ -34,6 +35,13 @@ var app = app || {};
       }).then(function () {
         self.remove();
       });
+    },
+
+
+    clkUsername: function () {
+      var arr = [this.model.get('name')];
+
+      app.BWClient.trigger('form:appendMt', arr);
     }
   });
 })(jQuery);

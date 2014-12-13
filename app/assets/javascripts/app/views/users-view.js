@@ -20,8 +20,16 @@ var app = app || {};
       this.$header.html("접속자(" + app.users.length + "명)");
 
       app.users.each(function (user) {
-        this.$body.append(this.userTemplate(user.toJSON()));
+        var view = new app.UserView({ model: user });
+        this.$body.append(view.render().el);
       }, this);
+    },
+
+
+    clkUsername: function () {
+      var arr = [this.model.get('name')];
+
+      app.FirewoodsView.trigger('form:appendMt', arr);
     }
   });
 })(jQuery);

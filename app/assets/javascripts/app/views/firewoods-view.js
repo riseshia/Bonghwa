@@ -8,6 +8,7 @@ var app = app || {};
     $list: $('#timeline'),
     $stack: $('#timeline_stack'),
     $form: $('#new_firewood'),
+    $input: $('#firewood_contents'),
     count: 0,
     maxCount: 150,
 
@@ -16,11 +17,13 @@ var app = app || {};
       this.listenTo(app.firewoods, 'add:prepend', this.prepend);
       this.listenTo(app.firewoods, 'add:append', this.append);
       this.listenTo(app.BWClient, 'ajaxSuccess', this.formClear);
+
+      // 중간에 메디에이터 하나 넣는게 낫지 않...나?
+      this.listenTo(app.BWClient, 'form:appendMt', this.appendMt);
+
       this.$form.submit(this.submit);
 
       $('span[rel=tooltip]').tooltip();
-      
-      // $('#firewood_contents').bind('input keyup paste', this.update_count);
     },
 
     events: {
@@ -77,9 +80,8 @@ var app = app || {};
     },
 
     update_count: function () {
-      var $input = $('#firewood_contents');
       var before = this.count;
-      var now = this.maxCount - $input.val().length;
+      var now = this.maxCount - this.$input.val().length;
 
       if ( app.FirewoodsView.isFormEmpty() ) {
         $('#commit').val('Refresh');
@@ -88,8 +90,8 @@ var app = app || {};
       }
 
       if ( now < 0 ) {
-        var str = $input.val();
-        $input.val(str.substr(0, this.maxCount));
+        var str = this.$input.val();
+        this.$input.val(str.substr(0, this.maxCount));
         now = 0;
       }
 
@@ -97,6 +99,14 @@ var app = app || {};
         this.count = now;
         $('#remaining_count').text(now);
       }
+    },
+
+    appendMt: function (names) {
+      var mts = _.map(names, function (name) { return '@' + name; });
+
+      this.$input
+        .val( mts.join(' ') + ' ' + this.$input.val() )
+        .focus();
     }
   });
   

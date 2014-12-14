@@ -46,7 +46,7 @@ var app = app || {};
     },
 
     prepend: function () {
-      var fws = app.firewoods.where({ state: -1 });
+      var fws = app.firewoods.where({ state: -1 }).reverse();
       _.each(fws, function(fw) {
         var view = new app.FirewoodView({ model: fw });
         this.$list.prepend(view.render().el);
@@ -57,7 +57,7 @@ var app = app || {};
     },
 
     append: function () {
-      var fws = app.firewoods.where({ state: 1 });
+      var fws = app.firewoods.where({ state: 1 }).reverse();
       _.each(fws, function(fw) {
         var view = new app.FirewoodView({ model: fw });
         this.$el.append(view.render().el);

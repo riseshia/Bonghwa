@@ -130,6 +130,9 @@ var app = app || {};
     },
 
     flushStack: function () {
+      $('.last_top').removeClass('last_top').attr('style','');
+      $('.div-firewood:first').addClass('last_top').attr('style','border-top-width:3px;');
+
       this.prepend();
       this.$title.html(this.originTitle);
       this.$stack.html('').slideUp(200);

@@ -6,7 +6,7 @@ var app = app || {};
   _.extend(app.BWClient, Backbone.Events);
   _.extend(app.BWClient, {
     pullingTimer: null,
-    pullingPeriod: 30000,
+    pullingPeriod: 10000,
     sizeWhenBottomLoading: 50,
     failCount: 0,
     fwPostLock: false,
@@ -32,7 +32,7 @@ var app = app || {};
         var self = app.BWClient;
         self.trigger('ajaxSuccess');
         self.fwPostLock = false;
-        self.pulling();
+        self.pulling(true);
       }
     },
 
@@ -52,19 +52,20 @@ var app = app || {};
       });
     },
 
-    pulling: function () {
+    pulling: function (isLive) {
       clearTimeout(app.BWClient.pullingTimer);
 
       var recentId = app.firewoods.first().get('id');
       $.get('/api/pulling.json?after=' + recentId + '&type=' + app.BWClient.pageType, function (json) {
         var state = ( window.localStorage['live_stream'] == '1' ) ? 0 : -1;
+        if ( isLive ) {
+          state = 0;
+        }
+
         if (json.fws) {
-          var fws = _.map(json.fws, function (fw) { fw['state'] = state; return new app.Firewood(fw); });
+          var fws = _.map(json.fws, function (fw) { fw['state'] = -1; return new app.Firewood(fw); });
           
-          // if live stream is enabled
-          if ( state == 0 ) {
-            app.firewoods.prepend(fws);
-          }
+          app.firewoods.prepend(fws, state);
         }
 
         // if ( app.BWClient.stackIsEmpty() )
@@ -106,7 +107,7 @@ var app = app || {};
         var bottom_id = $bottom.attr('data-id');
         $.get('/api/trace.json?before=' + bottom_id + '&count=' + this.sizeWhenBottomLoading + '&type=' + this.pageType, function (json) {
           if ( json.fws.length != 0 ) {
-            var fws = _.map(json.fws, function (fw) { return new app.Firewood(fw); });
+            var fws = _.map(json.fws, function (fw) { fw['state'] = 1; return new app.Firewood(fw); });
             app.firewoods.append(fws);
 
             timelineSize = $('.firewood').size() - 1;

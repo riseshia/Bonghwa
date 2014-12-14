@@ -9,6 +9,7 @@ var app = app || {};
     $stack: $('#timeline_stack'),
     $form: $('#new_firewood'),
     $input: $('#firewood_contents'),
+    $title: $('#title'),
     count: 0,
     maxCount: 150,
 
@@ -16,20 +17,23 @@ var app = app || {};
       this.listenTo(app.firewoods, 'reset', this.addAll);
       this.listenTo(app.firewoods, 'add:prepend', this.prepend);
       this.listenTo(app.firewoods, 'add:append', this.append);
+      this.listenTo(app.firewoods, 'add:stack', this.updateStackNotice);
       this.listenTo(app.BWClient, 'ajaxSuccess', this.formClear);
 
-      // 중간에 메디에이터 하나 넣는게 낫지 않...나?
+      // todo: 중간에 메디에이터 하나 넣는게 낫지 않...나?
       this.listenTo(app.BWClient, 'form:appendMt', this.appendMt);
 
       this.$form.submit(this.submit);
 
       $('span[rel=tooltip]').tooltip();
+      this.originTitle = this.$title.text();
     },
 
     events: {
       'input #firewood_contents': 'update_count',
       'keyup #firewood_contents': 'update_count',
-      'paste #firewood_contents': 'update_count'
+      'paste #firewood_contents': 'update_count',
+      'click #timeline_stack': 'flushStack'
     },
 
     // Collection Event
@@ -48,6 +52,8 @@ var app = app || {};
         this.$list.prepend(view.render().el);
         fw.set('state', 0);
       }, this);
+
+      return this;
     },
 
     append: function () {
@@ -57,6 +63,20 @@ var app = app || {};
         this.$el.append(view.render().el);
         fw.set('state', 0);
       }, this);
+
+      return this;
+    },
+
+    updateStackNotice: function () {
+      var fws = app.firewoods.where({ state: - 1});
+      if ( fws.length == 0 ) {
+        return false;
+      }
+
+      this.$title.html(this.originTitle + ' (' + fws.length + ')');
+      this.$stack
+        .html('<a href="#" id="notice_stack_new">새 장작이 ' + fws.length + '개 있습니다.</a>')
+        .slideDown(200);
     },
 
     // DOM Event
@@ -107,6 +127,20 @@ var app = app || {};
       this.$input
         .val( mts.join(' ') + ' ' + this.$input.val() )
         .focus();
+    },
+
+    flushStack: function () {
+      this.prepend();
+      this.$title.html(this.originTitle);
+      this.$stack.html('').slideUp(200);
+
+    // # 이미지 자동 열기 옵션이 활성화 중이면, 새로 받아온 글에 한해서 트리거를 작동시킴
+    // if window.getStorageValue('auto_image_open') is window.TRUE
+    //   $list = $(".firewood:lt(#{stack_size_temp})").filter('.mt-to[img-link!=0]')
+    //   UITimeline.expandImgs($list)
+
+    // HashTagUtil.apply_tag($("#select-tag").val())
+
     }
   });
   

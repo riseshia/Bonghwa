@@ -89,10 +89,7 @@ var app = app || {};
     },
 
     fold: function (e) {
-      this.$el.find('.fw-sub').slideUp(function () {
-                             $(this).html('');
-                           });
-
+      this.$el.find('.fw-sub').slideUp(function () { $(this).html(''); });
       return this;
     }
   });

@@ -941,30 +941,30 @@ popup_alert = (error, option) ->
     .fadeOut(1000)
 
 $(document).ready( ->
-  return true if $('#lab_page').length isnt 0
+  # return true if $('#lab_page').length isnt 0
 
-  BWUtil.initialize()
-  BWClient.initialize()
+  # BWUtil.initialize()
+  # BWClient.initialize()
 
-  unless $DOM.notice().length is 0
-    UINotice.initialize()
+  # unless $DOM.notice().length is 0
+  #   UINotice.initialize()
 
-  # TL이 없다면 패스할것.
-  if $DOM.timeline().length > 0
-    UITimeline.initialize()
-    UIForm.initialize()
+  # # TL이 없다면 패스할것.
+  # if $DOM.timeline().length > 0
+  #   UITimeline.initialize()
+  #   UIForm.initialize()
 
-  # Tag Util
-  HashTagUtil.initialize()
+  # # Tag Util
+  # HashTagUtil.initialize()
 
-  # Mobile userList
-  MobileUserList.initialize()
+  # # Mobile userList
+  # MobileUserList.initialize()
 
-  # Lab Mode check
-  if $DOM.isLabPage()
-    window.isLabMode = true
-    Lab.initialize()
+  # # Lab Mode check
+  # if $DOM.isLabPage()
+  #   window.isLabMode = true
+  #   Lab.initialize()
 
-  # 로딩 종료.
-  window.isInitializeTime = false
+  # # 로딩 종료.
+  # window.isInitializeTime = false
 )

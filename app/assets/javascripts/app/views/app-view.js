@@ -60,15 +60,20 @@ var app = app || {};
       window.localStorage['live_stream'] = newState;
       var msg;
 
+      clearTimeout(app.BWClient.pullingTimer);
       $ls.toggleClass('true');
       if (newState == '1') {
         $ls.html($ls.html() + '<span class="glyphicon glyphicon-ok"></span>');
         msg = 'Live Stream이 활성화되었습니다.';
-        this.trigger('timeline:liveOn');
+        
+        app.BWClient.pullingPeriod = 1000
+        app.BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod)
       } else {
         $ls.find('.glyphicon-ok').remove();
         msg = 'Live Stream이 비활성화되었습니다.';
-        this.trigger('timeline:liveOff');
+
+        app.BWClient.pullingPeriod = 30000
+        app.BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod)
       }
 
       if ( !silent ) {

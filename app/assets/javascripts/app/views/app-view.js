@@ -6,14 +6,21 @@ var app = app || {};
   app.AppView = Backbone.View.extend({
     el: 'body',
     $title: $('#title'),
-    $hotkeyImgAutoOpen: $('img_auto_open_op'),
-    $hotkeyLiveStream: $('live_stream_op'),
-    $hotkeyFocus: $('focus_hotkey'),
-    $hotkeyRefresh: $('refresh_hotkey'),
+    $hotkeyImgAutoOpen: $('#img_auto_open_op'),
+    $hotkeyLiveStream: $('#live_stream_op'),
+    $hotkeyFocus: $('#focus_hotkey'),
+    $hotkeyRefresh: $('#refresh_hotkey'),
 
     initialize: function () {
       $('span[rel=tooltip]').tooltip();
       this.originTitle = this.$title.text();
+
+      // load initial state from localStorage
+      window.localStorage['auto_image_open'] = (window.localStorage['auto_image_open'] == '1' ? '0' : '1');
+      this.toggleImgAutoOpen(null, true);
+      window.localStorage['live_stream'] = (window.localStorage['live_stream'] == '1' ? '0' : '1');
+      this.toggleLiveStream(null, true);
+
       $(document).keycut();
     },
 
@@ -53,7 +60,9 @@ var app = app || {};
     },
 
     toggleLiveStream: function(e, silent) {
-      e.preventDefault();
+      if ( e ) {
+        e.preventDefault();
+      }
 
       var $ls = this.$hotkeyLiveStream;
       var newState = (window.localStorage['live_stream'] == '1' ? '0' : '1');
@@ -66,14 +75,14 @@ var app = app || {};
         $ls.html($ls.html() + '<span class="glyphicon glyphicon-ok"></span>');
         msg = 'Live Stream이 활성화되었습니다.';
         
-        app.BWClient.pullingPeriod = 1000
-        app.BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod)
+        app.BWClient.pullingPeriod = 1000;
+        app.BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod);
       } else {
         $ls.find('.glyphicon-ok').remove();
         msg = 'Live Stream이 비활성화되었습니다.';
 
-        app.BWClient.pullingPeriod = 30000
-        app.BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod)
+        app.BWClient.pullingPeriod = 10000;
+        app.BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod);
       }
 
       if ( !silent ) {

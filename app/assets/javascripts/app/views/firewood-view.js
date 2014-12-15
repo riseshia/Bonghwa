@@ -37,10 +37,10 @@ var app = app || {};
       });
     },
 
-
-    clkUsername: function () {
+    clkUsername: function (e) {
+      e.preventDefault();
+      
       var arr = [this.model.get('name')];
-
       app.BWClient.trigger('form:appendMt', arr);
     }
   });

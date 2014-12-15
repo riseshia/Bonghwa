@@ -68,8 +68,6 @@ var app = app || {};
           app.firewoods.prepend(fws, state);
         }
 
-        // if ( app.BWClient.stackIsEmpty() )
-        //   UITimeline.noticeNew();
         if (json.users) {
           var users = _.map(json.users, function (user) { return new app.User(user); });
           app.users.reset(users);
@@ -93,36 +91,37 @@ var app = app || {};
       // });
     },
 
-    getlogs: function () {
-      var $fws = $('.firewood');
-      if ( this.logGetLock || $fws.length < 50 || Number($fws.last().attr('data-id')) < 10 ) {
+    getLogs: function () {
+      var firewoods = app.firewoods;
+      var self = app.BWClient;
+      if ( self.logGetLock || firewoods.length < 50 || firewoods.last().get('id') < 10 ) {
         return false;
       }
 
-      if ( $fws.eq(-5).isOnScreen() ) {
-        this.logGetLock = true;
-        var $bottom = $fws.last();
-        $('#div-loading').show();
-
-        var bottom_id = $bottom.attr('data-id');
-        $.get('/api/trace.json?before=' + bottom_id + '&count=' + this.sizeWhenBottomLoading + '&type=' + this.pageType, function (json) {
-          if ( json.fws.length != 0 ) {
-            var fws = _.map(json.fws, function (fw) { fw['state'] = 1; return new app.Firewood(fw); });
-            app.firewoods.append(fws);
-
-            timelineSize = $('.firewood').size() - 1;
-
-            // $bottom.parent().after(TagBuilder.fwList(json.fws));
-            // 이미지 자동 열기 옵션이 활성화 중이면, 새로 받아온 글에 한해서 트리거를 작동시킴
-            // if window.getStorageValue('auto_image_open') is window.TRUE
-            //   $list = $(".firewood:gt(#{timelineSize})").filter('.mt-to[img-link!=0]')
-            //   UITimeline.expandImgs($list)
-          }
-
-          $("#div-loading").hide();
-          app.BWClient.logGetLock = false;
-        });
+      var $fws = $('.firewood');
+      if ( !$fws.eq(-5).isOnScreen() ) {
+        return false;
       }
+      self.logGetLock = true;
+      $('#div-loading').show();
+
+      $.get('/api/trace.json?before=' + firewoods.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + self.pageType, function (json) {
+        if ( json.fws.length != 0 ) {
+          var fws = _.map(json.fws, function (fw) { fw['state'] = 1; return new app.Firewood(fw); });
+          firewoods.append(fws);
+
+          // timelineSize = $('.firewood').size() - 1;
+
+          // $bottom.parent().after(TagBuilder.fwList(json.fws));
+          // 이미지 자동 열기 옵션이 활성화 중이면, 새로 받아온 글에 한해서 트리거를 작동시킴
+          // if window.getStorageValue('auto_image_open') is window.TRUE
+          //   $list = $(".firewood:gt(#{timelineSize})").filter('.mt-to[img-link!=0]')
+          //   UITimeline.expandImgs($list)
+        }
+
+        $("#div-loading").hide();
+        self.logGetLock = false;
+      });
     },
 
     ajaxError: function () {
@@ -134,12 +133,12 @@ var app = app || {};
         return true;
       }
 
-      $panel = $(".panel-info");
+      var $panel = $(".panel-info");
       $panel.removeClass("panel-info")
             .addClass("panel-danger");
       $("#info").css("background-color","#f2dede");
       $('#new_firewood').find("fieldset").attr("disabled","a");
-      $DOM.timeline_stack()
+      $('#timeline_stack')
         .css("background-color","#b94a48")
         .html("서버와의 접속이 끊어졌습니다. 새로고침 해주세요.")
         .slideDown();

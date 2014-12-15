@@ -967,4 +967,5 @@ $(document).ready( ->
 
   # # 로딩 종료.
   # window.isInitializeTime = false
+  clearTimeout(BWClient.pullingTimer);
 )

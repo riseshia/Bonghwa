@@ -49,14 +49,12 @@ var app = app || {};
     unFold: function (e) {
       e.preventDefault();
 
-      var prev_id = this.model.get('prev_mt');
-      if ( prev_id == 0 ) {
+      var fws = app.firewoods.getPreviousFws(this.model, 5);
+      if (fws.length == 0) {
         return this;
       }
 
-      var fws = app.firewoods.getPreviousFws(this, 5);
-
-      $self = this.$el;
+      var $self = this.$el;
       $self.removeClass('mt-to')
            .addClass('mt-open')
            .find('.fw-main')
@@ -66,7 +64,7 @@ var app = app || {};
 
       var $body = $('<li class="list-group-item div-mention">');
       _.each(fws, function (fw) {
-        $body.append(this.mtTemplate(fw));
+        $body.append(this.mtTemplate(fw.toJSON()));
       }, this);
 
       $self.find('.loading').remove();

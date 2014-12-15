@@ -22,21 +22,23 @@ var app = app || {};
     },
 
     getPreviousFws: function (fw, limit) {
-      var prev_id = this.model.get('prev_mt');
+      var prev_id = fw.get('prev_mt');
       var fws = [];
       var tmp = fw;
 
       while ( true ) {
         tmp = this.findWhere({id: prev_id});
+        if ( !tmp ) {
+          // need ajax request
+          return fws;
+        }
         fws.push(tmp);
         prev_id = tmp.get('prev_mt');
 
-        if (prev_id == 0 && list < limit) {
-          break;
+        if (prev_id == 0 && fws.length < limit) {
+          return fws;
         }
       }
-
-      return fws;
     }
   });
 

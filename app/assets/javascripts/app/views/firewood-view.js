@@ -47,8 +47,11 @@ var app = app || {};
     clkUsername: function (e) {
       e.preventDefault();
       
-      var arr = [this.model.get('name')];
-      app.BWClient.trigger('form:appendMt', arr, this.model.get('id'));
+      var targets = this.$el.find('.mt-target');
+      var arr = _.map(targets, function (target) { return $(target).text(); });
+      arr.push((this.model.get('is_dm') == 0 ? '@':'!') + this.model.get('name'));
+
+      app.BWClient.trigger('form:appendMt', _.uniq(arr), this.model.get('id'));
     },
 
     toggleFolding: function (e) {

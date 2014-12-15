@@ -123,7 +123,7 @@ var app = app || {};
     },
 
     appendMt: function (names, target) {
-      var mts = _.map(names, function (name) { return '@' + name; });
+      var mts = _.map(names, function (name) { return name; });
 
       $('#firewood_prev_mt').val(target);
       this.$input

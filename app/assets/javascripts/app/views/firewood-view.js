@@ -43,7 +43,7 @@ var app = app || {};
       e.preventDefault();
       
       var arr = [this.model.get('name')];
-      app.BWClient.trigger('form:appendMt', arr);
+      app.BWClient.trigger('form:appendMt', arr, this.model.get('id'));
     },
 
     unFold: function (e) {

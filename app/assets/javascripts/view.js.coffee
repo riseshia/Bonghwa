@@ -643,19 +643,19 @@ window.BWClient =
   pulling: ->
     clearTimeout(BWClient.pullingTimer)
 
-    $.get("/api/pulling.json?after=#{BWUtil.lastIdOfbw}&type=#{BWUtil.pageType}", (json) ->
-      BWUtil.parseFWs(json)
+    # $.get("/api/pulling.json?after=#{BWUtil.lastIdOfbw}&type=#{BWUtil.pageType}", (json) ->
+    #   BWUtil.parseFWs(json)
 
-      if window.getStorageValue('live_stream') is window.TRUE or BWClient.isSendingNow
-        UITimeline.stackFlush()
-        BWClient.isSendingNow = false # 사용후 플래그 해제
+    #   if window.getStorageValue('live_stream') is window.TRUE or BWClient.isSendingNow
+    #     UITimeline.stackFlush()
+    #     BWClient.isSendingNow = false # 사용후 플래그 해제
 
-      unless BWUtil.stackIsEmpty()
-        UITimeline.noticeNew()
+    #   unless BWUtil.stackIsEmpty()
+    #     UITimeline.noticeNew()
 
-      UIUserList.update(json.users)
-      BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod)
-    )
+    #   UIUserList.update(json.users)
+    #   BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod)
+    # )
 
   lockMtAjax: (id) ->
     BWClient.isMtAjaxLocked = id

@@ -18,10 +18,13 @@ var app = app || {};
     addAll: function () {
       this.$body.html('');
       this.$header.html("접속자(" + app.users.length + "명)");
+      _.each(this.currentList, function (view) { view.remove(); });
 
+      this.currentList = [];
       app.users.each(function (user) {
         var view = new app.UserView({ model: user });
         this.$body.append(view.render().el);
+        this.currentList.push(view);
       }, this);
     },
 

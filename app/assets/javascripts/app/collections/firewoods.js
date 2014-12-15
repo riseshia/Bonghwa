@@ -25,13 +25,13 @@ var app = app || {};
       var prev_id = fw.get('prev_mt');
       var fws = [];
       var tmp = fw;
+      if ( !this.findWhere({id: prev_id}) ) {
+          // need ajax request
+          return [];
+      }
 
       while ( true ) {
         tmp = this.findWhere({id: prev_id});
-        if ( !tmp ) {
-          // need ajax request
-          return fws;
-        }
         fws.push(tmp);
         prev_id = tmp.get('prev_mt');
 

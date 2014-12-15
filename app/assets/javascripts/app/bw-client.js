@@ -80,19 +80,13 @@ var app = app || {};
       });
     },
 
-    ajaxMtLoad: function ($self, prev_mt, img_tag) {
-      // app.BWClient.mtGetLock = $self.attr('data-id') # 락걸기.
-      // $.get('/api/get_mt.json?prev_mt=' + prev_mt + '&now=' + app.BWClient.mtGetLock, function (json) {
-      //   str = '';
-      //   if ( json.fws.length != 0 ) {
-      //     mts = json.fws;
-
-      //   build mention
-
-      //   $self = $("div[data-id=#{app.BWClient.mtGetLock}]");
-      //   // UITimeline.insertFWExpandResult($self, str + img_tag);
-      //   app.BWClient.mtGetLock = 0;
-      // });
+    ajaxMtLoad: function (callback, context) {
+      app.BWClient.mtGetLock = context.model.get('id');
+      var prev_mt = context.model.get('prev_mt');
+      $.get('/api/get_mt.json?prev_mt=' + prev_mt + '&now=' + app.BWClient.mtGetLock).then(function (json) {
+        callback.call(context, json);
+        app.BWClient.mtGetLock = 0;
+      });
     },
 
     getLogs: function () {

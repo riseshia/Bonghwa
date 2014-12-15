@@ -69,8 +69,8 @@ var app = app || {};
     },
 
     unFold: function (e) {
-      var fws = app.firewoods.getPreviousFws(this.model, 5);
-      if ( fws.length == 0 && this.model.get('img_link') === '0' ) {
+      // not neccesary
+      if ( this.model.get('prev_mt') === 0 && this.model.get('img_link') === '0' ) {
         return this;
       }
 
@@ -80,30 +80,50 @@ var app = app || {};
       $self.find('.loading')
            .slideDown(200);
 
-      this.model.set('isOpened', true);
-
-      // rendering
+      var fws = app.firewoods.getPreviousFws(this.model, 5);
       var $body = $('<li class="list-group-item div-mention">');
-      _.each(fws, function (fw) {
-        $body.append(this.mtTemplate(fw.toJSON()));
-      }, this);
+      if ( fws.length == 0 ) {
+        app.BWClient.ajaxMtLoad(function (json) {
+          this.unFoldText(json.fws, $body);
+          $self.find('.loading')
+               .remove();
+          $self.find('.fw-sub')
+               .html($body.html())
+               .slideDown(200);          
+        }, this);
+      } else {
+        this.unFoldText(fws, $body);
 
-      // img check
-      var imgLink = this.model.get('img_link');
-      if (imgLink != '0') {
-        var templ = _.template($('#img-template').html());
-        // consider window size, use different css
-        var scale = ( $(window).width() > $(window).height() ? 'standard' : 'mobile' );
-        $body.append(templ({scale: scale, imgLink: imgLink}));
+        // img check
+        var imgLink = this.model.get('img_link');
+        if (imgLink != '0') {
+          var templ = _.template($('#img-template').html());
+          // consider window size, use different css
+          var scale = ( $(window).width() > fw.$(window).height() ? 'standard' : 'mobile' );
+          $body.append(templ({scale: scale, imgLink: imgLink}));
+        }
+
+        $self.find('.loading')
+             .remove();
+        $self.find('.fw-sub')
+             .html($body.html())
+             .slideDown(200);
       }
 
-      $self.find('.loading')
-           .remove();
-      $self.find('.fw-sub')
-           .html($body.html())
-           .slideDown(200);
-
       return this;
+    },
+
+    unFoldText: function (fws, $el) {
+      this.model.set('isOpened', true);
+
+      if ( fws[0] && fws[0].toJSON ) {
+        fws = _.map(fws, function (fw) { return fw.toJSON() });
+      }
+
+      // rendering
+      _.each(fws, function (fw) {
+        $el.append(this.mtTemplate(fw));
+      }, this);
     },
 
     fold: function (e) {

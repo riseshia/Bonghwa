@@ -54,18 +54,7 @@ var app = app || {};
         return this;
       }
 
-      // find previous mt at most 5
-      var fws = [];
-      var tmp = this;
-      while ( true ) {
-        tmp = app.firewoods.findWhere({id: prev_id});
-        fws.push(tmp);
-        prev_id = tmp.get('prev_mt');
-
-        if (prev_id == 0 && list < 5) {
-          break;
-        }
-      }
+      var fws = app.firewoods.getPreviousFws(this, 5);
 
       $self = this.$el;
       $self.removeClass('mt-to')

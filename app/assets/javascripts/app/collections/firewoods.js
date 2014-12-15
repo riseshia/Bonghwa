@@ -35,7 +35,7 @@ var app = app || {};
         fws.push(tmp);
         prev_id = tmp.get('prev_mt');
 
-        if (prev_id == 0 && fws.length < limit) {
+        if (prev_id == 0 || fws.length == limit) {
           return fws;
         }
       }

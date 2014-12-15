@@ -79,6 +79,15 @@ var app = app || {};
         $body.append(this.mtTemplate(fw.toJSON()));
       }, this);
 
+      // img check
+      var imgLink = this.model.get('img_link');
+      if (imgLink != '0') {
+        var templ = _.template($('#img-template').html());
+        // consider window size, use different css
+        var scale = ( $(window).width() > $(window).height() ? 'standard' : 'mobile' );
+        $body.append(templ({scale: scale, imgLink: imgLink}));
+      }
+
       $self.find('.loading')
            .remove();
       $self.find('.fw-sub')

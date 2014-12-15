@@ -21,6 +21,8 @@ var app = app || {};
 
       this.listenTo(app.BWClient, 'ajaxSuccess', this.formClear);
       this.listenTo(app.BWClient, 'form:appendMt', this.appendMt);
+      this.listenTo(app.firewoods, 'timeline:foldAll', this.foldAll);
+      this.listenTo(app.firewoods, 'timeline:unFoldAll', this.unFoldAll);
 
       this.$form.submit(this.submit);
 
@@ -133,17 +135,25 @@ var app = app || {};
       $('.last_top').removeClass('last_top').attr('style','');
       $('.div-firewood:first').addClass('last_top').attr('style','border-top-width:3px;');
 
+      var fws = app.firewoods.filter(function (fw) { return fw.get('state') == -1 && fw.get('img_link') != '0' });
       this.prepend();
       this.$title.html(this.originTitle);
       this.$stack.html('').slideUp(200);
 
-    // # 이미지 자동 열기 옵션이 활성화 중이면, 새로 받아온 글에 한해서 트리거를 작동시킴
-    // if window.getStorageValue('auto_image_open') is window.TRUE
-    //   $list = $(".firewood:lt(#{stack_size_temp})").filter('.mt-to[img-link!=0]')
-    //   UITimeline.expandImgs($list)
+      // 이미지 자동 열기 옵션이 활성화 중이면, 이미지가 있을경우 트리거를 작동시킴
+      if ( window.localStorage['auto_image_open'] == '1' ) {
+        _.each(fws, function (fw) { fw.trigger('unFold') });        
+      }
+    },
 
-    // HashTagUtil.apply_tag($("#select-tag").val())
+    foldAll: function () {
+      var fws = app.firewoods.where({ isOpened: true });
+      _.each(fws, function ( fw ) { fw.trigger('fold'); });
+    },
 
+    unFoldAll: function () {
+      var fws = app.firewoods.filter( function (fw) { return fw.get('img_link') !== '0' });
+      _.each(fws, function ( fw ) { fw.trigger('unFold'); });
     }
   });
   

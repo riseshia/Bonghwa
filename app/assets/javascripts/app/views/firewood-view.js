@@ -9,11 +9,15 @@ var app = app || {};
     template: _.template($('#fw-template').html()),
     mtTemplate: _.template($('#mt-template').html()),
 
+    initialize: function() {
+      this.listenTo(this.model, 'fold', this.fold);
+      this.listenTo(this.model, 'unFold', this.unFold);
+    },
+
     events: {
       'click .delete': 'delete',
       'click .mt-clk': 'clkUsername',
-      'click .mt-to': 'toggleFolding',
-      'click .mt-open': 'fold'
+      'click .mt-to': 'toggleFolding'
     },
 
     render: function () {
@@ -63,7 +67,7 @@ var app = app || {};
 
     unFold: function (e) {
       var fws = app.firewoods.getPreviousFws(this.model, 5);
-      if (fws.length == 0) {
+      if ( fws.length == 0 && this.model.get('img_link') === '0' ) {
         return this;
       }
 
@@ -72,6 +76,8 @@ var app = app || {};
            .after('<div class="loading" style="display:none;">로딩중입니다.</div>');
       $self.find('.loading')
            .slideDown(200);
+
+      this.model.set('isOpened', true);
 
       // rendering
       var $body = $('<li class="list-group-item div-mention">');
@@ -99,6 +105,7 @@ var app = app || {};
 
     fold: function (e) {
       this.$el.find('.fw-sub').slideUp(function () { $(this).html(''); });
+      this.model.set('isOpened', false);
       return this;
     }
   });

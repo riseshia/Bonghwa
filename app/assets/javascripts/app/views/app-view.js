@@ -45,11 +45,11 @@ var app = app || {};
       if (newState == '1') {
         $iao.html($iao.html() + '<span class="glyphicon glyphicon-ok"></span>');
         msg = '이미지 자동 열기가 활성화되었습니다.';
-        this.trigger('timeline:unfold');
+        app.firewoods.trigger('timeline:unFoldAll');
       } else {
         $iao.find('.glyphicon-ok').remove();
         msg = '이미지 자동 열기가 비활성화되었습니다.';
-        this.trigger('timeline:fold');
+        app.firewoods.trigger('timeline:foldAll');
       }
 
       if ( !silent ) {

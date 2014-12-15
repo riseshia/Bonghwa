@@ -14,7 +14,8 @@ var app = app || {};
       contents: "Init Contents",
       img_link: "0",
       created_at: "00/00/00 00:00:00",
-      state: 0
+      state: 0,
+      isOpened: false
     }
   });
 })();

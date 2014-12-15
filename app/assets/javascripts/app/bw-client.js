@@ -66,6 +66,10 @@ var app = app || {};
           var fws = _.map(json.fws, function (fw) { fw['state'] = -1; return new app.Firewood(fw); });
           
           app.firewoods.prepend(fws, state);
+          if ( window.localStorage['auto_image_open'] == '1' ) {
+            var fwsHasImg = fws.filter(function (fw) { return fw.get('img_link') != '0' });
+            _.each(fwsHasImg, function (fw) { fw.trigger('unFold') });
+          }
         }
 
         if (json.users) {

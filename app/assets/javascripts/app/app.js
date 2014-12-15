@@ -10,6 +10,7 @@ _.templateSettings = {
 $(function () {
   'use strict';
 
+  new app.AppView();
   new app.FirewoodsView();
   new app.UsersView();
   app.BWClient.load();

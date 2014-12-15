@@ -18,9 +18,8 @@ var app = app || {};
       this.listenTo(app.firewoods, 'add:prepend', this.prepend);
       this.listenTo(app.firewoods, 'add:append', this.append);
       this.listenTo(app.firewoods, 'add:stack', this.updateStackNotice);
-      this.listenTo(app.BWClient, 'ajaxSuccess', this.formClear);
 
-      // todo: 중간에 메디에이터 하나 넣는게 낫지 않...나?
+      this.listenTo(app.BWClient, 'ajaxSuccess', this.formClear);
       this.listenTo(app.BWClient, 'form:appendMt', this.appendMt);
 
       this.$form.submit(this.submit);

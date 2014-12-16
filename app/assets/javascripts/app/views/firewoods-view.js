@@ -89,7 +89,9 @@ var app = app || {};
     },
 
     // DOM Event
-    submit: function () {
+    submit: function (e) {
+      e.preventDefault();
+
       $(this).ajaxSubmit(app.BWClient.ajaxBasicOptions);
       return false;
     },
@@ -166,8 +168,8 @@ var app = app || {};
   });
   
   app.FirewoodsView.isFormEmpty = function () {
-    if ( this.$('div.fileinput-exists').length == 0 ) {
-      var str = this.$input.val();
+    if ( $('div.fileinput-exists').length == 0 ) {
+      var str = $('#firewood_contents').val();
       if ( str.length == 0 || str.search(/^\s+$/) != -1 ) {
         return true;
       }

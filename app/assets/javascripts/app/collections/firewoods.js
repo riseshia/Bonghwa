@@ -87,9 +87,6 @@ var app = app || {};
 
     getLogs: function () {
       var self = app.firewoods;
-      if ( self.logGetLock || self.length < 50 || self.last().get('id') < 10 ) {
-        return false;
-      }
       self.logGetLock = true;
 
       return $.get('/api/trace.json?before=' + self.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + PAGE_TYPE, function (json) {

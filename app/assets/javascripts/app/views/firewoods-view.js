@@ -68,7 +68,7 @@ var app = app || {};
     },
 
     append: function () {
-      var fws = app.firewoods.where({ state: FW_STATE.IN_LOG }).reverse();
+      var fws = app.firewoods.where({ state: FW_STATE.IN_LOG });
       _.each(fws, function(fw) {
         var view = new app.FirewoodView({ model: fw });
         this.$el.append(view.render().el);
@@ -174,7 +174,8 @@ var app = app || {};
 
     isNearBottom: function (context) {
       var $fws = $('.firewood');
-      if ( !$fws.eq(-5).isOnScreen() ) {
+      var fws = app.firewoods;
+      if ( !$fws.eq(-5).isOnScreen() || fws.logGetLock || fws.length < 50 || fws.last().get('id') < 10 ) {
         return false;
       }
 

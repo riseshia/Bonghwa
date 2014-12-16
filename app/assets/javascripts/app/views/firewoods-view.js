@@ -18,6 +18,7 @@ var app = app || {};
       this.listenTo(app.firewoods, 'add:prepend', this.prepend);
       this.listenTo(app.firewoods, 'add:append', this.append);
       this.listenTo(app.firewoods, 'add:stack', this.updateStackNotice);
+      this.listenTo(app.firewoods, 'change:isHighlighted', this.highlightOne);
 
       this.listenTo(app.BWClient, 'ajaxSuccess', this.formClear);
       this.listenTo(app.BWClient, 'form:appendMt', this.appendMt);
@@ -78,6 +79,10 @@ var app = app || {};
       this.$stack
         .html('<a href="#" id="notice_stack_new">새 장작이 ' + fws.length + '개 있습니다.</a>')
         .slideDown(200);
+    },
+
+    highlightOne: function (fw) {
+      fw.trigger('highlight');
     },
 
     // DOM Event

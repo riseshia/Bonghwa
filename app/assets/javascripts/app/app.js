@@ -1,4 +1,5 @@
 var app = app || {};
+var ENTER_KEY = 13;
 
 // to avoid conflict with that of erb
 _.templateSettings = {

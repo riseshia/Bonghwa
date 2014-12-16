@@ -15,7 +15,24 @@ var app = app || {};
       img_link: "0",
       created_at: "00/00/00 00:00:00",
       state: 0,
-      isOpened: false
+      isOpened: false,
+      isHighlighted: false,
+    },
+
+    toggleHighlight: function (state) {
+      this.set({
+        isHighlighted: !this.get('isHighlighted')
+      });
+    },
+
+    activeTag: function (tag) {
+      var arr = this.get('contents').split(' ');
+      var oldState = this.get('isHighlighted');
+
+      if ( ( tag != '' ? _.contains(arr, tag) : false) ^ oldState ) {
+        this.toggleHighlight();
+      }
+      this.collection.trigger("change:isHighlighted",this, !oldState);
     }
   });
 })();

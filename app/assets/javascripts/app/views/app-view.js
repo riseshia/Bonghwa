@@ -10,6 +10,7 @@ var app = app || {};
     $hotkeyLiveStream: $('#live_stream_op'),
     $hotkeyFocus: $('#focus_hotkey'),
     $hotkeyRefresh: $('#refresh_hotkey'),
+    $tagSelector: $('#select-tag'),
 
     initialize: function () {
       $('span[rel=tooltip]').tooltip();
@@ -20,6 +21,7 @@ var app = app || {};
       this.toggleImgAutoOpen(null, true);
       window.localStorage['live_stream'] = (window.localStorage['live_stream'] == '1' ? '0' : '1');
       this.toggleLiveStream(null, true);
+      this.listenTo(app.firewoods, 'activeTag', this.setTagSelector);
 
       $(document).keycut();
     },
@@ -28,7 +30,8 @@ var app = app || {};
       'click #img_auto_open_op': 'toggleImgAutoOpen',
       'click #live_stream_op': 'toggleLiveStream',
       'click #focus_hotkey': 'focusToInput',
-      'click #refresh_hotkey': 'refreshTL'
+      'click #refresh_hotkey': 'refreshTL',
+      'keypress #select-tag': 'selectNewTag'
     },
 
     toggleImgAutoOpen: function (e, silent) {
@@ -125,6 +128,23 @@ var app = app || {};
         .fadeOut(1000);
 
       return this;
+    },
+
+    selectNewTag: function (e) {
+      if ( e.which === ENTER_KEY ) {
+        e.preventDefault();
+        var newTag = this.$tagSelector.val();
+
+        if ( newTag[0] != "#" && newTag.length > 1) {
+          alert("태그는 #으로 시작해야합니다.");
+        } else {
+          app.firewoods.highlightTag(newTag);
+        }
+      }
+    },
+
+    setTagSelector: function (tag) {
+      this.$tagSelector.val(tag);
     }
   });
 })(jQuery);

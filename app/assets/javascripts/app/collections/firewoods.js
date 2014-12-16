@@ -39,6 +39,13 @@ var app = app || {};
           return fws;
         }
       }
+    },
+
+    highlightTag: function (tag) {
+      this.each(function (fw) {
+        fw.activeTag(tag);
+      });
+      this.trigger('activeTag', tag);
     }
   });
 

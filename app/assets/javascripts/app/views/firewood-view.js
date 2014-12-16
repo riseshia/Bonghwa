@@ -12,12 +12,14 @@ var app = app || {};
     initialize: function() {
       this.listenTo(this.model, 'fold', this.fold);
       this.listenTo(this.model, 'unFold', this.unFold);
+      this.listenTo(this.model, 'highlight', this.highlight);
     },
 
     events: {
       'click .delete': 'delete',
       'click .mt-clk': 'clkUsername',
-      'click .mt-to': 'toggleFolding'
+      'click .mt-to': 'toggleFolding',
+      'click .fw-tag': 'clkTag'
     },
 
     render: function () {
@@ -130,6 +132,22 @@ var app = app || {};
       this.$el.find('.fw-sub').slideUp(function () { $(this).html(''); });
       this.model.set('isOpened', false);
       return this;
+    },
+
+    clkTag: function (e) {
+      e.preventDefault();
+
+      var tag = $(e.currentTarget).text();
+      if ( $('#select-tag').val() == tag ) {
+        tag = '';
+      }
+      this.model.collection.highlightTag(tag);
+
+      return this;
+    },
+
+    highlight: function () {
+      this.$el.toggleClass('tagged', this.model.get('isHighlighted'));
     }
   });
 })(jQuery);

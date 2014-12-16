@@ -7,7 +7,7 @@ var app = app || {};
     model: app.Firewood,
 
     prepend: function (fws, type) {
-      this.unshift(fws);
+      this.add(fws);
 
       if ( type == -1 ) {
         this.trigger('add:stack');
@@ -17,7 +17,7 @@ var app = app || {};
     },
 
     append: function (fws) {
-      this.push(fws);
+      this.add(fws);
       this.trigger('add:append');
     },
 
@@ -46,6 +46,10 @@ var app = app || {};
         fw.activeTag(tag);
       });
       this.trigger('activeTag', tag);
+    },
+
+    comparator: function(fw) {
+      return -fw.get('id');
     }
   });
 

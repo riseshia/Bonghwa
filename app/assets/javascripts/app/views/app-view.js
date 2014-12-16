@@ -25,7 +25,6 @@ var app = app || {};
 
       this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }));
 
-
       $(document).keycut();
     },
 

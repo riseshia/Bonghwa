@@ -33,6 +33,11 @@ var app = app || {};
         this.toggleHighlight();
       }
       this.collection.trigger("change:isHighlighted",this, !oldState);
+    },
+
+    ajaxMtLoad: function (callback) {
+      var prev_mt = this.get('prev_mt');
+      return $.get('/api/get_mt.json?prev_mt=' + prev_mt);
     }
   });
 })();

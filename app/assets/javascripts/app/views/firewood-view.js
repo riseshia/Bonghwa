@@ -84,15 +84,16 @@ var app = app || {};
 
       var fws = app.firewoods.getPreviousFws(this.model, 5);
       var $body = $('<li class="list-group-item div-mention">');
+      var view = this;
       if ( fws.length == 0 ) {
-        app.firewoods.ajaxMtLoad(function (json) {
-          this.unFoldText(json.fws, $body);
+        this.model.ajaxMtLoad().then(function (json) {
+          view.unFoldText(json.fws, $body);
           $self.find('.loading')
                .remove();
           $self.find('.fw-sub')
                .html($body.html())
                .slideDown(200);          
-        }, this);
+        });
       } else {
         this.unFoldText(fws, $body);
 

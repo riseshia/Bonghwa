@@ -11,12 +11,8 @@ var app = app || {};
     failCount: 0,
     fwPostLock: false,
     logGetLock: false,
-    mtGetLock: false,
 
     load: function () {
-      // $('#loading').html('로드 중입니다.');
-      // $('#timeline').html('');
-
       clearTimeout(this.pullingTimer);
       $.get('/api/now?type=' + PAGE_TYPE).then(function (json) {
         var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_TL; return new app.Firewood(fw); });
@@ -29,9 +25,10 @@ var app = app || {};
     },
 
     pulling: function (isLive) {
-      clearTimeout(this.pullingTimer);
+      var self = app.firewoods;
+      clearTimeout(self.pullingTimer);
 
-      var recentId = app.firewoods.first().get('id');
+      var recentId = self.first().get('id');
       $.get('/api/pulling.json?after=' + recentId + '&type=' + PAGE_TYPE).then(function (json) {
         var state = ( window.localStorage['live_stream'] == '1' ) ? FW_STATE.IN_TL : FW_STATE.IN_STACK;
         if ( isLive ) {
@@ -41,7 +38,7 @@ var app = app || {};
         if (json.fws) {
           var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_STACK; return new app.Firewood(fw); });
           
-          app.firewoods.prepend(fws, state);
+          app.firewoods.addSome(fws, state);
           if ( window.localStorage['auto_image_open'] == '1' ) {
             var fwsHasImg = fws.filter(function (fw) { return fw.get('img_link') != '0' });
             _.each(fwsHasImg, function (fw) { fw.trigger('unFold') });
@@ -52,7 +49,7 @@ var app = app || {};
           var users = _.map(json.users, function (user) { return new app.User(user); });
           app.users.reset(users);
         }
-        this.pullingTimer = setTimeout(this.pulling, this.pullingPeriod);
+        self.pullingTimer = setTimeout(self.pulling, self.pullingPeriod);
       });
     },
 
@@ -79,19 +76,9 @@ var app = app || {};
       }
     },
 
-    ajaxMtLoad: function (callback, context) {
-      app.firewoods.mtGetLock = context.model.get('id');
-      var prev_mt = context.model.get('prev_mt');
-      $.get('/api/get_mt.json?prev_mt=' + prev_mt + '&now=' + app.firewoods.mtGetLock).then(function (json) {
-        callback.call(context, json);
-        app.firewoods.mtGetLock = 0;
-      });
-    },
-
     getLogs: function () {
       var firewoods = app.firewoods;
-      var self = app.firewoods;
-      if ( self.logGetLock || firewoods.length < 50 || firewoods.last().get('id') < 10 ) {
+      if ( firewoods.logGetLock || firewoods.length < 50 || firewoods.last().get('id') < 10 ) {
         return false;
       }
 
@@ -99,17 +86,17 @@ var app = app || {};
       if ( !$fws.eq(-5).isOnScreen() ) {
         return false;
       }
-      self.logGetLock = true;
+      firewoods.logGetLock = true;
       $('#div-loading').show();
 
-      $.get('/api/trace.json?before=' + firewoods.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + PAGE_TYPE, function (json) {
+      $.get('/api/trace.json?before=' + firewoods.last().get('id') + '&count=' + firewoods.sizeWhenBottomLoading + '&type=' + PAGE_TYPE, function (json) {
         if ( json.fws.length != 0 ) {
           var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_LOG; return new app.Firewood(fw); });
-          firewoods.append(fws);
+          firewoods.addSome(fws, FW_STATE.IN_LOG);
         }
 
         $("#div-loading").hide();
-        self.logGetLock = false;
+        firewoods.logGetLock = false;
       });
     },
 
@@ -134,19 +121,16 @@ var app = app || {};
       $('#title').html("새로고침 해주세요.");
     },
 
-    prepend: function (fws, type) {
+    addSome: function (fws, type) {
       this.add(fws);
 
-      if ( type == -1 ) {
+      if ( type == FW_STATE.IN_STACK ) {
         this.trigger('add:stack');
-      } else if ( type == 0 ) {
+      } else if ( type == FW_STATE.IN_TL ) {
         this.trigger('add:prepend');
+      } else {
+        this.trigger('add:append');
       }
-    },
-
-    append: function (fws) {
-      this.add(fws);
-      this.trigger('add:append');
     },
 
     getPreviousFws: function (fw, limit) {

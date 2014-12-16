@@ -5,15 +5,18 @@ var app = app || {};
 
   app.FirewoodsView = Backbone.View.extend({
     el: '#firewoods',
-    $list: $('#timeline'),
-    $stack: $('#timeline_stack'),
-    $form: $('#new_firewood'),
-    $input: $('#firewood_contents'),
-    $title: $('#title'),
     count: 0,
     maxCount: 150,
 
     initialize: function () {
+      this.$list = this.$('#timeline');
+      this.$stack = this.$('#timeline_stack');
+      this.$form = this.$('#new_firewood');
+      this.$input = this.$('#firewood_contents');
+      this.$title = this.$('#title');
+      this.$commitBtn = this.$('#commit');
+      this.$prevMt = this.$('#firewood_prev_mt');
+
       this.listenTo(app.firewoods, 'reset', this.addAll);
       this.listenTo(app.firewoods, 'add:prepend', this.prepend);
       this.listenTo(app.firewoods, 'add:append', this.append);
@@ -27,7 +30,7 @@ var app = app || {};
 
       this.$form.submit(this.submit);
 
-      $('span[rel=tooltip]').tooltip();
+      this.$('span[rel=tooltip]').tooltip();
       this.originTitle = this.$title.text();
     },
 
@@ -92,15 +95,15 @@ var app = app || {};
     },
 
     formClear: function() {
-      $('#new_firewood').clearForm();
-      $('#img').val('');
-      $('.fileinput-preview').html('');
-      $('.fileinput')
+      this.$form.clearForm();
+      this.$('#img').val('');
+      this.$('.fileinput-preview').html('');
+      this.$('.fileinput')
         .removeClass('fileinput-exists')
         .addClass('fileinput-new');
-      $('.fileinput-filename').html('');
-      $('#commit').button('reset');
-      $('#firewood_prev_mt').val('');
+      this.$('.fileinput-filename').html('');
+      this.$prevMt.val('');
+      this.$commitBtn.button('reset');
 
       this.update_count();
     },
@@ -110,9 +113,9 @@ var app = app || {};
       var now = this.maxCount - this.$input.val().length;
 
       if ( app.FirewoodsView.isFormEmpty() ) {
-        $('#commit').val('Refresh');
+        this.$commitBtn.val('Refresh');
       } else {
-        $('#commit').val('Submit');
+        this.$commitBtn.val('Submit');
       }
 
       if ( now < 0 ) {
@@ -123,14 +126,14 @@ var app = app || {};
 
       if ( before != now ) {
         this.count = now;
-        $('#remaining_count').text(now);
+        this.$('#remaining_count').text(now);
       }
     },
 
     appendMt: function (names, target) {
       var mts = _.map(names, function (name) { return name; });
 
-      $('#firewood_prev_mt').val(target);
+      this.$prevMt.val(target);
       this.$input
         .val( mts.join(' ') + ' ' + this.$input.val() )
         .focus();
@@ -163,8 +166,8 @@ var app = app || {};
   });
   
   app.FirewoodsView.isFormEmpty = function () {
-    if ( $('div.fileinput-exists').length == 0 ) {
-      var str = $('#firewood_contents').val();
+    if ( this.$('div.fileinput-exists').length == 0 ) {
+      var str = this.$input.val();
       if ( str.length == 0 || str.search(/^\s+$/) != -1 ) {
         return true;
       }

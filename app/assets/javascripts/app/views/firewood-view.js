@@ -49,7 +49,7 @@ var app = app || {};
     clkUsername: function (e) {
       e.preventDefault();
       
-      var targets = this.$el.find('.mt-target');
+      var targets = this.$('.mt-target');
       var arr = _.map(targets, function (target) { return $(target).text(); });
       arr.push((this.model.get('is_dm') == 0 ? '@':'!') + this.model.get('name'));
 
@@ -101,7 +101,7 @@ var app = app || {};
         if (imgLink != '0') {
           var templ = _.template($('#img-template').html());
           // consider window size, use different css
-          var scale = ( $(window).width() > fw.$(window).height() ? 'standard' : 'mobile' );
+          var scale = ( $(window).width() > $(window).height() ? 'standard' : 'mobile' );
           $body.append(templ({scale: scale, imgLink: imgLink}));
         }
 
@@ -129,7 +129,7 @@ var app = app || {};
     },
 
     fold: function (e) {
-      this.$el.find('.fw-sub').slideUp(function () { $(this).html(''); });
+      this.$('.fw-sub').slideUp(function () { $(this).html(''); });
       this.model.set('isOpened', false);
       return this;
     },

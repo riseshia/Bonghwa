@@ -73,7 +73,7 @@ var app = app || {};
     },
 
     updateStackNotice: function () {
-      var fws = app.firewoods.where({ state: - 1});
+      var fws = app.firewoods.where({ state: FW_STATE.IN_STACK});
       if ( fws.length == 0 ) {
         return false;
       }

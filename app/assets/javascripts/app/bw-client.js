@@ -57,13 +57,13 @@ var app = app || {};
 
       var recentId = app.firewoods.first().get('id');
       $.get('/api/pulling.json?after=' + recentId + '&type=' + app.BWClient.pageType, function (json) {
-        var state = ( window.localStorage['live_stream'] == '1' ) ? 0 : -1;
+        var state = ( window.localStorage['live_stream'] == '1' ) ? FW_STATE.IN_TL : FW_STATE.IN_STACK;
         if ( isLive ) {
           state = 0;
         }
 
         if (json.fws) {
-          var fws = _.map(json.fws, function (fw) { fw['state'] = -1; return new app.Firewood(fw); });
+          var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_STACK; return new app.Firewood(fw); });
           
           app.firewoods.prepend(fws, state);
           if ( window.localStorage['auto_image_open'] == '1' ) {
@@ -105,7 +105,7 @@ var app = app || {};
 
       $.get('/api/trace.json?before=' + firewoods.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + self.pageType, function (json) {
         if ( json.fws.length != 0 ) {
-          var fws = _.map(json.fws, function (fw) { fw['state'] = 1; return new app.Firewood(fw); });
+          var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_LOG; return new app.Firewood(fw); });
           firewoods.append(fws);
         }
 

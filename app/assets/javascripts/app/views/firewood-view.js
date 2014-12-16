@@ -71,7 +71,7 @@ var app = app || {};
     },
 
     unFold: function (e) {
-      // not neccesary
+      // return not neccesary
       if ( this.model.get('prev_mt') === 0 && this.model.get('img_link') === '0' ) {
         return this;
       }

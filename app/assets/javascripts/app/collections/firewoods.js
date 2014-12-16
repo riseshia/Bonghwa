@@ -26,7 +26,6 @@ var app = app || {};
       var fws = [];
       var tmp = fw;
       if ( !this.findWhere({id: prev_id}) ) {
-          // need ajax request
           return [];
       }
 

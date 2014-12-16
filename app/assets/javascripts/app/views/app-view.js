@@ -11,6 +11,7 @@ var app = app || {};
     $hotkeyFocus: $('#focus_hotkey'),
     $hotkeyRefresh: $('#refresh_hotkey'),
     $tagSelector: $('#select-tag'),
+    $info: $('#info'),
 
     initialize: function () {
       $('span[rel=tooltip]').tooltip();
@@ -23,6 +24,9 @@ var app = app || {};
       this.toggleLiveStream(null, true);
       this.listenTo(app.firewoods, 'activeTag', this.setTagSelector);
 
+      this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }));
+
+
       $(document).keycut();
     },
 
@@ -31,7 +35,8 @@ var app = app || {};
       'click #live_stream_op': 'toggleLiveStream',
       'click #focus_hotkey': 'focusToInput',
       'click #refresh_hotkey': 'refreshTL',
-      'keypress #select-tag': 'selectNewTag'
+      'keypress #select-tag': 'selectNewTag',
+      'click #info': 'removeInfo'
     },
 
     toggleImgAutoOpen: function (e, silent) {
@@ -145,6 +150,13 @@ var app = app || {};
 
     setTagSelector: function (tag) {
       this.$tagSelector.val(tag);
+    },
+
+    removeInfo: function (e) {
+      var $self = this.$info;
+      $self.slideUp( function () {
+        $self.remove();
+      });
     }
   });
 })(jQuery);

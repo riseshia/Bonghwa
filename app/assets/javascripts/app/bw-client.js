@@ -107,14 +107,6 @@ var app = app || {};
         if ( json.fws.length != 0 ) {
           var fws = _.map(json.fws, function (fw) { fw['state'] = 1; return new app.Firewood(fw); });
           firewoods.append(fws);
-
-          // timelineSize = $('.firewood').size() - 1;
-
-          // $bottom.parent().after(TagBuilder.fwList(json.fws));
-          // 이미지 자동 열기 옵션이 활성화 중이면, 새로 받아온 글에 한해서 트리거를 작동시킴
-          // if window.getStorageValue('auto_image_open') is window.TRUE
-          //   $list = $(".firewood:gt(#{timelineSize})").filter('.mt-to[img-link!=0]')
-          //   UITimeline.expandImgs($list)
         }
 
         $("#div-loading").hide();

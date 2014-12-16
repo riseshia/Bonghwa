@@ -30,15 +30,13 @@ var app = app || {};
           return [];
       }
 
-      while ( true ) {
+      for (var i = 0; i < limit && prev_id != 0; i++ ) {
         tmp = this.findWhere({id: prev_id});
         fws.push(tmp);
         prev_id = tmp.get('prev_mt');
-
-        if (prev_id == 0 || fws.length == limit) {
-          return fws;
-        }
       }
+
+      return fws;
     },
 
     highlightTag: function (tag) {

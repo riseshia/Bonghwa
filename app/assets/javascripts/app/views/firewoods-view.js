@@ -35,7 +35,7 @@ var app = app || {};
       
       $(document).ajaxError(app.firewoods.ajaxError);
       app.firewoods.load();
-      app.firewoods.pullingTimer = setTimeout(app.firewoods.pulling, app.firewoods.pullingPeriod);
+      app.firewoods.setPullingTimer();
       setInterval(app.firewoods.getLogs, 1000);
     },
 

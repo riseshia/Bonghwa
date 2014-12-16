@@ -12,24 +12,33 @@ var app = app || {};
     fwPostLock: false,
     logGetLock: false,
 
-    load: function () {
+    setPullingTimer: function() {
+      this.pullingTimer = setTimeout(this.pulling, this.pullingPeriod);
+      return this;
+    },
+    stopPullingTimer: function () {
       clearTimeout(this.pullingTimer);
-      $.get('/api/now?type=' + PAGE_TYPE).then(function (json) {
+      return this;
+    },
+
+    load: function () {
+      this.stopPullingTimer();
+      return $.get('/api/now?type=' + PAGE_TYPE).then(function (json) {
         var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_TL; return new app.Firewood(fw); });
         app.firewoods.reset(fws);
         var users = _.map(json.users, function (user) { return new app.User(user); });
         app.users.reset(users);
         
-        this.pullingTimer = setTimeout(this.pulling, this.pullingPeriod);
+        app.firewoods.setPullingTimer();
       });
     },
 
     pulling: function (isLive) {
       var self = app.firewoods;
-      clearTimeout(self.pullingTimer);
+      self.stopPullingTimer();
 
       var recentId = self.first().get('id');
-      $.get('/api/pulling.json?after=' + recentId + '&type=' + PAGE_TYPE).then(function (json) {
+      return $.get('/api/pulling.json?after=' + recentId + '&type=' + PAGE_TYPE).then(function (json) {
         var state = ( window.localStorage['live_stream'] == '1' ) ? FW_STATE.IN_TL : FW_STATE.IN_STACK;
         if ( isLive ) {
           state = 0;
@@ -49,7 +58,7 @@ var app = app || {};
           var users = _.map(json.users, function (user) { return new app.User(user); });
           app.users.reset(users);
         }
-        self.pullingTimer = setTimeout(self.pulling, self.pullingPeriod);
+        self.setPullingTimer();
       });
     },
 
@@ -60,7 +69,7 @@ var app = app || {};
       beforeSubmit: function (formData, jqForm, options) {
         var self = app.firewoods;
         $('#commit').button('loading');
-        clearTimeout(self.pullingTimer);
+        self.stopPullingTimer();
         
         if ( self.fwPostLock || app.FirewoodsView.isFormEmpty() ) {
           return false;
@@ -104,8 +113,8 @@ var app = app || {};
       this.failCount += 1;
 
       if ( this.failCount < 3 ) {
-        clearTimeout(this.pullingTimer);
-        this.pullingTimer = setTimeout(this.pulling, this.pullingPeriod);
+        this.stopPullingTimer()
+            .setPullingTimer();
         return true;
       }
 

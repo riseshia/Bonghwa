@@ -43,7 +43,7 @@ var app = app || {};
 
       clearTimeout(this.pullingTimer);
       $.get('/api/now?type=' + this.pageType, function (json) {
-        var fws = _.map(json.fws, function (fw) { return new app.Firewood(fw); });
+        var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_TL; return new app.Firewood(fw); });
         app.firewoods.reset(fws);
         var users = _.map(json.users, function (user) { return new app.User(user); });
         app.users.reset(users);

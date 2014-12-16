@@ -101,7 +101,7 @@ var app = app || {};
 
     refreshTL: function (e) {
       e.preventDefault();
-      BWClient.load();
+      app.BWClient.load();
 
       return this;
     },

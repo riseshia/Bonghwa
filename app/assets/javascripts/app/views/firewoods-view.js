@@ -16,6 +16,7 @@ var app = app || {};
       this.$title = this.$('#title');
       this.$commitBtn = this.$('#commit');
       this.$prevMt = this.$('#firewood_prev_mt');
+      this.$footerLoading = this.$("#div-loading");
 
       this.listenTo(app.firewoods, 'reset', this.addAll);
       this.listenTo(app.firewoods, 'add:prepend', this.prepend);
@@ -36,7 +37,7 @@ var app = app || {};
       $(document).ajaxError(app.firewoods.ajaxError);
       app.firewoods.load();
       app.firewoods.setPullingTimer();
-      setInterval(app.firewoods.getLogs, 1000);
+      setInterval(this.isNearBottom, 1000, this);
     },
 
     events: {
@@ -169,6 +170,18 @@ var app = app || {};
     unFoldAll: function () {
       var fws = app.firewoods.filter( function (fw) { return fw.get('img_link') !== '0' });
       _.each(fws, function ( fw ) { fw.trigger('unFold'); });
+    },
+
+    isNearBottom: function (context) {
+      var $fws = $('.firewood');
+      if ( !$fws.eq(-5).isOnScreen() ) {
+        return false;
+      }
+
+      context.$footerLoading.show();
+      app.firewoods.getLogs().then(function () {
+        context.$footerLoading.hide();
+      });
     }
   });
   

@@ -86,26 +86,18 @@ var app = app || {};
     },
 
     getLogs: function () {
-      var firewoods = app.firewoods;
-      if ( firewoods.logGetLock || firewoods.length < 50 || firewoods.last().get('id') < 10 ) {
+      var self = app.firewoods;
+      if ( self.logGetLock || self.length < 50 || self.last().get('id') < 10 ) {
         return false;
       }
+      self.logGetLock = true;
 
-      var $fws = $('.firewood');
-      if ( !$fws.eq(-5).isOnScreen() ) {
-        return false;
-      }
-      firewoods.logGetLock = true;
-      $('#div-loading').show();
-
-      $.get('/api/trace.json?before=' + firewoods.last().get('id') + '&count=' + firewoods.sizeWhenBottomLoading + '&type=' + PAGE_TYPE, function (json) {
+      return $.get('/api/trace.json?before=' + self.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + PAGE_TYPE, function (json) {
         if ( json.fws.length != 0 ) {
           var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_LOG; return new app.Firewood(fw); });
-          firewoods.addSome(fws, FW_STATE.IN_LOG);
+          self.addSome(fws, FW_STATE.IN_LOG);
         }
-
-        $("#div-loading").hide();
-        firewoods.logGetLock = false;
+        self.logGetLock = false;
       });
     },
 

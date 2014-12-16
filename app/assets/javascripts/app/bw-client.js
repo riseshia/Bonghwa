@@ -36,13 +36,12 @@ var app = app || {};
       }
     },
 
-    pageType: 1,
     load: function () {
       $('#loading').html('로드 중입니다.');
       $('#timeline').html('');
 
       clearTimeout(this.pullingTimer);
-      $.get('/api/now?type=' + this.pageType, function (json) {
+      $.get('/api/now?type=' + PAGE_TYPE, function (json) {
         var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_TL; return new app.Firewood(fw); });
         app.firewoods.reset(fws);
         var users = _.map(json.users, function (user) { return new app.User(user); });
@@ -56,7 +55,7 @@ var app = app || {};
       clearTimeout(app.BWClient.pullingTimer);
 
       var recentId = app.firewoods.first().get('id');
-      $.get('/api/pulling.json?after=' + recentId + '&type=' + app.BWClient.pageType, function (json) {
+      $.get('/api/pulling.json?after=' + recentId + '&type=' + PAGE_TYPE, function (json) {
         var state = ( window.localStorage['live_stream'] == '1' ) ? FW_STATE.IN_TL : FW_STATE.IN_STACK;
         if ( isLive ) {
           state = 0;
@@ -103,7 +102,7 @@ var app = app || {};
       self.logGetLock = true;
       $('#div-loading').show();
 
-      $.get('/api/trace.json?before=' + firewoods.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + self.pageType, function (json) {
+      $.get('/api/trace.json?before=' + firewoods.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + PAGE_TYPE, function (json) {
         if ( json.fws.length != 0 ) {
           var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_LOG; return new app.Firewood(fw); });
           firewoods.append(fws);

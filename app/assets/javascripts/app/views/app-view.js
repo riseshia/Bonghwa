@@ -83,13 +83,13 @@ var app = app || {};
         msg = 'Live Stream이 활성화되었습니다.';
         
         app.BWClient.pullingPeriod = 1000;
-        app.BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod);
+        app.BWClient.pullingTimer = setTimeout(app.BWClient.pulling, app.BWClient.pullingPeriod);
       } else {
         $ls.find('.glyphicon-ok').remove();
         msg = 'Live Stream이 비활성화되었습니다.';
 
         app.BWClient.pullingPeriod = 10000;
-        app.BWClient.pullingTimer = setTimeout(BWClient.pulling, BWClient.pullingPeriod);
+        app.BWClient.pullingTimer = setTimeout(app.BWClient.pulling, app.BWClient.pullingPeriod);
       }
 
       if ( !silent ) {

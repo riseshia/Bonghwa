@@ -23,8 +23,8 @@ var app = app || {};
       this.listenTo(app.firewoods, 'add:stack', this.updateStackNotice);
       this.listenTo(app.firewoods, 'change:isHighlighted', this.highlightOne);
 
-      this.listenTo(app.BWClient, 'ajaxSuccess', this.formClear);
-      this.listenTo(app.BWClient, 'form:appendMt', this.appendMt);
+      this.listenTo(app.firewoods, 'ajaxSuccess', this.formClear);
+      this.listenTo(app.firewoods, 'form:appendMt', this.appendMt);
       this.listenTo(app.firewoods, 'timeline:foldAll', this.foldAll);
       this.listenTo(app.firewoods, 'timeline:unFoldAll', this.unFoldAll);
 
@@ -32,6 +32,11 @@ var app = app || {};
 
       this.$('span[rel=tooltip]').tooltip();
       this.originTitle = this.$title.text();
+      
+      $(document).ajaxError(app.firewoods.ajaxError);
+      app.firewoods.load();
+      app.firewoods.pullingTimer = setTimeout(app.firewoods.pulling, app.firewoods.pullingPeriod);
+      setInterval(app.firewoods.getLogs, 1000);
     },
 
     events: {
@@ -92,7 +97,7 @@ var app = app || {};
     submit: function (e) {
       e.preventDefault();
 
-      $(this).ajaxSubmit(app.BWClient.ajaxBasicOptions);
+      $(this).ajaxSubmit(app.firewoods.ajaxBasicOptions);
       return false;
     },
 

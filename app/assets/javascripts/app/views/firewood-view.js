@@ -53,7 +53,7 @@ var app = app || {};
       var arr = _.map(targets, function (target) { return $(target).text(); });
       arr.push((this.model.get('is_dm') == 0 ? '@':'!') + this.model.get('name'));
 
-      app.BWClient.trigger('form:appendMt', _.uniq(arr), this.model.get('id'));
+      app.firewoods.trigger('form:appendMt', _.uniq(arr), this.model.get('id'));
     },
 
     toggleFolding: function (e) {
@@ -85,7 +85,7 @@ var app = app || {};
       var fws = app.firewoods.getPreviousFws(this.model, 5);
       var $body = $('<li class="list-group-item div-mention">');
       if ( fws.length == 0 ) {
-        app.BWClient.ajaxMtLoad(function (json) {
+        app.firewoods.ajaxMtLoad(function (json) {
           this.unFoldText(json.fws, $body);
           $self.find('.loading')
                .remove();

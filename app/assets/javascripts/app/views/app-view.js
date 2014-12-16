@@ -76,20 +76,20 @@ var app = app || {};
       window.localStorage['live_stream'] = newState;
       var msg;
 
-      clearTimeout(app.BWClient.pullingTimer);
+      clearTimeout(app.firewoods.pullingTimer);
       $ls.toggleClass('true');
       if (newState == '1') {
         $ls.html($ls.html() + '<span class="glyphicon glyphicon-ok"></span>');
         msg = 'Live Stream이 활성화되었습니다.';
         
-        app.BWClient.pullingPeriod = 1000;
-        app.BWClient.pullingTimer = setTimeout(app.BWClient.pulling, app.BWClient.pullingPeriod);
+        app.firewoods.pullingPeriod = 1000;
+        app.firewoods.pullingTimer = setTimeout(app.firewoods.pulling, app.firewoods.pullingPeriod);
       } else {
         $ls.find('.glyphicon-ok').remove();
         msg = 'Live Stream이 비활성화되었습니다.';
 
-        app.BWClient.pullingPeriod = 10000;
-        app.BWClient.pullingTimer = setTimeout(app.BWClient.pulling, app.BWClient.pullingPeriod);
+        app.firewoods.pullingPeriod = 10000;
+        app.firewoods.pullingTimer = setTimeout(app.firewoods.pulling, app.firewoods.pullingPeriod);
       }
 
       if ( !silent ) {
@@ -101,7 +101,7 @@ var app = app || {};
 
     refreshTL: function (e) {
       e.preventDefault();
-      app.BWClient.load();
+      app.firewoods.load();
 
       return this;
     },

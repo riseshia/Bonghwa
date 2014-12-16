@@ -15,7 +15,4 @@ $(function () {
   new app.AppView();
   new app.FirewoodsView();
   new app.UsersView();
-  app.BWClient.load();
-  app.BWClient.pullingTimer = setTimeout(app.BWClient.pulling, app.BWClient.pullingPeriod);
-  setInterval(app.BWClient.getLogs, 1000);
 });

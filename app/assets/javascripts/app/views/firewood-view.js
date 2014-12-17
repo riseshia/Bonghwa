@@ -59,12 +59,13 @@ var app = app || {};
     toggleFolding: function (e) {
       e.preventDefault();
 
-      if ( this.$el.hasClass('mt-open') ) {
-        this.fold();
-      } else if ( this.model.get('prev_mt') !== 0 ) {
-        this.unFold();
-      } else {
+      // return not neccesary
+      if ( this.model.get('prev_mt') === 0 && this.model.get('img_link') === '0' ) {
         return this;
+      } else if ( this.$el.hasClass('mt-open') ) {
+        this.fold();
+      } else {
+        this.unFold();
       }
 
       this.$el.toggleClass('mt-open');
@@ -73,52 +74,31 @@ var app = app || {};
     },
 
     unFold: function (e) {
-      // return not neccesary
-      if ( this.model.get('prev_mt') === 0 && this.model.get('img_link') === '0' ) {
-        return this;
-      }
-
       var $self = this.$el;
-      $self.find('.fw-main')
-           .after('<div class="loading" style="display:none;">로딩중입니다.</div>');
-      $self.find('.loading')
-           .slideDown(200);
 
       var fws = app.firewoods.getPreviousFws(this.model, 5);
       var $body = $('<li class="list-group-item div-mention">');
       var view = this;
-      if ( fws.length == 0 ) {
+      if ( this.model.get('prev_mt') !== 0 && fws.length == 0 ) {
+        $self.find('.fw-main')
+             .after('<div class="loading" style="display:none;">로딩중입니다.</div>');
+        $self.find('.loading')
+             .slideDown(200);
+
         this.model.ajaxMtLoad().then(function (json) {
-          view.unFoldText(json.fws, $body);
-          $self.find('.loading')
+          view.mtRender(json.fws, $body);
+
+          view.$el.find('.loading')
                .remove();
-          $self.find('.fw-sub')
-               .html($body.html())
-               .slideDown(200);          
         });
       } else {
-        this.unFoldText(fws, $body);
-
-        // img check
-        var imgLink = this.model.get('img_link');
-        if (imgLink != '0') {
-          var templ = _.template($('#img-template').html());
-          // consider window size, use different css
-          var scale = ( $(window).width() > $(window).height() ? 'standard' : 'mobile' );
-          $body.append(templ({scale: scale, imgLink: imgLink}));
-        }
-
-        $self.find('.loading')
-             .remove();
-        $self.find('.fw-sub')
-             .html($body.html())
-             .slideDown(200);
+        this.mtRender(fws, $body);
       }
 
       return this;
     },
 
-    unFoldText: function (fws, $el) {
+    mtRender: function (fws, $el) {
       this.model.set('isOpened', true);
 
       if ( fws[0] && fws[0].toJSON ) {
@@ -129,6 +109,18 @@ var app = app || {};
       _.each(fws, function (fw) {
         $el.append(this.mtTemplate(fw));
       }, this);
+
+      // img check
+      var imgLink = this.model.get('img_link');
+      if (imgLink != '0') {
+        var templ = _.template($('#img-template').html());
+        // consider window size, use different css
+        $el.append(templ({imgLink: imgLink}));
+      }
+
+      this.$el.find('.fw-sub')
+           .html($el.html())
+           .slideDown(200);
     },
 
     fold: function (e) {

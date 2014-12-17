@@ -21,7 +21,7 @@ var app = app || {};
 
 
     clkUsername: function () {
-      var arr = [this.model.get('name')];
+      var arr = ['@' + this.model.get('name')];
 
       app.firewoods.trigger('form:appendMt', arr);
     }

@@ -6,7 +6,6 @@ var app = app || {};
   var Firewoods = Backbone.Collection.extend({
     model: app.Firewood,
     pullingTimer: null,
-    pullingPeriod: 10000,
     isLive: false,
     sizeWhenBottomLoading: 50,
     failCount: 0,

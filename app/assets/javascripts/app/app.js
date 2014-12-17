@@ -13,6 +13,8 @@ _.templateSettings = {
 $(function () {
   'use strict';
 
+
+  app.channel = new app.Channel(app.firewoods, app.users);
   new app.AppView();
   new app.FirewoodsView();
   new app.UsersView();

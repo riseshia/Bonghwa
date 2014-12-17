@@ -3,7 +3,7 @@ var app = app || {};
 (function () {
   'use strict';
 
-  var Channel = Backbone.Collection.extend({
+  app.Channel = Backbone.Collection.extend({
     pullingTimer: null,
     isLive: false,
     sizeWhenBottomLoading: 50,
@@ -125,6 +125,4 @@ var app = app || {};
       }
     }
   });
-
-  app.channel = new Channel();
 })();

@@ -93,7 +93,6 @@ var app = app || {};
       fw.trigger('highlight');
     },
 
-    // DOM Event
     submit: function (e) {
       e.preventDefault();
 
@@ -159,7 +158,6 @@ var app = app || {};
       this.$title.html(this.originTitle);
       this.$stack.html('').slideUp(200);
 
-      // 이미지 자동 열기 옵션이 활성화 중이면, 이미지가 있을경우 트리거를 작동시킴
       if ( window.localStorage['auto_image_open'] == '1' ) {
         _.each(fws, function (fw) { fw.trigger('unFold') });        
       }
@@ -189,8 +187,8 @@ var app = app || {};
     },
 
     isFormEmpty: function () {
-      if ( $('div.fileinput-exists').length == 0 ) {
-        var str = $('#firewood_contents').val();
+      if ( this.$('div.fileinput-exists').length == 0 ) {
+        var str = this.$('#firewood_contents').val();
         if ( str.length == 0 || str.search(/^\s+$/) != -1 ) {
           return true;
         }

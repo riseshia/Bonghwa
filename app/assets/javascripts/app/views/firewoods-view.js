@@ -24,7 +24,7 @@ var app = app || {};
       this.listenTo(app.firewoods, 'add:stack', this.updateStackNotice);
       this.listenTo(app.firewoods, 'change:isHighlighted', this.highlightOne);
 
-      this.listenTo(app.firewoods, 'ajaxSuccess', this.formClear);
+      this.listenTo(app.channel, 'ajaxSuccess', this.formClear);
       this.listenTo(app.firewoods, 'form:appendMt', this.appendMt);
       this.listenTo(app.firewoods, 'timeline:foldAll', this.foldAll);
       this.listenTo(app.firewoods, 'timeline:unFoldAll', this.unFoldAll);
@@ -34,9 +34,9 @@ var app = app || {};
       this.$('span[rel=tooltip]').tooltip();
       this.originTitle = this.$title.text();
       
-      $(document).ajaxError(app.firewoods.ajaxError);
-      app.firewoods.load();
-      app.firewoods.setPullingTimer();
+      $(document).ajaxError(app.channel.ajaxError);
+      app.channel.load();
+      app.channel.setPullingTimer();
       setInterval(this.isNearBottom, 1000, this);
     },
 
@@ -98,7 +98,7 @@ var app = app || {};
     submit: function (e) {
       e.preventDefault();
 
-      $(this).ajaxSubmit(app.firewoods.ajaxBasicOptions);
+      $(this).ajaxSubmit(app.channel.ajaxBasicOptions);
       return false;
     },
 
@@ -180,7 +180,7 @@ var app = app || {};
       }
 
       context.$footerLoading.show();
-      app.firewoods.getLogs().then(function () {
+      app.channel.getLogs().then(function () {
         context.$footerLoading.hide();
       });
     }

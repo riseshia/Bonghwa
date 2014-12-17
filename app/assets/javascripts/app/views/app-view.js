@@ -23,7 +23,7 @@ var app = app || {};
       this.toggleLiveStream(null, true);
 
       this.listenTo(app.firewoods, 'activeTag', this.setTagSelector);
-      this.listenTo(app.firewoods, 'ajaxError', this.disableApp);
+      this.listenTo(app.channel, 'ajaxError', this.disableApp);
 
       this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }));
 
@@ -81,11 +81,11 @@ var app = app || {};
       if (newState == '1') {
         $ls.html($ls.html() + '<span class="glyphicon glyphicon-ok"></span>');
         msg = 'Live Stream이 활성화되었습니다.';
-        app.firewoods.toggleLiveStream(true);
+        app.channel.toggleLiveStream(true);
       } else {
         $ls.find('.glyphicon-ok').remove();
         msg = 'Live Stream이 비활성화되었습니다.';
-        app.firewoods.toggleLiveStream(false);
+        app.channel.toggleLiveStream(false);
       }
 
       if ( !silent ) {
@@ -97,7 +97,7 @@ var app = app || {};
 
     refreshTL: function (e) {
       e.preventDefault();
-      app.firewoods.load();
+      app.channel.load();
 
       return this;
     },

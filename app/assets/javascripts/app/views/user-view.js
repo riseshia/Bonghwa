@@ -23,7 +23,7 @@ var app = app || {};
     clkUsername: function () {
       var arr = [this.model.get('name')];
 
-      app.BWClient.trigger('form:appendMt', arr);
+      app.firewoods.trigger('form:appendMt', arr);
     }
   });
 })(jQuery);

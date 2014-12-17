@@ -62,70 +62,48 @@ var app = app || {};
       // return not neccesary
       if ( this.model.get('prev_mt') === 0 && this.model.get('img_link') === '0' ) {
         return this;
-      } else if ( this.$el.hasClass('mt-open') ) {
+      } else if ( this.model.get('isOpened') ) {
         this.fold();
       } else {
         this.unFold();
       }
 
-      this.$el.toggleClass('mt-open');
-
       return this;
+    },
+
+    mtRender: function (fws) {
+      this.subView = new app.MentionsView({parentView: this, fws: fws});
+      this.$('.fw-sub').html(this.subView.render().el)
+                 .slideDown(200);
+      this.model.set('isOpened', true);
     },
 
     unFold: function (e) {
       var $self = this.$el;
 
       var fws = app.firewoods.getPreviousFws(this.model, 5);
-      var $body = $('<li class="list-group-item div-mention">');
       var view = this;
       if ( this.model.get('prev_mt') !== 0 && fws.length == 0 ) {
-        $self.find('.fw-main')
-             .after('<div class="loading" style="display:none;">로딩중입니다.</div>');
-        $self.find('.loading')
-             .slideDown(200);
+        $('<div class="loading" style="display:none;">로딩중입니다.</div>')
+          .insertAfter($self.find('.fw-main')).slideDown(200);
 
         this.model.ajaxMtLoad().then(function (json) {
-          view.mtRender(json.fws, $body);
-
+          view.mtRender(json.fws);
           view.$el.find('.loading')
                .remove();
         });
       } else {
-        this.mtRender(fws, $body);
+        this.mtRender(fws);
       }
 
       return this;
     },
 
-    mtRender: function (fws, $el) {
-      this.model.set('isOpened', true);
-
-      if ( fws[0] && fws[0].toJSON ) {
-        fws = _.map(fws, function (fw) { return fw.toJSON() });
-      }
-
-      // rendering
-      _.each(fws, function (fw) {
-        $el.append(this.mtTemplate(fw));
-      }, this);
-
-      // img check
-      var imgLink = this.model.get('img_link');
-      if (imgLink != '0') {
-        var templ = _.template($('#img-template').html());
-        // consider window size, use different css
-        $el.append(templ({imgLink: imgLink}));
-      }
-
-      this.$el.find('.fw-sub')
-           .html($el.html())
-           .slideDown(200);
-    },
-
     fold: function (e) {
-      this.$('.fw-sub').slideUp(function () { $(this).html(''); });
+      var subView = this.subView;
+      this.$('.fw-sub').slideUp(function () { subView.remove(); });
       this.model.set('isOpened', false);
+
       return this;
     },
 

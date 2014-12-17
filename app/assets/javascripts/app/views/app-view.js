@@ -77,20 +77,15 @@ var app = app || {};
       window.localStorage['live_stream'] = newState;
       var msg;
 
-      clearTimeout(app.firewoods.pullingTimer);
       $ls.toggleClass('true');
       if (newState == '1') {
         $ls.html($ls.html() + '<span class="glyphicon glyphicon-ok"></span>');
         msg = 'Live Stream이 활성화되었습니다.';
-        
-        app.firewoods.pullingPeriod = 1000;
-        app.firewoods.pullingTimer = setTimeout(app.firewoods.pulling, app.firewoods.pullingPeriod);
+        app.firewoods.toggleLiveStream(true);
       } else {
         $ls.find('.glyphicon-ok').remove();
         msg = 'Live Stream이 비활성화되었습니다.';
-
-        app.firewoods.pullingPeriod = 10000;
-        app.firewoods.pullingTimer = setTimeout(app.firewoods.pulling, app.firewoods.pullingPeriod);
+        app.firewoods.toggleLiveStream(false);
       }
 
       if ( !silent ) {

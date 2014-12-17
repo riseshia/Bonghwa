@@ -7,18 +7,30 @@ var app = app || {};
     model: app.Firewood,
     pullingTimer: null,
     pullingPeriod: 10000,
+    isLive: false,
     sizeWhenBottomLoading: 50,
     failCount: 0,
     fwPostLock: false,
     logGetLock: false,
 
     setPullingTimer: function() {
-      this.pullingTimer = setTimeout(this.pulling, this.pullingPeriod);
+      var speed = (this.isLive ? 1000 : 10000);
+      this.pullingTimer = setTimeout(this.pulling, speed);
       return this;
     },
+
     stopPullingTimer: function () {
       clearTimeout(this.pullingTimer);
       return this;
+    },
+
+    toggleLiveStream: function( isLive ) {
+      if ( isLive === undefined ) {
+        this.isLive = !this.isLive;
+      } else {
+        this.isLive = isLive;
+      }
+      this.stopPullingTimer().setPullingTimer();
     },
 
     load: function () {

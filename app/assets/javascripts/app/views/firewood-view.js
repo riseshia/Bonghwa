@@ -30,6 +30,8 @@ var app = app || {};
     },
 
     delete: function () {
+      e.stopPropagation();
+      
       var self = this;
       var dataId = this.model.get('id');
       var really = confirm('정말 삭제하시겠어요?');
@@ -48,6 +50,7 @@ var app = app || {};
 
     clkUsername: function (e) {
       e.preventDefault();
+      e.stopPropagation();
       
       var targets = this.$('.mt-target');
       var arr = _.map(targets, function (target) { return $(target).text(); });

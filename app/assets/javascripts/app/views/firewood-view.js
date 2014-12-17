@@ -61,8 +61,10 @@ var app = app || {};
 
       if ( this.$el.hasClass('mt-open') ) {
         this.fold();
-      } else {
+      } else if ( this.model.get('prev_mt') !== 0 ) {
         this.unFold();
+      } else {
+        return this;
       }
 
       this.$el.toggleClass('mt-open');

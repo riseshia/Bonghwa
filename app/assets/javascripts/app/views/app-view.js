@@ -21,7 +21,9 @@ var app = app || {};
       this.toggleImgAutoOpen(null, true);
       window.localStorage['live_stream'] = (window.localStorage['live_stream'] == '1' ? '0' : '1');
       this.toggleLiveStream(null, true);
+
       this.listenTo(app.firewoods, 'activeTag', this.setTagSelector);
+      this.listenTo(app.firewoods, 'ajaxError', this.disableApp);
 
       this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }));
 
@@ -155,6 +157,19 @@ var app = app || {};
       $self.slideUp( function () {
         $self.remove();
       });
+    },
+
+    disableApp: function () {
+      var $panel = $(".panel-info");
+      $panel.removeClass("panel-info")
+            .addClass("panel-danger");
+      $("#info").css("background-color","#f2dede");
+      $('#new_firewood').find("fieldset").attr("disabled","a");
+      $('#timeline_stack')
+        .css("background-color","#b94a48")
+        .html("서버와의 접속이 끊어졌습니다. 새로고침 해주세요.")
+        .slideDown();
+      this.$title.html("새로고침 해주세요.");
     }
   });
 })(jQuery);

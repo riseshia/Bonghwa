@@ -99,24 +99,15 @@ var app = app || {};
     },
 
     ajaxError: function () {
-      this.failCount += 1;
+      var self = app.firewoods;
+      self.failCount += 1;
 
-      if ( this.failCount < 3 ) {
-        this.stopPullingTimer()
+      if ( self.failCount < 3 ) {
+        self.stopPullingTimer()
             .setPullingTimer();
-        return true;
+      } else {
+        self.trigger('ajaxError');
       }
-
-      var $panel = $(".panel-info");
-      $panel.removeClass("panel-info")
-            .addClass("panel-danger");
-      $("#info").css("background-color","#f2dede");
-      $('#new_firewood').find("fieldset").attr("disabled","a");
-      $('#timeline_stack')
-        .css("background-color","#b94a48")
-        .html("서버와의 접속이 끊어졌습니다. 새로고침 해주세요.")
-        .slideDown();
-      $('#title').html("새로고침 해주세요.");
     },
 
     addSome: function (fws, type) {

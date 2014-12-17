@@ -86,7 +86,7 @@ var app = app || {};
         $('#commit').button('loading');
         self.stopPullingTimer();
         
-        if ( self.fwPostLock || app.FirewoodsView.isFormEmpty() ) {
+        if ( self.fwPostLock ) {
           return false;
         }
 
@@ -94,9 +94,9 @@ var app = app || {};
       },
       success: function () {
         var self = app.channel;
-        self.trigger('ajaxSuccess');
         self.fwPostLock = false;
         self.pulling(true);
+        self.trigger('ajaxSuccess');
       }
     },
 

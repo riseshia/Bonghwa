@@ -5,12 +5,6 @@ var app = app || {};
 
   var Firewoods = Backbone.Collection.extend({
     model: app.Firewood,
-    pullingTimer: null,
-    isLive: false,
-    sizeWhenBottomLoading: 50,
-    failCount: 0,
-    fwPostLock: false,
-    logGetLock: false,
 
     addSome: function (fws, type) {
       this.add(fws);

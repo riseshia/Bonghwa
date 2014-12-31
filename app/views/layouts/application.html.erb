@@ -38,9 +38,9 @@
     <% if session[:user_id] %>
     <div class="collapse navbar-collapse" id="div-nav-collapse">
       <ul class="nav navbar-nav">
-        <li><%= link_to "Now", "/", id: "now_nav"%></li>
-        <li><%= link_to "Mt", mt_path, id: "mt_nav" %></li>
-        <li><%= link_to "Me", me_path, id: "me_nav" %></li>
+        <li><%= link_to "Now", "#now", id: "now_nav"%></li>
+        <li><%= link_to "Mt", "#mt", id: "mt_nav" %></li>
+        <li><%= link_to "Me", "#me", id: "me_nav" %></li>
         <li class="visible-md visible-lg"><%= link_to "Lab", lab_path, id: "lab_nav" %></li>
       </ul>
 

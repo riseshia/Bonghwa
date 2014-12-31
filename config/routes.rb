@@ -1,6 +1,6 @@
 Bonghwa::Application.routes.draw do
   controller :view do
-    get 'now' => :index
+    get 'now' => :now
     get 'mt' => :mt
     get 'me' => :me
     get 'lab' => :lab

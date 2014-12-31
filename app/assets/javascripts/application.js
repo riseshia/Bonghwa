@@ -17,8 +17,10 @@
 //= require jquery.keycut
 //= require autolink
 //= require underscore
+//= require backbone
 //= require bootstrap.min
 //= require jasny-bootstrap.min
 //= require inOnScreen
 //= require lab
+//= require app/app.js
 //= require_tree .

@@ -7,7 +7,7 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: msm
+  database: bw
   pool: 5
   username: user
   password: password
@@ -20,7 +20,7 @@ test:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: msm
+  database: bw
   pool: 5
   username: user
   password: password

@@ -63,7 +63,7 @@ group :production do
 end
 
 # paging
-gem 'will_paginate', '3.0.3'
+gem 'will_paginate', '3.0.7'
 
 # json
 gem 'oj'

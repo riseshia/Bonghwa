@@ -31,6 +31,7 @@ config/unicorn.rb
 config/unicorn_init.sh
 config/deploy.rb
 config/deploy/
+config/initializers/redis.rb
 Capfile
 
 ### OSX ###

@@ -27,6 +27,7 @@ dump.rdb
 
 #server setting
 config/nginx.conf
+config/redis.conf
 config/unicorn.rb
 config/unicorn_init.sh
 config/deploy.rb

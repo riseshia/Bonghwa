@@ -33,6 +33,8 @@ config/deploy.rb
 config/deploy/
 config/initializers/redis.rb
 Capfile
+Dockerfile
+Procfile
 
 ### OSX ###
 .DS_Store

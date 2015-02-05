@@ -35,21 +35,6 @@ gem 'unicorn'
 
 gem 'figaro'
 
-# Deploy with Capistrano
-group :deployment do
-  gem 'capistrano', '~> 3.1'
-  gem 'capistrano-rvm'
-  gem 'capistrano-rails'
-  gem 'capistrano-rails-console'
-  gem 'capistrano-rails-collection'
-  gem 'capistrano-rails-tail-log'
-  gem 'capistrano_colors'
-  gem 'capistrano-bundler'
-  gem 'capistrano-ext'
-  gem 'capistrano_rsync_with_remote_cache'
-  gem 'capistrano-ssh-doctor', '~> 1.0'
-end
-
 # To test Project
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'

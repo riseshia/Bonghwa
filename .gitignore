@@ -32,6 +32,7 @@ config/unicorn.rb
 config/unicorn_init.sh
 config/deploy.rb
 config/deploy/
+config/ssl
 config/initializers/redis.rb
 Capfile
 Dockerfile

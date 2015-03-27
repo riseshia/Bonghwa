@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 body {
+  -webkit-appearance: none;
   padding-top: 50px;
   background-color: rgb(247, 247, 249);
 }
@@ -16,21 +17,23 @@ a {
   padding-right: 0px;
 }
 
-.wrapper {
-  margin: 0 auto;
-  width: 100%;
+#div-form {
+  padding-top: 5px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #d9edf7;
+}
+
+.cut-side-padding {
+  padding-left: 0px;
+  padding-right: 0px; 
+  margin-top: 0px; 
 }
 
 .row {
   padding: 0 15px;
   margin: 0 -15px;
-}
-
-#div-form {
-  padding-top: 5px;
-  padding-bottom: 0px;
-  padding-left: 5px;
-  padding-right: 5px;
 }
 
 .form-group {
@@ -51,7 +54,7 @@ a {
   background-color: #E5F8FF;
 }
 
-.wrapper > .col-md-9, .wrapper > .col-md-3 {
+.wrapper > .col-md-3 {
   margin-top: 10px;
 }
 

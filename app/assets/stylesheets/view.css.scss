@@ -50,6 +50,13 @@ a {
   color: rgb(10,10,10);
 }
 
+#timeline > .list-group-item {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
 .tagged {
   background-color: #E5F8FF;
 }

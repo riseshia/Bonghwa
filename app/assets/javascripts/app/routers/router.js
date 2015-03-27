@@ -27,5 +27,4 @@ var app = app || {};
   });
 
   app.BWRouter = new BWRouter();
-  Backbone.history.start();
 })();

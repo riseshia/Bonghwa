@@ -1,20 +1,5 @@
 class ViewController < ApplicationController
-  def now
-    @new_fw = Firewood.new
-    @infos = get_info
-  end
-
-  def lab
-    @new_fw = Firewood.new
-    @infos = get_info
-  end
-
-  def mt
-    @new_fw = Firewood.new
-    @infos = get_info
-  end
-
-  def me
+  def timeline
     @new_fw = Firewood.new
     @infos = get_info
   end

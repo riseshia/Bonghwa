@@ -1,9 +1,6 @@
 Bonghwa::Application.routes.draw do
   controller :view do
-    get 'now' => :now
-    get 'mt' => :mt
-    get 'me' => :me
-    get 'lab' => :lab
+    get 'timeline' => :timeline
     get 'option' => :option
     get 'help' => :help
   end
@@ -93,7 +90,7 @@ Bonghwa::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
-  root to:  'view#now', as: 'index'
+  root to:  'view#timeline', as: 'index'
 
   # See how all your routes lay out with "rake routes"
 

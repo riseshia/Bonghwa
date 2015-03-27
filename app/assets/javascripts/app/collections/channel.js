@@ -52,7 +52,8 @@ var app = app || {};
       var self = app.channel;
       self.stopPullingTimer();
 
-      var recentId = app.firewoods.first().get('id');
+      var firstFw = app.firewoods.first();
+      var recentId = (firstFw ? firstFw.get('id') : 0);
       return $.get('/api/pulling.json?after=' + recentId + '&type=' + PAGE_TYPE).then(function (json) {
         var state = ( window.localStorage['live_stream'] == '1' ) ? FW_STATE.IN_TL : FW_STATE.IN_STACK;
         if ( isLive ) {

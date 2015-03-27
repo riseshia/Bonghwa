@@ -176,7 +176,8 @@ var app = app || {};
     isNearBottom: function (context) {
       var $fws = $('.firewood');
       var fws = app.firewoods;
-      if ( !$fws.eq(-5).isOnScreen() || fws.logGetLock || fws.length < 50 || fws.last().get('id') < 10 ) {
+
+      if ( fws.size() == 0 || !$fws.eq(-5).isOnScreen() || fws.logGetLock || fws.length < 50 || fws.last().get('id') < 10 ) {
         return false;
       }
 

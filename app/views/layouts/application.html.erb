@@ -24,10 +24,45 @@
   <!--[if lt IE 7]>
       <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
   <![endif]-->
+
+<!-- Mobile Menu Start -->
+<nav id="mobileNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas visible-xs-*" role="navigation">
+  <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navmenu-brand" %>
+  <ul class="nav navmenu-nav">
+    <li><%= link_to "Now", "/#now", id: "now_nav"%></li>
+    <li><%= link_to "Mt", "/#mt", id: "mt_nav" %></li>
+    <li><%= link_to "Me", "/#me", id: "me_nav" %></li>
+    <% if isAdmin?(@user) %>
+    <li><a href="<%= users_path %>" id="etc-dropdown-users">Users</a></li>
+    <li><a href="<%= links_path %>" id="etc-dropdown-links">Links</a></li>
+    <li><a href="<%= admin_edit_path %>" id="etc-dropdown-admin">Admin</a></li>
+    <li class="divider"></li>
+    <% end %>
+    <li><a href="<%= user_path(@user) %>" id="etc-dropdown-setting">Profile</a></li>
+    <li><a href="<%= option_path %>" id="etc-dropdown-setting">Setting</a></li>
+    <li class="divider"></li>
+    <% @links.each do |link| %>
+    <li><a href="<%= link.link_to %>" id="<%= 'etc-dropdown-' + link.name %>" target="_blank"><%= link.name %></a></li>
+    <% end %>
+    <li class="divider"></li>
+    <li><%= link_to "Exit", logout_path, method: :delete%></li>
+    </li>
+  </ul>
+</nav>
+<div class="navbar navbar-default navbar-inverse navbar-fixed-top visible-xs-*">
+  <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#mobileNavmenu" data-canvas="body">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+</div>
+<!-- Mobile Menu End -->
+
 <div class="container-fluid">
   <div class="row clearfix">
     <div class="col-md-12 column">
-      <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+      <!-- Desktop Menu Start -->
+      <nav class="navbar navbar-default navbar-inverse navbar-fixed-top hidden-xs" role="navigation">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#div-nav-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -77,7 +112,7 @@
               </ul>
             </li>
           </ul>
-          <form class='navbar-form navbar-right visible-md visible-lg'>
+          <form class='navbar-form navbar-right hidden-xs'>
             <div class='form-group' id='div-select-tag'>
               <input autocomplete='off' class='form-control' id='select-tag' placeholder='#Now' type='text'>
             </div>
@@ -85,14 +120,15 @@
         </div><!-- /.navbar-collapse -->
         <% end %>
       </nav>
-<!-- view start -->
+      <!-- Desktop Menu End -->
     </div>
   </div>
   <div class="row clearfix" id="main">
+  <!-- view start -->
   <%= yield %>
+  <!-- view end -->
   </div>
 </div>
-<!-- view end -->
 <%= javascript_include_tag "application" %>
 </body>
 </html>

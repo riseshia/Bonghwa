@@ -12,6 +12,24 @@ a {
   color:rgb(0,0,0);
 }
 
+#mobileNavmenu {
+  background-color: #222;
+  border-left: 0px;
+  width: 200px;
+
+  li {
+    a {
+      color: #ddd;
+    }
+    a:hover {
+      color: #fff;
+    }
+  }
+  li.active > a {
+    background-color: #777;
+  }
+}
+
 .container-fluid {
   padding-left: 0px;
   padding-right: 0px;
@@ -40,21 +58,25 @@ a {
   margin-bottom: 5px;
 }
 
+#notice_stack_new {
+  color: rgb(10,10,10);
+}
+
 #timeline_stack {
   text-align: center;
   background-color: rgb(66, 139, 202);
   padding: 5px;
 }
 
-#notice_stack_new {
-  color: rgb(10,10,10);
-}
-
-#timeline > .list-group-item {
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+#timeline {
+  .list-group-item {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+  }
 }
 
 .tagged {

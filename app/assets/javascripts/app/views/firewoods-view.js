@@ -16,7 +16,6 @@ var app = app || {};
       this.$title = this.$('#title');
       this.$commitBtn = this.$('#commit');
       this.$prevMt = this.$('#firewood_prev_mt');
-      this.$footerLoading = this.$("#div-loading");
 
       this.listenTo(app.firewoods, 'reset', this.addAll);
       this.listenTo(app.firewoods, 'add:prepend', this.prepend);
@@ -70,7 +69,7 @@ var app = app || {};
       var fws = app.firewoods.where({ state: FW_STATE.IN_LOG });
       _.each(fws, function(fw) {
         var view = new app.FirewoodView({ model: fw });
-        this.$el.append(view.render().el);
+        this.$list.append(view.render().el);
         fw.set('state', 0);
       }, this);
 
@@ -176,14 +175,15 @@ var app = app || {};
     isNearBottom: function (context) {
       var $fws = $('.firewood');
       var fws = app.firewoods;
+      var self = context;
 
       if ( fws.size() == 0 || !$fws.eq(-5).isOnScreen() || fws.logGetLock || fws.length < 50 || fws.last().get('id') < 10 ) {
         return false;
       }
 
-      context.$footerLoading.show();
+      self.$list.append('<li class="list-group-item"><div id="div-loading" style="display: block;">로딩중입니다.</div></li>');
       app.channel.getLogs().then(function () {
-        context.$footerLoading.hide();
+        $('#div-loading').parent().remove();
       });
     },
 

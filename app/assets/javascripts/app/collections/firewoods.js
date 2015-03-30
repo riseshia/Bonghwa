@@ -23,7 +23,7 @@ var app = app || {};
       var fws = [];
       var tmp = fw;
       if ( !this.findWhere({id: prev_id}) ) {
-          return [];
+        return [];
       }
 
       for (var i = 0; i < limit && prev_id != 0; i++ ) {

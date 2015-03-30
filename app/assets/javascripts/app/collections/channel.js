@@ -103,12 +103,13 @@ var app = app || {};
 
     getLogs: function () {
       var self = app.channel;
+      var firewoods = app.firewoods;
       self.logGetLock = true;
 
-      return $.get('/api/trace.json?before=' + self.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + PAGE_TYPE, function (json) {
+      return $.get('/api/trace.json?before=' + firewoods.last().get('id') + '&count=' + self.sizeWhenBottomLoading + '&type=' + PAGE_TYPE, function (json) {
         if ( json.fws.length != 0 ) {
           var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_LOG; return new app.Firewood(fw); });
-          self.addSome(fws, FW_STATE.IN_LOG);
+          firewoods.addSome(fws, FW_STATE.IN_LOG);
         }
         self.logGetLock = false;
       });

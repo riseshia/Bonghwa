@@ -26,6 +26,7 @@
   <![endif]-->
 
 <!-- Mobile Menu Start -->
+<% if session[:user_id] %>
 <nav id="mobileNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas visible-xs-*" role="navigation">
   <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navmenu-brand" %>
   <ul class="nav navmenu-nav">
@@ -38,7 +39,7 @@
     <li><a href="<%= admin_edit_path %>" id="etc-dropdown-admin">Admin</a></li>
     <li class="divider"></li>
     <% end %>
-    <li><a href="<%= user_path(@user) %>" id="etc-dropdown-setting">Profile</a></li>
+    <li><a href="<%= user_path(@user) if @user %>" id="etc-dropdown-setting">Profile</a></li>
     <li><a href="<%= option_path %>" id="etc-dropdown-setting">Setting</a></li>
     <li class="divider"></li>
     <% @links.each do |link| %>
@@ -57,6 +58,7 @@
   </button>
   <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navbar-brand" %>
 </div>
+<% end %>
 <!-- Mobile Menu End -->
 
 <div class="container-fluid">

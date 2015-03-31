@@ -19,8 +19,7 @@
             <td><%= user.name %></td>
             <td><%= user.level %></td>
             <td><%= (user.recent_login).strftime("%D %T") %></td>
-            <td><%= link_to 'Show', user %>
-             | <%= link_to 'Edit', edit_user_path(user) %>
+            <td><%= link_to 'Edit', edit_user_path(user) %>
              | <%= level_up(user) %>
              | <%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>

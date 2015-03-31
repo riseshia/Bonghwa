@@ -15,19 +15,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1
-  # GET /users/1.json
-  def show
-    return redirect_to index_url, notice: '접근 하실 수 없습니다.' unless session[:user_id].to_i == params[:id].to_i or session[:user_level].to_i == 999
-    
-    @user = User.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user }
-    end
-  end
-
   # GET /users/new
   # GET /users/new.json
   def new

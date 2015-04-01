@@ -17,6 +17,10 @@ a {
   border-left: 0px;
   width: 200px;
 
+  .navmenu-brand {
+    margin-bottom: 1px;
+  }
+
   li {
     a {
       color: #ddd;
@@ -27,6 +31,29 @@ a {
   }
   li.active > a {
     background-color: #777;
+  }
+
+  #users-mobile {
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    background-color: #eee;
+  }
+
+  dl {
+    margin-bottom: 5px;
+    margin-top: 5px;
+
+    dd {
+      margin-bottom: 5px;   
+      margin-left: 10px;
+      a {
+        color: #111;
+      }
+      a:hover {
+        color: #333;
+      }
+    }
   }
 }
 

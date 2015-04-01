@@ -30,6 +30,15 @@
 <nav id="mobileNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas visible-xs-*" role="navigation">
   <%= link_to @app.home_name, '#', class: "navmenu-brand" %>
   <ul class="nav navmenu-nav">
+    <li id="users-mobile">
+      <div id="users-header-mobile">접속자수</div>
+      <dl id="users-body-mobile">
+        <dd><a class="mt-clk" href="#">asdfasdf</a></dd>
+        <dd><a class="mt-clk" href="#">bbbb</a></dd>
+        <dd><a class="mt-clk" href="#">ccc</a></dd>
+      </dl>
+    </li>
+
     <li><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
     <li><%= link_to "Mt", "/#mt", class: "mt_nav all_nav" %></li>
     <li><%= link_to "Me", "/#me", class: "me_nav all_nav" %></li>

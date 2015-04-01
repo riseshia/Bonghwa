@@ -19,11 +19,34 @@ var app = app || {};
       return this;
     },
 
-
     clkUsername: function () {
       var arr = ['@' + this.model.get('name')];
 
       app.firewoods.trigger('form:appendMt', arr);
     }
   });
+
+  app.UserMobileView = Backbone.View.extend({
+    tagName: 'dd',
+
+    template: _.template($('#user-template').html()),
+
+    events: {
+      'click .mt-clk': 'clkUsername'
+    },
+
+    render: function () {
+      this.$el.html(this.template(this.model.toJSON()));
+
+      return this;
+    },
+
+    clkUsername: function () {
+      var arr = ['@' + this.model.get('name')];
+
+      app.firewoods.trigger('form:appendMt', arr);
+      $('#mobileNavmenu').offcanvas('hide');
+    }
+  });
+
 })(jQuery);

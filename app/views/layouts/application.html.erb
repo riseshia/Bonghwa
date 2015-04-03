@@ -39,7 +39,7 @@
       </dl>
     </li>
 
-    <li><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
+    <li class="active"><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
     <li><%= link_to "Mt", "/#mt", class: "mt_nav all_nav" %></li>
     <li><%= link_to "Me", "/#me", class: "me_nav all_nav" %></li>
     <% if isAdmin?(@user) %>
@@ -88,7 +88,7 @@
         <% if session[:user_id] %>
         <div class="collapse navbar-collapse" id="div-nav-collapse">
           <ul class="nav navbar-nav">
-            <li><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
+            <li class="active"><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
             <li><%= link_to "Mt", "/#mt", class: "mt_nav all_nav" %></li>
             <li><%= link_to "Me", "/#me", class: "me_nav all_nav" %></li>
           </ul>

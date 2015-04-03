@@ -29,9 +29,8 @@ var app = app || {};
       return this;
     },
 
-    delete: function () {
+    delete: function (e) {
       e.stopPropagation();
-      
       var self = this;
       var dataId = this.model.get('id');
       var really = confirm('정말 삭제하시겠어요?');

@@ -122,9 +122,9 @@ class ApplicationController < ActionController::Base
             @attach = Attach.create!(:img => params[:attach])
             fw.attach_id = @attach.id
             if params[:adult_check]
-              fw.contents += " <span class='has-image text-warning'>[후방주의]</span>"
+              fw.contents += " <span class='has-image text-warning'>[후방주의 #{@attach.id}]</span>"
             else
-              fw.contents += " <span class='has-image'>[이미지]</span>"
+              fw.contents += " <span class='has-image'>[이미지 #{@attach.id}]</span>"
             end
           end
           

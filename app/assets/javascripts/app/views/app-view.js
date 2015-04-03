@@ -36,7 +36,15 @@ var app = app || {};
       'click #focus_hotkey': 'focusToInput',
       'click #refresh_hotkey': 'refreshTL',
       'keypress #select-tag': 'selectNewTag',
-      'click #info': 'removeInfo'
+      'click #info': 'removeInfo',
+      'focus #contents': function() {
+        $('#contents-placeholder').remove();
+      },
+      'blur #contents': function() {
+        if ($('#contents').text().length == 0) {
+          $('#contents').html('<p id="contents-placeholder" class="text-muted">New...</p>');
+        }
+      }
     },
 
     toggleImgAutoOpen: function (e, silent) {
@@ -106,7 +114,7 @@ var app = app || {};
       e.preventDefault();
 
       $('html, body').animate({scrollTop: 0}, 600);
-      $('#firewood_contents').focus();
+      $('#contents').focus();
 
       return this;
     },

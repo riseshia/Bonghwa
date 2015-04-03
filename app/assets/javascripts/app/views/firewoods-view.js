@@ -12,7 +12,7 @@ var app = app || {};
       this.$list = this.$('#timeline');
       this.$stack = this.$('#timeline_stack');
       this.$form = this.$('#new_firewood');
-      this.$input = this.$('#firewood_contents');
+      this.$input = this.$('#contents');
       this.$title = this.$('#title');
       this.$commitBtn = this.$('#commit');
       this.$prevMt = this.$('#firewood_prev_mt');
@@ -38,11 +38,18 @@ var app = app || {};
     },
 
     events: {
-      'input #firewood_contents': 'update_count',
-      'keyup #firewood_contents': 'update_count',
-      'paste #firewood_contents': 'update_count',
+      'input #contents': 'update_count',
+      'keyup #contents': 'update_count',
+      'keydown #contents': 'keydown',
+      'paste #contents': 'update_count',
       'click #timeline_stack': 'flushStack',
       'submit #new_firewood': 'submit'
+    },
+
+    keydown: function (e) {
+      if (e.keyCode == window.ENTER_KEY) {
+        this.submit(e);
+      }
     },
 
     // Collection Event
@@ -105,6 +112,7 @@ var app = app || {};
 
     formClear: function() {
       this.$form.clearForm();
+      this.$('#contents').html('');
       this.$('#img').val('');
       this.$('.fileinput-preview').html('');
       this.$('.fileinput')
@@ -119,7 +127,7 @@ var app = app || {};
 
     update_count: function () {
       var before = this.count;
-      var now = this.maxCount - this.$input.val().length;
+      var now = this.maxCount - this.$input.text().length;
 
       if ( this.isFormEmpty() ) {
         this.$commitBtn.val('Refresh');
@@ -189,7 +197,7 @@ var app = app || {};
 
     isFormEmpty: function () {
       if ( this.$('div.fileinput-exists').length == 0 ) {
-        var str = this.$('#firewood_contents').val();
+        var str = this.$('#contents').text();
         if ( str.length == 0 || str.search(/^\s+$/) != -1 ) {
           return true;
         }

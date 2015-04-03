@@ -84,6 +84,9 @@ var app = app || {};
       dataType:      'json',
       beforeSubmit: function (formData, jqForm, options) {
         var self = app.channel;
+        var contents = {name: 'firewood[contents]', value: $('#contents').text(), type: 'text', required: false};
+        formData.push(contents);
+
         $('#commit').button('loading');
         self.stopPullingTimer();
         

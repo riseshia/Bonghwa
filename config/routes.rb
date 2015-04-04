@@ -1,4 +1,4 @@
-Bonghwa::Application.routes.draw do
+Rails.application.routes.draw do
   controller :view do
     get 'timeline' => :timeline
     get 'option' => :option

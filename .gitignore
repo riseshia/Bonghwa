@@ -63,3 +63,7 @@ Temporary Items
 
 # Ignore application configuration
 /config/application.yml
+
+# Development Environments
+Vagrantfile
+bootstrap.sh

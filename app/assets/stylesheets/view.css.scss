@@ -85,6 +85,9 @@ a {
       padding-right: 0px;
     }
   }
+  [contentEditable=true]:empty:not(:focus):before{
+    content:attr(data-ph)
+  }
 }
 
 .cut-side-padding {

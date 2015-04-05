@@ -45,13 +45,14 @@ var app = app || {};
       'click #timeline_stack': 'flushStack',
       'submit #new_firewood': 'submit',
       'click #contents': function() {
-        $('#contents-placeholder').remove();
+        $('#contents').html('');
+      },
+      'focus #contents': function() {
       },
       'blur #contents': function() {
         if ($('#contents').text().length == 0) {
           $('#contents')
             .attr('bw-text-empty',"true")
-            .html('<p id="contents-placeholder" class="text-muted">New...</p>');
         } else {
           $('#contents').attr('bw-text-empty',"false");
         }

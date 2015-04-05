@@ -43,13 +43,26 @@ var app = app || {};
       'keydown #contents': 'keydown',
       'paste #contents': 'update_count',
       'click #timeline_stack': 'flushStack',
-      'submit #new_firewood': 'submit'
+      'submit #new_firewood': 'submit',
+      'click #contents': function() {
+        $('#contents-placeholder').remove();
+      },
+      'blur #contents': function() {
+        if ($('#contents').text().length == 0) {
+          $('#contents')
+            .attr('bw-text-empty',"true")
+            .html('<p id="contents-placeholder" class="text-muted">New...</p>');
+        } else {
+          $('#contents').attr('bw-text-empty',"false");
+        }
+      }
     },
 
     keydown: function (e) {
       if (e.keyCode == window.ENTER_KEY) {
         this.submit(e);
       } else {
+        $('#contents').attr('bw-text-empty',"false");
         e.stopPropagation();
       }
     },
@@ -199,8 +212,9 @@ var app = app || {};
 
     isFormEmpty: function () {
       if ( this.$('div.fileinput-exists').length == 0 ) {
-        var str = this.$('#contents').text();
-        if ( str.length == 0 || str.search(/^\s+$/) != -1 ) {
+        var contents = this.$('#contents');
+        var str = contents.text();
+        if ( contents.attr('bw-text-empty') == 'true' || str.search(/^\s+$/) != -1 ) {
           return true;
         }
       }

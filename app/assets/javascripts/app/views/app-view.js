@@ -36,15 +36,7 @@ var app = app || {};
       'click #focus_hotkey': 'focusToInput',
       'click #refresh_hotkey': 'refreshTL',
       'keypress #select-tag': 'selectNewTag',
-      'click #info': 'removeInfo',
-      'focus #contents': function() {
-        $('#contents-placeholder').remove();
-      },
-      'blur #contents': function() {
-        if ($('#contents').text().length == 0) {
-          $('#contents').html('<p id="contents-placeholder" class="text-muted">New...</p>');
-        }
-      }
+      'click #info': 'removeInfo'
     },
 
     toggleImgAutoOpen: function (e, silent) {

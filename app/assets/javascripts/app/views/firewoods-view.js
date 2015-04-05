@@ -49,6 +49,8 @@ var app = app || {};
     keydown: function (e) {
       if (e.keyCode == window.ENTER_KEY) {
         this.submit(e);
+      } else {
+        e.stopPropagation();
       }
     },
 

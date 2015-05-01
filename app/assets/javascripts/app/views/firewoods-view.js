@@ -168,7 +168,7 @@ var app = app || {};
 
       this.$prevMt.val(target);
       this.$input
-        .val( mts.join(' ') + ' ' + this.$input.val() )
+        .text( mts.join(' ') + ' ' + this.$input.text() )
         .focus();
     },
 

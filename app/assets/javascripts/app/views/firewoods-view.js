@@ -25,6 +25,7 @@ var app = app || {};
 
       this.listenTo(app.channel, 'ajaxSuccess', this.formClear);
       this.listenTo(app.firewoods, 'form:appendMt', this.appendMt);
+      this.listenTo(app.firewoods, 'form:flash', this.flashForm);
       this.listenTo(app.firewoods, 'timeline:foldAll', this.foldAll);
       this.listenTo(app.firewoods, 'timeline:unFoldAll', this.unFoldAll);
 
@@ -121,7 +122,7 @@ var app = app || {};
       if ( !this.isFormEmpty() ) {
         this.$form.ajaxSubmit(app.channel.ajaxBasicOptions);
       } else {
-        app.channel.pulling(true);
+        app.channel.pulling(true, true);
       }
       return false;
     },
@@ -220,6 +221,11 @@ var app = app || {};
         }
       }
       return false;
+    },
+
+    flashForm: function () {
+      var $formDiv = this.$form.parent();
+      $formDiv.fadeOut(300).fadeIn(500);
     }
   });
 })(jQuery);

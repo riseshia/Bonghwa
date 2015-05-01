@@ -48,7 +48,7 @@ var app = app || {};
       });
     },
 
-    pulling: function (isLive) {
+    pulling: function (isLive, isUserTriggered) {
       var self = app.channel;
       self.stopPullingTimer();
 
@@ -61,6 +61,10 @@ var app = app || {};
         }
 
         if (json.fws) {
+          if (isUserTriggered && json.fws.length == 0) {
+            app.firewoods.trigger('form:flash');
+          }
+
           var fws = _.map(json.fws, function (fw) { fw['state'] = FW_STATE.IN_STACK; return new app.Firewood(fw); });
           
           app.firewoods.addSome(fws, state);

@@ -1,5 +1,6 @@
 var app = app || {};
 var ENTER_KEY = 13;
+var ESC_KEY = 27;
 var FW_STATE = {IN_STACK: -1, IN_TL: 0, IN_LOG: 1};
 var PAGE_TYPE = 1;
 

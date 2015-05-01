@@ -49,20 +49,14 @@ var app = app || {};
         $('#contents').html('');
       },
       'focus #contents': function() {
-      },
-      'blur #contents': function() {
-        if ($('#contents').text().length == 0) {
-          $('#contents')
-            .attr('bw-text-empty',"true")
-        } else {
-          $('#contents').attr('bw-text-empty',"false");
-        }
       }
     },
 
     keydown: function (e) {
       if (e.keyCode == window.ENTER_KEY) {
         this.submit(e);
+      } else if (e.keyCode == window.ESC_KEY) {
+        $('#contents').blur();
       } else {
         $('#contents').attr('bw-text-empty',"false");
         e.stopPropagation();
@@ -161,6 +155,13 @@ var app = app || {};
       if ( before != now ) {
         this.count = now;
         this.$('#remaining_count').text(now);
+      }
+
+      if ($('#contents').text().length == 0) {
+          $('#contents')
+            .attr('bw-text-empty',"true");
+      } else {
+        $('#contents').attr('bw-text-empty',"false");
       }
     },
 

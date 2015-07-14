@@ -47,6 +47,16 @@ group :production do
   gem 'rb-readline'
 end
 
+group :deployment do
+  gem 'capistrano', '~> 3.4.0'
+  gem 'capistrano-rails'
+  gem 'capistrano-rbenv'
+  gem 'unicorn'
+  gem 'capistrano-bundler'
+  gem 'capistrano-secrets-yml', '~> 1.0.0'
+  gem 'capistrano-unicorn-nginx', :git => 'https://github.com/riseshia/capistrano-unicorn-nginx.git'
+end
+
 # paging
 gem 'will_paginate', '3.0.7'
 

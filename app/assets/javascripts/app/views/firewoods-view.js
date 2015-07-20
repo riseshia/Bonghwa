@@ -45,6 +45,10 @@ var app = app || {};
       'paste #contents': 'update_count',
       'click #timeline_stack': 'flushStack',
       'submit #new_firewood': 'submit',
+      'blur #contents': function () {
+        if ($('#contents').html() == '<br>')
+          $('#contents').html('');
+      }
     },
 
     keydown: function (e) {

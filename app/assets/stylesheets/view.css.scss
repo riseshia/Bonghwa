@@ -96,6 +96,10 @@ a {
   margin-top: 0px; 
 }
 
+#contents[bw-text-empty=true] {
+  color: #aaa;
+}
+
 #notice_stack_new {
   color: rgb(10,10,10);
 }

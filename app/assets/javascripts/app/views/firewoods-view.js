@@ -169,8 +169,9 @@ var app = app || {};
 
       this.$prevMt.val(target);
       this.$input
-        .text( mts.join(' ') + ' ' + this.$input.text() )
-        .focus();
+        .text( mts.join(' ') + ' ' + this.$input.text() );
+      app.util.placeCaretAtEnd('contents');
+      this.update_count();
     },
 
     flushStack: function () {

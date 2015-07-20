@@ -45,9 +45,6 @@ var app = app || {};
       'paste #contents': 'update_count',
       'click #timeline_stack': 'flushStack',
       'submit #new_firewood': 'submit',
-      'click #contents': function() {
-        $('#contents').html('');
-      },
       'focus #contents': function() {
       }
     },

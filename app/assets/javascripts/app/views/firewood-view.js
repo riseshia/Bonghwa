@@ -16,10 +16,11 @@ var app = app || {};
     },
 
     events: {
-      'click .delete': 'delete',
-      'click .mt-clk': 'clkUsername',
-      'click .mt-to' : 'toggleFolding',
-      'click .fw-tag': 'clkTag'
+      'click .delete'  : 'delete',
+      'click .mt-clk'  : 'clkUsername',
+      'click .mt-to'   : 'toggleFolding',
+      'click .fw-tag'  : 'clkTag',
+      'click .link_url': 'clkLink'
     },
 
     render: function () {
@@ -70,6 +71,12 @@ var app = app || {};
         this.unFold();
       }
 
+      return this;
+    },
+
+    // Prevent Override by another event
+    clkLink: function (e) {
+      e.stopPropagation();
       return this;
     },
 

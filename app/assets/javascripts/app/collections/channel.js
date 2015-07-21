@@ -57,7 +57,7 @@ var app = app || {};
       return $.get('/api/pulling.json?after=' + recentId + '&type=' + PAGE_TYPE).then(function (json) {
         var state = ( window.localStorage['live_stream'] == '1' ) ? FW_STATE.IN_TL : FW_STATE.IN_STACK;
         if ( isLive ) {
-          state = 0;
+          state = FW_STATE.IN_TL;
         }
 
         if (json.fws) {

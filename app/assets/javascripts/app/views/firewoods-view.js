@@ -13,7 +13,7 @@ var app = app || {};
       this.$stack = this.$('#timeline_stack');
       this.$form = this.$('#new_firewood');
       this.$input = this.$('#contents');
-      this.$title = this.$('#title');
+      this.$title = $('#title');
       this.$commitBtn = this.$('#commit');
       this.$prevMt = this.$('#firewood_prev_mt');
 

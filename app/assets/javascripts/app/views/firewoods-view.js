@@ -117,6 +117,9 @@ var app = app || {};
       } else {
         app.channel.pulling(true, true);
       }
+      this.$title.html(this.originTitle);
+      this.$stack.html('').slideUp(200);
+
       return false;
     },
 

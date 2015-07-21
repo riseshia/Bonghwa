@@ -102,6 +102,8 @@ a {
   white-space: -pre-wrap;      /* Opera 4-6 */
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word; 
+  min-height: 34px;
+  height: initial;
 }
 
 #contents[bw-text-empty=true] {

@@ -106,7 +106,7 @@ var app = app || {};
       e.preventDefault();
 
       $('html, body').animate({scrollTop: 0}, 600);
-      $('#contents').focus();
+      app.util.placeCaretAtEnd('contents');
 
       return this;
     },

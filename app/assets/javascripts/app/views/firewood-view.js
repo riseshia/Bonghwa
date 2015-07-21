@@ -18,7 +18,7 @@ var app = app || {};
     events: {
       'click .delete': 'delete',
       'click .mt-clk': 'clkUsername',
-      'click .mt-to': 'toggleFolding',
+      'click .mt-to' : 'toggleFolding',
       'click .fw-tag': 'clkTag'
     },
 

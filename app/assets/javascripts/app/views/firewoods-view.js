@@ -169,7 +169,9 @@ var app = app || {};
     },
 
     appendMt: function (names, target) {
+      var user_name = $.cookie("user_name");
       var mts = _.map(names, function (name) { return name; });
+      mts = _.filter(mts, function(mt) { return user_name != mt.slice(1); });
 
       this.$prevMt.val(target);
       this.$input

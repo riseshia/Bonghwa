@@ -29,7 +29,7 @@ var app = app || {};
       var arr = _.map(this.fws, function (fw) {
         return this.mtTemplate(fw);
       }, this);
-      return arr.join();
+      return arr.join('');
     },
 
     imgRender: function () {

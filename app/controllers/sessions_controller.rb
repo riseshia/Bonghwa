@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
   def new
     user = User.find_by_id(cookies[:user_id])
     if user.nil?
+      render 'new', layout: 'signin'
     elsif user.password_digest[0..9] == cookies[:auth_key]
       session[:user_id]  = user.id
       session[:user_name] = user.name

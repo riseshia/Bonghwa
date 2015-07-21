@@ -1,0 +1,101 @@
+<!DOCTYPE html><!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title id="title"><%= @app.app_name %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <LINK REL="apple-touch-icon-precomposed" HREF="/apple-touch-icon.png" />
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= csrf_meta_tags %>
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+<body>
+  <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+  <![endif]-->
+
+<div class="container-fluid">
+  <div class="row clearfix">
+    <div class="col-md-12 column">
+      <!-- Desktop Menu Start -->
+      <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#div-nav-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navbar-brand" %>
+        </div>
+
+        <% if session[:user_id] %>
+        <div class="collapse navbar-collapse" id="div-nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
+            <li><%= link_to "Mt", "/#mt", class: "mt_nav all_nav" %></li>
+            <li><%= link_to "Me", "/#me", class: "me_nav all_nav" %></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" id="hotkey-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">HotKey
+                <b class="caret"></b></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" id="img_auto_open_op" data-key="2">[2]Image Auto open</a></li>
+                <li><a href="#" id="live_stream_op" data-key="3">[3]Live Stream</a></li>
+                <li><a href="#" id="focus_hotkey" data-key="4">[4]Focus</a></li>
+                <li><a href="#" id="refresh_hotkey" data-key="backspace">[<-]Refresh</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" id="etc-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Etc<b class="caret"></b></a>
+              <ul class="dropdown-menu" role="menu">
+                <% if isAdmin?(@user) %>
+                <li><a href="<%= users_path %>" id="etc-dropdown-users">Users</a></li>
+                <li><a href="<%= links_path %>" id="etc-dropdown-links">Links</a></li>
+                <li><a href="<%= admin_edit_path %>" id="etc-dropdown-admin">Admin</a></li>
+                <li class="divider"></li>
+                <% end %>
+                <li><a href="<%= user_path(@user) %>" id="etc-dropdown-setting">Profile</a></li>
+                <li><a href="<%= option_path %>" id="etc-dropdown-setting">Setting</a></li>
+                <li class="divider"></li>
+                <% @links.each do |link| %>
+                <li><a href="<%= link.link_to %>" id="<%= 'etc-dropdown-' + link.name %>" target="_blank"><%= link.name %></a></li>
+                <% end %>
+                <li class="divider"></li>
+                <li><%= link_to "Exit", logout_path, method: :delete%></li>
+              </ul>
+            </li>
+          </ul>
+          <form class='navbar-form navbar-right hidden-xs'>
+            <div class='form-group' id='div-select-tag'>
+              <input autocomplete='off' class='form-control' id='select-tag' placeholder='#Now' type='text'>
+            </div>
+          </form>
+        </div><!-- /.navbar-collapse -->
+        <% end %>
+      </nav>
+      <!-- Desktop Menu End -->
+    </div>
+  </div>
+  <div class="row clearfix" id="main">
+  <!-- view start -->
+  <%= yield %>
+  <!-- view end -->
+  </div>
+</div>
+<%= javascript_include_tag "application" %>
+</body>
+</html>

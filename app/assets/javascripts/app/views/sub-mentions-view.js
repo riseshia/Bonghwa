@@ -6,9 +6,6 @@ var app = app || {};
   app.MentionsView = Backbone.View.extend({
     tagName: 'li',
 
-    mtTemplate: _.template($('#mt-template').html()),
-    imgTemplate: _.template($('#img-template').html()),
-
     initialize: function(args) {
       if ( args.fws[0] && args.fws[0].toJSON ) {
         args.fws = _.map(args.fws, function (fw) { return fw.toJSON() });
@@ -16,6 +13,9 @@ var app = app || {};
 
       this.parentView = args.parentView;
       this.fws = args.fws || [];
+
+      this.mtTemplate = _.template($('#mt-template').html());
+      this.imgTemplate = _.template($('#img-template').html());
     },
 
     render: function () {

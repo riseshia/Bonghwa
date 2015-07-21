@@ -149,8 +149,9 @@ var app = app || {};
       }
 
       if ( now < 0 ) {
-        var str = this.$input.val();
-        this.$input.val(str.substr(0, this.maxCount));
+        var str = this.$input.text();
+        this.$input.text(str.substr(0, this.maxCount));
+        app.util.placeCaretAtEnd('contents');
         now = 0;
       }
 

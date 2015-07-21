@@ -160,6 +160,7 @@ var app = app || {};
             .addClass("panel-danger");
       $("#info, #div-form").css("background-color","#f2dede");
       $('#new_firewood').find("fieldset").attr("disabled","a");
+      $('#commit').removeClass('btn-primary').addClass('btn-danger');
       $('#timeline_stack')
         .css("background-color","#f5c5c5")
         .html("서버와의 접속이 끊어졌습니다. 새로고침 해주세요.")

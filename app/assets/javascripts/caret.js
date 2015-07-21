@@ -21,4 +21,3 @@ app.util = app.util || {};
     }
   }
 })();
-

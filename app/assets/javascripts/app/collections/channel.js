@@ -105,6 +105,10 @@ var app = app || {};
         self.fwPostLock = false;
         self.pulling(true);
         self.trigger('ajaxSuccess');
+
+        if (document.activeElement.getAttribute('id') == 'contents') {
+          $(document.activeElement).blur().focus();
+        }
       }
     },
 

@@ -42,13 +42,20 @@ var app = app || {};
       'input #contents': 'update_count',
       'keyup #contents': 'update_count',
       'keydown #contents': 'keydown',
-      'paste #contents': 'update_count',
+      'paste #contents': 'paste_something',
       'click #timeline_stack': 'flushStack',
       'submit #new_firewood': 'submit',
       'blur #contents': function () {
         if ($('#contents').html() == '<br>')
           $('#contents').html('');
       }
+    },
+
+    paste_something: function () {
+      setTimeout(function() {
+        $('#contents').html($('#contents').text());
+        this.update_count();
+      }.bind(this), 0);
     },
 
     keydown: function (e) {

@@ -54,7 +54,7 @@ var app = app || {};
       
       var targets = this.$('.mt-target');
       var arr = _.map(targets, function (target) { return $(target).text(); });
-      arr.push((this.model.get('is_dm') == 0 ? '@':'!') + this.model.get('name'));
+      arr.unshift((this.model.get('is_dm') == 0 ? '@':'!') + this.model.get('name'));
 
       app.firewoods.trigger('form:appendMt', _.uniq(arr), this.model.get('id'));
     },

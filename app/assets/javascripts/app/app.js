@@ -20,5 +20,19 @@ $(function () {
     new app.FirewoodsView();
     new app.UsersView();
     Backbone.history.start();
+
+    $('.all_nav').click(function (e) {
+      var page = window.PAGE_TYPE;
+      var clicked = (function () {
+        if ($('.now_nav').parent().hasClass('active')) return 1;
+        else if ($('.mt_nav').parent().hasClass('active')) return 2;
+        else return 3;
+      })();
+      
+      if (page == clicked) {
+        $(document).scrollTop(0);
+        e.stopPropagation();
+      }
+    });
   }
 });

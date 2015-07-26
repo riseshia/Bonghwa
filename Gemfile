@@ -26,6 +26,7 @@ group :development, :test do
 end
 
 group :deployment do
+  gem 'highline'
   gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-rails'
   gem 'capistrano-rbenv'

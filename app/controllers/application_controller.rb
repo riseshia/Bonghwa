@@ -56,6 +56,7 @@ class ApplicationController < ActionController::Base
       else
         session[:user_name] = @user.name
         session[:user_level] = @user.level
+        cookies[:user_name] = { value: @user.name, expires: realTime() + 7.days} unless @user.name == cookies[:user_name]
       end
     end
     

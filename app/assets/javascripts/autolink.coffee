@@ -1,6 +1,6 @@
 autoLink = (options...) ->
   url_pattern =
-    /(^|\s)(https?\:\/\/\S+(\.\S+)*)/gi
+    /(^|\s)(https?\:\/\/\S+(\.[^\s\<]+))/gi
 #    /(^|\s)(\b(https?):\/\/[\-A-Z0-9+&@#\/%?=~_|!:,.;]*[\-A-Z0-9+&@#\/%=~_|]\b\/?)/ig
 
   if options.length > 0

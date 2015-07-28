@@ -25,7 +25,9 @@ var app = app || {};
       this.listenTo(app.firewoods, 'activeTag', this.setTagSelector);
       this.listenTo(app.channel, 'ajaxError', this.disableApp);
 
-      this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }));
+      if (this.$info.length) {
+        this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }));
+      }
 
       $(document).keycut();
     },

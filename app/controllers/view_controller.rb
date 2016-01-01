@@ -18,12 +18,12 @@ class ViewController < ApplicationController
         $redis.zadd("#{$servername}:app-infos", info.id, Marshal.dump(info))
       end
     else
-      infos = $redis.zrange("#{$servername}:app-infos",0,-1)
+      infos = $redis.zrange("#{$servername}:app-infos", 0, -1)
       infos.each do |info|
         @infos << Marshal.load(info)
       end
     end
 
-    return @infos
+    @infos
   end
 end

@@ -1,7 +1,7 @@
-require "rails_helper"
+require 'rails_helper'
 
-describe User, :type => :model do
-  it "will be created successfully" do
+describe User, type: :model do
+  it 'will be created successfully' do
     user = create(:user)
   end
 

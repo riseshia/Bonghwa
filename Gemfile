@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.1.7'
-gem 'mysql2'
+gem 'sqlite3'
+gem 'mysql2', '~> 0.3.18'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -16,6 +17,7 @@ gem 'will_paginate', '3.0.7'
 gem 'oj'
 gem 'figaro'
 gem "paperclip", "~> 3.0"
+gem 'puma'
 
 # To test Project
 group :development, :test do
@@ -25,13 +27,11 @@ group :development, :test do
   gem 'capybara', '~> 2.4.0'
 end
 
-group :deployment do
-  gem 'highline'
-  gem 'capistrano', '~> 3.4.0'
-  gem 'capistrano-rails'
-  gem 'capistrano-rbenv'
-  gem 'unicorn'
-  gem 'capistrano-bundler'
+group :development do
+  gem 'capistrano',         require: false
+  gem 'capistrano-rbenv',     require: false
+  gem 'capistrano-rails',   require: false
+  gem 'capistrano-bundler', require: false
   gem 'capistrano-secrets-yml', '~> 1.0.0'
-  gem 'capistrano-unicorn-nginx', :git => 'https://github.com/riseshia/capistrano-unicorn-nginx.git'
+  gem 'capistrano3-puma',   require: false
 end

@@ -1,3 +1,4 @@
+# Firewood
 class Firewood < ActiveRecord::Base
   attr_accessible :contents, :img_id, :is_dm, :mt_root, :prev_mt, :user_id, :user_name
 

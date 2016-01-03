@@ -1,3 +1,4 @@
+# ApplicationHelper
 module ApplicationHelper
   protected
 

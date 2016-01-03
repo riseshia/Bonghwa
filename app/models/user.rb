@@ -1,3 +1,4 @@
+# User
 class User < ActiveRecord::Base
   attr_accessible :level, :login_id, :name, :password_digest, :recent_login, :password, :password_confirmation
 

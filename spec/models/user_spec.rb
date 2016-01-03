@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe User, type: :model do
   it 'will be created successfully' do
-    user = create(:user)
+    create(:user)
   end
 
   it "won't be created when user don't type login_id" do

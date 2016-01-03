@@ -1,3 +1,4 @@
+# UsersHelper
 module UsersHelper
   def level_up(user)
     if user.level == 0

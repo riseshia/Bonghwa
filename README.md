@@ -6,8 +6,7 @@ Bonghwa is a private SNS for small group. At first, It was developed for its dev
 * Redis
 
 ## Code Status
-
-[![Build Status](https://travis-ci.org/riseshia/bonghwa.svg?branch=master)](https://travis-ci.org/riseshia/Bonghwa)
+[![Build Status](https://travis-ci.org/riseshia/Bonghwa.svg?branch=master)](https://travis-ci.org/riseshia/Bonghwa)
 
 ## Code Climate
 [![Code Climate](https://codeclimate.com/github/riseshia/Bonghwa/badges/gpa.svg)](https://codeclimate.com/github/riseshia/Bonghwa)

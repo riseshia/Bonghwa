@@ -66,6 +66,4 @@ Temporary Items
 /config/application.yml
 
 # Development Environments
-Vagrantfile
-bootstrap.sh
 .vagrant

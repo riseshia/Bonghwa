@@ -17,7 +17,7 @@
 require 'capybara/rspec'
 require 'factory_girl_rails'
 require 'rspec/collection_matchers'
-require "codeclimate-test-reporter"
+require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
 RSpec.configure do |config|

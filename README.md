@@ -7,11 +7,11 @@ Bonghwa is a private SNS for small group. At first, It was developed for its dev
 
 ## Code Status
 
-[![Build Status](https://travis-ci.org/riseshia/bonghwa.svg?branch=master)](https://travis-ci.org/riseshia/bonghwa)
+[![Build Status](https://travis-ci.org/riseshia/bonghwa.svg?branch=master)](https://travis-ci.org/riseshia/Bonghwa)
 
 ## Code Climate
-[![Code Climate](https://codeclimate.com/github/riseshia/bonghwa/badges/gpa.svg)](https://codeclimate.com/github/riseshia/bonghwa)
-[![Code Coverage](https://codeclimate.com/github/riseshia/bonghwa/badges/coverage.svg)](https://codeclimate.com/github/riseshia/bonghwa/coverage)
+[![Code Climate](https://codeclimate.com/github/riseshia/Bonghwa/badges/gpa.svg)](https://codeclimate.com/github/riseshia/Bonghwa)
+[![Test Coverage](https://codeclimate.com/github/riseshia/Bonghwa/badges/coverage.svg)](https://codeclimate.com/github/riseshia/Bonghwa/coverage)
 
 ## License
 Neroscape is released under the [MIT License](http://www.opensource.org/licenses/MIT).

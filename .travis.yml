@@ -4,4 +4,4 @@ rvm:
 services:
   - redis-server
 script:
-  - RAILS_ENV=test CODECLIMATE_REPO_TOKEN=ffbbb90d205e7b2a0df13e6cd785c7cf2b08b9031e9b0516dc6164bfc56bd2bf bundle exec rspec
+  - RAILS_ENV=test CODECLIMATE_REPO_TOKEN=1898c1592d89355927dfccc9815ec3f91fa5fa32e2eb1333977b008d4c9e96dc bundle exec rspec

@@ -26,7 +26,6 @@ pickle-email-*.html
 dump.rdb
 
 #server setting
-config/secrets.yml
 config/nginx.conf
 config/redis.conf
 config/unicorn.rb

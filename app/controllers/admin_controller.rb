@@ -3,9 +3,6 @@ class AdminController < ApplicationController
   skip_before_action :app_setting, only: [:new_app]
   before_action :admin_check, except: [:new_app]
 
-  def index
-  end
-
   # 처음 앱을 실행했을때 초기화 작업
   def new_app
     if App.all.size == 0

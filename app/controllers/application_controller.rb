@@ -158,7 +158,6 @@ class ApplicationController < ActionController::Base
     @fw = Firewood.new
     @fw.user_id = 0
     @fw.user_name = 'System'
-    # @fw.rgb = "0,0,0"
     arr = str.split(' ')
     arr = arr.reject do |el|
       el.start_with?('#')

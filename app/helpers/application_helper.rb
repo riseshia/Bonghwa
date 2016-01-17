@@ -2,7 +2,7 @@
 module ApplicationHelper
   protected
 
-    def isAdmin?(user)
+    def admin?(user)
       if user.level == 999
         return true
       else

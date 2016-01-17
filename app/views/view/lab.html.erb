@@ -38,8 +38,8 @@
       <a class="fw-username mt-clk" href="#">{{= name }}</a> : <span class="fw-contents">
       {{ contents = contents.replace(/\s(#[^\s]+)/g, " <a href='#' class='fw-tag'>$1</a>")
                             .autoLink({ target: "_blank", rel: "nofollow"}) }}
-      {{ contents = (is_dm != 0 
-        ? contents.replace(/^!([^\s]\S+)/g, "<span class='mt-target'>!$1</span>") 
+      {{ contents = (is_dm != 0
+        ? contents.replace(/^!([^\s]\S+)/g, "<span class='mt-target'>!$1</span>")
         : contents.replace(/(^|\s)(@[^@!\s]+)/g, "$1<span class='mt-target'>$2</span>")) }}
       {{= contents.replace(new RegExp('(@|!)(' + $.cookie('user_name') + ')'), "$1<strong>$2</strong>") }}
       </span>

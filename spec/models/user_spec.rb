@@ -1,15 +1,14 @@
 require 'rails_helper'
 
-describe User, type: :model do
-  it 'will be created successfully' do
-    create(:user)
+RSpec.describe User, type: :model do
+  describe 'Active Record Validations' do
+    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:login_id) }
+    it { should validate_uniqueness_of(:name) }
+    it { should validate_uniqueness_of(:login_id) }
   end
 
-  it "won't be created when user don't type login_id" do
-    user = build(:user)
-    user.login_id = nil
-    user.save
-
-    expect(user.id).to eq(nil)
+  describe 'Active Record Associations' do
+    it { should have_many(:firewoods) }
   end
 end

@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class ApiController < ApplicationController
   def new
     @fw = Firewood.new(params[:firewood])

@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class ApplicationController < ActionController::Base
   before_action :authorize, :app_setting
   protect_from_forgery

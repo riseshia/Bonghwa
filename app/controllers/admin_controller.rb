@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class AdminController < ApplicationController
   skip_before_action :authorize, only: [:new_app]
   skip_before_action :app_setting, only: [:new_app]

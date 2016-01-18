@@ -73,12 +73,11 @@ class ApplicationController < ActionController::Base
   protected
 
   def to_json(firewoods)
-    fws = []
-    firewoods.each do |fw|
+    firewoods.map do |fw|
       img_link = '0'
       img_link = fw.attach.img.url if (fw.attach_id != 0)
 
-      a = {
+      {
         'id' => fw.id,
         'mt_root' => fw.mt_root,
         'prev_mt' => fw.prev_mt,
@@ -89,9 +88,7 @@ class ApplicationController < ActionController::Base
         'img_link' => img_link,
         'created_at' => fw.created_at.strftime('%D %T')
       }
-      fws << a
     end
-    fws
   end
 
   protected

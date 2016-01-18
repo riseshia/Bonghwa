@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
-  skip_before_action :authorize, only: [:new_app]
-  skip_before_action :app_setting, only: [:new_app]
-  before_action :admin_check, except: [:new_app]
+  skip_before_action :authorize, only: :new_app
+  skip_before_action :app_setting, only: :new_app
+  before_action :admin_check, except: :new_app
 
   # 처음 앱을 실행했을때 초기화 작업
   def new_app

@@ -2,6 +2,7 @@
 # This provice simple sign_in method for test
 module Authorize
   def sign_in(user)
+    create(:app)
     user_obj = create(user)
     session[:user_id] = user_obj.id
     session[:user_name] = user_obj.name

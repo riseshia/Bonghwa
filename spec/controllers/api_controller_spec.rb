@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe ApiController, type: :controller do
   after(:example) do
     sign_out

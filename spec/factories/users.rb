@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :user do
+    id '1000'
     login_id 'user_id'
     name 'user_name'
     password 'userpwd'

@@ -34,7 +34,6 @@ config/nginx-engine.conf
 config/deploy.rb
 config/deploy/
 config/ssl
-config/initializers/redis.rb
 Capfile
 Dockerfile
 Procfile

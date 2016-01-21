@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.7'
+gem 'rails', '4.2.5'
 gem 'sqlite3'
-gem 'mysql2', '~> 0.3.18'
+gem 'mysql2', '~> 0.4'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -11,7 +11,6 @@ gem 'coffee-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'bcrypt'
-# gem 'protected_attributes'
 gem 'redis-rails'
 gem 'will_paginate', '3.0.7'
 gem 'oj'
@@ -21,6 +20,7 @@ gem 'puma'
 
 # To test Project
 group :development, :test do
+  gem 'web-console', '~> 2.0'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'rspec-collection_matchers'
   gem 'factory_girl_rails', "~> 4.0"

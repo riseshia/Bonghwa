@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
   def new
-    @fw = Firewood.new(params[:firewood])
+    @fw = Firewood.new(firewood_params)
     @fw.user_id ||= @user.id
     @fw.user_name = session[:user_name]
     @fw.prev_mt ||= 0
@@ -175,5 +175,11 @@ class ApiController < ApplicationController
     else
       render inline: "<textarea><%= Oj.dump('fws' => @fws, 'users' => @users) %></textarea>"
     end
+  end
+
+  private
+
+  def firewood_params
+    params.require(:firewood).permit(:contents, :prev_mt)
   end
 end

@@ -29,7 +29,7 @@ class LinksController < ApplicationController
   # POST /links
   # POST /links.json
   def create
-    @link = Link.new(params[:link])
+    @link = Link.new(link_params)
 
     respond_to do |format|
       if @link.save
@@ -49,7 +49,7 @@ class LinksController < ApplicationController
     @link = Link.find(params[:id])
 
     respond_to do |format|
-      if @link.update_attributes(params[:link])
+      if @link.update_attributes(link_params)
         $redis.zadd("#{$servername}:app-links", @link.id, Marshal.dump(@link))
         format.html { redirect_to link_url, notice: 'Link was successfully updated.' }
         format.json { head :no_content }
@@ -71,5 +71,11 @@ class LinksController < ApplicationController
       format.html { redirect_to links_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def link_params
+    params.require(:link).permit(:link_to, :name)
   end
 end

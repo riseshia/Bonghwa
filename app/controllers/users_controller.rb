@@ -38,10 +38,10 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     @user.recent_login = Time.now
 
-    return redirect_to ('/users/new'), notice: '그 이름은 사용하실 수 없습니다.' if params[:user][:name] == 'System'
+    return redirect_to ('/users/new'), notice: '그 이름은 사용하실 수 없습니다.' if @user.name == 'System'
 
     respond_to do |format|
       if @user.save
@@ -61,7 +61,7 @@ class UsersController < ApplicationController
     @user.level = 1
 
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(user_params)
         $redis.del("#{$servername}:session-#{@user.id}")
         format.html { redirect_to users_url, notice: 'User was successfully updated.' }
       else
@@ -76,10 +76,10 @@ class UsersController < ApplicationController
     return redirect_to index_url, notice: '접근 하실 수 없습니다.' unless session[:user_id].to_i == params[:id].to_i || session[:user_level].to_i == 999
     @user = User.find(params[:id])
 
-    return redirect_to ('/users/' + @user.id.to_s + '/edit'), notice: '그 이름은 사용하실 수 없습니다.' if params[:user][:name] == 'System'
-    return redirect_to ('/users/' + @user.id.to_s + '/edit'), notice: '공백을 사용하실 수 없습니다.' unless params[:user][:name].scan(' ').size == 0
+    return redirect_to ('/users/' + @user.id.to_s + '/edit'), notice: '그 이름은 사용하실 수 없습니다.' if @user.name == 'System'
+    return redirect_to ('/users/' + @user.id.to_s + '/edit'), notice: '공백을 사용하실 수 없습니다.' unless @user.name.scan(' ').size == 0
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(user_params)
         session[:user_name] = @user.name
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
@@ -100,5 +100,12 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:login_id, :name, :password, :password_confirmation)
   end
 end

@@ -1,6 +1,5 @@
 # Attach
 class Attach < ActiveRecord::Base
-  attr_accessible :img
   has_attached_file :img,
                     path: ':rails_root/public/system/:attachment/:id/:style/:filename',
                     url: '/system/:attachment/:id/:style/:filename'

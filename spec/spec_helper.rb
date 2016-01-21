@@ -20,8 +20,10 @@ require 'rspec/collection_matchers'
 require 'codeclimate-test-reporter'
 require 'simplecov'
 
-CodeClimate::TestReporter.start
-SimpleCov.start 'rails'
+if ENV['CODECLIMATE_REPO_TOKEN']
+  CodeClimate::TestReporter.start
+  SimpleCov.start 'rails'
+end
 
 RSpec.configure do |config|
   # The settings below are suggested to provide a good initial experience

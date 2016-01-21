@@ -88,6 +88,7 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.99)
+    mimemagic (0.3.0)
     mini_portile2 (2.0.0)
     minitest (5.8.3)
     mysql2 (0.3.20)
@@ -97,11 +98,12 @@ GEM
     nokogiri (1.6.7.1)
       mini_portile2 (~> 2.0.0.rc2)
     oj (2.14.3)
-    paperclip (3.5.4)
-      activemodel (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      cocaine (~> 0.5.3)
+    paperclip (4.3.2)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      cocaine (~> 0.5.5)
       mime-types
+      mimemagic (= 0.3.0)
     puma (2.15.3)
     rack (1.5.5)
     rack-test (0.6.3)
@@ -213,7 +215,7 @@ DEPENDENCIES
   jquery-rails
   mysql2 (~> 0.3.18)
   oj
-  paperclip (~> 3.0)
+  paperclip (~> 4.0)
   puma
   rails (= 4.1.7)
   redis-rails

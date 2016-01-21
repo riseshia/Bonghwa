@@ -16,7 +16,7 @@ gem 'redis-rails'
 gem 'will_paginate', '3.0.7'
 gem 'oj'
 gem 'figaro'
-gem "paperclip", "~> 3.0"
+gem "paperclip", "~> 4.0"
 gem 'puma'
 
 # To test Project

@@ -18,8 +18,14 @@ require 'capybara/rspec'
 require 'factory_girl_rails'
 require 'rspec/collection_matchers'
 require 'codeclimate-test-reporter'
+require 'simplecov'
 
 CodeClimate::TestReporter.start
+# SimpleCov.start do
+#   add_filter "/model/"
+#   add_filter "/controller/"
+# end
+SimpleCov.start 'rails'
 
 RSpec.configure do |config|
   # The settings below are suggested to provide a good initial experience

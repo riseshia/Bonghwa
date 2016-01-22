@@ -1,11 +1,10 @@
 class ApiController < ApplicationController
   def new
-    @fw = Firewood.new(firewood_params) do |fw|
-      fw.user_id ||= @user.id
-      fw.user_name = session[:user_name]
-      fw.prev_mt ||= 0
-      fw.contents = escape_tags(fw.contents)
-    end
+    @fw = Firewood.new(firewood_params)
+    @fw.user_id ||= @user.id
+    @fw.user_name = session[:user_name]
+    @fw.prev_mt ||= 0
+    @fw.contents = escape_tags(@fw.contents)
 
     if @fw.contents.match('^!.+')
       new_dm(@fw)
@@ -48,12 +47,12 @@ class ApiController < ApplicationController
   end
 
   def system_dm(message)
-    @dm = Firewood.new do
-      user_id 0
-      user_name 'System'
-      contents message
-      is_dm session[:user_id]
-    end
+    @dm = Firewood.new
+
+    @dm.user_id = 0
+    @dm.user_name = 'System'
+    @dm.contents = message
+    @dm.is_dm = session[:user_id]
 
     save_fw(@dm)
   end

@@ -14,11 +14,7 @@ class ApiController < ApplicationController
       save_fw(@fw)
     end
 
-    if request.xhr?
-      render json: Oj.dump('')
-    else
-      render inline: '<textarea>{}</textarea>'
-    end
+    universal_render ''
   end
 
   def new_dm(fw)
@@ -74,11 +70,7 @@ class ApiController < ApplicationController
       @fw.destroy
     end
 
-    if request.xhr?
-      render json: Oj.dump('')
-    else
-      render inline: '<textarea>{}</textarea>'
-    end
+    universal_render ''
   end
 
   # 지금 시점으로부터 가장 최근의 장작을 50개 불러온다.
@@ -106,11 +98,7 @@ class ApiController < ApplicationController
     update_login_info(@user)
     @users = get_recent_users
 
-    if request.xhr?
-      render json: Oj.dump('fws' => @fws, 'users' => @users)
-    else
-      render inline: "<textarea><%= Oj.dump('fws' => @fws, 'users' => @users) %></textarea>"
-    end
+    universal_render 'fws' => @fws, 'users' => @users
   end
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
@@ -118,11 +106,7 @@ class ApiController < ApplicationController
     @mentions = Firewood.where('(id = ?) AND (is_dm = 0 OR is_dm = ?)', params[:prev_mt], session[:user_id]).order('id DESC').limit(1)
     @mts = to_json(@mentions)
 
-    if request.xhr?
-      render json: Oj.dump('fws' => @mts)
-    else
-      render inline: "<textarea><%= Oj.dump('fws' => @mts) %></textarea>"
-    end
+    universal_render 'fws' => @mts
   end
 
   # after 이후의 장작을 최대 1000개까지 내림차순으로 받아온다.
@@ -147,11 +131,7 @@ class ApiController < ApplicationController
     update_login_info(@user)
     @users = get_recent_users
 
-    if request.xhr?
-      render json: Oj.dump('fws' => @fws, 'users' => @users)
-    else
-      render inline: "<textarea><%= Oj.dump('fws' => @fws, 'users' => @users) %></textarea>"
-    end
+    universal_render 'fws' => @fws, 'users' => @users
   end
 
   def trace
@@ -170,16 +150,20 @@ class ApiController < ApplicationController
     end
     @fws = to_json(@firewoods)
 
-    if request.xhr?
-      render json: Oj.dump('fws' => @fws, 'users' => @users)
-    else
-      render inline: "<textarea><%= Oj.dump('fws' => @fws, 'users' => @users) %></textarea>"
-    end
+    universal_render 'fws' => @fws, 'users' => @users
   end
 
   private
 
   def firewood_params
     params.require(:firewood).permit(:contents, :prev_mt)
+  end
+
+  def universal_render(content='')
+    if request.xhr?
+      render json: Oj.dump(content)
+    else
+      render inline: "<textarea><%= Oj.dump(content) %></textarea>"
+    end
   end
 end

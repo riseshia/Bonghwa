@@ -8,4 +8,8 @@ class Firewood < ActiveRecord::Base
     firewood.attach_id ||= 0
     firewood.mt_root ||= 0
   end
+
+  def normal?
+    is_dm == 0
+  end
 end

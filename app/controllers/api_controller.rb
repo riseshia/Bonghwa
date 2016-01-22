@@ -90,7 +90,7 @@ class ApiController < ApplicationController
       count = 0
       $redis.zrevrange("#{$servername}:fws", 0, 500).each do |fw|
         f = Marshal.load(fw)
-        if f.is_dm == 0 || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
+        if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
           @firewoods << f
           count += 1
         end
@@ -134,7 +134,7 @@ class ApiController < ApplicationController
       @firewoods = []
       $redis.zrevrangebyscore("#{$servername}:fws", '+inf', "(#{params[:after]}").each do |fw|
         f = Marshal.load(fw)
-        @firewoods << f if f.is_dm == 0 || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
+        @firewoods << f if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
       end
     elsif type == '2' # Mt
       @firewoods = Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)

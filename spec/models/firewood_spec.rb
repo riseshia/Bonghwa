@@ -5,4 +5,11 @@ RSpec.describe Firewood, type: :model do
     it { should belong_to(:user) }
     it { should belong_to(:attach) }
   end
+
+  describe '#normal?' do
+    it 'should return true' do
+      firewood = create(:normal_message)
+      expect(firewood.normal?).to be(true)
+    end
+  end
 end

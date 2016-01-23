@@ -104,12 +104,9 @@ class ApplicationController < ActionController::Base
     before_timestamp = now_timestamp - 40
     @users = $redis.zrangebyscore("#{$servername}:active-users", before_timestamp, now_timestamp)
 
-    users = []
-    @users.sort.each do |user|
-      users << { 'name' => user }
+    @users.sort.map do |user|
+      { 'name' => user }
     end
-
-    users
   end
 
   protected
@@ -143,10 +140,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def escape_tags(str)
-    a = str.gsub('<', '&lt;')
-    str = a.gsub('>', '&gt;')
-
-    str
+    str.gsub('<', '&lt;').gsub('>', '&gt;')
   end
 
   protected
@@ -288,16 +282,13 @@ class ApplicationController < ActionController::Base
     if arr[0] == '/공지추가'
       if @user.level == 999
         im = str.gsub('/공지추가 ', '')
-        if str.gsub('/공지추가', '').size == 0
-          result_str = '내용을 입력해주세요.'
-        else
-          info = Info.new
-          info.infomation = im
-          info.save!
-          $redis.zadd("#{$servername}:app-infos", info.id, Marshal.dump(info))
-
-          result_str = '공지가 등록되었습니다.'
-        end
+        result_str = if str.gsub('/공지추가', '').size == 0
+                       '내용을 입력해주세요.'
+                     else
+                       info = Info.create!(infomation: im)
+                       $redis.zadd("#{$servername}:app-infos", info.id, Marshal.dump(info))
+                       '공지가 등록되었습니다.'
+                     end
       else
         result_str = '권한이 없습니다.'
       end

@@ -19,4 +19,4 @@ module Authorize
 end
 
 # Register this module
-RSpec.configure {|c| c.include Authorize }
+RSpec.configure { |c| c.include Authorize }

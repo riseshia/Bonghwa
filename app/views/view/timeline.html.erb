@@ -1,6 +1,6 @@
 <div id="now_page" class="wrapper">
   <!-- Info start  -->
-  <%=render "info" %>
+  <%= render partial: "info", locals: { infos: @infos } %>
   <!-- Info end -->
   <div class="col-md-9 cut-side-padding">
     <div id="firewoods">

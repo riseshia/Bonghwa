@@ -1,8 +1,8 @@
-<% if @infos.size != 0 %>
+<% if infos.size != 0 %>
 	<div id="info" class="col-md-12 top-fixed">
 		<h4 class="hidden-xs">Information</h4>
-		<% for i in (0..@infos.size-1) %>
-  			<div info-id="<%=@infos[i].id %>"><%="#{(i+1).to_s}. #{unescape_tag(@infos[i].infomation)}" %></div>
+		<% for i in (0...infos.size) %>
+  			<div info-id="<%=infos[i].id %>"><%="#{(i+1).to_s}. #{unescape_tag(infos[i].infomation)}" %></div>
   		<% end %>
 	</div>
 <% end %>

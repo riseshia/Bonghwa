@@ -27,6 +27,7 @@ var app = app || {};
 
       if (this.$info.length) {
         this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }));
+        this.$info.find('.link_url').click(function (e){ e.stopPropagation(); });
       }
 
       $(document).keycut();

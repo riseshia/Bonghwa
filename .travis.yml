@@ -6,3 +6,5 @@ services:
 script:
   - bin/rake db:migrate RAILS_ENV=test
   - CODECLIMATE_REPO_TOKEN=1898c1592d89355927dfccc9815ec3f91fa5fa32e2eb1333977b008d4c9e96dc bundle exec rake
+branches:
+  only: master

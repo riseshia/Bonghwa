@@ -6,7 +6,7 @@ begin
 
   # Preload Firewoods
   Firewood.all.order("id DESC").limit($redis_cache_size).each do |fw|
-    $redis.zadd("#{$servername}:fws",fw.id,Marshal.dump(fw))
+    $redis.zadd("#{$servername}:fws", fw.id, Marshal.dump(fw))
   end
 rescue
 end

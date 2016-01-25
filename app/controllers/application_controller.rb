@@ -5,25 +5,25 @@ class ApplicationController < ActionController::Base
   protected
 
   def app_setting
-    @app = $redis.get("#{$servername}:app-data")
+    @app = redis.get("#{servername}:app-data")
     if @app
       @app = Marshal.load(@app)
     else
       @app = App.first
-      $redis.set("#{$servername}:app-data", Marshal.dump(@app))
+      redis.set("#{servername}:app-data", Marshal.dump(@app))
     end
 
     if @app.nil?
       redirect_to initialize_path
     else
       @links = []
-      if $redis.zcard("#{$servername}:app-links") == 0
+      if redis.zcard("#{servername}:app-links") == 0
         @links = Link.all
         @links.each do |link|
-          $redis.zadd("#{$servername}:app-links", link.id, Marshal.dump(link))
+          redis.zadd("#{servername}:app-links", link.id, Marshal.dump(link))
         end
       else
-        links = $redis.zrange("#{$servername}:app-links", 0, -1)
+        links = redis.zrange("#{servername}:app-links", 0, -1)
         links.each do |link|
           @links << Marshal.load(link)
         end
@@ -32,17 +32,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  protected
-
   def authorize
-    @user = $redis.get("#{$servername}:session-#{session[:user_id]}")
+    @user = redis.get("#{servername}:session-#{session[:user_id]}")
 
     if @user
       @user = Marshal.load(@user)
     else
       @user = User.find_by_id(session[:user_id])
-      $redis.set("#{$servername}:session-#{session[:user_id]}", Marshal.dump(@user))
-      $redis.expire("#{$servername}:session-#{session[:user_id]}", 86_400)
+      redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(@user))
+      redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
     end
 
     if @user.nil?
@@ -60,8 +58,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  protected
-
   def admin_check
     if @user.nil?
       redirect_to login_path, notice: '로그인해주세요.'
@@ -69,8 +65,6 @@ class ApplicationController < ActionController::Base
       redirect_to index_path, notice: '접근 권한이 없습니다. 관리자에게 문의해주세요.'
     end
   end
-
-  protected
 
   def to_json(firewoods)
     firewoods.map do |fw|
@@ -91,25 +85,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  protected
-
   def update_login_info(user)
-    $redis.zadd("#{$servername}:active-users", Time.now.to_i, user.name) unless user.id == 1
+    redis.zadd("#{servername}:active-users", Time.now.to_i, user.name) unless user.id == 1
   end
-
-  protected
 
   def get_recent_users
     now_timestamp = Time.now.to_i
     before_timestamp = now_timestamp - 40
-    @users = $redis.zrangebyscore("#{$servername}:active-users", before_timestamp, now_timestamp)
+    @users = redis.zrangebyscore("#{servername}:active-users", before_timestamp, now_timestamp)
 
     @users.sort.map do |user|
       { 'name' => user }
     end
   end
-
-  protected
 
   def save_fw(fw)
     begin
@@ -129,21 +117,17 @@ class ApplicationController < ActionController::Base
         fw.save!
       end
 
-      $redis.zadd("#{$servername}:fws", fw.id, Marshal.dump(fw))
-      $redis.zremrangebyrank("#{$servername}:fws", 0, -1 * ($redis_cache_size - 1))
+      redis.zadd("#{servername}:fws", fw.id, Marshal.dump(fw))
+      redis.zremrangebyrank("#{servername}:fws", 0, -1 * ($redis_cache_size - 1))
     rescue Exception => e
       log = e.message
     end
     log = '정상적으로 업로드 되었습니다.'
   end
 
-  protected
-
   def escape_tags(str)
     str.gsub('<', '&lt;').gsub('>', '&gt;')
   end
-
-  protected
 
   def script_excute(str)
     @fw = Firewood.new
@@ -166,8 +150,6 @@ class ApplicationController < ActionController::Base
 
     save_fw(@fw)
   end
-
-  protected
 
   def user_script_excute(str)
     arr = str.split(' ')
@@ -256,10 +238,10 @@ class ApplicationController < ActionController::Base
           @user.name = arr[1]
           @user.save!
 
-          $redis.zrem("#{$servername}:active-users", before)
-          $redis.zadd("#{$servername}:active-users", Time.now.to_i, @user.name)
-          $redis.set("#{$servername}:session-#{session[:user_id]}", Marshal.dump(@user))
-          $redis.expire("#{$servername}:session-#{session[:user_id]}", 86_400)
+          redis.zrem("#{servername}:active-users", before)
+          redis.zadd("#{servername}:active-users", Time.now.to_i, @user.name)
+          redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(@user))
+          redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
 
           session[:user_name] = @user.name
           cookies[:user_name] = { value: @user.name, expires: realTime + 7.days }
@@ -274,8 +256,6 @@ class ApplicationController < ActionController::Base
     result_str
   end
 
-  protected
-
   def admin_script_excute(str)
     arr = str.split(' ')
     result_str = ''
@@ -286,7 +266,7 @@ class ApplicationController < ActionController::Base
                        '내용을 입력해주세요.'
                      else
                        info = Info.create!(infomation: im)
-                       $redis.zadd("#{$servername}:app-infos", info.id, Marshal.dump(info))
+                       redis.zadd("#{servername}:app-infos", info.id, Marshal.dump(info))
                        '공지가 등록되었습니다.'
                      end
       else
@@ -305,7 +285,7 @@ class ApplicationController < ActionController::Base
             result_str = '공지사항이 없어요.'
           else
             deleted_idx = arr[1].to_i - 1
-            $redis.zremrangebyscore("#{$servername}:app-infos", infos[deleted_idx].id, infos[deleted_idx].id)
+            redis.zremrangebyscore("#{servername}:app-infos", infos[deleted_idx].id, infos[deleted_idx].id)
             infos[deleted_idx].delete
             result_str = '삭제 완료되었습니다.'
           end
@@ -318,9 +298,17 @@ class ApplicationController < ActionController::Base
     result_str
   end
 
-  protected
-
   def realTime
     Time.zone.now + 9.hours
+  end
+
+  # global redis accessor
+  def redis
+    $redis
+  end
+
+  # global servername accessor
+  def servername
+    $servername
   end
 end

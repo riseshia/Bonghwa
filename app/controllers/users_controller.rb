@@ -62,7 +62,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(user_params)
-        $redis.del("#{$servername}:session-#{@user.id}")
+        redis.del("#{servername}:session-#{@user.id}")
         format.html { redirect_to users_url, notice: 'User was successfully updated.' }
       else
         format.html { render action: 'edit' }

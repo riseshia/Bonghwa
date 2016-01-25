@@ -33,7 +33,7 @@ class LinksController < ApplicationController
 
     respond_to do |format|
       if @link.save
-        $redis.zadd("#{$servername}:app-links", @link.id, Marshal.dump(@link))
+        redis.zadd("#{servername}:app-links", @link.id, Marshal.dump(@link))
         format.html { redirect_to links_url, notice: 'Link was successfully created.' }
         format.json { render json: @link, status: :created, location: @link }
       else
@@ -50,7 +50,7 @@ class LinksController < ApplicationController
 
     respond_to do |format|
       if @link.update_attributes(link_params)
-        $redis.zadd("#{$servername}:app-links", @link.id, Marshal.dump(@link))
+        redis.zadd("#{servername}:app-links", @link.id, Marshal.dump(@link))
         format.html { redirect_to link_url, notice: 'Link was successfully updated.' }
         format.json { head :no_content }
       else
@@ -64,7 +64,7 @@ class LinksController < ApplicationController
   # DELETE /links/1.json
   def destroy
     @link = Link.find(params[:id])
-    $redis.zremrangebyscore("#{$servername}:app-links", @link.id, @link.id)
+    redis.zremrangebyscore("#{servername}:app-links", @link.id, @link.id)
     @link.destroy
 
     respond_to do |format|

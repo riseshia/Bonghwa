@@ -71,7 +71,7 @@ class ApiController < ApplicationController
         Attach.find(@fw.attach_id).destroy
       end
 
-      $redis.zremrangebyscore("#{$servername}:fws", @fw.id, @fw.id)
+      redis.zremrangebyscore("#{servername}:fws", @fw.id, @fw.id)
       @fw.destroy
     end
 
@@ -89,7 +89,7 @@ class ApiController < ApplicationController
 
     if type == '1' # Now
       count = 0
-      $redis.zrevrange("#{$servername}:fws", 0, 500).each do |fw|
+      redis.zrevrange("#{servername}:fws", 0, 500).each do |fw|
         f = Marshal.load(fw)
         if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
           @firewoods << f
@@ -133,7 +133,7 @@ class ApiController < ApplicationController
 
     if type == '1' # Now
       @firewoods = []
-      $redis.zrevrangebyscore("#{$servername}:fws", '+inf', "(#{params[:after]}").each do |fw|
+      redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").each do |fw|
         f = Marshal.load(fw)
         @firewoods << f if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
       end

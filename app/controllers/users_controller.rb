@@ -1,3 +1,4 @@
+# UsersController
 class UsersController < ApplicationController
   skip_before_action :authorize, only: [:new, :create]
   before_action :admin_check, only: [:index, :destroy]

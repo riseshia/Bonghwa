@@ -1,3 +1,4 @@
+# ViewController
 class ViewController < ApplicationController
   def timeline
     @new_fw = Firewood.new

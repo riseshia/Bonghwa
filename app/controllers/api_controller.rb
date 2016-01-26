@@ -1,3 +1,4 @@
+# ApiController
 class ApiController < ApplicationController
   def new
     @fw = Firewood.new(firewood_params) do |fw|

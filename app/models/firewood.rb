@@ -12,4 +12,26 @@ class Firewood < ActiveRecord::Base
   def normal?
     is_dm == 0
   end
+
+  def to_json
+    {
+      'id' => id,
+      'mt_root' => mt_root,
+      'prev_mt' => prev_mt,
+      'is_dm' => is_dm,
+      'user_id' => user_id,
+      'name' => user_name,
+      'contents' => contents,
+      'img_link' => img_link,
+      'created_at' => created_at.strftime('%D %T')
+    }
+  end
+
+  def img_link
+    if attach_id != 0
+      attach.img.url
+    else
+      '0'
+    end
+  end
 end

@@ -66,25 +66,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def to_json(firewoods)
-    firewoods.map do |fw|
-      img_link = '0'
-      img_link = fw.attach.img.url if (fw.attach_id != 0)
-
-      {
-        'id' => fw.id,
-        'mt_root' => fw.mt_root,
-        'prev_mt' => fw.prev_mt,
-        'is_dm' => fw.is_dm,
-        'user_id' => fw.user_id,
-        'name' => fw.user_name,
-        'contents' => fw.contents,
-        'img_link' => img_link,
-        'created_at' => fw.created_at.strftime('%D %T')
-      }
-    end
-  end
-
   def update_login_info(user)
     redis.zadd("#{servername}:active-users", Time.now.to_i, user.name) unless user.id == 1
   end

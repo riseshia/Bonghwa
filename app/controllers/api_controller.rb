@@ -102,7 +102,7 @@ class ApiController < ApplicationController
     elsif type == '3' # Me
       @firewoods = Firewood.where('user_id = ?', session[:user_id]).order('id DESC').limit(50)
     end
-    @fws = to_json(@firewoods)
+    @fws = @firewoods.map { |f| f.to_json }
 
     update_login_info(@user)
     @users = get_recent_users
@@ -117,7 +117,7 @@ class ApiController < ApplicationController
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
     @mentions = Firewood.where('(id = ?) AND (is_dm = 0 OR is_dm = ?)', params[:prev_mt], session[:user_id]).order('id DESC').limit(1)
-    @mts = to_json(@mentions)
+    @mts = @mentions.map { |m| m.to_json }
 
     if request.xhr?
       render json: Oj.dump('fws' => @mts)
@@ -143,7 +143,7 @@ class ApiController < ApplicationController
       @firewoods = Firewood.where('id > ? AND user_id = ?', params[:after], session[:user_id]).order('id DESC').limit(1000)
     end
 
-    @fws = to_json(@firewoods)
+    @fws = @firewoods.map { |f| f.to_json }
 
     update_login_info(@user)
     @users = get_recent_users
@@ -169,7 +169,7 @@ class ApiController < ApplicationController
     elsif type == '3' # Me
       @firewoods = Firewood.where('id < ? AND user_id = ?', params[:before], session[:user_id]).order('id DESC').limit(limit)
     end
-    @fws = to_json(@firewoods)
+    @fws = @firewoods.map { |f| f.to_json }
 
     if request.xhr?
       render json: Oj.dump('fws' => @fws, 'users' => @users)

@@ -8,33 +8,26 @@ class AdminController < ApplicationController
   def new_app
     if App.all.size == 0
       # initialize app
-      @app = App.new
-      @app.home_name = 'Bonghwa'
-      @app.home_link = '/'
-      @app.app_name = 'Bonghwa'
-      @app.use_script = false
-      @app.show_widget = false
-      @app.widget_link = nil
-
-      @app.save!
+      App.create!(
+        home_name: 'Bonghwa',
+        home_link: '/',
+        app_name: 'Bonghwa',
+        use_script: false,
+        show_widget: false,
+        widget_link: nil
+      )
 
       # add Help to Link
-      @link = Link.new
-      @link.link_to = '/help'
-      @link.name = 'Help'
-
-      @link.save!
+      Link.create!(link_to: '/help', name: 'Help')
 
       # create admin account
-      @admin = User.new
-      @admin.login_id = 'admin'
-      @admin.password_digest = BCrypt::Password.create('admin')
-      @admin.name = '관리자'
-      @admin.level = 999
-      @admin.recent_login = realTime
-
-      @admin.save!
-
+      User.create!(
+        login_id: 'admin',
+        password_digest: BCrypt::Password.create('admin'),
+        name: '관리자',
+        level: 999,
+        recent_login: real_time
+      )
       return redirect_to login_url, notice: '초기 설정이 완료되었습니다. admin/admin으로 로그인해주세요. 비밀번호는 곧바로 변경하시기를 권장합니다. 사용법은 Link의 Help 문서를 참조해주세요.'
     else
       return redirect_to login_url, notice: '접근할 수 없거나, 존재하지 않는 페이지입니다.'

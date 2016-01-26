@@ -15,10 +15,9 @@ class Firewood < ActiveRecord::Base
 
   def to_json
     {
-      'id' => id,
+      'id' => id, 'is_dm' => is_dm,
       'mt_root' => mt_root,
       'prev_mt' => prev_mt,
-      'is_dm' => is_dm,
       'user_id' => user_id,
       'name' => user_name,
       'contents' => contents,
@@ -33,5 +32,9 @@ class Firewood < ActiveRecord::Base
     else
       '0'
     end
+  end
+
+  def editable?(user)
+    user_id == user.id
   end
 end

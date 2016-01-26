@@ -40,7 +40,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    @user.recent_login = Time.now
+    @user.recent_login = Time.zone.now
 
     return redirect_to ('/users/new'), notice: '그 이름은 사용하실 수 없습니다.' if @user.name == 'System'
 

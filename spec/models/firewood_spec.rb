@@ -17,17 +17,15 @@ RSpec.describe Firewood, type: :model do
     it 'should return hash' do
       firewood = create(:normal_message)
 
-      expect(firewood.to_json).to eq({
-        'id' => firewood.id,
-        'mt_root' => firewood.mt_root,
-        'prev_mt' => firewood.prev_mt,
-        'is_dm' => firewood.is_dm,
-        'user_id' => firewood.user_id,
-        'name' => firewood.user_name,
-        'contents' => firewood.contents,
-        'img_link' => firewood.img_link,
-        'created_at' => firewood.created_at.strftime('%D %T')
-      })
+      expect(firewood.to_json).to eq('id' => firewood.id,
+                                     'mt_root' => firewood.mt_root,
+                                     'prev_mt' => firewood.prev_mt,
+                                     'is_dm' => firewood.is_dm,
+                                     'user_id' => firewood.user_id,
+                                     'name' => firewood.user_name,
+                                     'contents' => firewood.contents,
+                                     'img_link' => firewood.img_link,
+                                     'created_at' => firewood.created_at.strftime('%D %T'))
     end
   end
 
@@ -42,6 +40,24 @@ RSpec.describe Firewood, type: :model do
       attach = create(:attach)
       firewood.attach = attach
       expect(firewood.normal?).not_to eq('0')
+    end
+  end
+
+  describe '#editable?' do
+    it 'should return true' do
+      firewood = create(:normal_message)
+      user = create(:user)
+      firewood.user = user
+
+      expect(firewood.editable?(user)).to be(true)
+    end
+
+    it 'should return false' do
+      firewood = create(:normal_message)
+      user = create(:user)
+      firewood.user_id = user.id + 1
+
+      expect(firewood.editable?(user)).to be(false)
     end
   end
 end

@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
     else
       session[:user_name] = @user.name
       session[:user_level] = @user.level
-      cookies[:user_name] = { value: @user.name, expires: realTime + 7.days }
+      cookies[:user_name] = { value: @user.name, expires: real_time + 7.days }
     end
   end
 
@@ -68,11 +68,11 @@ class ApplicationController < ActionController::Base
   end
 
   def update_login_info(user)
-    redis.zadd("#{servername}:active-users", Time.now.to_i, user.name) unless user.id == 1
+    redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
   end
 
   def get_recent_users
-    now_timestamp = Time.now.to_i
+    now_timestamp = Time.zone.now.to_i
     before_timestamp = now_timestamp - 40
     @users = redis.zrangebyscore("#{servername}:active-users", before_timestamp, now_timestamp)
 
@@ -174,7 +174,7 @@ class ApplicationController < ActionController::Base
         result_str = "등수 명령어에는 추가적인 인수가 필요하지 않습니다. '/등수'라고 명령해주세요."
       else
         rs = Firewood.select('user_name, count(*) as count')
-             .where('created_at > ?', Time.now - 1.month)
+             .where('created_at > ?', Time.zone.now - 1.month)
              .group('user_id')
              .order('count DESC')
              .limit(5)
@@ -191,7 +191,7 @@ class ApplicationController < ActionController::Base
         result_str = "등수 명령어에는 추가적인 인수가 필요하지 않습니다. '/내등수'라고 명령해주세요."
       else
         rs = Firewood.select('user_id, count(*) as count')
-             .where('created_at > ?', Time.now - 1.month)
+             .where('created_at > ?', Time.zone.now - 1.month)
              .group('user_id')
              .order('count DESC, user_id ASC')
 
@@ -221,12 +221,12 @@ class ApplicationController < ActionController::Base
           @user.save!
 
           redis.zrem("#{servername}:active-users", before)
-          redis.zadd("#{servername}:active-users", Time.now.to_i, @user.name)
+          redis.zadd("#{servername}:active-users", Time.zone.now.to_i, @user.name)
           redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(@user))
           redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
 
           session[:user_name] = @user.name
-          cookies[:user_name] = { value: @user.name, expires: realTime + 7.days }
+          cookies[:user_name] = { value: @user.name, expires: real_time + 7.days }
 
           result_str = "#{before}님의 닉네임이 #{@user.name}로 변경되었습니다."
         end
@@ -280,7 +280,7 @@ class ApplicationController < ActionController::Base
     result_str
   end
 
-  def realTime
+  def real_time
     Time.zone.now + 9.hours
   end
 

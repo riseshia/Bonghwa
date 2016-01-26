@@ -67,10 +67,8 @@ class ApiController < ApplicationController
     @fw = Firewood.find(params[:id])
 
     # 삭제 권한(자기 자신)이 있는지 확인
-    if @user.id == @fw.user_id
-      unless @fw.attach_id.blank? || @fw.attach_id == 0
-        Attach.find(@fw.attach_id).destroy
-      end
+    if @fw.editable? @user
+      @fw.attach.destroy if @fw.attach.present?
 
       redis.zremrangebyscore("#{servername}:fws", @fw.id, @fw.id)
       @fw.destroy
@@ -103,7 +101,7 @@ class ApiController < ApplicationController
     elsif type == '3' # Me
       @firewoods = Firewood.where('user_id = ?', session[:user_id]).order('id DESC').limit(50)
     end
-    @fws = @firewoods.map { |f| f.to_json }
+    @fws = @firewoods.map(&:to_json)
 
     update_login_info(@user)
     @users = get_recent_users
@@ -118,7 +116,7 @@ class ApiController < ApplicationController
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
     @mentions = Firewood.where('(id = ?) AND (is_dm = 0 OR is_dm = ?)', params[:prev_mt], session[:user_id]).order('id DESC').limit(1)
-    @mts = @mentions.map { |m| m.to_json }
+    @mts = @mentions.map(&:to_json)
 
     if request.xhr?
       render json: Oj.dump('fws' => @mts)
@@ -144,7 +142,7 @@ class ApiController < ApplicationController
       @firewoods = Firewood.where('id > ? AND user_id = ?', params[:after], session[:user_id]).order('id DESC').limit(1000)
     end
 
-    @fws = @firewoods.map { |f| f.to_json }
+    @fws = @firewoods.map(&:to_json)
 
     update_login_info(@user)
     @users = get_recent_users
@@ -170,7 +168,7 @@ class ApiController < ApplicationController
     elsif type == '3' # Me
       @firewoods = Firewood.where('id < ? AND user_id = ?', params[:before], session[:user_id]).order('id DESC').limit(limit)
     end
-    @fws = @firewoods.map { |f| f.to_json }
+    @fws = @firewoods.map(&:to_json)
 
     if request.xhr?
       render json: Oj.dump('fws' => @fws, 'users' => @users)

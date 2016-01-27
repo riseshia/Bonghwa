@@ -4,7 +4,7 @@
 		<div class="span4 white-box" style="text-align:center;">
 			<h3>회원 가입</h3>
 
-			<%= render 'form' %>
+			<%= render partial: 'form', locals: { user: @user } %>
 
 			<%= link_to 'Show', @user %> |
 			<%= link_to 'Back', users_path %>

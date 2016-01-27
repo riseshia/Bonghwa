@@ -3,12 +3,23 @@ class Firewood < ActiveRecord::Base
   belongs_to :user
   belongs_to :attach
 
+  # Callback
   before_create do |firewood|
     firewood.is_dm ||= 0
     firewood.attach_id ||= 0
     firewood.mt_root ||= 0
   end
 
+  before_destroy do |firewood|
+    firewood.attach.destroy if firewood.attach.present?
+  end
+
+  # Scope
+  def self.find_mt(prev_mt, user_id)
+    where('(id = ?) AND (is_dm = 0 OR is_dm = ?)', prev_mt, user_id).order('id DESC').limit(1)
+  end
+
+  # Public Method
   def normal?
     is_dm == 0
   end
@@ -27,11 +38,7 @@ class Firewood < ActiveRecord::Base
   end
 
   def img_link
-    if attach_id != 0
-      attach.img.url
-    else
-      '0'
-    end
+    attach_id != 0 ? attach.img.url : '0'
   end
 
   def editable?(user)

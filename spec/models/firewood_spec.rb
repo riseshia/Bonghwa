@@ -29,6 +29,17 @@ RSpec.describe Firewood, type: :model do
     end
   end
 
+  describe 'Active Record Callbacks' do
+    it 'should destroy related attach' do
+      firewood = create(:normal_message)
+      attach = create(:attach)
+      firewood.attach = attach
+      firewood.destroy
+
+      expect(Attach.count).to be(0)
+    end
+  end
+
   describe '#img_link' do
     it 'should return 0' do
       firewood = create(:normal_message)

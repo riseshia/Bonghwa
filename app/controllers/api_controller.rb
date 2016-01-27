@@ -68,8 +68,6 @@ class ApiController < ApplicationController
 
     # 삭제 권한(자기 자신)이 있는지 확인
     if @fw.editable? @user
-      @fw.attach.destroy if @fw.attach.present?
-
       redis.zremrangebyscore("#{servername}:fws", @fw.id, @fw.id)
       @fw.destroy
     end
@@ -115,7 +113,7 @@ class ApiController < ApplicationController
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
-    @mentions = Firewood.where('(id = ?) AND (is_dm = 0 OR is_dm = ?)', params[:prev_mt], session[:user_id]).order('id DESC').limit(1)
+    @mentions = Firewood.find_mt(params[:prev_mt], session[:user_id])
     @mts = @mentions.map(&:to_json)
 
     if request.xhr?

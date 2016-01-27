@@ -2,7 +2,7 @@
 <div class="col-md-6" style="background-color:#fff;">
   <h3>링크 수정하기</h3>
 
-  <%= render 'form' %>
+  <%= render partial: 'form', locals: {link: @link} %>
 
   <%= link_to 'Back', links_path %>
 </div>

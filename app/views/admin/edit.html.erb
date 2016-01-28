@@ -4,7 +4,7 @@
 		<!-- form start -->
 		<div class="row-fluid" style="margin-bottom:10px;">
 			<div class="white-box">
-				<%=render "app_form"%>
+				<%= render partial: "app_form", locals: { app: @app } %>
 			</div>
 		</div>
 		<!-- form End -->	

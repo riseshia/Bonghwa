@@ -5,12 +5,6 @@ class ViewController < ApplicationController
     @infos = get_info
   end
 
-  def option
-  end
-
-  def help
-  end
-
   def get_info
     @infos = []
     if redis.zcard("#{servername}:app-infos") == 0

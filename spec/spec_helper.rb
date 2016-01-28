@@ -21,8 +21,12 @@ require 'codeclimate-test-reporter'
 require 'simplecov'
 
 if ENV['CODECLIMATE_REPO_TOKEN']
-  CodeClimate::TestReporter.start
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    CodeClimate::TestReporter::Formatter
+  ]
   SimpleCov.start 'rails'
+  CodeClimate::TestReporter.start
 end
 
 RSpec.configure do |config|

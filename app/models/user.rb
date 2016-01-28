@@ -5,4 +5,8 @@ class User < ActiveRecord::Base
   has_secure_password
 
   has_many :firewoods
+
+  def admin?
+    level == 999 ? true : false
+  end
 end

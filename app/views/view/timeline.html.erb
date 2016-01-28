@@ -5,7 +5,7 @@
   <div class="col-md-9 cut-side-padding">
     <div id="firewoods">
       <!-- form start -->
-      <%=render "form" %>
+      <%= render partial: 'form', locals: { fw: @new_fw } %>
       <!-- form End -->
       <!-- Timeline start -->
       <div id="timeline_stack" style="display:none;">
@@ -24,7 +24,7 @@
     <div id="div-widget">
       <!-- twitter widget start -->
       <% if @app.show_widget == 1 %>
-      <%=render "widget" %>
+      <%= render partial: 'widget', locals: { app: @app } %>
       <!-- twitter widget end -->
       <% end %>
     </div>

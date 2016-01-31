@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     @user.level = 1
 
     respond_to do |format|
-      if @user.update_attributes(user_params)
+      if @user.save
         redis.del("#{servername}:session-#{@user.id}")
         format.html { redirect_to users_url, notice: 'User was successfully updated.' }
       else

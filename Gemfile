@@ -20,7 +20,6 @@ gem 'puma'
 
 # To test Project
 group :development, :test do
-  gem 'web-console', '~> 2.0'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'rspec-collection_matchers'
   gem 'factory_girl_rails', "~> 4.0"
@@ -36,4 +35,6 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano-secrets-yml', '~> 1.0.0'
   gem 'capistrano3-puma',   require: false
+  
+  gem 'web-console', '~> 2.0'
 end

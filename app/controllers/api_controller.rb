@@ -125,18 +125,16 @@ class ApiController < ApplicationController
   # after 이후의 장작을 최대 1000개까지 내림차순으로 받아온다.
   def pulling
     type = params[:type]
-    @firewoods = nil
 
-    if type == '1' # Now
-      @firewoods = []
-      redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").each do |fw|
+    @firewoods = if type == '1' # Now
+      redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").select do |fw|
         f = Marshal.load(fw)
-        @firewoods << f if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
+        f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
       end
     elsif type == '2' # Mt
-      @firewoods = Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)
+      Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)
     elsif type == '3' # Me
-      @firewoods = Firewood.where('id > ? AND user_id = ?', params[:after], session[:user_id]).order('id DESC').limit(1000)
+      Firewood.where('id > ? AND user_id = ?', params[:after], session[:user_id]).order('id DESC').limit(1000)
     end
 
     @fws = @firewoods.map(&:to_json)

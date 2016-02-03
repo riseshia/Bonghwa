@@ -47,14 +47,11 @@ class ApplicationController < ActionController::Base
     if @user.nil?
       redirect_to login_path, notice: '로그인해주세요.'
     elsif @user.level < 1
-      session[:user_id] = nil
-      session[:user_name] = nil
-      session[:user_level] = nil
+      remove_session
 
       redirect_to login_path, notice: '가입 대기 상태입니다. 관리자에게 문의해주세요.'
     else
-      session[:user_name] = @user.name
-      session[:user_level] = @user.level
+      setup_session @user.id, @user.name, @user.level
       cookies[:user_name] = { value: @user.name, expires: real_time + 7.days }
     end
   end
@@ -225,7 +222,7 @@ class ApplicationController < ActionController::Base
           redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(@user))
           redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
 
-          session[:user_name] = @user.name
+          setup_session @user.id, @user.name, @user.level
           cookies[:user_name] = { value: @user.name, expires: real_time + 7.days }
 
           result_str = "#{before}님의 닉네임이 #{@user.name}로 변경되었습니다."
@@ -293,4 +290,16 @@ class ApplicationController < ActionController::Base
   def servername
     $servername
   end
+
+  def remove_session
+    session[:user_id] = nil
+    session[:user_name] = nil
+    session[:user_level] = nil
+  end
+
+  def setup_session(user_id, user_name, user_level)
+    session[:user_id] = user_id
+    session[:user_name] = user_name
+    session[:user_level] = user_level
+  end    
 end

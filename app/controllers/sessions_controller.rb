@@ -7,9 +7,7 @@ class SessionsController < ApplicationController
     if user.nil?
       render 'new', layout: 'signin'
     elsif user.password_digest[0..9] == cookies[:auth_key]
-      session[:user_id] = user.id
-      session[:user_name] = user.name
-      session[:user_level] = user.level
+      setup_session user.id, user.name, user.level
 
       # cookie update for auto login user
       cookies[:user_id] = { value: user.id, expires: real_time + 7.days }
@@ -30,9 +28,7 @@ class SessionsController < ApplicationController
 
     # verify user
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      session[:user_name] = user.name
-      session[:user_level] = user.level
+      setup_session user.id, user.name, user.level
 
       # 두개는 js에서도 사용하기때문에 언제나 생성.
       cookies[:user_id] = { value: user.id, expires: real_time + 7.days }
@@ -50,9 +46,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
-    session[:user_name] = nil
-    session[:user_level] = nil
+    remove_session
 
     cookies.delete :user_id
     expires_now

@@ -126,18 +126,15 @@ class ApiController < ApplicationController
   def pulling
     type = params[:type]
 
-    @firewoods = if type == '1' # Now
-      redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").select do |fw|
-        f = Marshal.load(fw)
-        f.visible? session[:user_id]
-      end
-    elsif type == '2' # Mt
-      Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)
-    elsif type == '3' # Me
-      Firewood.where('id > ? AND user_id = ?', params[:after], session[:user_id]).order('id DESC').limit(1000)
-    end
-
-    @fws = @firewoods.map(&:to_json)
+    @fws = if type == '1' # Now
+             redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").select do |fw|
+               Marshal.load(fw).visible? session[:user_id]
+             end
+           elsif type == '2' # Mt
+             Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)
+           elsif type == '3' # Me
+             Firewood.where('id > ? AND user_id = ?', params[:after], session[:user_id]).order('id DESC').limit(1000)
+           end.map(&:to_json)
 
     update_login_info(@user)
     @users = get_recent_users
@@ -150,20 +147,17 @@ class ApiController < ApplicationController
   end
 
   def trace
-    limit = params[:count]
-    limit = 50 if limit.to_i > 50 # 최대값 제한.
+    limit = limit_count_to_50 params[:count].to_i # Limit maximum size
 
     type = params[:type]
-    @firewoods = nil
 
-    if type == '1' # Now
-      @firewoods = Firewood.where('id < ? AND (is_dm = 0 OR is_dm = ? OR user_id = ?)', params[:before], session[:user_id], session[:user_id]).order('id DESC').limit(limit)
-    elsif type == '2' # Mt
-      @firewoods = Firewood.where('id < ? AND (is_dm = ? OR contents like ?)', params[:before], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(limit)
-    elsif type == '3' # Me
-      @firewoods = Firewood.where('id < ? AND user_id = ?', params[:before], session[:user_id]).order('id DESC').limit(limit)
-    end
-    @fws = @firewoods.map(&:to_json)
+    @fws = if type == '1' # Now
+                   Firewood.where('id < ? AND (is_dm = 0 OR is_dm = ? OR user_id = ?)', params[:before], session[:user_id], session[:user_id]).order('id DESC').limit(limit)
+                 elsif type == '2' # Mt
+                   Firewood.where('id < ? AND (is_dm = ? OR contents like ?)', params[:before], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(limit)
+                 elsif type == '3' # Me
+                   Firewood.where('id < ? AND user_id = ?', params[:before], session[:user_id]).order('id DESC').limit(limit)
+                 end.map(&:to_json)
 
     if request.xhr?
       render json: Oj.dump('fws' => @fws, 'users' => @users)
@@ -176,5 +170,9 @@ class ApiController < ApplicationController
 
   def firewood_params
     params.require(:firewood).permit(:contents, :prev_mt)
+  end
+
+  def limit_count_to_50 number
+    number > 50 ? 50 : number
   end
 end

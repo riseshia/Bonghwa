@@ -113,8 +113,7 @@ class ApiController < ApplicationController
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
-    @mentions = Firewood.find_mt(params[:prev_mt], session[:user_id])
-    @mts = @mentions.map(&:to_json)
+    @mts = Firewood.find_mt(params[:prev_mt], session[:user_id]).map(&:to_json)
 
     if request.xhr?
       render json: Oj.dump('fws' => @mts)

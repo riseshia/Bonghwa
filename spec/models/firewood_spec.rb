@@ -13,6 +13,36 @@ RSpec.describe Firewood, type: :model do
     end
   end
 
+  describe '#visible?' do
+    it 'should return true' do
+      user = create(:user2)
+      firewood = create(:normal_message)
+      expect(firewood.visible?(user.id)).to be(true)
+    end
+
+    it 'should return true when dm to user' do
+      user = create(:user)
+      firewood = create(:dm_message_to_user1)
+      expect(firewood.visible?(user.id)).to be(true)
+    end
+
+    it 'should return true when dm user sent' do
+      user = create(:user)
+      user2 = create(:user2)
+      firewood = create(:dm_message_to_user1)
+      firewood.user = user2
+      firewood.save
+
+      expect(firewood.visible?(user2.id)).to be(true)
+    end
+
+    it 'should return false when dm to the other user' do
+      user = create(:user2)
+      firewood = create(:dm_message_to_user1)
+      expect(firewood.visible?(user.id)).to be(false)
+    end
+  end
+
   describe '#to_json' do
     it 'should return hash' do
       firewood = create(:normal_message)

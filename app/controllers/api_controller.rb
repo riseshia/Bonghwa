@@ -129,7 +129,7 @@ class ApiController < ApplicationController
     @firewoods = if type == '1' # Now
       redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").select do |fw|
         f = Marshal.load(fw)
-        f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
+        f.visible? session[:user_id]
       end
     elsif type == '2' # Mt
       Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)

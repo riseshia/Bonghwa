@@ -24,6 +24,10 @@ class Firewood < ActiveRecord::Base
     is_dm == 0
   end
 
+  def visible? session_user_id
+    normal? || is_dm == session_user_id || user_id == session_user_id
+  end
+
   def to_json
     {
       'id' => id, 'is_dm' => is_dm,

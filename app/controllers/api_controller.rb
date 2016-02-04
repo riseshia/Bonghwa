@@ -16,11 +16,7 @@ class ApiController < ApplicationController
       save_fw(@fw)
     end
 
-    if request.xhr?
-      render json: Oj.dump('')
-    else
-      render inline: '<textarea>{}</textarea>'
-    end
+    render_result request
   end
 
   def new_dm(fw)
@@ -104,22 +100,14 @@ class ApiController < ApplicationController
     update_login_info(@user)
     @users = get_recent_users
 
-    if request.xhr?
-      render json: Oj.dump('fws' => @fws, 'users' => @users)
-    else
-      render inline: "<textarea><%= Oj.dump('fws' => @fws, 'users' => @users) %></textarea>"
-    end
+    render_result request, 'fws' => @fws, 'users' => @users
   end
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
     @mts = Firewood.find_mt(params[:prev_mt], session[:user_id]).map(&:to_json)
 
-    if request.xhr?
-      render json: Oj.dump('fws' => @mts)
-    else
-      render inline: "<textarea><%= Oj.dump('fws' => @mts) %></textarea>"
-    end
+    render_result request, 'fws' => @mts
   end
 
   # after 이후의 장작을 최대 1000개까지 내림차순으로 받아온다.
@@ -127,23 +115,20 @@ class ApiController < ApplicationController
     type = params[:type]
 
     @fws = if type == '1' # Now
-             redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").select do |fw|
-               Marshal.load(fw).visible? session[:user_id]
-             end
+             redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").map { |fw|
+               Marshal.load(fw)
+             }.select { |fw|
+               fw.visible? session[:user_id]
+             }
            elsif type == '2' # Mt
              Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)
            elsif type == '3' # Me
              Firewood.where('id > ? AND user_id = ?', params[:after], session[:user_id]).order('id DESC').limit(1000)
            end.map(&:to_json)
-
     update_login_info(@user)
     @users = get_recent_users
 
-    if request.xhr?
-      render json: Oj.dump('fws' => @fws, 'users' => @users)
-    else
-      render inline: "<textarea><%= Oj.dump('fws' => @fws, 'users' => @users) %></textarea>"
-    end
+    render_result request, 'fws' => @fws, 'users' => @users
   end
 
   def trace
@@ -152,18 +137,14 @@ class ApiController < ApplicationController
     type = params[:type]
 
     @fws = if type == '1' # Now
-                   Firewood.where('id < ? AND (is_dm = 0 OR is_dm = ? OR user_id = ?)', params[:before], session[:user_id], session[:user_id]).order('id DESC').limit(limit)
-                 elsif type == '2' # Mt
-                   Firewood.where('id < ? AND (is_dm = ? OR contents like ?)', params[:before], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(limit)
-                 elsif type == '3' # Me
-                   Firewood.where('id < ? AND user_id = ?', params[:before], session[:user_id]).order('id DESC').limit(limit)
-                 end.map(&:to_json)
+             Firewood.where('id < ? AND (is_dm = 0 OR is_dm = ? OR user_id = ?)', params[:before], session[:user_id], session[:user_id]).order('id DESC').limit(limit)
+           elsif type == '2' # Mt
+             Firewood.where('id < ? AND (is_dm = ? OR contents like ?)', params[:before], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(limit)
+           elsif type == '3' # Me
+             Firewood.where('id < ? AND user_id = ?', params[:before], session[:user_id]).order('id DESC').limit(limit)
+           end.map(&:to_json)
 
-    if request.xhr?
-      render json: Oj.dump('fws' => @fws, 'users' => @users)
-    else
-      render inline: "<textarea><%= Oj.dump('fws' => @fws, 'users' => @users) %></textarea>"
-    end
+    render_result request, 'fws' => @fws, 'users' => @users
   end
 
   private
@@ -172,7 +153,15 @@ class ApiController < ApplicationController
     params.require(:firewood).permit(:contents, :prev_mt)
   end
 
-  def limit_count_to_50 number
+  def limit_count_to_50(number)
     number > 50 ? 50 : number
+  end
+
+  def render_result(request, hash = {})
+    if request.xhr?
+      render json: Oj.dump(hash.empty? ? '' : hash)
+    else
+      render inline: '<textarea>' + (hash.empty? ? '' : hash) + '</textarea>'
+    end
   end
 end

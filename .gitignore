@@ -68,3 +68,5 @@ Temporary Items
 
 # Development Environments
 .vagrant
+
+.byebug_history

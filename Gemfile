@@ -37,4 +37,5 @@ group :development do
   gem 'capistrano3-puma',   require: false
   
   gem 'web-console', '~> 2.0'
+  gem 'byebug'
 end

@@ -41,6 +41,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
+    byebug (8.2.1)
     capistrano (3.4.0)
       i18n
       rake (>= 10.0.0)
@@ -232,6 +233,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt
+  byebug
   capistrano
   capistrano-bundler
   capistrano-rails

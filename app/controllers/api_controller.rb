@@ -68,11 +68,7 @@ class ApiController < ApplicationController
       @fw.destroy
     end
 
-    if request.xhr?
-      render json: Oj.dump('')
-    else
-      render inline: '<textarea>{}</textarea>'
-    end
+    render_result request
   end
 
   # 지금 시점으로부터 가장 최근의 장작을 50개 불러온다.

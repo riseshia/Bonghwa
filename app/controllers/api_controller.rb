@@ -13,7 +13,7 @@ class ApiController < ApplicationController
     elsif @fw.contents.match('^/.+')
       new_cmd(@fw)
     else
-      save_fw(@fw)
+      @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
     end
 
     render_result request
@@ -36,13 +36,13 @@ class ApiController < ApplicationController
     end
     fw.is_dm = dm_user.id
 
-    save_fw(fw)
+    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
   end
 
   def new_cmd(fw)
     fw_parsed = fw.contents.match('^!(\S+)\s(.+)')
 
-    save_fw(fw)
+    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
 
     # command
     script_excute(fw.contents)
@@ -56,7 +56,7 @@ class ApiController < ApplicationController
       is_dm session[:user_id]
     end
 
-    save_fw(@dm)
+    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
   end
 
   def destroy

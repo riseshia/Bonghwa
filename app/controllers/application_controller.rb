@@ -78,32 +78,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def save_fw(fw)
-    begin
-      fail '내용이 없습니다.' if fw.contents.size == 0 && params[:attach].size == 0
-
-      Firewood.transaction do
-        unless params[:attach].blank?
-          @attach = Attach.create!(img: params[:attach])
-          fw.attach_id = @attach.id
-          if params[:adult_check]
-            fw.contents += " <span class='has-image text-warning'>[후방주의 #{@attach.id}]</span>"
-          else
-            fw.contents += " <span class='has-image'>[이미지 #{@attach.id}]</span>"
-          end
-        end
-
-        fw.save!
-      end
-
-      redis.zadd("#{servername}:fws", fw.id, Marshal.dump(fw))
-      redis.zremrangebyrank("#{servername}:fws", 0, -1 * ($redis_cache_size - 1))
-    rescue Exception => e
-      log = e.message
-    end
-    log = '정상적으로 업로드 되었습니다.'
-  end
-
   def escape_tags(str)
     str.gsub('<', '&lt;').gsub('>', '&gt;')
   end
@@ -127,7 +101,7 @@ class ApplicationController < ActionController::Base
       @fw.contents = user_script_excute(str)
     end
 
-    save_fw(@fw)
+    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
   end
 
   def user_script_excute(str)

@@ -24,14 +24,14 @@ class ApiController < ApplicationController
     fw_parsed = fw.contents.match('^!(\S+)\s(.+)')
 
     unless fw_parsed
-      system_dm("잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요.")
+      Firewood.system_dm attach: params[:attach], adult_check: params[:adult_check], user_id: session[:user_id], message: "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
       return
     end
 
     # user_check
     dm_user = User.find_by_name(fw_parsed[1])
     unless dm_user
-      system_dm('존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요.')
+      Firewood.system_dm attach: params[:attach], adult_check: params[:adult_check], user_id: session[:user_id], message: '존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요.'
       return
     end
     fw.is_dm = dm_user.id
@@ -46,17 +46,6 @@ class ApiController < ApplicationController
 
     # command
     script_excute(fw.contents)
-  end
-
-  def system_dm(message)
-    @dm = Firewood.new do
-      user_id 0
-      user_name 'System'
-      contents message
-      is_dm session[:user_id]
-    end
-
-    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
   end
 
   def destroy

@@ -76,6 +76,16 @@ class Firewood < ActiveRecord::Base
     fw
   end
 
+  # Class Method
+  def self.system_dm(params)
+    Firewood.new(
+      user_id: 0,
+      user_name: 'System',
+      contents: params[:message],
+      is_dm: params[:user_id]
+    ).save_fw attach: params[:attach], adult_check: params[:adult_check]
+  end
+
   private
 
   def redis

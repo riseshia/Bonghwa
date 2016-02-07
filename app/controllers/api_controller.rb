@@ -71,11 +71,11 @@ class ApiController < ApplicationController
     type = params[:type]
 
     @fws = if type == '1' # Now
-             redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").map { |fw|
+             redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").map do |fw|
                Marshal.load(fw)
-             }.select { |fw|
+             end.select do |fw|
                fw.visible? session[:user_id]
-             }
+             end
            elsif type == '2' # Mt
              Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)
            elsif type == '3' # Me

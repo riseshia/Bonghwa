@@ -102,5 +102,5 @@ class ApplicationController < ActionController::Base
     session[:user_id] = user_id
     session[:user_name] = user_name
     session[:user_level] = user_level
-  end    
+  end
 end

@@ -24,7 +24,7 @@ class Firewood < ActiveRecord::Base
     is_dm == 0
   end
 
-  def visible? session_user_id
+  def visible?(session_user_id)
     normal? || is_dm == session_user_id || user_id == session_user_id
   end
 
@@ -76,7 +76,7 @@ class Firewood < ActiveRecord::Base
     fw
   end
 
-  def save_dm params
+  def save_dm(params)
     fw = self
     # parsing
     fw_parsed = fw.contents.match('^!(\S+)\s(.+)')
@@ -154,65 +154,65 @@ class Firewood < ActiveRecord::Base
 
   def user_script_excute(str, user)
     arr = str.split(' ')
-    result_str = ''
+
     if arr[0] == '/주사위'
       if arr.size == 2
         dice_size = arr[1].to_i
         if dice_size > 1 && dice_size < 101
-          result_str = "#{rand(1..dice_size)}이(가) 나왔습니다."
+          "#{rand(1..dice_size)}이(가) 나왔습니다."
         else
-          result_str = '인수 지정이 잘못되었습니다. 2에서 100 사이의 자연수를 입력해주세요.'
+          '인수 지정이 잘못되었습니다. 2에서 100 사이의 자연수를 입력해주세요.'
         end
       elsif arr.size > 2
-        result_str = "명령어는 '/주사위 {면수:생략시 6}'입니다."
+        "명령어는 '/주사위 {면수:생략시 6}'입니다."
       else
-        result_str = "#{rand(1..6)}이(가) 나왔습니다."
+        "#{rand(1..6)}이(가) 나왔습니다."
       end
     elsif arr[0] == '/코인'
       if arr.size > 1
-        result_str = "명령어는 '/코인'입니다."
+        "명령어는 '/코인'입니다."
       else
         coin = rand(1..2)
-        result_str = "#{coin == 1 ? '앞면' : '뒷면'}이 나왔습니다."
+        "#{coin == 1 ? '앞면' : '뒷면'}이 나왔습니다."
       end
     elsif /\/[0-9]+d[0-9]+/.match(str) # n면 dice r개
       arr = str.split(/\/|d/)
       n = arr[1].to_i
       r = arr[2].to_i
-      result = ''
       if n > 1 && n < 51 && r > 0 && r < 21
+        result = ''
         for i in 1...r
           result += "#{rand(1..n)}, "
         end
-        result_str = result + "#{rand(1..n)} 의 주사위 눈이 나왔습니다."
+        result + "#{rand(1..n)} 의 주사위 눈이 나왔습니다."
       else
-        result_str = '2면에서 50면, 1개에서 20개의 주사위를 굴리실 수 있습니다.'
+        '2면에서 50면, 1개에서 20개의 주사위를 굴리실 수 있습니다.'
       end
     elsif arr[0] == '/등수'
       if arr.size > 1
-        result_str = "등수 명령어에는 추가적인 인수가 필요하지 않습니다. '/등수'라고 명령해주세요."
+        "등수 명령어에는 추가적인 인수가 필요하지 않습니다. '/등수'라고 명령해주세요."
       else
         rs = Firewood.select('user_name, count(*) as count')
-             .where('created_at > ?', Time.zone.now - 1.month)
-             .group('user_id')
-             .order('count DESC')
-             .limit(5)
+                     .where('created_at > ?', Time.zone.now - 1.month)
+                     .group('user_id')
+                     .order('count DESC')
+                     .limit(5)
         str = ''
         i = 1
         rs.each do |r|
           str += i.to_s + '위: ' + r.user_name + ', ' + r.count.to_s + '개. '
           i += 1
         end
-        result_str = str
+        str
       end
     elsif arr[0] == '/내등수'
       if arr.size > 1
-        result_str = "등수 명령어에는 추가적인 인수가 필요하지 않습니다. '/내등수'라고 명령해주세요."
+        "등수 명령어에는 추가적인 인수가 필요하지 않습니다. '/내등수'라고 명령해주세요."
       else
         rs = Firewood.select('user_id, count(*) as count')
-             .where('created_at > ?', Time.zone.now - 1.month)
-             .group('user_id')
-             .order('count DESC, user_id ASC')
+                     .where('created_at > ?', Time.zone.now - 1.month)
+                     .group('user_id')
+                     .order('count DESC, user_id ASC')
 
         rank = 0
         rs.each do |r|
@@ -220,15 +220,15 @@ class Firewood < ActiveRecord::Base
           rank += 1
         end
 
-        result_str = "#{user.name}님이 던지신 장작은 #{rs[rank].count}개로, 현재 #{rank + 1}등 입니다."
+        "#{user.name}님이 던지신 장작은 #{rs[rank].count}개로, 현재 #{rank + 1}등 입니다."
       end
     elsif arr[0] == '/닉'
       if arr.size != 2
-        result_str = "이 명령어에는 하나의 인수가 필요합니다. '/닉 [변경할 닉네임]'라고 명령해주세요. 변경할 닉네임에는 공백 허용되지 않습니다."
+        "이 명령어에는 하나의 인수가 필요합니다. '/닉 [변경할 닉네임]'라고 명령해주세요. 변경할 닉네임에는 공백 허용되지 않습니다."
       else
         exist = true if User.find_by_name(arr[1]) || arr[1] == 'System'
 
-        result_str = if arr[1] == user.name
+        if arr[1] == user.name
           '변경하실 닉네임이 같습니다. 다른 닉네임으로 시도해 주세요.'
         elsif exist
           '해당하는 닉네임은 이미 존재합니다.'
@@ -250,10 +250,8 @@ class Firewood < ActiveRecord::Base
         end
       end
     else
-      result_str = '존재하지 않는 명령어입니다.'
+      '존재하지 않는 명령어입니다.'
     end
-
-    result_str
   end
 
   def admin_script_excute(str, user)

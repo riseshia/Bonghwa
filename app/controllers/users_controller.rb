@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.recent_login = Time.zone.now
 
-    return redirect_to ('/users/new'), notice: '그 이름은 사용하실 수 없습니다.' if @user.name == 'System'
+    return redirect_to '/users/new', notice: '그 이름은 사용하실 수 없습니다.' if @user.name == 'System'
 
     respond_to do |format|
       if @user.save

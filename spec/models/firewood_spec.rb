@@ -27,7 +27,7 @@ RSpec.describe Firewood, type: :model do
     end
 
     it 'should return true when dm user sent' do
-      user = create(:user)
+      create(:user)
       user2 = create(:user2)
       firewood = create(:dm_message_to_user1)
       firewood.user = user2

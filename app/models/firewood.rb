@@ -153,7 +153,6 @@ class Firewood < ActiveRecord::Base
   end
 
   def user_script_excute(str, user)
-    @user = user
     arr = str.split(' ')
     result_str = ''
     if arr[0] == '/주사위'
@@ -217,38 +216,37 @@ class Firewood < ActiveRecord::Base
 
         rank = 0
         rs.each do |r|
-          break if r.user_id == @user.id
+          break if r.user_id == user.id
           rank += 1
         end
 
-        result_str = "#{@user.name}님이 던지신 장작은 #{rs[rank].count}개로, 현재 #{rank + 1}등 입니다."
+        result_str = "#{user.name}님이 던지신 장작은 #{rs[rank].count}개로, 현재 #{rank + 1}등 입니다."
       end
     elsif arr[0] == '/닉'
       if arr.size != 2
         result_str = "이 명령어에는 하나의 인수가 필요합니다. '/닉 [변경할 닉네임]'라고 명령해주세요. 변경할 닉네임에는 공백 허용되지 않습니다."
       else
-        exist = User.find_by_name(arr[1])
-        exist = true if arr[1] == 'System'
+        exist = true if User.find_by_name(arr[1]) || arr[1] == 'System'
 
-        if arr[1] == @user.name
-          result_str = '변경하실 닉네임이 같습니다. 다른 닉네임으로 시도해 주세요.'
+        result_str = if arr[1] == user.name
+          '변경하실 닉네임이 같습니다. 다른 닉네임으로 시도해 주세요.'
         elsif exist
-          result_str = '해당하는 닉네임은 이미 존재합니다.'
+          '해당하는 닉네임은 이미 존재합니다.'
         else
-          before = @user.name
+          before_user_name = user.name
 
-          @user.name = arr[1]
-          @user.save!
+          user.name = arr[1]
+          user.save!
 
-          redis.zrem("#{servername}:active-users", before)
-          redis.zadd("#{servername}:active-users", Time.zone.now.to_i, @user.name)
-          redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(@user))
+          redis.zrem("#{servername}:active-users", before_user_name)
+          redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name)
+          redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(user))
           redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
 
-          setup_session @user.id, @user.name, @user.level
-          cookies[:user_name] = { value: @user.name, expires: real_time + 7.days }
+          setup_session user.id, user.name, user.level
+          cookies[:user_name] = { value: user.name, expires: real_time + 7.days }
 
-          result_str = "#{before}님의 닉네임이 #{@user.name}로 변경되었습니다."
+          "#{before_user_name}님의 닉네임이 #{user.name}로 변경되었습니다."
         end
       end
     else
@@ -259,45 +257,43 @@ class Firewood < ActiveRecord::Base
   end
 
   def admin_script_excute(str, user)
-    @user = user
     arr = str.split(' ')
-    result_str = ''
     if arr[0] == '/공지추가'
-      if @user.level == 999
+      if user.level == 999
         im = str.gsub('/공지추가 ', '')
-        result_str = if str.gsub('/공지추가', '').size == 0
-                       '내용을 입력해주세요.'
-                     else
-                       info = Info.create!(infomation: im)
-                       redis.zadd("#{servername}:app-infos", info.id, Marshal.dump(info))
-                       '공지가 등록되었습니다.'
-                     end
+        if str.gsub('/공지추가', '').size == 0
+          '내용을 입력해주세요.'
+        else
+          info = Info.create!(infomation: im)
+          redis.zadd("#{servername}:app-infos", info.id, Marshal.dump(info))
+          '공지가 등록되었습니다.'
+        end
       else
-        result_str = '권한이 없습니다.'
+        '권한이 없습니다.'
       end
     elsif arr[0] == '/공지삭제'
-      if @user.level == 999
+      if user.level == 999
         if arr.size == 1
-          result_str = '삭제할 공지의 id를 주셔야합니다.'
+          '삭제할 공지의 id를 주셔야합니다.'
         else
           infos = Info.all
 
           if infos.nil?
-            result_str = '공지사항이 없네요.'
+            '공지사항이 없네요.'
           elsif infos.size < arr[2].to_i
-            result_str = '공지사항이 없어요.'
+            '공지사항이 없어요.'
           else
             deleted_idx = arr[1].to_i - 1
             redis.zremrangebyscore("#{servername}:app-infos", infos[deleted_idx].id, infos[deleted_idx].id)
             infos[deleted_idx].delete
-            result_str = '삭제 완료되었습니다.'
+            '삭제 완료되었습니다.'
           end
         end
       else
-        result_str = '권한이 없습니다.'
+        '권한이 없습니다.'
       end
+    else
+      ''
     end
-
-    result_str
   end
 end

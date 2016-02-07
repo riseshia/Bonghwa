@@ -9,43 +9,14 @@ class ApiController < ApplicationController
     end
 
     if @fw.contents.match('^!.+')
-      new_dm(@fw)
+      @fw.save_dm attach: params[:attach], adult_check: params[:adult_check], user_id: session[:user_id]
     elsif @fw.contents.match('^/.+')
-      new_cmd(@fw)
+      @fw.save_cmd @user, @app, attach: params[:attach], adult_check: params[:adult_check], user_id: session[:user_id]
     else
       @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
     end
 
     render_result request
-  end
-
-  def new_dm(fw)
-    # parsing
-    fw_parsed = fw.contents.match('^!(\S+)\s(.+)')
-
-    unless fw_parsed
-      Firewood.system_dm attach: params[:attach], adult_check: params[:adult_check], user_id: session[:user_id], message: "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
-      return
-    end
-
-    # user_check
-    dm_user = User.find_by_name(fw_parsed[1])
-    unless dm_user
-      Firewood.system_dm attach: params[:attach], adult_check: params[:adult_check], user_id: session[:user_id], message: '존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요.'
-      return
-    end
-    fw.is_dm = dm_user.id
-
-    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
-  end
-
-  def new_cmd(fw)
-    fw_parsed = fw.contents.match('^!(\S+)\s(.+)')
-
-    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
-
-    # command
-    script_excute(fw.contents)
   end
 
   def destroy
@@ -148,5 +119,9 @@ class ApiController < ApplicationController
     else
       render inline: '<textarea>' + (hash.empty? ? '' : hash) + '</textarea>'
     end
+  end
+
+  def escape_tags(str)
+    str.gsub('<', '&lt;').gsub('>', '&gt;')
   end
 end

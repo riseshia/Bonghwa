@@ -6,13 +6,18 @@ var app = app || {};
   app.FirewoodView = Backbone.View.extend({
     tagName: 'li',
 
-    template: _.template($('#fw-template').html()),
-    mtTemplate: _.template($('#mt-template').html()),
-
-    initialize: function() {
+    initialize: function () {
       this.listenTo(this.model, 'fold', this.fold);
       this.listenTo(this.model, 'unFold', this.unFold);
       this.listenTo(this.model, 'highlight', this.highlight);
+
+      this.initTemplate();
+    },
+
+    // Template Initialize will work lazy as there is some pages don't need to be trigger.
+    initTemplate: function () {
+      this.template = _.template($('#fw-template').html());
+      this.mtTemplate = _.template($('#mt-template').html());
     },
 
     events: {

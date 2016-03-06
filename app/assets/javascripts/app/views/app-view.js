@@ -6,15 +6,14 @@ var app = app || {};
   app.AppView = Backbone.View.extend({
     el: 'body',
 
-    initialize: function () {
+    initialize: function (props, states) {
       this.$title = this.$('#title');
       this.$hotkeyImgAutoOpen = this.$('#img_auto_open_op');
       this.$hotkeyLiveStream = this.$('#live_stream_op');
-      this.$hotkeyFocus = this.$('#focus_hotkey');
-      this.$hotkeyRefresh = this.$('#refresh_hotkey');
       this.$tagSelector = this.$('#select-tag');
       this.$info = this.$('#info');
-      this.originTitle = this.$title.text();
+
+      
 
       // load initial state from localStorage
       window.localStorage['auto_image_open'] = (window.localStorage['auto_image_open'] == '1' ? '0' : '1');

@@ -17,7 +17,6 @@ var app = app || {};
     // Template Initialize will work lazy as there is some pages don't need to be trigger.
     initTemplate: function () {
       this.template = _.template($('#fw-template').html());
-      this.mtTemplate = _.template($('#mt-template').html());
     },
 
     events: {

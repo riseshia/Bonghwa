@@ -14,6 +14,7 @@ var app = app || {};
     initialize: function (firewoods, users) {
       this.firewoods = firewoods;
       this.users = users;
+      $(document).ajaxError(this.ajaxError);
     },
 
     setPullingTimer: function() {

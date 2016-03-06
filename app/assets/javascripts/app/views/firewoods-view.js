@@ -32,7 +32,6 @@ var app = app || {};
       this.$('span[rel=tooltip]').tooltip();
       this.originTitle = this.$title.text();
       
-      $(document).ajaxError(app.channel.ajaxError);
       app.channel.load();
       app.channel.setPullingTimer();
       setInterval(this.isNearBottom, 1000, this);

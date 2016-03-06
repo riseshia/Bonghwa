@@ -16,7 +16,7 @@ $(function () {
 
   if ($('#firewoods').size() > 0) {
     app.channel = new app.Channel(app.firewoods, app.users);
-    new app.AppView();
+    new app.AppView({}, { timeline_state: PAGE_TYPE });
     new app.FirewoodsView();
     new app.UsersView();
     Backbone.history.start();

@@ -115,7 +115,6 @@ GEM
     net-ssh (3.0.2)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    oj (2.14.3)
     paperclip (4.3.2)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -247,7 +246,6 @@ DEPENDENCIES
   figaro
   jquery-rails
   mysql2 (~> 0.4)
-  oj
   paperclip (~> 4.0)
   puma
   rails (= 4.2.5.1)

@@ -115,7 +115,7 @@ class ApiController < ApplicationController
 
   def render_result(request, hash = {})
     if request.xhr?
-      render json: Oj.dump(hash.empty? ? '' : hash)
+      render json: JSON.dump(hash.empty? ? '' : hash)
     else
       render inline: '<textarea>' + (hash.empty? ? '' : hash) + '</textarea>'
     end

@@ -13,7 +13,6 @@ gem 'jquery-rails'
 gem 'bcrypt'
 gem 'redis-rails'
 gem 'will_paginate', '3.0.7'
-gem 'oj'
 gem 'figaro'
 gem "paperclip", "~> 4.0"
 gem 'puma'

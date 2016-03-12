@@ -2,6 +2,8 @@
 class App < ActiveRecord::Base
   include FromJsonable
 
+  after_save :add_to_redis
+
   validates :app_name, presence: true
 
   def self.first_with_cache
@@ -11,5 +13,9 @@ class App < ActiveRecord::Base
       $redis.set("#{$servername}:app-data", app)
     end
     App.new(JSON.parse(app))
+  end
+
+  def add_to_redis
+    $redis.set("#{$servername}:app-data", self.to_json)
   end
 end

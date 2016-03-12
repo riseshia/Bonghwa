@@ -10,11 +10,11 @@ class SessionsController < ApplicationController
       setup_session user.id, user.name, user.level
 
       # cookie update for auto login user
-      cookies[:user_id] = { value: user.id, expires: real_time + 7.days }
-      cookies[:user_name] = { value: user.name, expires: real_time + 7.days }
-      cookies[:auth_key] = { value: user.password_digest[0..9], expires: real_time + 7.days }
+      cookies[:user_id] = { value: user.id, expires: Time.zone.now + 7.days }
+      cookies[:user_name] = { value: user.name, expires: Time.zone.now + 7.days }
+      cookies[:auth_key] = { value: user.password_digest[0..9], expires: Time.zone.now + 7.days }
 
-      user.recent_login = real_time
+      user.recent_login = Time.zone.now
       user.save!
 
       redirect_to index_path
@@ -31,12 +31,12 @@ class SessionsController < ApplicationController
       setup_session user.id, user.name, user.level
 
       # 두개는 js에서도 사용하기때문에 언제나 생성.
-      cookies[:user_id] = { value: user.id, expires: real_time + 7.days }
-      cookies[:user_name] = { value: user.name, expires: real_time + 7.days }
+      cookies[:user_id] = { value: user.id, expires: Time.zone.now + 7.days }
+      cookies[:user_name] = { value: user.name, expires: Time.zone.now + 7.days }
 
       # auto login
       if params[:auto_login_option]
-        cookies[:auth_key] = { value: user.password_digest[0..9], expires: real_time + 7.days }
+        cookies[:auth_key] = { value: user.password_digest[0..9], expires: Time.zone.now + 7.days }
       end
 
       redirect_to index_path

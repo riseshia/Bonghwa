@@ -246,7 +246,7 @@ class Firewood < ActiveRecord::Base
           # redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
 
           setup_session user.id, user.name, user.level
-          cookies[:user_name] = { value: user.name, expires: real_time + 7.days }
+          cookies[:user_name] = { value: user.name, expires: Time.zone.now + 7.days }
 
           "#{before_user_name}님의 닉네임이 #{user.name}로 변경되었습니다."
         end
@@ -265,7 +265,6 @@ class Firewood < ActiveRecord::Base
           '내용을 입력해주세요.'
         else
           info = Info.create!(infomation: im)
-          # redis.zadd("#{servername}:app-infos", info.id, info.to_json)
           '공지가 등록되었습니다.'
         end
       else
@@ -276,7 +275,7 @@ class Firewood < ActiveRecord::Base
         if arr.size == 1
           '삭제할 공지의 id를 주셔야합니다.'
         else
-          infos = Info.all
+          infos = Info.all_with_cache
 
           if infos.nil?
             '공지사항이 없네요.'
@@ -284,8 +283,7 @@ class Firewood < ActiveRecord::Base
             '공지사항이 없어요.'
           else
             deleted_idx = arr[1].to_i - 1
-            # redis.zremrangebyscore("#{servername}:app-infos", infos[deleted_idx].id, infos[deleted_idx].id)
-            infos[deleted_idx].delete
+            infos[deleted_idx].destroy
             '삭제 완료되었습니다.'
           end
         end

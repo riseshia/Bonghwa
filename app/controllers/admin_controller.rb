@@ -42,7 +42,7 @@ class AdminController < ApplicationController
 
     respond_to do |format|
       if @app.update_attributes(app_params)
-        redis.set("#{servername}:app-data", Marshal.dump(@app))
+        redis.set("#{servername}:app-data", @app.to_json)
         format.html { redirect_to admin_edit_url, notice: 'app setting was successfully updated.' }
         format.json { head :no_content }
       else

@@ -39,7 +39,7 @@ class ApiController < ApplicationController
     if type == '1' # Now
       count = 0
       redis.zrevrange("#{servername}:fws", 0, 500).each do |fw|
-        f = Marshal.load(fw)
+        f = Firewood.from_json(JSON.parse(fw))
         if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
           @firewoods << f
           count += 1
@@ -72,7 +72,7 @@ class ApiController < ApplicationController
 
     @fws = if type == '1' # Now
              redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").map do |fw|
-               Marshal.load(fw)
+               Firewood.from_json(JSON.parse(fw))
              end.select do |fw|
                fw.visible? session[:user_id]
              end

@@ -7,6 +7,7 @@ RSpec.describe ApiController, type: :controller do
 
   context 'Not Logined' do
     it 'has a 302 status code' do
+      create(:app)
       post :new, firewood: attributes_for(:normal_message)
       expect(response.status).to eq(302)
     end

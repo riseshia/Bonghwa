@@ -1,17 +1,19 @@
 # ApplicationController
 class ApplicationController < ActionController::Base
-  before_action :authorize, :app_setting
+  before_action :app_setting
+  before_action :authorize
   protect_from_forgery with: :exception
 
   protected
 
   def app_setting
     @app = redis.get("#{servername}:app-data")
+
     if @app
-      @app = Marshal.load(@app)
+      @app = App.from_json(JSON.parse(@app))
     else
       @app = App.first
-      redis.set("#{servername}:app-data", Marshal.dump(@app))
+      redis.set("#{servername}:app-data", @app.to_json)
     end
 
     if @app.nil?
@@ -21,12 +23,12 @@ class ApplicationController < ActionController::Base
       if redis.zcard("#{servername}:app-links") == 0
         @links = Link.all
         @links.each do |link|
-          redis.zadd("#{servername}:app-links", link.id, Marshal.dump(link))
+          redis.zadd("#{servername}:app-links", link.id, link.to_json)
         end
       else
         links = redis.zrange("#{servername}:app-links", 0, -1)
         links.each do |link|
-          @links << Marshal.load(link)
+          @links << Link.from_json(JSON.parse(link))
         end
       end
       return true
@@ -34,14 +36,16 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    @user = redis.get("#{servername}:session-#{session[:user_id]}")
+    if session[:user_id]
+      @user = redis.get("#{servername}:session-#{session[:user_id]}")
 
-    if @user
-      @user = Marshal.load(@user)
-    else
-      @user = User.find_by_id(session[:user_id])
-      redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(@user))
-      redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+      if @user
+        @user = User.from_json(JSON.parse(@user))
+      else
+        @user = User.find_by(id: session[:user_id])
+        redis.set("#{servername}:session-#{session[:user_id]}", @user.to_json)
+        redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+      end
     end
 
     if @user.nil?

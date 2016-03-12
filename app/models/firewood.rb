@@ -1,5 +1,7 @@
 # Firewood
 class Firewood < ActiveRecord::Base
+  include FromJsonable
+
   belongs_to :user
   belongs_to :attach
 
@@ -68,7 +70,7 @@ class Firewood < ActiveRecord::Base
         fw.save!
       end
 
-      redis.zadd("#{servername}:fws", fw.id, Marshal.dump(fw))
+      redis.zadd("#{servername}:fws", fw.id, JSON.dump(fw.to_json))
       redis.zremrangebyrank("#{servername}:fws", 0, -1 * ($redis_cache_size - 1))
     rescue Exception => e
     end
@@ -263,7 +265,7 @@ class Firewood < ActiveRecord::Base
           '내용을 입력해주세요.'
         else
           info = Info.create!(infomation: im)
-          redis.zadd("#{servername}:app-infos", info.id, Marshal.dump(info))
+          redis.zadd("#{servername}:app-infos", info.id, info.to_json)
           '공지가 등록되었습니다.'
         end
       else

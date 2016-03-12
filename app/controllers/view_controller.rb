@@ -10,12 +10,12 @@ class ViewController < ApplicationController
     if redis.zcard("#{servername}:app-infos") == 0
       @infos = Info.all
       @infos.each do |info|
-        redis.zadd("#{servername}:app-infos", info.id, Marshal.dump(info))
+        redis.zadd("#{servername}:app-infos", info.id, info.to_json)
       end
     else
       infos = redis.zrange("#{servername}:app-infos", 0, -1)
       infos.each do |info|
-        @infos << Marshal.load(info)
+        @infos << Info.from_json(JSON.parse(info))
       end
     end
 

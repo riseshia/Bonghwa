@@ -7,14 +7,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def app_setting
-    # @app = redis.get("#{servername}:app-data")
-
-    if @app
-      @app = App.from_json(JSON.parse(@app))
-    else
-      @app = App.first
-      # redis.set("#{servername}:app-data", @app.to_json)
-    end
+    @app = App.first
 
     if @app.nil?
       redirect_to initialize_path

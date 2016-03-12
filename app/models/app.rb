@@ -1,14 +1,15 @@
 # App
 class App < ActiveRecord::Base
   include FromJsonable
+
   validates :app_name, presence: true
 
-  def first
+  def self.first
     app = $redis.get("#{$servername}:app-data")
-    if $redis.get("#{$servername}:app-data")
-      app
-    else
-      super
+    if app.nil?
+      app = super.to_json
+      $redis.set("#{$servername}:app-data", app)
     end
+    App.new(JSON.parse(app))
   end
 end

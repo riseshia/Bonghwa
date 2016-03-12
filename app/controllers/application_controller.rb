@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def app_setting
-    @app = App.first
+    @app = App.first_with_cache
 
     if @app.nil?
       redirect_to initialize_path

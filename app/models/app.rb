@@ -4,10 +4,10 @@ class App < ActiveRecord::Base
 
   validates :app_name, presence: true
 
-  def self.first
+  def self.first_with_cache
     app = $redis.get("#{$servername}:app-data")
     if app.nil?
-      app = super.to_json
+      app = first.to_json
       $redis.set("#{$servername}:app-data", app)
     end
     App.new(JSON.parse(app))

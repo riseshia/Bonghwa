@@ -7,13 +7,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def app_setting
-    @app = redis.get("#{servername}:app-data")
+    # @app = redis.get("#{servername}:app-data")
 
     if @app
       @app = App.from_json(JSON.parse(@app))
     else
       @app = App.first
-      redis.set("#{servername}:app-data", @app.to_json)
+      # redis.set("#{servername}:app-data", @app.to_json)
     end
 
     if @app.nil?
@@ -22,14 +22,14 @@ class ApplicationController < ActionController::Base
       @links = []
       if redis.zcard("#{servername}:app-links") == 0
         @links = Link.all
-        @links.each do |link|
-          redis.zadd("#{servername}:app-links", link.id, link.to_json)
-        end
+        # @links.each do |link|
+        #   redis.zadd("#{servername}:app-links", link.id, link.to_json)
+        # end
       else
-        links = redis.zrange("#{servername}:app-links", 0, -1)
-        links.each do |link|
-          @links << Link.from_json(JSON.parse(link))
-        end
+        # links = redis.zrange("#{servername}:app-links", 0, -1)
+        # links.each do |link|
+        #   @links << Link.from_json(JSON.parse(link))
+        # end
       end
       return true
     end
@@ -37,14 +37,14 @@ class ApplicationController < ActionController::Base
 
   def authorize
     if session[:user_id]
-      @user = redis.get("#{servername}:session-#{session[:user_id]}")
+      # @user = redis.get("#{servername}:session-#{session[:user_id]}")
 
       if @user
         @user = User.from_json(JSON.parse(@user))
       else
         @user = User.find_by(id: session[:user_id])
-        redis.set("#{servername}:session-#{session[:user_id]}", @user.to_json)
-        redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+        # redis.set("#{servername}:session-#{session[:user_id]}", @user.to_json)
+        # redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
       end
     end
 
@@ -69,17 +69,18 @@ class ApplicationController < ActionController::Base
   end
 
   def update_login_info(user)
-    redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
+    # redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
   end
 
   def get_recent_users
     now_timestamp = Time.zone.now.to_i
     before_timestamp = now_timestamp - 40
-    @users = redis.zrangebyscore("#{servername}:active-users", before_timestamp, now_timestamp)
+    # @users = redis.zrangebyscore("#{servername}:active-users", before_timestamp, now_timestamp)
 
-    @users.sort.map do |user|
-      { 'name' => user }
-    end
+    # @users.sort.map do |user|
+    #   { 'name' => user }
+    # end
+    []
   end
 
   def real_time

@@ -70,8 +70,8 @@ class Firewood < ActiveRecord::Base
         fw.save!
       end
 
-      redis.zadd("#{servername}:fws", fw.id, JSON.dump(fw.to_json))
-      redis.zremrangebyrank("#{servername}:fws", 0, -1 * ($redis_cache_size - 1))
+      # redis.zadd("#{servername}:fws", fw.id, JSON.dump(fw.to_json))
+      # redis.zremrangebyrank("#{servername}:fws", 0, -1 * ($redis_cache_size - 1))
     rescue Exception => e
     end
 
@@ -240,10 +240,10 @@ class Firewood < ActiveRecord::Base
           user.name = arr[1]
           user.save!
 
-          redis.zrem("#{servername}:active-users", before_user_name)
-          redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name)
-          redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(user))
-          redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+          # redis.zrem("#{servername}:active-users", before_user_name)
+          # redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name)
+          # redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(user))
+          # redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
 
           setup_session user.id, user.name, user.level
           cookies[:user_name] = { value: user.name, expires: real_time + 7.days }
@@ -265,7 +265,7 @@ class Firewood < ActiveRecord::Base
           '내용을 입력해주세요.'
         else
           info = Info.create!(infomation: im)
-          redis.zadd("#{servername}:app-infos", info.id, info.to_json)
+          # redis.zadd("#{servername}:app-infos", info.id, info.to_json)
           '공지가 등록되었습니다.'
         end
       else
@@ -284,7 +284,7 @@ class Firewood < ActiveRecord::Base
             '공지사항이 없어요.'
           else
             deleted_idx = arr[1].to_i - 1
-            redis.zremrangebyscore("#{servername}:app-infos", infos[deleted_idx].id, infos[deleted_idx].id)
+            # redis.zremrangebyscore("#{servername}:app-infos", infos[deleted_idx].id, infos[deleted_idx].id)
             infos[deleted_idx].delete
             '삭제 완료되었습니다.'
           end

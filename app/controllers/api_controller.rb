@@ -38,14 +38,15 @@ class ApiController < ApplicationController
 
     if type == '1' # Now
       count = 0
-      redis.zrevrange("#{servername}:fws", 0, 500).each do |fw|
-        f = Firewood.from_json(JSON.parse(fw))
-        if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
-          @firewoods << f
-          count += 1
-        end
-        break if count == 50
-      end
+      @firewoods = Firewood.all.order(id: :desc).limit(50)
+      # redis.zrevrange("#{servername}:fws", 0, 500).each do |fw|
+      #   f = Firewood.from_json(JSON.parse(fw))
+      #   if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
+      #     @firewoods << f
+      #     count += 1
+      #   end
+      #   break if count == 50
+      # end
     elsif type == '2' # Mt
       @firewoods = Firewood.where('is_dm = ? OR contents like ?', session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(50)
     elsif type == '3' # Me
@@ -71,11 +72,12 @@ class ApiController < ApplicationController
     type = params[:type]
 
     @fws = if type == '1' # Now
-             redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").map do |fw|
-               Firewood.from_json(JSON.parse(fw))
-             end.select do |fw|
-               fw.visible? session[:user_id]
-             end
+             # redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").map do |fw|
+             #   Firewood.from_json(JSON.parse(fw))
+             # end.select do |fw|
+             #   fw.visible? session[:user_id]
+             # end
+             []
            elsif type == '2' # Mt
              Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)
            elsif type == '3' # Me

@@ -23,10 +23,7 @@ class ApiController < ApplicationController
     @fw = Firewood.find(params[:id])
 
     # 삭제 권한(자기 자신)이 있는지 확인
-    if @fw.editable? @user
-      redis.zremrangebyscore("#{servername}:fws", @fw.id, @fw.id)
-      @fw.destroy
-    end
+    @fw.destroy if @fw.editable? @user
 
     render_result request
   end
@@ -34,35 +31,23 @@ class ApiController < ApplicationController
   # 지금 시점으로부터 가장 최근의 장작을 50개 불러온다.
   def now
     type = params[:type]
-    @firewoods = []
-
-    if type == '1' # Now
-      count = 0
-      @firewoods = Firewood.all.order(id: :desc).limit(50)
-      # redis.zrevrange("#{servername}:fws", 0, 500).each do |fw|
-      #   f = Firewood.from_json(JSON.parse(fw))
-      #   if f.normal? || f.is_dm == session[:user_id] || f.user_id == session[:user_id]
-      #     @firewoods << f
-      #     count += 1
-      #   end
-      #   break if count == 50
-      # end
-    elsif type == '2' # Mt
-      @firewoods = Firewood.where('is_dm = ? OR contents like ?', session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(50)
-    elsif type == '3' # Me
-      @firewoods = Firewood.where('user_id = ?', session[:user_id]).order('id DESC').limit(50)
-    end
-    @fws = @firewoods.map(&:to_json)
+    @firewoods = if type == '1' # Now
+                   Firewood.timeline_with_cache(@user)
+                 elsif type == '2' # Mt
+                   Firewood.where('is_dm = ? OR contents like ?', session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(50)
+                 elsif type == '3' # Me
+                   Firewood.where('user_id = ?', session[:user_id]).order('id DESC').limit(50)
+                 end.map(&:to_hash_for_api)
 
     update_login_info(@user)
     @users = get_recent_users
 
-    render_result request, 'fws' => @fws, 'users' => @users
+    render_result request, 'fws' => @firewoods, 'users' => @users
   end
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
-    @mts = Firewood.find_mt(params[:prev_mt], session[:user_id]).map(&:to_json)
+    @mts = Firewood.find_mt(params[:prev_mt], session[:user_id]).map(&:to_hash_for_api)
 
     render_result request, 'fws' => @mts
   end
@@ -72,17 +57,12 @@ class ApiController < ApplicationController
     type = params[:type]
 
     @fws = if type == '1' # Now
-             # redis.zrevrangebyscore("#{servername}:fws", '+inf', "(#{params[:after]}").map do |fw|
-             #   Firewood.from_json(JSON.parse(fw))
-             # end.select do |fw|
-             #   fw.visible? session[:user_id]
-             # end
-             []
+             Firewood.after_than(params[:after])
            elsif type == '2' # Mt
              Firewood.where('id > ? AND (is_dm = ? OR contents like ?)', params[:after], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(1000)
            elsif type == '3' # Me
              Firewood.where('id > ? AND user_id = ?', params[:after], session[:user_id]).order('id DESC').limit(1000)
-           end.map(&:to_json)
+           end.map(&:to_hash_for_api)
     update_login_info(@user)
     @users = get_recent_users
 
@@ -100,7 +80,7 @@ class ApiController < ApplicationController
              Firewood.where('id < ? AND (is_dm = ? OR contents like ?)', params[:before], session[:user_id], '%@' + session[:user_name] + '%').order('id DESC').limit(limit)
            elsif type == '3' # Me
              Firewood.where('id < ? AND user_id = ?', params[:before], session[:user_id]).order('id DESC').limit(limit)
-           end.map(&:to_json)
+           end.map(&:to_hash_for_api)
 
     render_result request, 'fws' => @fws, 'users' => @users
   end

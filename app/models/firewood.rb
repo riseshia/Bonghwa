@@ -2,19 +2,14 @@
 class Firewood < ActiveRecord::Base
   include FromJsonable
 
+  # Callback
+  before_create :default_values
+  before_destroy :destroy_attach
+  after_save :add_to_redis
+  after_destroy :remove_from_redis
+
   belongs_to :user
   belongs_to :attach
-
-  # Callback
-  before_create do |firewood|
-    firewood.is_dm ||= 0
-    firewood.attach_id ||= 0
-    firewood.mt_root ||= 0
-  end
-
-  before_destroy do |firewood|
-    firewood.attach.destroy if firewood.attach.present?
-  end
 
   # Scope
   def self.find_mt(prev_mt, user_id)
@@ -22,6 +17,20 @@ class Firewood < ActiveRecord::Base
   end
 
   # Public Method
+  def self.timeline_with_cache(user)
+    firewoods = $redis.zrange("#{$servername}:fws", 0, -1).map do |fw|
+      Firewood.new(JSON.parse(fw))
+    end.select do |fw|
+      fw.visible? user.id
+    end
+  end
+
+  def self.after_than(after_id)
+    $redis.zrevrangebyscore("#{$servername}:fws", '+inf', "(#{after_id}").map do |fw|
+      Firewood.new(JSON.parse(fw))
+    end
+  end
+
   def normal?
     is_dm == 0
   end
@@ -30,7 +39,7 @@ class Firewood < ActiveRecord::Base
     normal? || is_dm == session_user_id || user_id == session_user_id
   end
 
-  def to_json
+  def to_hash_for_api
     {
       'id' => id, 'is_dm' => is_dm,
       'mt_root' => mt_root,
@@ -69,9 +78,6 @@ class Firewood < ActiveRecord::Base
 
         fw.save!
       end
-
-      # redis.zadd("#{servername}:fws", fw.id, JSON.dump(fw.to_json))
-      # redis.zremrangebyrank("#{servername}:fws", 0, -1 * ($redis_cache_size - 1))
     rescue Exception => e
     end
 
@@ -293,5 +299,38 @@ class Firewood < ActiveRecord::Base
     else
       ''
     end
+  end
+
+  def add_to_redis
+    $redis.zadd("#{$servername}:fws", self.id, self.to_json)
+    $redis.zremrangebyrank("#{$servername}:fws", 0, 0) if self.normal?
+  end
+
+  def remove_from_redis
+    $redis.zremrangebyscore("#{$servername}:fws", self.id, self.id)
+
+    if self.normal?
+      idx = JSON.parse($redis.zrange("#{$servername}:fws", 0, 0).first)['id'] - 1
+      loop do
+        fw = Firewood.find(idx)
+        if fw.nil?
+          idx -= 1
+          next
+        end
+
+        $redis.zadd("#{$servername}:fws", fw.id, fw.to_json)
+        break if self.normal?
+      end
+    end
+  end
+
+  def default_values
+    self.is_dm ||= 0
+    self.attach_id ||= 0
+    self.mt_root ||= 0
+  end
+
+  def destroy_attach
+    self.attach.destroy if self.attach.present?
   end
 end

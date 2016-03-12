@@ -1,9 +1,11 @@
 # LinksController
 class LinksController < ApplicationController
+  before_action :set_link, only: [:edit, :update, :destroy]
+
   # GET /links
   # GET /links.json
   def index
-    @links = Link.paginate(page: params[:page], per_page: 10)
+    @links = Link.all_with_cache
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,7 +26,6 @@ class LinksController < ApplicationController
 
   # GET /links/1/edit
   def edit
-    @link = Link.find(params[:id])
   end
 
   # POST /links
@@ -34,7 +35,6 @@ class LinksController < ApplicationController
 
     respond_to do |format|
       if @link.save
-        redis.zadd("#{servername}:app-links", @link.id, @link.to_json)
         format.html { redirect_to links_url, notice: 'Link was successfully created.' }
         format.json { render json: @link, status: :created, location: @link }
       else
@@ -47,12 +47,9 @@ class LinksController < ApplicationController
   # PUT /links/1
   # PUT /links/1.json
   def update
-    @link = Link.find(params[:id])
-
     respond_to do |format|
       if @link.update_attributes(link_params)
-        redis.zadd("#{servername}:app-links", @link.id, @link.to_json)
-        format.html { redirect_to link_url, notice: 'Link was successfully updated.' }
+        format.html { redirect_to links_url, notice: 'Link was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -64,8 +61,6 @@ class LinksController < ApplicationController
   # DELETE /links/1
   # DELETE /links/1.json
   def destroy
-    @link = Link.find(params[:id])
-    redis.zremrangebyscore("#{servername}:app-links", @link.id, @link.id)
     @link.destroy
 
     respond_to do |format|
@@ -78,5 +73,9 @@ class LinksController < ApplicationController
 
   def link_params
     params.require(:link).permit(:link_to, :name)
+  end
+
+  def set_link
+    @link = Link.find(params[:id])
   end
 end

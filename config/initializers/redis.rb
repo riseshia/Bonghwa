@@ -6,6 +6,7 @@ begin
 
   # Clean Redis
   $redis.del("#{$servername}:app-data")
+  $redis.del("#{$servername}:app-links")
 
   # Preload Firewoods
   # Firewood.all.order("id DESC").limit($redis_cache_size).each do |fw|

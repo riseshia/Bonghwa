@@ -12,19 +12,7 @@ class ApplicationController < ActionController::Base
     if @app.nil?
       redirect_to initialize_path
     else
-      @links = []
-      if redis.zcard("#{servername}:app-links") == 0
-        @links = Link.all
-        # @links.each do |link|
-        #   redis.zadd("#{servername}:app-links", link.id, link.to_json)
-        # end
-      else
-        # links = redis.zrange("#{servername}:app-links", 0, -1)
-        # links.each do |link|
-        #   @links << Link.from_json(JSON.parse(link))
-        # end
-      end
-      return true
+      @links = Link.all_with_cache
     end
   end
 

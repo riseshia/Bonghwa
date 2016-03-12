@@ -15,7 +15,7 @@
       <tr>
         <td><%= link.name %></td>
         <td><%= link.link_to %></td>
-        <td><%= link_to 'Edit', edit_link_path(link) %> | <%= link_to 'Destroy', link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_link_path(link) %> | <%= link_to 'Destroy', link_path(link), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
     </table>
@@ -24,5 +24,4 @@
     </div>
   <br />
   </div>
-<%= will_paginate @links %>
 </div>

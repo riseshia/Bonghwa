@@ -41,14 +41,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def admin_check
-    if @user.nil?
-      redirect_to login_path, notice: '로그인해주세요.'
-    elsif @user.level != 999
-      redirect_to index_path, notice: '접근 권한이 없습니다. 관리자에게 문의해주세요.'
-    end
-  end
-
   def update_login_info(user)
     # redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
   end

@@ -5,3 +5,25 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+# initialize app
+App.create!(
+  home_name: 'Bonghwa',
+  home_link: '/',
+  app_name: 'Bonghwa',
+  use_script: false,
+  show_widget: false,
+  widget_link: nil
+)
+
+# add Help to Link
+Link.create!(link_to: '/help', name: 'Help')
+
+# create admin account
+User.create!(
+  login_id: 'admin',
+  password_digest: BCrypt::Password.create('admin'),
+  name: '관리자',
+  level: 999,
+  recent_login: real_time
+)

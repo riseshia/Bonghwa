@@ -8,12 +8,7 @@ class ApplicationController < ActionController::Base
 
   def app_setting
     @app = App.first_with_cache
-
-    if @app.nil?
-      redirect_to initialize_path
-    else
-      @links = Link.all_with_cache
-    end
+    @links = Link.all_with_cache
   end
 
   def authorize

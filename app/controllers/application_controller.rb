@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
       redirect_to login_path, notice: '가입 대기 상태입니다. 관리자에게 문의해주세요.'
     else
       setup_session @user.id, @user.name, @user.level
-      cookies[:user_name] = { value: @user.name, expires: real_time + 7.days }
+      cookies[:user_name] = { value: @user.name, expires: Time.zone.now + 7.days }
     end
   end
 
@@ -54,10 +54,6 @@ class ApplicationController < ActionController::Base
     #   { 'name' => user }
     # end
     []
-  end
-
-  def real_time
-    Time.zone.now + 9.hours
   end
 
   # global redis accessor

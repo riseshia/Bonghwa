@@ -301,21 +301,18 @@ class Firewood < ActiveRecord::Base
   end
 
   def script_excute
-    app = self.app
-    str = self.contents
-
-    @fw = Firewood.new
-    @fw.user_id = 0
-    @fw.user_name = 'System'
-    arr = str.split(' ').reject do |el|
+    @fw = Firewood.new(
+      user_id: 0,
+      user_name: 'System'
+    )
+    str = self.contents.split(' ').reject do |el|
       el.start_with?('#')
-    end
-    str = arr.join(' ')
+    end.join(' ')
 
     @fw.contents = admin_script_excute(str, user)
     if @fw.contents.size != 0
       # 관리자 명령
-    elsif app.use_script == 0 # 유저 명령 비활성.
+    elsif self.app.use_script == 0 # 유저 명령 비활성.
       @fw.contents = '명령어가 비활성화되어있습니다.'
     else # 이외는 전부 유저 명령
       @fw.contents = user_script_excute(str, user)

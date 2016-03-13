@@ -6,7 +6,7 @@ class Attach < ActiveRecord::Base
 
   has_one :firewood
 
-  validates_attachment_size :img, less_than: 3.megabytes
+  validates_attachment_size :img, less_than: 5.megabytes
   validates_attachment_content_type :img, content_type: [%r{^image\/(?:jpeg|gif|png)$}, nil]
 
   before_create do |before|

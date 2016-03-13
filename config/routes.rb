@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   controller :api do
-    post 'api/new' => :new
+    post 'api/new' => :create
     delete 'api/destroy' => :destroy
 
     get 'api/now' => :now

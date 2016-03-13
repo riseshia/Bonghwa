@@ -1,6 +1,6 @@
 # ApiController
 class ApiController < ApplicationController
-  def new
+  def create
     @fw = Firewood.new(firewood_params) do |fw|
       fw.user_id ||= @user.id
       fw.user_name = session[:user_name]

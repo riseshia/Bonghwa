@@ -17,12 +17,12 @@ class ApplicationController < ActionController::Base
       cached = $redis.get("#{$servername}:session-#{session[:user_id]}")
       
       if cached
-        @user = User.new( .parse(cached))
+        @user = User.new(JSON.parse(cached))
       else
         @user = User.find(session[:user_id])
-        redis.set("#{servername}:session-#{@user.id}", @user.to_json)
+        $redis.set("#{$servername}:session-#{@user.id}", @user.to_json)
       end
-      redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+      $redis.expire("#{$servername}:session-#{session[:user_id]}", 86_400)
     else
       redirect_to login_path, notice: '로그인해주세요.'
     end
@@ -39,27 +39,17 @@ class ApplicationController < ActionController::Base
   end
 
   def update_login_info(user)
-    redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
+    $redis.zadd("#{$servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
   end
 
   def get_recent_users
     now_timestamp = Time.zone.now.to_i
     before_timestamp = now_timestamp - 40
-    @users = redis.zrangebyscore("#{servername}:active-users", before_timestamp, now_timestamp)
+    @users = $redis.zrangebyscore("#{$servername}:active-users", before_timestamp, now_timestamp)
 
     @users.sort.map do |user|
       { 'name' => user }
     end
-  end
-
-  # global redis accessor
-  def redis
-    $redis
-  end
-
-  # global servername accessor
-  def servername
-    $servername
   end
 
   def remove_session

@@ -8,7 +8,7 @@ begin
   $redis.del("#{$servername}:app-data")
   $redis.del("#{$servername}:app-links")
 
-  last = Firewood.where(is_dm: 0).offset(50).limit(1).first
+  last = Firewood.where(is_dm: 0).order(id: :desc).offset(50).limit(1).first
   Firewood.where('id > ?', last.id).each do |fw|
     $redis.zadd("#{$servername}:fws", fw.id, fw.to_json)
   end

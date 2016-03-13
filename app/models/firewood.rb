@@ -161,6 +161,7 @@ class Firewood < ActiveRecord::Base
   end
 
   def user_script_excute(str, user)
+    user = User.find(user.id)
     arr = str.split(' ')
 
     if arr[0] == '/주사위'
@@ -246,10 +247,10 @@ class Firewood < ActiveRecord::Base
           user.name = arr[1]
           user.save!
 
-          # redis.zrem("#{servername}:active-users", before_user_name)
-          # redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name)
-          # redis.set("#{servername}:session-#{session[:user_id]}", Marshal.dump(user))
-          # redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+          $redis.zrem("#{$servername}:active-users", before_user_name)
+          $redis.zadd("#{$servername}:active-users", Time.zone.now.to_i, user.name)
+          $redis.set("#{$servername}:session-#{session[:user_id]}", user.to_json)
+          $redis.expire("#{$servername}:session-#{session[:user_id]}", 86_400)
 
           setup_session user.id, user.name, user.level
           cookies[:user_name] = { value: user.name, expires: Time.zone.now + 7.days }

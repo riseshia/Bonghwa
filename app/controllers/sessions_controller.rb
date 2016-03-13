@@ -1,6 +1,7 @@
 # SessionsController
 class SessionsController < ApplicationController
   skip_before_action :authorize
+  skip_before_action :block_unconfirmed
 
   def new
     user = User.find_by_id(cookies[:user_id])

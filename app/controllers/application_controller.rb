@@ -2,6 +2,7 @@
 class ApplicationController < ActionController::Base
   before_action :app_setting
   before_action :authorize
+  before_action :block_unconfirmed
   protect_from_forgery with: :exception
 
   protected
@@ -13,22 +14,23 @@ class ApplicationController < ActionController::Base
 
   def authorize
     if session[:user_id]
-      # @user = redis.get("#{servername}:session-#{session[:user_id]}")
-
-      if @user
-        @user = User.from_json(JSON.parse(@user))
+      cached = redis.get("#{servername}:session-#{session[:user_id]}")
+      
+      if cached
+        @user = User.new(JSON.parse(cached))
       else
-        @user = User.find_by(id: session[:user_id])
-        # redis.set("#{servername}:session-#{session[:user_id]}", @user.to_json)
-        # redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+        @user = User.find(session[:user_id])
+        redis.set("#{servername}:session-#{@user.id}", @user.to_json)
       end
-    end
-
-    if @user.nil?
+      redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+    else
       redirect_to login_path, notice: '로그인해주세요.'
-    elsif @user.level < 1
-      remove_session
+    end
+  end
 
+  def block_unconfirmed
+    if @user.level < 1
+      remove_session
       redirect_to login_path, notice: '가입 대기 상태입니다. 관리자에게 문의해주세요.'
     else
       setup_session @user.id, @user.name, @user.level
@@ -37,18 +39,17 @@ class ApplicationController < ActionController::Base
   end
 
   def update_login_info(user)
-    # redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
+    redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
   end
 
   def get_recent_users
     now_timestamp = Time.zone.now.to_i
     before_timestamp = now_timestamp - 40
-    # @users = redis.zrangebyscore("#{servername}:active-users", before_timestamp, now_timestamp)
+    @users = redis.zrangebyscore("#{servername}:active-users", before_timestamp, now_timestamp)
 
-    # @users.sort.map do |user|
-    #   { 'name' => user }
-    # end
-    []
+    @users.sort.map do |user|
+      { 'name' => user }
+    end
   end
 
   # global redis accessor

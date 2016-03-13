@@ -1,28 +1,24 @@
 # ApiController
 class ApiController < ApplicationController
   def create
-    @fw = Firewood.new(firewood_params) do |fw|
-      fw.user_id ||= @user.id
-      fw.user_name = session[:user_name]
-      fw.prev_mt ||= 0
-      fw.contents = escape_tags(fw.contents)
-    end
+    @fw = Firewood.new(
+      user_id: @user.id,
+      user_name: @user.name,
+      prev_mt: params[:firewood][:prev_mt],
+      contents: escape_tags(params[:firewood][:contents]),
+      attached_file: params[:attach],
+      adult_check: params[:adult_check],
+      app: @app,
+      user: @user
+    )
 
-    if @fw.contents.match('^!.+')
-      @fw.save_dm attach: params[:attach], adult_check: params[:adult_check], user_id: session[:user_id]
-    elsif @fw.contents.match('^/.+')
-      @fw.save_cmd @user, @app, attach: params[:attach], adult_check: params[:adult_check], user_id: session[:user_id]
-    else
-      @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
-    end
+    @fw.save
 
     render_result request
   end
 
   def destroy
     @fw = Firewood.find(params[:id])
-
-    # 삭제 권한(자기 자신)이 있는지 확인
     @fw.destroy if @fw.editable? @user
 
     render_result request
@@ -86,10 +82,6 @@ class ApiController < ApplicationController
   end
 
   private
-
-  def firewood_params
-    params.require(:firewood).permit(:contents, :prev_mt)
-  end
 
   def limit_count_to_50(number)
     number > 50 ? 50 : number

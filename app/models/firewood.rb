@@ -2,12 +2,19 @@
 class Firewood < ActiveRecord::Base
   # Callback
   before_create :default_values
+  before_create :attachment_support
   before_destroy :destroy_attach
+
+  around_create :send_dm, if: :dm?
+
+  after_create :execute_cmd, if: :cmd?
   after_save :add_to_redis
   after_destroy :remove_from_redis
 
   belongs_to :user
   belongs_to :attach
+
+  attr_accessor :attached_file, :adult_check, :app, :user
 
   # Scope
   def self.find_mt(prev_mt, user_id)
@@ -27,6 +34,14 @@ class Firewood < ActiveRecord::Base
     $redis.zrevrangebyscore("#{$servername}:fws", '+inf', "(#{after_id}").map do |fw|
       Firewood.new(JSON.parse(fw))
     end
+  end
+
+  def cmd?
+    self.contents.match('^/.+').present?
+  end
+
+  def dm?
+    !normal? || self.contents.match('^!.+').present?
   end
 
   def normal?
@@ -58,105 +73,17 @@ class Firewood < ActiveRecord::Base
     user_id == user.id
   end
 
-  def save_fw(params)
-    fw = self
-    begin
-      fail '내용이 없습니다.' if fw.contents.size == 0 && params[:attach].size == 0
-
-      Firewood.transaction do
-        unless params[:attach].blank?
-          @attach = Attach.create!(img: params[:attach])
-          fw.attach_id = @attach.id
-          if params[:adult_check]
-            fw.contents += " <span class='has-image text-warning'>[후방주의 #{@attach.id}]</span>"
-          else
-            fw.contents += " <span class='has-image'>[이미지 #{@attach.id}]</span>"
-          end
-        end
-
-        fw.save!
-      end
-    rescue Exception => e
-    end
-
-    fw
-  end
-
-  def save_dm(params)
-    fw = self
-    # parsing
-    fw_parsed = fw.contents.match('^!(\S+)\s(.+)')
-
-    unless fw_parsed
-      Firewood.system_dm attach: params[:attach], adult_check: params[:adult_check], user_id: params[:user_id], message: "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
-      return false
-    end
-
-    # user_check
-    dm_user = User.find_by_name(fw_parsed[1])
-    unless dm_user
-      Firewood.system_dm attach: params[:attach], adult_check: params[:adult_check], user_id: params[:user_id], message: '존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요.'
-      return false
-    end
-    fw.is_dm = dm_user.id
-
-    fw.save_fw params
-  end
-
-  def save_cmd(user, app, params)
-    @user = user
-    fw = self
-    fw_parsed = fw.contents.match('^!(\S+)\s(.+)')
-
-    fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
-
-    # command
-    fw.script_excute(@user, app, params)
-  end
-
-  def script_excute(user, app, params)
-    @app = app
-    str = contents
-
-    @fw = Firewood.new
-    @fw.user_id = 0
-    @fw.user_name = 'System'
-    arr = str.split(' ').reject do |el|
-      el.start_with?('#')
-    end
-    str = arr.join(' ')
-
-    @fw.contents = admin_script_excute(str, user)
-    if @fw.contents.size != 0
-      # 관리자 명령
-    elsif @app.use_script == 0 # 유저 명령 비활성.
-      @fw.contents = '명령어가 비활성화되어있습니다.'
-    else # 이외는 전부 유저 명령
-      @fw.contents = user_script_excute(str, user)
-    end
-
-    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
-  end
-
   # Class Method
   def self.system_dm(params)
-    Firewood.new(
+    create(
       user_id: 0,
       user_name: 'System',
       contents: params[:message],
       is_dm: params[:user_id]
-    ).save_fw attach: params[:attach], adult_check: params[:adult_check]
+    )
   end
 
   private
-
-  def redis
-    $redis
-  end
-
-  def servername
-    $servername
-  end
 
   def user_script_excute(str, user)
     user = User.find(user.id)
@@ -331,5 +258,69 @@ class Firewood < ActiveRecord::Base
 
   def destroy_attach
     self.attach.destroy if self.attach.present?
+  end
+
+  def attachment_support
+    fail '내용이 없습니다.' if self.contents.blank? && self.attached_file.blank?
+
+    if self.attached_file.present?
+      attach = Attach.create!(img: self.attached_file)
+      self.attach_id = attach.id
+      if self.adult_check
+        self.contents += " <span class='has-image text-warning'>[후방주의 #{attach.id}]</span>"
+      else
+        self.contents += " <span class='has-image'>[이미지 #{attach.id}]</span>"
+      end
+    end
+  end
+
+  def send_dm
+    fw_parsed = self.contents.match('^!(\S+)\s(.+)') # parsing
+    enable_to_send = true
+    message = ''
+    if fw_parsed.nil?
+      message = "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
+      enable_to_send = false
+    else
+      dm_user = User.find_by_name(fw_parsed[1]) # user check
+      if dm_user.nil?
+        message = '존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요.'
+        enable_to_send = false
+      end
+    end
+
+    self.is_dm = enable_to_send ? dm_user.id : self.user_id
+
+    yield
+
+    Firewood.system_dm(user_id: self.user_id, message: message) if !enable_to_send && self.user_id != 0
+  end
+
+  def execute_cmd
+    self.script_excute
+  end
+
+  def script_excute
+    app = self.app
+    str = self.contents
+
+    @fw = Firewood.new
+    @fw.user_id = 0
+    @fw.user_name = 'System'
+    arr = str.split(' ').reject do |el|
+      el.start_with?('#')
+    end
+    str = arr.join(' ')
+
+    @fw.contents = admin_script_excute(str, user)
+    if @fw.contents.size != 0
+      # 관리자 명령
+    elsif app.use_script == 0 # 유저 명령 비활성.
+      @fw.contents = '명령어가 비활성화되어있습니다.'
+    else # 이외는 전부 유저 명령
+      @fw.contents = user_script_excute(str, user)
+    end
+
+    @fw.save_fw attach: params[:attach], adult_check: params[:adult_check]
   end
 end

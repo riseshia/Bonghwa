@@ -2,98 +2,54 @@
 class ApplicationController < ActionController::Base
   before_action :app_setting
   before_action :authorize
+  before_action :block_unconfirmed
   protect_from_forgery with: :exception
 
   protected
 
   def app_setting
-    @app = redis.get("#{servername}:app-data")
-
-    if @app
-      @app = App.from_json(JSON.parse(@app))
-    else
-      @app = App.first
-      redis.set("#{servername}:app-data", @app.to_json)
-    end
-
-    if @app.nil?
-      redirect_to initialize_path
-    else
-      @links = []
-      if redis.zcard("#{servername}:app-links") == 0
-        @links = Link.all
-        @links.each do |link|
-          redis.zadd("#{servername}:app-links", link.id, link.to_json)
-        end
-      else
-        links = redis.zrange("#{servername}:app-links", 0, -1)
-        links.each do |link|
-          @links << Link.from_json(JSON.parse(link))
-        end
-      end
-      return true
-    end
+    @app = App.first_with_cache
+    @links = Link.all_with_cache
   end
 
   def authorize
     if session[:user_id]
-      @user = redis.get("#{servername}:session-#{session[:user_id]}")
-
-      if @user
-        @user = User.from_json(JSON.parse(@user))
+      cached = $redis.get("#{$servername}:session-#{session[:user_id]}")
+      
+      if cached
+        @user = User.new(JSON.parse(cached))
       else
-        @user = User.find_by(id: session[:user_id])
-        redis.set("#{servername}:session-#{session[:user_id]}", @user.to_json)
-        redis.expire("#{servername}:session-#{session[:user_id]}", 86_400)
+        @user = User.find(session[:user_id])
+        $redis.set("#{$servername}:session-#{@user.id}", @user.to_json)
       end
-    end
-
-    if @user.nil?
-      redirect_to login_path, notice: '로그인해주세요.'
-    elsif @user.level < 1
-      remove_session
-
-      redirect_to login_path, notice: '가입 대기 상태입니다. 관리자에게 문의해주세요.'
+      $redis.expire("#{$servername}:session-#{session[:user_id]}", 86_400)
     else
-      setup_session @user.id, @user.name, @user.level
-      cookies[:user_name] = { value: @user.name, expires: real_time + 7.days }
+      redirect_to login_path, notice: '로그인해주세요.'
     end
   end
 
-  def admin_check
-    if @user.nil?
-      redirect_to login_path, notice: '로그인해주세요.'
-    elsif @user.level != 999
-      redirect_to index_path, notice: '접근 권한이 없습니다. 관리자에게 문의해주세요.'
+  def block_unconfirmed
+    if @user.level < 1
+      remove_session
+      redirect_to login_path, notice: '가입 대기 상태입니다. 관리자에게 문의해주세요.'
+    else
+      setup_session @user
+      cookies[:user_name] = { value: @user.name, expires: Time.zone.now + 7.days }
     end
   end
 
   def update_login_info(user)
-    redis.zadd("#{servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
+    $redis.zadd("#{$servername}:active-users", Time.zone.now.to_i, user.name) unless user.id == 1
   end
 
   def get_recent_users
     now_timestamp = Time.zone.now.to_i
     before_timestamp = now_timestamp - 40
-    @users = redis.zrangebyscore("#{servername}:active-users", before_timestamp, now_timestamp)
+    @users = $redis.zrangebyscore("#{$servername}:active-users", before_timestamp, now_timestamp)
 
     @users.sort.map do |user|
       { 'name' => user }
     end
-  end
-
-  def real_time
-    Time.zone.now + 9.hours
-  end
-
-  # global redis accessor
-  def redis
-    $redis
-  end
-
-  # global servername accessor
-  def servername
-    $servername
   end
 
   def remove_session
@@ -102,9 +58,9 @@ class ApplicationController < ActionController::Base
     session[:user_level] = nil
   end
 
-  def setup_session(user_id, user_name, user_level)
-    session[:user_id] = user_id
-    session[:user_name] = user_name
-    session[:user_level] = user_level
+  def setup_session(user)
+    session[:user_id] = user.id
+    session[:user_name] = user.name
+    session[:user_level] = user.level
   end
 end

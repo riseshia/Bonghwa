@@ -8,11 +8,10 @@ Rails.application.routes.draw do
   controller :admin do
     get 'admin/edit' => :edit
     put 'admin/update' => :update
-    get 'initialize' => :new_app
   end
 
   controller :api do
-    post 'api/new' => :new
+    post 'api/new' => :create
     delete 'api/destroy' => :destroy
 
     get 'api/now' => :now

@@ -2,6 +2,7 @@
 class UsersController < ApplicationController
   skip_before_action :authorize, only: [:new, :create]
   before_action :admin_check, only: [:index, :destroy]
+  before_action :set_user, only: [:edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -33,7 +34,6 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     return redirect_to index_url, notice: '접근 하실 수 없습니다.' unless session[:user_id].to_i == params[:id].to_i || session[:user_level].to_i == 999
-    @user = User.find(params[:id])
   end
 
   # POST /users
@@ -75,7 +75,6 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     return redirect_to index_url, notice: '접근 하실 수 없습니다.' unless session[:user_id].to_i == params[:id].to_i || session[:user_level].to_i == 999
-    @user = User.find(params[:id])
 
     return redirect_to ('/users/' + @user.id.to_s + '/edit'), notice: '그 이름은 사용하실 수 없습니다.' if @user.name == 'System'
     return redirect_to ('/users/' + @user.id.to_s + '/edit'), notice: '공백을 사용하실 수 없습니다.' unless @user.name.scan(' ').size == 0
@@ -94,7 +93,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
 
     respond_to do |format|
@@ -104,6 +102,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params

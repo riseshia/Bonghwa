@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     if user.nil?
       render 'new', layout: 'signin'
     elsif user.password_digest[0..9] == cookies[:auth_key]
-      setup_session user.id, user.name, user.level
+      setup_session user
 
       # cookie update for auto login user
       cookies[:user_id] = { value: user.id, expires: Time.zone.now + 7.days }
@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
 
     # verify user
     if user && user.authenticate(params[:password])
-      setup_session user.id, user.name, user.level
+      setup_session user
 
       # 두개는 js에서도 사용하기때문에 언제나 생성.
       cookies[:user_id] = { value: user.id, expires: Time.zone.now + 7.days }

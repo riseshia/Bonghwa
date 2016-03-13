@@ -14,10 +14,10 @@ class ApplicationController < ActionController::Base
 
   def authorize
     if session[:user_id]
-      cached = redis.get("#{servername}:session-#{session[:user_id]}")
+      cached = $redis.get("#{$servername}:session-#{session[:user_id]}")
       
       if cached
-        @user = User.new(JSON.parse(cached))
+        @user = User.new( .parse(cached))
       else
         @user = User.find(session[:user_id])
         redis.set("#{servername}:session-#{@user.id}", @user.to_json)
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
       remove_session
       redirect_to login_path, notice: '가입 대기 상태입니다. 관리자에게 문의해주세요.'
     else
-      setup_session @user.id, @user.name, @user.level
+      setup_session @user
       cookies[:user_name] = { value: @user.name, expires: Time.zone.now + 7.days }
     end
   end
@@ -68,9 +68,9 @@ class ApplicationController < ActionController::Base
     session[:user_level] = nil
   end
 
-  def setup_session(user_id, user_name, user_level)
-    session[:user_id] = user_id
-    session[:user_name] = user_name
-    session[:user_level] = user_level
+  def setup_session(user)
+    session[:user_id] = user.id
+    session[:user_name] = user.name
+    session[:user_level] = user.level
   end
 end

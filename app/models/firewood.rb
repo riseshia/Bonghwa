@@ -252,7 +252,7 @@ class Firewood < ActiveRecord::Base
           $redis.set("#{$servername}:session-#{session[:user_id]}", user.to_json)
           $redis.expire("#{$servername}:session-#{session[:user_id]}", 86_400)
 
-          setup_session user.id, user.name, user.level
+          setup_session user
           cookies[:user_name] = { value: user.name, expires: Time.zone.now + 7.days }
 
           "#{before_user_name}님의 닉네임이 #{user.name}로 변경되었습니다."

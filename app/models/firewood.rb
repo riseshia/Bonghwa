@@ -1,7 +1,5 @@
 # Firewood
 class Firewood < ActiveRecord::Base
-  include FromJsonable
-
   # Callback
   before_create :default_values
   before_destroy :destroy_attach

@@ -1,7 +1,5 @@
 # Link
 class Link < ActiveRecord::Base
-  include FromJsonable
-
   after_save :add_to_redis
   after_destroy :remove_from_redis
 

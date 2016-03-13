@@ -1,7 +1,5 @@
 # App
 class App < ActiveRecord::Base
-  include FromJsonable
-
   after_save :add_to_redis
 
   validates :app_name, presence: true

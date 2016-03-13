@@ -18,10 +18,10 @@ class Link < ActiveRecord::Base
 
   def add_to_redis
     remove_from_redis
-    $redis.zadd("#{$servername}:app-links", self.id, self.to_json)
+    $redis.zadd("#{$servername}:app-links", id, to_json)
   end
 
   def remove_from_redis
-    $redis.zremrangebyscore("#{$servername}:app-links", self.id, self.id)
+    $redis.zremrangebyscore("#{$servername}:app-links", id, id)
   end
 end

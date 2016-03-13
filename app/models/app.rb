@@ -14,6 +14,6 @@ class App < ActiveRecord::Base
   end
 
   def add_to_redis
-    $redis.set("#{$servername}:app-data", self.to_json)
+    $redis.set("#{$servername}:app-data", to_json)
   end
 end

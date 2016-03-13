@@ -16,10 +16,10 @@ class Info < ActiveRecord::Base
 
   def add_to_redis
     remove_from_redis
-    $redis.zadd("#{$servername}:app-infos", self.id, self.to_json)
+    $redis.zadd("#{$servername}:app-infos", id, to_json)
   end
 
   def remove_from_redis
-    $redis.zremrangebyscore("#{$servername}:app-infos", self.id, self.id)
+    $redis.zremrangebyscore("#{$servername}:app-infos", id, id)
   end
 end

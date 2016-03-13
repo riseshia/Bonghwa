@@ -37,19 +37,19 @@ class Firewood < ActiveRecord::Base
   end
 
   def cmd?
-    self.contents.match('^/.+').present?
+    contents.match('^/.+').present?
   end
 
   def dm?
-    !normal? || self.contents.match('^!.+').present?
+    !normal? || contents.match('^!.+').present?
   end
 
   def normal?
-    self.is_dm == 0
+    is_dm == 0
   end
 
   def visible?(session_user_id)
-    normal? || self.is_dm == session_user_id || self.user_id == session_user_id
+    normal? || is_dm == session_user_id || user_id == session_user_id
   end
 
   def to_hash_for_api
@@ -86,15 +86,15 @@ class Firewood < ActiveRecord::Base
   private
 
   def add_to_redis
-    $redis.zadd("#{$servername}:fws", self.id, self.to_json)
-    $redis.zremrangebyrank("#{$servername}:fws", 0, 0) if self.normal?
+    $redis.zadd("#{$servername}:fws", id, to_json)
+    $redis.zremrangebyrank("#{$servername}:fws", 0, 0) if normal?
   end
 
   def remove_from_redis
-    $redis.zremrangebyscore("#{$servername}:fws", self.id, self.id)
+    $redis.zremrangebyscore("#{$servername}:fws", id, id)
 
     cached = $redis.zrange("#{$servername}:fws", 0, 0)
-    if self.normal? && cached.present?
+    if normal? && cached.present?
       idx = JSON.parse(cached.first)['id'] - 1
       loop do
         fw = Firewood.find(idx)
@@ -104,7 +104,7 @@ class Firewood < ActiveRecord::Base
         end
 
         $redis.zadd("#{$servername}:fws", fw.id, fw.to_json)
-        break if self.normal?
+        break if normal?
       end
     end
   end
@@ -116,16 +116,16 @@ class Firewood < ActiveRecord::Base
   end
 
   def destroy_attach
-    self.attach.destroy if self.attach.present?
+    attach.destroy if attach.present?
   end
 
   def attachment_support
-    fail '내용이 없습니다.' if self.contents.blank? && self.attached_file.blank?
+    raise '내용이 없습니다.' if contents.blank? && attached_file.blank?
 
-    if self.attached_file.present?
-      attach = Attach.create!(img: self.attached_file)
+    if attached_file.present?
+      attach = Attach.create!(img: attached_file)
       self.attach_id = attach.id
-      if self.adult_check
+      if adult_check
         self.contents += " <span class='has-image text-warning'>[후방주의 #{attach.id}]</span>"
       else
         self.contents += " <span class='has-image'>[이미지 #{attach.id}]</span>"
@@ -148,11 +148,11 @@ class Firewood < ActiveRecord::Base
       end
     end
 
-    self.is_dm = enable_to_send ? dm_user.id : self.user_id
+    self.is_dm = enable_to_send ? dm_user.id : user_id
 
     yield
 
-    Firewood.system_dm(user_id: self.user_id, message: message) if !enable_to_send && self.user_id != 0
+    Firewood.system_dm(user_id: user_id, message: message) if !enable_to_send && user_id != 0
   end
 
   def execute_cmd

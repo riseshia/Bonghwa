@@ -9,13 +9,13 @@ module Scripter
     '/공지추가' => :add_info,
     '/공지삭제' => :remove_info,
     /\/[0-9]+d[0-9]+/ => :extended_dice
-  }
+  }.freeze
 
   module_function
 
   def execute(params)
     script = Script.new(params[:firewood])
-    new_params = {script: script}.merge(params)
+    new_params = { script: script }.merge(params)
     command = if params[:firewood].app.use_script == 1
                 cmd_find(script.command)
               else
@@ -23,14 +23,14 @@ module Scripter
               end
 
     send_feedback(
-      self.send(command, new_params)
+      send(command, new_params)
     )
   end
 
   def cmd_find(input)
     return COMMANDS[input] if COMMANDS[input].present?
 
-    command_obj = COMMANDS.find do |cmd, method|
+    command_obj = COMMANDS.find do |cmd, _method|
       next if cmd.is_a? String
       cmd.match(input)
     end
@@ -50,8 +50,8 @@ module Scripter
     script = params[:script]
     return '이 명령어는 추가 인수를 받지 않습니다.' if script.args.size != 0
     _, n, r = script.command.split(/\/|d/).map(&:to_i)
-    if (1..50).include?(n) && (1..20).include?(r)
-      dices = (1..r).map { "#{rand(1..n)}" }
+    if (1..50).cover?(n) && (1..20).cover?(r)
+      dices = (1..r).map { rand(1..n).to_s }
       "#{dices.join(', ')} 의 주사위 눈이 나왔습니다."
     else
       "2면에서 50면, 1개에서 20개의 주사위를 굴리실 수 있습니다. 예를 들어, '/6d4'는 6면체 주사위 4개를 굴립니다."
@@ -91,7 +91,7 @@ module Scripter
                  .order('count DESC')
                  .limit(5)
     rs.map.with_index do |row, index|
-      "#{index+1}위 - #{row.user_name}(#{row.count}개)"
+      "#{index + 1}위 - #{row.user_name}(#{row.count}개)"
     end.join(', ')
   end
 
@@ -158,7 +158,7 @@ module Scripter
     "명령어 '#{script.command}'를 찾을 수 없습니다."
   end
 
-  def disabled_cmd(params)
+  def disabled_cmd(_params)
     '명령 기능이 비활성화되어 있습니다. 관리자에게 문의하세요.'
   end
 end

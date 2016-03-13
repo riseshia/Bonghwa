@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   def authorize
     if session[:user_id]
       cached = $redis.get("#{$servername}:session-#{session[:user_id]}")
-      
+
       if cached
         @user = User.new(JSON.parse(cached))
       else

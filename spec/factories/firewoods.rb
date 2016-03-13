@@ -13,9 +13,9 @@ FactoryGirl.define do
     attach_id 0
     is_dm 1000
     mt_root 0
-    contents 'Yeahey!'
+    contents '!user_name Yeahey!'
     prev_mt '0'
-    user_id 10
+    user_id 2000
     user_name 'user'
   end
 end

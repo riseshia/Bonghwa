@@ -9,6 +9,7 @@ FactoryGirl.define do
   end
 
   factory :user2, class: User do
+    id '2000'
     login_id 'user_id2'
     name 'user_name2'
     password 'userpwd2'

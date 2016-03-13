@@ -45,11 +45,11 @@ class Firewood < ActiveRecord::Base
   end
 
   def normal?
-    is_dm == 0
+    self.is_dm == 0
   end
 
   def visible?(session_user_id)
-    normal? || is_dm == session_user_id || user_id == session_user_id
+    normal? || self.is_dm == session_user_id || self.user_id == session_user_id
   end
 
   def to_hash_for_api
@@ -93,8 +93,9 @@ class Firewood < ActiveRecord::Base
   def remove_from_redis
     $redis.zremrangebyscore("#{$servername}:fws", self.id, self.id)
 
-    if self.normal?
-      idx = JSON.parse($redis.zrange("#{$servername}:fws", 0, 0).first)['id'] - 1
+    cached = $redis.zrange("#{$servername}:fws", 0, 0)
+    if self.normal? && cached.present?
+      idx = JSON.parse(cached.first)['id'] - 1
       loop do
         fw = Firewood.find(idx)
         if fw.nil?

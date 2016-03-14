@@ -113,6 +113,7 @@ class Firewood < ActiveRecord::Base
     self.is_dm ||= 0
     self.attach_id ||= 0
     self.mt_root ||= 0
+    self.prev_mt ||= 0
   end
 
   def destroy_attach

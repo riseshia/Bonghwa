@@ -1,4 +1,3 @@
-var app = app || {};
 app.util = app.util || {};
 
 (function () {

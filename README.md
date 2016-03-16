@@ -13,7 +13,4 @@ Bonghwa is a private SNS for small group. At first, It was developed for its dev
 [![Test Coverage](https://codeclimate.com/github/riseshia/Bonghwa/badges/coverage.svg)](https://codeclimate.com/github/riseshia/Bonghwa/coverage)
 
 ## License
-Neroscape is released under the [MIT License](http://www.opensource.org/licenses/MIT).
-
-## License
-[MIT License](http://opensource.org/licenses/MIT)
+Bonghwa is released under the [MIT License](http://www.opensource.org/licenses/MIT).

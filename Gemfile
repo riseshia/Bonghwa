@@ -6,8 +6,10 @@ gem 'mysql2', '~> 0.4'
 
 # Gems used only for assets and not required
 # in production environments by default.
+gem 'sprockets', '>= 3.0.0'
+gem 'sprockets-es6'
+
 gem 'sass-rails'
-gem 'coffee-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'bcrypt'
@@ -37,4 +39,7 @@ group :development do
   
   gem 'web-console', '~> 2.0'
   gem 'byebug'
+
+  gem 'rubocop', require: false
+  gem 'rails_best_practices', require: false
 end

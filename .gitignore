@@ -70,3 +70,6 @@ Temporary Items
 .vagrant
 
 .byebug_history
+
+# NPM
+node_modules/

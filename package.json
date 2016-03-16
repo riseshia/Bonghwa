@@ -1,0 +1,21 @@
+{
+  "name": "Bonghwa",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "rubocop": "git diff --name-only --diff-filter=ACMRTUXB --cached | grep '\\.rb' | xargs bundle exec rubocop",
+    "eslint": "git diff --name-only --diff-filter=ACMRTUXB --cached | grep '\\.es6' | xargs node_modules/.bin/eslint"
+  },
+  "pre-commit": [
+    "rubocop",
+    "eslint"
+  ],
+  "author": "shia",
+  "devDependencies": {
+    "babel-eslint": "^4.1.8",
+    "eslint": "2.4.0",
+    "eslint-plugin-standard": "^1.3.2",
+    "pre-commit": "^1.1.2"
+  }
+}

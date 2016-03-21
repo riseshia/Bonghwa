@@ -1,5 +1,7 @@
 # frozen_string_literal: true
-# WaitForAjax
+# Wait For Ajax
+# https://robots.thoughtbot.com/automatically-wait-for-ajax-with-capybara
+
 module WaitForAjax
   def wait_for_ajax
     Timeout.timeout(Capybara.default_max_wait_time) do

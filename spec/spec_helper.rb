@@ -15,20 +15,7 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-require "capybara/rspec"
-require "factory_girl_rails"
-require "rspec/collection_matchers"
-require "codeclimate-test-reporter"
-require "simplecov"
-
-if ENV["CODECLIMATE_REPO_TOKEN"]
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-    SimpleCov::Formatter::HTMLFormatter,
-    CodeClimate::TestReporter::Formatter
-  ]
-  SimpleCov.start "rails"
-  CodeClimate::TestReporter.start
-end
+ENV["RAILS_ENV"] ||= "test"
 
 RSpec.configure do |config|
   # The settings below are suggested to provide a good initial experience

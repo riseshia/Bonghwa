@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 # UsersHelper
 module UsersHelper
   def level_up(user)
     if user.level == 0
-      return link_to 'Level up', lvup_users_path(id: user.id)
+      return link_to "Level up", lvup_users_path(id: user.id)
     else
-      return 'done'
+      return "done"
     end
   end
 end

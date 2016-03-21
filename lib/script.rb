@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 class Script
   attr_reader :command, :args
 
   def initialize(firewood)
-    tokens = firewood.contents.split(' ').reject do |el|
+    tokens = firewood.contents.split(" ").reject do |el|
       el.start_with?('#') # remove tags
     end
     @command = tokens.shift
@@ -10,6 +11,6 @@ class Script
   end
 
   def arg
-    args.join(' ')
+    args.join(" ")
   end
 end

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2.5'
+gem 'rails'
 gem 'sqlite3'
 gem 'mysql2', '~> 0.4'
 
@@ -24,7 +24,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
   gem 'rspec-collection_matchers'
   gem 'factory_girl_rails', "~> 4.0"
-  gem 'capybara', '~> 2.4.0'
+  gem 'capybara'
+  gem 'poltergeist'
   gem 'shoulda-matchers', '~> 3.0'
   gem "codeclimate-test-reporter", require: nil
 end

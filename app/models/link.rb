@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Link
 class Link < ActiveRecord::Base
   after_save :add_to_redis

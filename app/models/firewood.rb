@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Firewood
 class Firewood < ActiveRecord::Base
   # Callback
@@ -18,7 +19,7 @@ class Firewood < ActiveRecord::Base
 
   # Scope
   def self.find_mt(prev_mt, user_id)
-    where('(id = ?) AND (is_dm = 0 OR is_dm = ?)', prev_mt, user_id).order('id DESC').limit(1)
+    where("(id = ?) AND (is_dm = 0 OR is_dm = ?)", prev_mt, user_id).order("id DESC").limit(1)
   end
 
   # Public Method
@@ -31,17 +32,17 @@ class Firewood < ActiveRecord::Base
   end
 
   def self.after_than(after_id)
-    $redis.zrevrangebyscore("#{$servername}:fws", '+inf', "(#{after_id}").map do |fw|
+    $redis.zrevrangebyscore("#{$servername}:fws", "+inf", "(#{after_id}").map do |fw|
       Firewood.new(JSON.parse(fw))
     end
   end
 
   def cmd?
-    contents.match('^/.+').present?
+    contents.match("^/.+").present?
   end
 
   def dm?
-    !normal? || contents.match('^!.+').present?
+    !normal? || contents.match("^!.+").present?
   end
 
   def normal?
@@ -54,19 +55,19 @@ class Firewood < ActiveRecord::Base
 
   def to_hash_for_api
     {
-      'id' => id, 'is_dm' => is_dm,
-      'mt_root' => mt_root,
-      'prev_mt' => prev_mt,
-      'user_id' => user_id,
-      'name' => user_name,
-      'contents' => contents,
-      'img_link' => img_link,
-      'created_at' => created_at.strftime('%D %T')
+      "id" => id, "is_dm" => is_dm,
+      "mt_root" => mt_root,
+      "prev_mt" => prev_mt,
+      "user_id" => user_id,
+      "name" => user_name,
+      "contents" => contents,
+      "img_link" => img_link,
+      "created_at" => created_at.strftime("%D %T")
     }
   end
 
   def img_link
-    attach_id != 0 ? attach.img.url : '0'
+    attach_id != 0 ? attach.img.url : "0"
   end
 
   def editable?(user)
@@ -77,7 +78,7 @@ class Firewood < ActiveRecord::Base
   def self.system_dm(params)
     create(
       user_id: 0,
-      user_name: 'System',
+      user_name: "System",
       contents: params[:message],
       is_dm: params[:user_id]
     )
@@ -95,7 +96,7 @@ class Firewood < ActiveRecord::Base
 
     cached = $redis.zrange("#{$servername}:fws", 0, 0)
     if normal? && cached.present?
-      idx = JSON.parse(cached.first)['id'] - 1
+      idx = JSON.parse(cached.first)["id"] - 1
       loop do
         fw = Firewood.find(idx)
         if fw.nil?
@@ -121,7 +122,7 @@ class Firewood < ActiveRecord::Base
   end
 
   def attachment_support
-    raise '내용이 없습니다.' if contents.blank? && attached_file.blank?
+    raise "내용이 없습니다." if contents.blank? && attached_file.blank?
 
     if attached_file.present?
       attach = Attach.create!(img: attached_file)
@@ -137,14 +138,14 @@ class Firewood < ActiveRecord::Base
   def send_dm
     fw_parsed = self.contents.match('^!(\S+)\s(.+)') # parsing
     enable_to_send = true
-    message = ''
+    message = ""
     if fw_parsed.nil?
       message = "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
       enable_to_send = false
     else
       dm_user = User.find_by_name(fw_parsed[1]) # user check
       if dm_user.nil?
-        message = '존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요.'
+        message = "존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요."
         enable_to_send = false
       end
     end

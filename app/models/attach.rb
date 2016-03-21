@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 # Attach
 class Attach < ActiveRecord::Base
   has_attached_file :img,
-                    path: ':rails_root/public/system/:attachment/:id/:style/:filename',
-                    url: '/system/:attachment/:id/:style/:filename'
+                    path: ":rails_root/public/system/:attachment/:id/:style/:filename",
+                    url: "/system/:attachment/:id/:style/:filename"
 
   has_one :firewood
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # AdminController
 class AdminController < ApplicationController
   before_action :admin_check
@@ -10,10 +11,10 @@ class AdminController < ApplicationController
 
     respond_to do |format|
       if @app.update_attributes(app_params)
-        format.html { redirect_to admin_edit_url, notice: 'app setting was successfully updated.' }
+        format.html { redirect_to admin_edit_url, notice: "app setting was successfully updated." }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: "edit" }
         format.json { render json: @app.errors, status: :unprocessable_entity }
       end
     end
@@ -27,9 +28,9 @@ class AdminController < ApplicationController
 
   def admin_check
     if @user.nil?
-      redirect_to login_path, notice: '로그인해주세요.'
+      redirect_to login_path, notice: "로그인해주세요."
     elsif @user.level != 999
-      redirect_to index_path, notice: '접근 권한이 없습니다. 관리자에게 문의해주세요.'
+      redirect_to index_path, notice: "접근 권한이 없습니다. 관리자에게 문의해주세요."
     end
   end
 end

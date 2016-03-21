@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Authorize mode
 # This provice simple sign_in method for test
 module Authorize

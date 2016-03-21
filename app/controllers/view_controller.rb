@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # ViewController
 class ViewController < ApplicationController
   def timeline

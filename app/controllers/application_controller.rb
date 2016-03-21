@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # ApplicationController
 class ApplicationController < ActionController::Base
   before_action :app_setting
@@ -24,14 +25,14 @@ class ApplicationController < ActionController::Base
       end
       $redis.expire("#{$servername}:session-#{session[:user_id]}", 86_400)
     else
-      redirect_to login_path, notice: '로그인해주세요.'
+      redirect_to login_path, notice: "로그인해주세요."
     end
   end
 
   def block_unconfirmed
     if @user.level < 1
       remove_session
-      redirect_to login_path, notice: '가입 대기 상태입니다. 관리자에게 문의해주세요.'
+      redirect_to login_path, notice: "가입 대기 상태입니다. 관리자에게 문의해주세요."
     else
       setup_session @user
       cookies[:user_name] = { value: @user.name, expires: Time.zone.now + 7.days }
@@ -48,7 +49,7 @@ class ApplicationController < ActionController::Base
     @users = $redis.zrangebyscore("#{$servername}:active-users", before_timestamp, now_timestamp)
 
     @users.sort.map do |user|
-      { 'name' => user }
+      { "name" => user }
     end
   end
 

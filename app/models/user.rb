@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # User
 class User < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true

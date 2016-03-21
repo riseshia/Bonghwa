@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Info
 class Info < ActiveRecord::Base
   after_save :add_to_redis

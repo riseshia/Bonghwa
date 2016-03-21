@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # SessionsController
 class SessionsController < ApplicationController
   skip_before_action :authorize
@@ -6,7 +7,7 @@ class SessionsController < ApplicationController
   def new
     user = User.find_by_id(cookies[:user_id])
     if user.nil?
-      render 'new', layout: 'signin'
+      render "new", layout: "signin"
     elsif user.password_digest[0..9] == cookies[:auth_key]
       setup_session user
 
@@ -42,7 +43,7 @@ class SessionsController < ApplicationController
 
       redirect_to index_path
     else
-      redirect_to login_path, notice: '아이디/비밀번호가 올바르지 않습니다.'
+      redirect_to login_path, notice: "아이디/비밀번호가 올바르지 않습니다."
     end
   end
 
@@ -52,6 +53,6 @@ class SessionsController < ApplicationController
     cookies.delete :user_id
     expires_now
 
-    redirect_to login_path, notice: '로그아웃 되었습니다.'
+    redirect_to login_path, notice: "로그아웃 되었습니다."
   end
 end

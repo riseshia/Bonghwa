@@ -90,7 +90,7 @@ class Firewood < ActiveRecord::Base
     $redis.zadd("#{$servername}:fws", id, to_json)
 
     return true unless normal?
-
+    return true if $redis.zrange("#{$servername}:fws", 0, -1).size < 50
     loop do
       last_fw = $redis.zrange("#{$servername}:fws", 0, 0).first
       $redis.zremrangebyrank("#{$servername}:fws", 0, 0)

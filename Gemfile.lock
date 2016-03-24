@@ -291,7 +291,7 @@ DEPENDENCIES
   rails_best_practices
   redis-rails
   rspec-collection_matchers
-  rspec-rails (~> 3.0.0)
+  rspec-rails
   rubocop
   sass-rails
   shoulda-matchers (~> 3.0)

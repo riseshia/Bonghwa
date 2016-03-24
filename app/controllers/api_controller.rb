@@ -54,7 +54,7 @@ class ApiController < ApplicationController
     type = params[:type]
 
     @fws = if type == "1" # Now
-             Firewood.after_than(params[:after])
+             Firewood.after_than(params[:after], @user)
            elsif type == "2" # Mt
              Firewood.where("id > ? AND (is_dm = ? OR contents like ?)", params[:after], session[:user_id], "%@" + session[:user_name] + "%").order("id DESC").limit(1000)
            elsif type == "3" # Me

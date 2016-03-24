@@ -31,9 +31,11 @@ class Firewood < ActiveRecord::Base
     end
   end
 
-  def self.after_than(after_id)
+  def self.after_than(after_id, user)
     $redis.zrevrangebyscore("#{$servername}:fws", "+inf", "(#{after_id}").map do |fw|
       Firewood.new(JSON.parse(fw))
+    end.select do |fw|
+      fw.visible? user.id
     end
   end
 

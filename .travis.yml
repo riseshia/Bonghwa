@@ -4,10 +4,6 @@ rvm:
 services:
   - mysql
   - redis-server
-cache:
-  directories:
-    - vendor/bundle
-    - node_modules
 before_script:
   - mv config/database.yml config/database.yml.old
   - cp config/database.yml.ci config/database.yml

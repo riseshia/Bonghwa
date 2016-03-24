@@ -1,0 +1,16 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  collation: utf8_general_ci
+  reconnect: false
+
+test:
+  <<: *default
+  username: travis
+  password:
+  database: travis_test
+production:
+  <<: *default
+  username: travis
+  password:
+  database: travis_production

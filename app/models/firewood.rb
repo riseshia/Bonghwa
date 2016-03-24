@@ -9,8 +9,8 @@ class Firewood < ActiveRecord::Base
   around_create :send_dm, if: :dm?
 
   after_create :execute_cmd, if: :cmd?
-  after_save :add_to_redis
-  after_destroy :remove_from_redis
+  after_create :add_to_redis
+  before_destroy :remove_from_redis
 
   belongs_to :user
   belongs_to :attach
@@ -88,7 +88,15 @@ class Firewood < ActiveRecord::Base
 
   def add_to_redis
     $redis.zadd("#{$servername}:fws", id, to_json)
-    $redis.zremrangebyrank("#{$servername}:fws", 0, 0) if normal?
+
+    return true unless normal?
+
+    loop do
+      last_fw = $redis.zrange("#{$servername}:fws", 0, 0).first
+      $redis.zremrangebyrank("#{$servername}:fws", 0, 0)
+      last_idx = JSON.parse(last_fw)['id']
+      break if Firewood.find(last_idx).normal?
+    end
   end
 
   def remove_from_redis
@@ -98,14 +106,14 @@ class Firewood < ActiveRecord::Base
     if normal? && cached.present?
       idx = JSON.parse(cached.first)["id"] - 1
       loop do
-        fw = Firewood.find(idx)
-        if fw.nil?
+        break if idx == 0
+        unless Firewood.exists?(id: idx)
           idx -= 1
           next
         end
-
+        fw = Firewood.find(idx)
         $redis.zadd("#{$servername}:fws", fw.id, fw.to_json)
-        break if normal?
+        break if fw.normal?
       end
     end
   end

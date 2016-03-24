@@ -44,3 +44,7 @@ group :development do
   gem 'rubocop', require: false
   gem 'rails_best_practices', require: false
 end
+
+group :test do
+  gem 'database_rewinder'
+end

@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   before_action :admin_check, only: [:index, :destroy, :lvup]
   before_action :set_user, only: [:edit, :update, :destroy]
   before_action :editable, only: [:edit, :update]
-  before_aciton :duplicated_name_check, only: [:create, :update]
+  before_action :duplicated_name_check, only: [:create, :update]
 
   # GET /users
   # GET /users.json
@@ -106,7 +106,7 @@ class UsersController < ApplicationController
 
   private
 
-  def duplicate_name_check
+  def duplicated_name_check
     if params[:name] == "System"
       return redirect_to :back, notice: "그 이름은 사용하실 수 없습니다."
     end

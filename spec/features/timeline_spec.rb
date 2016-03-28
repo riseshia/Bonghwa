@@ -14,8 +14,8 @@ RSpec.describe "Timeline", type: :feature, :js => true do
 
   it "has 1 firewood" do
     visit "/"
-    find(:xpath, "//div[@contenteditable='true']").set("BlaBla")
-    click_on "Submit"
+    type "BlaBla"
+    submit
     wait_for_ajax
     expect(page).to have_content("BlaBla")
   end

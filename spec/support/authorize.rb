@@ -14,8 +14,8 @@ module Authorize
   def sign_in_via_browser(user)
     $redis.del("#{$servername}:app-data")
     create(:app)
-    create(:user)
-    user_obj = attributes_for(:user)
+    create(user)
+    user_obj = attributes_for(user)
     visit "/"
     within("#login_form") do
       fill_in "login_id", with: user_obj[:login_id]

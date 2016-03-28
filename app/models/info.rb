@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # Info
 class Info < ActiveRecord::Base
-  after_save :add_to_redis
+  after_create :add_to_redis
   after_destroy :remove_from_redis
 
   def self.all_with_cache

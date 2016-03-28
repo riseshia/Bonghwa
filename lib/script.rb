@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# Script
 class Script
   attr_reader :command, :args
 

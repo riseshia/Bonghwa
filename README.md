@@ -2,7 +2,7 @@
 Bonghwa is a private SNS for small group. At first, It was developed for its developer's community.
 
 ## Environments
-* Ruby on Rails 4.2.5
+* Ruby on Rails
 * Redis
 
 ## Code Status

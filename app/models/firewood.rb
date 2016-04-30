@@ -6,7 +6,7 @@ class Firewood < ActiveRecord::Base
   before_create :attachment_support
   before_destroy :destroy_attach
 
-  around_create :send_dm, if: :dm?
+  around_create :send_dm, if: Proc.new { |fw| fw.dm? && !fw.system_dm? }
 
   after_create :execute_cmd, if: :cmd?
   after_create :add_to_redis
@@ -45,6 +45,10 @@ class Firewood < ActiveRecord::Base
 
   def dm?
     !normal? || contents.match("^!.+").present?
+  end
+
+  def system_dm?
+    dm? && user_id == 0
   end
 
   def normal?

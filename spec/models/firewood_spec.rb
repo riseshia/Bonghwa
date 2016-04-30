@@ -7,14 +7,14 @@ RSpec.describe Firewood, type: :model do
     it { should belong_to(:attach) }
   end
 
-  describe '#normal?' do
+  describe "#normal?" do
     it "should return true" do
       firewood = create(:normal_message)
       expect(firewood.normal?).to be(true)
     end
   end
 
-  describe '#visible?' do
+  describe "#visible?" do
     it "should return true" do
       user = create(:user2)
       firewood = create(:normal_message)
@@ -45,7 +45,7 @@ RSpec.describe Firewood, type: :model do
     end
   end
 
-  describe '#to_hash_for_api' do
+  describe "#to_hash_for_api" do
     it "should return hash" do
       firewood = create(:normal_message)
 
@@ -71,7 +71,7 @@ RSpec.describe Firewood, type: :model do
     end
   end
 
-  describe '#img_link' do
+  describe "#img_link" do
     it "should return 0" do
       firewood = create(:normal_message)
       expect(firewood.img_link).to eq("0")
@@ -85,7 +85,7 @@ RSpec.describe Firewood, type: :model do
     end
   end
 
-  describe '#editable?' do
+  describe "#editable?" do
     it "should return true" do
       firewood = create(:normal_message)
       user = create(:user)
@@ -100,6 +100,18 @@ RSpec.describe Firewood, type: :model do
       user = create(:user)
 
       expect(firewood.editable?(user)).to be(false)
+    end
+  end
+
+  describe "Firewood.system_dm" do
+    it "should create one firewood" do
+      user = create(:user)
+      system_dm = Firewood.system_dm(user_id: user.id, message: "System DM")
+
+      expect(system_dm.persisted?).to be(true)
+      expect(system_dm.is_dm).to eq(user.id)
+      expect(system_dm.user_id).to eq(0)
+      expect(system_dm.contents).to eq("System DM")
     end
   end
 end

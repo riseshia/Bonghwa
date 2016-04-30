@@ -11,7 +11,9 @@ class AdminController < ApplicationController
 
     respond_to do |format|
       if @app.update_attributes(app_params)
-        format.html { redirect_to admin_edit_url, notice: "app setting was successfully updated." }
+        format.html {
+          redirect_to admin_edit_url,
+          notice: "app setting was successfully updated." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -23,6 +25,7 @@ class AdminController < ApplicationController
   private
 
   def app_params
-    params.require(:app).permit(:app_name, :home_link, :home_name, :show_widget, :use_script, :widget_link)
+    params.require(:app).permit(:app_name, :home_link, :home_name,
+                                :show_widget, :use_script, :widget_link)
   end
 end

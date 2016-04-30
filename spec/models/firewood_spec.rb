@@ -49,15 +49,16 @@ RSpec.describe Firewood, type: :model do
     it "should return hash" do
       firewood = create(:normal_message)
 
-      expect(firewood.to_hash_for_api).to eq("id" => firewood.id,
-                                             "mt_root" => firewood.mt_root,
-                                             "prev_mt" => firewood.prev_mt,
-                                             "is_dm" => firewood.is_dm,
-                                             "user_id" => firewood.user_id,
-                                             "name" => firewood.user_name,
-                                             "contents" => firewood.contents,
-                                             "img_link" => firewood.img_link,
-                                             "created_at" => firewood.created_at.strftime("%D %T"))
+      expect(firewood.to_hash_for_api)
+        .to eq("id" => firewood.id,
+               "mt_root" => firewood.mt_root,
+               "prev_mt" => firewood.prev_mt,
+               "is_dm" => firewood.is_dm,
+               "user_id" => firewood.user_id,
+               "name" => firewood.user_name,
+               "contents" => firewood.contents,
+               "img_link" => firewood.img_link,
+               "created_at" => firewood.created_at.strftime("%D %T"))
     end
   end
 

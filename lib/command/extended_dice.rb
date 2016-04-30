@@ -3,10 +3,10 @@ module Command
   # Command::ExtendedDice
   module ExtendedDice
     module_function
-    
+
     def run(params)
       script = params[:script]
-      return "이 명령어는 추가 인수를 받지 않습니다." if script.args.size != 0
+      return "이 명령어는 추가 인수를 받지 않습니다." unless script.args.empty?
       _, n, r = script.command.split(%r{\/|d}).map(&:to_i)
       if (1..50).cover?(n) && (1..20).cover?(r)
         dices = (1..r).map { rand(1..n).to_s }

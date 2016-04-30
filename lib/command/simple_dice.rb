@@ -3,7 +3,7 @@ module Command
   # Command::SimpleDice
   module SimpleDice
     module_function
-    
+
     def run(params)
       script = params[:script]
       args = script.args

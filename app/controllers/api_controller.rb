@@ -14,7 +14,6 @@ class ApiController < ApplicationController
     )
 
     @fw.save
-
     render_result request
   end
 
@@ -31,9 +30,9 @@ class ApiController < ApplicationController
     @firewoods = if type == "1" # Now
                    Firewood.timeline_with_cache(@user)
                  elsif type == "2" # Mt
-                   Firewood.where("is_dm = ? OR contents like ?", session[:user_id], "%@" + session[:user_name] + "%").order("id DESC").limit(50)
+                   Firewood.mention(session[:user_id], session[:user_name], 50)
                  elsif type == "3" # Me
-                   Firewood.where("user_id = ?", session[:user_id]).order("id DESC").limit(50)
+                   Firewood.me(session[:user_id], 50)
                  end.map(&:to_hash_for_api)
 
     update_login_info(@user)
@@ -44,7 +43,8 @@ class ApiController < ApplicationController
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
-    @mts = Firewood.find_mt(params[:prev_mt], session[:user_id]).map(&:to_hash_for_api)
+    @mts = Firewood.find_mt(params[:prev_mt], session[:user_id])
+                   .map(&:to_hash_for_api)
 
     render_result request, "fws" => @mts
   end
@@ -56,9 +56,10 @@ class ApiController < ApplicationController
     @fws = if type == "1" # Now
              Firewood.after_than(params[:after], @user)
            elsif type == "2" # Mt
-             Firewood.where("id > ? AND (is_dm = ? OR contents like ?)", params[:after], session[:user_id], "%@" + session[:user_name] + "%").order("id DESC").limit(1000)
+             Firewood.after(params[:after])
+                     .mention(session[:user_id], session[:user_name], 1000)
            elsif type == "3" # Me
-             Firewood.where("id > ? AND user_id = ?", params[:after], session[:user_id]).order("id DESC").limit(1000)
+             Firewood.after(params[:after]).me(session[:user_id], 1000)
            end.map(&:to_hash_for_api)
     update_login_info(@user)
     @users = get_recent_users
@@ -72,11 +73,13 @@ class ApiController < ApplicationController
     type = params[:type]
 
     @fws = if type == "1" # Now
-             Firewood.where("id < ? AND (is_dm = 0 OR is_dm = ? OR user_id = ?)", params[:before], session[:user_id], session[:user_id]).order("id DESC").limit(limit)
+             Firewood.before(params[:before]).trace(session[:user_id], limit)
            elsif type == "2" # Mt
-             Firewood.where("id < ? AND (is_dm = ? OR contents like ?)", params[:before], session[:user_id], "%@" + session[:user_name] + "%").order("id DESC").limit(limit)
+             Firewood.before(params[:before])
+                     .mention(session[:user_id], session[:user_name], limit)
            elsif type == "3" # Me
-             Firewood.where("id < ? AND user_id = ?", params[:before], session[:user_id]).order("id DESC").limit(limit)
+             Firewood.before(params[:before])
+                     .me(session[:user_id], limit)
            end.map(&:to_hash_for_api)
 
     render_result request, "fws" => @fws, "users" => @users

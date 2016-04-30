@@ -46,10 +46,10 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html {
+        format.html do
           redirect_to login_url,
                       notice: "가입 신청이 완료되었습니다. 관리자에게 등업을 문의해주세요."
-        }
+        end
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
@@ -66,8 +66,10 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         redis.del("#{servername}:session-#{@user.id}")
-        format.html { redirect_to users_url,
-                                  notice: "User was successfully updated." }
+        format.html do
+          redirect_to users_url,
+                      notice: "User was successfully updated."
+        end
       else
         format.html { render action: "edit" }
       end
@@ -77,14 +79,16 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    if @user.name.scan(" ").size != 0
-      return redirect_to ("/users/" + @user.id.to_s + "/edit"), notice: "공백을 사용하실 수 없습니다."
+    unless @user.name.scan(" ").empty?
+      return redirect_to ("/users/" + @user.id.to_s + "/edit"),
+                         notice: "공백을 사용하실 수 없습니다."
     end
 
     respond_to do |format|
       if @user.update_attributes(user_params)
         session[:user_name] = @user.name
-        format.html { redirect_to @user, notice: "User was successfully updated." }
+        format.html {
+          redirect_to @user, notice: "User was successfully updated." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -122,8 +126,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Never trust parameters from the scary internet,
+  # only allow the white list through.
   def user_params
-    params.require(:user).permit(:login_id, :name, :password, :password_confirmation)
+    params.require(:user).permit(:login_id, :name,
+                                 :password, :password_confirmation)
   end
 end

@@ -7,7 +7,8 @@ module Command
     def run(params)
       script = params[:script]
       user = params[:user]
-      return "이 명령어에는 추가적인 인수가 필요하지 않습니다. '/내등수'라고 명령해주세요." if script.args.size != 0
+      return "이 명령어에는 추가적인 인수가 필요하지 않습니다. '/내등수'라고 명령해주세요." \
+        unless script.args.empty?
 
       rs = Firewood.select("user_id, count(*) as count")
                    .where("created_at > ?", Time.zone.now - 1.month)

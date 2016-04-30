@@ -6,7 +6,7 @@ class Firewood < ActiveRecord::Base
   before_create :attachment_support
   before_destroy :destroy_attach
 
-  around_create :send_dm, if: Proc.new { |fw| fw.dm? && !fw.system_dm? }
+  around_create :send_dm, if: proc { |fw| fw.dm? && !fw.system_dm? }
 
   after_create :execute_cmd, if: :cmd?
   after_create :add_to_redis
@@ -18,13 +18,28 @@ class Firewood < ActiveRecord::Base
   attr_accessor :attached_file, :adult_check, :app, :user
 
   # Scope
+  scope :mention, lambda { |user_id, user_name, count|
+    where("is_dm = ? OR contents like ?", user_id, "%@" + user_name + "%")
+      .order("id DESC").limit(count)
+  }
+  scope :me, lambda { |user_id, limit|
+    where(user_id: user_id).order("id DESC").limit(limit)
+  }
+  scope :after, -> (after) { where("id > ?", after) }
+  scope :before, -> (before) { where("id < ?", before) }
+  scope :trace, lambda { |user_id, limit|
+    where("is_dm = 0 OR is_dm = ? OR user_id = ?", user_id, user_id)
+      .order("id DESC").limit(limit)
+  }
+
   def self.find_mt(prev_mt, user_id)
-    where("(id = ?) AND (is_dm = 0 OR is_dm = ?)", prev_mt, user_id).order("id DESC").limit(1)
+    where("(id = ?) AND (is_dm = 0 OR is_dm = ?)", prev_mt, user_id)
+      .order("id DESC").limit(1)
   end
 
   # Public Method
   def self.timeline_with_cache(user)
-    firewoods = $redis.zrange("#{$servername}:fws", 0, -1).map do |fw|
+    $redis.zrange("#{$servername}:fws", 0, -1).map do |fw|
       Firewood.new(JSON.parse(fw))
     end.select do |fw|
       fw.visible? user.id
@@ -32,11 +47,12 @@ class Firewood < ActiveRecord::Base
   end
 
   def self.after_than(after_id, user)
-    $redis.zrevrangebyscore("#{$servername}:fws", "+inf", "(#{after_id}").map do |fw|
-      Firewood.new(JSON.parse(fw))
-    end.select do |fw|
-      fw.visible? user.id
-    end
+    $redis.zrevrangebyscore("#{$servername}:fws", "+inf", "(#{after_id}")
+      .map do |fw|
+        Firewood.new(JSON.parse(fw))
+      end.select do |fw|
+        fw.visible? user.id
+      end
   end
 
   def cmd?
@@ -100,7 +116,7 @@ class Firewood < ActiveRecord::Base
     loop do
       last_fw = $redis.zrange("#{$servername}:fws", 0, 0).first
       $redis.zremrangebyrank("#{$servername}:fws", 0, 0)
-      last_idx = JSON.parse(last_fw)['id']
+      last_idx = JSON.parse(last_fw)["id"]
       break if Firewood.find(last_idx).normal?
     end
   end
@@ -142,7 +158,8 @@ class Firewood < ActiveRecord::Base
       attach = Attach.create!(img: attached_file)
       self.attach_id = attach.id
       if adult_check
-        self.contents += " <span class='has-image text-warning'>[후방주의 #{attach.id}]</span>"
+        self.contents += " <span class='has-image text-warning'>" \
+                         "[후방주의 #{attach.id}]</span>"
       else
         self.contents += " <span class='has-image'>[이미지 #{attach.id}]</span>"
       end
@@ -168,7 +185,8 @@ class Firewood < ActiveRecord::Base
 
     yield
 
-    Firewood.system_dm(user_id: user_id, message: message) if !enable_to_send && user_id != 0
+    Firewood.system_dm(user_id: user_id, message: message) \
+      if !enable_to_send && user_id != 0
   end
 
   def execute_cmd

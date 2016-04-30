@@ -3,7 +3,7 @@ module Command
   # Command::AddInfo
   module AddInfo
     module_function
-    
+
     def run(params)
       script = params[:script]
       user = params[:user]

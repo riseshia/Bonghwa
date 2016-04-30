@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require "rails_helper"
 
-RSpec.describe "Timeline", type: :feature, :js => true do
+RSpec.describe "Timeline", type: :feature, js: true do
   before(:each) do
     sign_in_via_browser :user
   end

@@ -16,10 +16,10 @@ class User < ActiveRecord::Base
     self.name = new_name
     state = save
     if state
-      $redis.zrem("#{$servername}:active-users", old_user_name)
-      $redis.zadd("#{$servername}:active-users", Time.zone.now.to_i, name)
-      $redis.set("#{$servername}:session-#{id}", to_json)
-      $redis.expire("#{$servername}:session-#{id}", 86_400)
+      RedisWrapper.zrem("active-users", old_user_name)
+      RedisWrapper.zadd("active-users", Time.zone.now.to_i, name)
+      RedisWrapper.set("session-#{id}", to_json)
+      RedisWrapper.expire("session-#{id}", 86_400)
     end
     state
   end

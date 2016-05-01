@@ -39,7 +39,7 @@ class Firewood < ActiveRecord::Base
 
   # Public Method
   def self.timeline_with_cache(user)
-    $redis.zrange("#{$servername}:fws", 0, -1).map do |fw|
+    RedisWrapper.zrange("fws", 0, -1).map do |fw|
       Firewood.new(JSON.parse(fw))
     end.select do |fw|
       fw.visible? user.id
@@ -47,12 +47,12 @@ class Firewood < ActiveRecord::Base
   end
 
   def self.after_than(after_id, user)
-    $redis.zrevrangebyscore("#{$servername}:fws", "+inf", "(#{after_id}")
-      .map do |fw|
-        Firewood.new(JSON.parse(fw))
-      end.select do |fw|
-        fw.visible? user.id
-      end
+    RedisWrapper.zrevrangebyscore("fws", "+inf", "(#{after_id}")
+                .map { |fw|
+                  Firewood.new(JSON.parse(fw))
+                }.select { |fw|
+                  fw.visible? user.id
+                }
   end
 
   def cmd?
@@ -109,22 +109,22 @@ class Firewood < ActiveRecord::Base
   private
 
   def add_to_redis
-    $redis.zadd("#{$servername}:fws", id, to_json)
+    RedisWrapper.zadd("fws", id, to_json)
 
     return true unless normal?
-    return true if $redis.zrange("#{$servername}:fws", 0, -1).size < 50
+    return true if RedisWrapper.zrange("fws", 0, -1).size < 50
     loop do
-      last_fw = $redis.zrange("#{$servername}:fws", 0, 0).first
-      $redis.zremrangebyrank("#{$servername}:fws", 0, 0)
+      last_fw = RedisWrapper.zrange("fws", 0, 0).first
+      RedisWrapper.zremrangebyrank("fws", 0, 0)
       last_idx = JSON.parse(last_fw)["id"]
       break if Firewood.find(last_idx).normal?
     end
   end
 
   def remove_from_redis
-    $redis.zremrangebyscore("#{$servername}:fws", id, id)
+    RedisWrapper.zremrangebyscore("fws", id, id)
 
-    cached = $redis.zrange("#{$servername}:fws", 0, 0)
+    cached = RedisWrapper.zrange("fws", 0, 0)
     if normal? && cached.present?
       idx = JSON.parse(cached.first)["id"] - 1
       loop do
@@ -134,7 +134,7 @@ class Firewood < ActiveRecord::Base
           next
         end
         fw = Firewood.find(idx)
-        $redis.zadd("#{$servername}:fws", fw.id, fw.to_json)
+        RedisWrapper.zadd("fws", fw.id, fw.to_json)
         break if fw.normal?
       end
     end

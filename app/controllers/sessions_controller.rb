@@ -22,8 +22,8 @@ class SessionsController < ApplicationController
       user.save!
 
       redirect_to index_path
-    else
-      redirect_to index_path if session[:user_id]
+    elsif session[:user_id]
+      redirect_to index_path 
     end
   end
 

@@ -24,6 +24,5 @@ User.create!(
   login_id: 'admin',
   password_digest: BCrypt::Password.create('admin'),
   name: '관리자',
-  level: 999,
-  recent_login: real_time
+  level: 999
 )

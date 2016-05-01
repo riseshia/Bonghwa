@@ -3,7 +3,7 @@
 # This provice simple sign_in method for test
 module Authorize
   def sign_in(user)
-    $redis.del("#{$servername}:app-data")
+    RedisWrapper.del("app-data")
     create(:app)
     user_obj = create(user)
     session[:user_id] = user_obj.id
@@ -12,7 +12,7 @@ module Authorize
   end
 
   def sign_in_via_browser(user)
-    $redis.del("#{$servername}:app-data")
+    RedisWrapper.del("app-data")
     create(:app)
     create(user)
     user_obj = attributes_for(user)
@@ -25,7 +25,7 @@ module Authorize
   end
 
   def sign_out
-    $redis.del("#{$servername}:session-#{session[:user_id]}")
+    RedisWrapper.del("session-#{session[:user_id]}")
     session[:user_id] = nil
     session[:user_name] = nil
     session[:user_level] = nil

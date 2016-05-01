@@ -5,10 +5,10 @@ class Info < ActiveRecord::Base
   after_destroy :remove_from_redis
 
   def self.all_with_cache
-    infos = $redis.zrange("#{$servername}:app-infos", 0, -1)
+    infos = RedisWrapper.zrange("app-infos", 0, -1)
     if infos.empty?
       infos = all.map do |raw|
-        $redis.zadd("#{$servername}:app-infos", raw.id, raw.to_json)
+        RedisWrapper.zadd("app-infos", raw.id, raw.to_json)
         raw.to_json
       end
     end
@@ -17,10 +17,10 @@ class Info < ActiveRecord::Base
 
   def add_to_redis
     remove_from_redis
-    $redis.zadd("#{$servername}:app-infos", id, to_json)
+    RedisWrapper.zadd("app-infos", id, to_json)
   end
 
   def remove_from_redis
-    $redis.zremrangebyscore("#{$servername}:app-infos", id, id)
+    RedisWrapper.zremrangebyscore("app-infos", id, id)
   end
 end

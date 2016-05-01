@@ -7,6 +7,11 @@ module Command
     def run(params)
       script = params[:script]
       user = params[:user]
+
+      get_message(user, script)
+    end
+
+    def get_message(user, script)
       infos = Info.all
       number_of_info = script.args.first.try(:to_i)
       case

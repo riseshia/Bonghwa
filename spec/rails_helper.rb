@@ -67,11 +67,7 @@ RSpec.configure do |config|
 
   config.after :each do
     DatabaseRewinder.clean
-    $redis.del("#{$servername}:fws")
-    $redis.del("#{$servername}:app-infos")
-    $redis.del("#{$servername}:app-data")
-    $redis.del("#{$servername}:app-links")
-    $redis.del("#{$servername}:active-users")
+    RedisWrapper.clean
   end
 end
 

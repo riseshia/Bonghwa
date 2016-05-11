@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <h2 class="form-signin-heading">로그인해주세요.</h2>
+      <% if notice %><small style="color: red;"><%=notice%></small><% end %>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="field">
+          <%= f.text_field :login_id, placeholder: "ID", class: "form-control", autofocus: true %>
+        </div>
+
+        <div class="field">
+          <%= f.password_field :password, autocomplete: "off", placeholder: "Password", class: "form-control" %>
+        </div>
+
+        <% if devise_mapping.rememberable? -%>
+          <div class="field">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+          </div>
+        <% end -%>
+
+        <div class="actions">
+          <%= f.submit "Log in", class: "btn btn-primary" %>
+          <%= render "users/shared/links" %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>

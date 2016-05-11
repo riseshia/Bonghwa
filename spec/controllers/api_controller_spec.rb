@@ -2,10 +2,6 @@
 require "rails_helper"
 
 RSpec.describe ApiController, type: :controller do
-  after(:example) do
-    sign_out
-  end
-
   context "Not Logined" do
     it "has a 302 status code" do
       create(:app)
@@ -16,7 +12,8 @@ RSpec.describe ApiController, type: :controller do
 
   context "Logined with normal User" do
     before(:example) do
-      sign_in :user
+      create(:app)
+      sign_in create(:user)
     end
 
     describe 'POST #create' do

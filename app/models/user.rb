@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 # User
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable, :recoverable
+  devise :database_authenticatable, :registerable,
+         :rememberable, :trackable, :validatable
   validates :name, presence: true, uniqueness: true
   validates :login_id, presence: true, uniqueness: true
-  has_secure_password
 
   has_many :firewoods
 
@@ -22,5 +25,33 @@ class User < ActiveRecord::Base
       RedisWrapper.expire("session-#{id}", 86_400)
     end
     state
+  end
+
+  def valid_password?(password)
+    if legacy_password.present?
+      if BCrypt::Password.new(legacy_password) == password && self
+        self.password = password
+        self.legacy_password = nil
+        save!
+        true
+      else
+        false
+      end
+    else
+      super
+    end
+  end
+
+  def reset_password!(*args)
+    self.legacy_password = nil
+    super
+  end
+
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
   end
 end

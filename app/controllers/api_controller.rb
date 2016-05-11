@@ -30,9 +30,9 @@ class ApiController < ApplicationController
     @firewoods = if type == "1" # Now
                    Firewood.timeline_with_cache(@user)
                  elsif type == "2" # Mt
-                   Firewood.mention(session[:user_id], session[:user_name], 50)
+                   Firewood.mention(current_user.id, current_user.name, 50)
                  elsif type == "3" # Me
-                   Firewood.me(session[:user_id], 50)
+                   Firewood.me(current_user.id, 50)
                  end.map(&:to_hash_for_api)
 
     update_login_info(@user)
@@ -43,7 +43,7 @@ class ApiController < ApplicationController
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
-    @mts = Firewood.find_mt(params[:prev_mt], session[:user_id])
+    @mts = Firewood.find_mt(params[:prev_mt], current_user.id)
                    .map(&:to_hash_for_api)
 
     render_result request, "fws" => @mts
@@ -57,9 +57,9 @@ class ApiController < ApplicationController
              Firewood.after_than(params[:after], @user)
            elsif type == "2" # Mt
              Firewood.after(params[:after])
-                     .mention(session[:user_id], session[:user_name], 1000)
+                     .mention(current_user.id, current_user.name, 1000)
            elsif type == "3" # Me
-             Firewood.after(params[:after]).me(session[:user_id], 1000)
+             Firewood.after(params[:after]).me(current_user.id, 1000)
            end.map(&:to_hash_for_api)
     update_login_info(@user)
     @users = get_recent_users
@@ -73,13 +73,13 @@ class ApiController < ApplicationController
     type = params[:type]
 
     @fws = if type == "1" # Now
-             Firewood.before(params[:before]).trace(session[:user_id], limit)
+             Firewood.before(params[:before]).trace(current_user.id, limit)
            elsif type == "2" # Mt
              Firewood.before(params[:before])
-                     .mention(session[:user_id], session[:user_name], limit)
+                     .mention(current_user.id, current_user.name, limit)
            elsif type == "3" # Me
              Firewood.before(params[:before])
-                     .me(session[:user_id], limit)
+                     .me(current_user.id, limit)
            end.map(&:to_hash_for_api)
 
     render_result request, "fws" => @fws, "users" => @users

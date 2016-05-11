@@ -48,11 +48,11 @@ class Firewood < ActiveRecord::Base
 
   def self.after_than(after_id, user)
     RedisWrapper.zrevrangebyscore("fws", "+inf", "(#{after_id}")
-                .map { |fw|
+                .map do |fw|
                   Firewood.new(JSON.parse(fw))
-                }.select { |fw|
+                end.select do |fw|
                   fw.visible? user.id
-                }
+                end
   end
 
   def cmd?

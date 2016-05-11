@@ -16,18 +16,19 @@ gem 'bcrypt'
 gem 'redis-rails'
 gem 'will_paginate', '3.0.7'
 gem 'figaro'
-gem "paperclip", "~> 4.0"
+gem 'devise'
+gem 'paperclip', '~> 4.0'
 gem 'puma'
 
 # To test Project
 group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
-  gem 'factory_girl_rails', "~> 4.0"
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'capybara'
   gem 'poltergeist'
   gem 'shoulda-matchers', '~> 3.0'
-  gem "codeclimate-test-reporter", require: nil
+  gem 'codeclimate-test-reporter', require: nil
 end
 
 group :development do

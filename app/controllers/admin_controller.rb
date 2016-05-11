@@ -9,16 +9,11 @@ class AdminController < ApplicationController
   def update
     @app = App.first
 
-    respond_to do |format|
-      if @app.update_attributes(app_params)
-        format.html {
-          redirect_to admin_edit_url,
-          notice: "app setting was successfully updated." }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @app.errors, status: :unprocessable_entity }
-      end
+    if @app.update_attributes(app_params)
+      redirect_to admin_edit_url,
+                  notice: "app setting was successfully updated."
+    else
+      render action: "edit"
     end
   end
 

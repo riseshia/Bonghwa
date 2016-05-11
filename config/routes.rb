@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: {
+    sessions: "users/sessions",
+    registrations: "users/registrations"
+  }
   controller :view do
     get 'timeline' => :timeline
     get 'option' => :option
     get 'help' => :help
+    get 'wait' => :wait
   end
 
   controller :admin do
@@ -24,12 +29,6 @@ Rails.application.routes.draw do
 
   controller :bonghwa do
     get "bonghwa" => :index
-  end
-
-  controller :sessions do
-    get 'login' => :new
-    post 'login' => :create
-    delete 'logout' => :destroy
   end
 
   resources :links, except: [:show]

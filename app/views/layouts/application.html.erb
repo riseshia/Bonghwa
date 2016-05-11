@@ -26,7 +26,7 @@
   <![endif]-->
 
 <!-- Mobile Menu Start -->
-<% if session[:user_id] %>
+<% if current_user %>
 <nav id="mobileNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas visible-xs-*" role="navigation">
   <%= link_to @app.home_name, '#', class: "navmenu-brand" %>
   <ul class="nav navmenu-nav">
@@ -52,7 +52,7 @@
     <li><a href="<%= link.link_to %>" id="<%= 'etc-dropdown-' + link.name %>" target="_blank"><%= link.name %></a></li>
     <% end %>
     <li class="divider"></li>
-    <li><%= link_to "Exit", logout_path, method: :delete%></li>
+    <li><%= link_to "Exit", destroy_user_session_path, method: :delete %></li>
     </li>
   </ul>
 </nav>
@@ -82,7 +82,7 @@
           <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navbar-brand" %>
         </div>
 
-        <% if session[:user_id] %>
+        <% if current_user %>
         <div class="collapse navbar-collapse" id="div-nav-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
@@ -117,7 +117,7 @@
                 <li><a href="<%= link.link_to %>" id="<%= 'etc-dropdown-' + link.name %>" target="_blank"><%= link.name %></a></li>
                 <% end %>
                 <li class="divider"></li>
-                <li><%= link_to "Exit", logout_path, method: :delete%></li>
+                <li><%= link_to "Exit", destroy_user_session_path, method: :delete %></li>
               </ul>
             </li>
           </ul>

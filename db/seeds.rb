@@ -22,7 +22,7 @@ Link.create!(link_to: '/help', name: 'Help')
 # create admin account
 User.create!(
   login_id: 'admin',
-  password_digest: BCrypt::Password.create('admin'),
+  password: 'admin',
   name: '관리자',
   level: 999
 )

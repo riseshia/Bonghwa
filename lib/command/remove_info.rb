@@ -14,14 +14,13 @@ module Command
     def get_message(user, script)
       infos = Info.all
       number_of_info = script.args.first.try(:to_i)
-      case
-      when !user.admin?
+      if !user.admin?
         "권한이 없습니다."
-      when script.arg.empty?
+      elsif script.arg.empty?
         "삭제할 공지의 id를 주셔야합니다."
-      when script.arg.size != 1
+      elsif script.arg.size != 1
         "인수가 너무 많습니다. 삭제할 공지의 번호만을 주세요."
-      when infos.nil?, infos.all.size < number_of_info
+      elsif infos.nil? || infos.all.size < number_of_info
         "삭제할 공지사항이 없습니다."
       else
         infos[number_of_info - 1].destroy

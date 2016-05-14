@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-offset-4 col-md-4">
-      <h2 class="form-signin-heading">로그인해주세요.</h2>
+      <h3 class="form-signin-heading text-center">로그인해주세요.</h3>
       <% if notice %><small style="color: red;"><%=notice%></small><% end %>
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <div class="field">
@@ -19,7 +19,7 @@
           </div>
         <% end -%>
 
-        <div class="actions">
+        <div class="actions text-center">
           <%= f.submit "Log in", class: "btn btn-primary" %>
           <%= render "users/shared/links" %>
         </div>

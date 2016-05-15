@@ -2,10 +2,10 @@
 # UsersHelper
 module UsersHelper
   def level_up(user)
-    if user.level.zero?
+    if user.unconfirmed?
       link_to "Level up", lvup_users_path(id: user.id)
     else
-      "done"
+      "Done"
     end
   end
 end

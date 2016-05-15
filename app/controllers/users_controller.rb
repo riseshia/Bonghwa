@@ -89,7 +89,7 @@ class UsersController < ApplicationController
   end
 
   def editable
-    if @user.id != params[:id].to_i && @user.level != 999
+    if @user.id != params[:id].to_i && !@user.admin?
       return redirect_to index_url, notice: "접근 하실 수 없습니다."
     end
   end

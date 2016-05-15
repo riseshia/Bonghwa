@@ -2,7 +2,7 @@
 # ApiController
 class ApiController < ApplicationController
   def create
-    @fw = Firewood.new(
+    @fw = Firewood.create(
       user_id: @user.id,
       user_name: @user.name,
       prev_mt: params[:firewood][:prev_mt],
@@ -12,8 +12,6 @@ class ApiController < ApplicationController
       app: @app,
       user: @user
     )
-
-    @fw.save
     render_result request
   end
 
@@ -27,23 +25,24 @@ class ApiController < ApplicationController
   # 지금 시점으로부터 가장 최근의 장작을 50개 불러온다.
   def now
     type = params[:type]
-    @firewoods = if type == "1" # Now
+    @firewoods = case type
+                 when "1" # Now
                    Firewood.timeline_with_cache(@user)
-                 elsif type == "2" # Mt
-                   Firewood.mention(current_user.id, current_user.name, 50)
-                 elsif type == "3" # Me
-                   Firewood.me(current_user.id, 50)
+                 when "2" # Mt
+                   Firewood.mention(@user.id, @user.name, 50)
+                 when "3" # Me
+                   Firewood.me(@user.id, 50)
                  end.map(&:to_hash_for_api)
 
-    update_login_info(@user)
-    @users = get_recent_users
+    update_login_info
+    @users = recent_users
 
     render_result request, "fws" => @firewoods, "users" => @users
   end
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
-    @mts = Firewood.find_mt(params[:prev_mt], current_user.id)
+    @mts = Firewood.find_mt(params[:prev_mt], @user.id)
                    .map(&:to_hash_for_api)
 
     render_result request, "fws" => @mts
@@ -53,36 +52,37 @@ class ApiController < ApplicationController
   def pulling
     type = params[:type]
 
-    @fws = if type == "1" # Now
-             Firewood.after_than(params[:after], @user)
-           elsif type == "2" # Mt
-             Firewood.after(params[:after])
-                     .mention(current_user.id, current_user.name, 1000)
-           elsif type == "3" # Me
-             Firewood.after(params[:after]).me(current_user.id, 1000)
-           end.map(&:to_hash_for_api)
-    update_login_info(@user)
-    @users = get_recent_users
+    @firewoods = case type
+                 when "1" # Now
+                   Firewood.after_than(params[:after], @user)
+                 when "2" # Mt
+                   Firewood.after(params[:after])
+                           .mention(@user.id, @user.name, 1000)
+                 when "3" # Me
+                   Firewood.after(params[:after]).me(@user.id, 1000)
+                 end.map(&:to_hash_for_api)
+    update_login_info
+    @users = recent_users
 
-    render_result request, "fws" => @fws, "users" => @users
+    render_result request, "fws" => @firewoods, "users" => @users
   end
 
   def trace
     limit = limit_count_to_50 params[:count].to_i # Limit maximum size
-
     type = params[:type]
 
-    @fws = if type == "1" # Now
-             Firewood.before(params[:before]).trace(current_user.id, limit)
-           elsif type == "2" # Mt
-             Firewood.before(params[:before])
-                     .mention(current_user.id, current_user.name, limit)
-           elsif type == "3" # Me
-             Firewood.before(params[:before])
-                     .me(current_user.id, limit)
-           end.map(&:to_hash_for_api)
-
-    render_result request, "fws" => @fws, "users" => @users
+    @firewoods = case type
+                 when "1" # Now
+                   Firewood.before(params[:before]).trace(@user.id, limit)
+                 when "2" # Mt
+                   Firewood.before(params[:before])
+                           .mention(@user.id, @user.name, limit)
+                 when "3" # Me
+                   Firewood.before(params[:before])
+                           .me(@user.id, limit)
+                 end.map(&:to_hash_for_api)
+    update_login_info
+    render_result request, "fws" => @firewoods, "users" => @users
   end
 
   private
@@ -101,5 +101,17 @@ class ApiController < ApplicationController
 
   def escape_tags(str)
     str.gsub("<", "&lt;").gsub(">", "&gt;")
+  end
+
+  def recent_users
+    now_timestamp = Time.zone.now.to_i
+    before_timestamp = now_timestamp - 40
+    RedisWrapper.zrangebyscore("active-users", before_timestamp, now_timestamp)
+                .sort.map { |user| { "name" => user } }
+  end
+
+  def update_login_info
+    RedisWrapper.zadd("active-users", Time.zone.now.to_i, @user.name) \
+      unless @user.id == 1
   end
 end

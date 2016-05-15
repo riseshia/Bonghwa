@@ -15,39 +15,26 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_user
-    cached = RedisWrapper.get("session-#{current_user.id}")
-
-    if cached
-      @user = User.new(JSON.parse(cached))
-    else
-      @user = User.find(current_user.id)
-      RedisWrapper.set("session-#{@user.id}", @user.to_json)
-    end
+    @user = load_current_user
+    RedisWrapper.set("session-#{@user.id}", @user.to_json)
     RedisWrapper.expire("session-#{@user.id}", 86_400)
     cookies[:user_name] = @user.name
     cookies[:user_id] = @user.id
   end
 
+  def load_current_user
+    cached = RedisWrapper.get("session-#{current_user.id}")
+    cached ? User.new(JSON.parse(cached)) : User.find(current_user.id)
+  end
+
   def block_unconfirmed
-    if @user.level < 1
+    if @user.unconfirmed?
       redirect_to wait_path, notice: "가입 대기 상태입니다. 관리자에게 문의해주세요."
     end
   end
 
-  def update_login_info(user)
-    RedisWrapper.zadd("active-users", Time.zone.now.to_i, user.name) \
-      unless user.id == 1
-  end
-
-  def get_recent_users
-    now_timestamp = Time.zone.now.to_i
-    before_timestamp = now_timestamp - 40
-    RedisWrapper.zrangebyscore("active-users", before_timestamp, now_timestamp)
-                .sort.map { |user| { "name" => user } }
-  end
-
   def admin_check
-    if @user.level != 999
+    unless @user.admin?
       redirect_to index_path, notice: "접근 권한이 없습니다. 관리자에게 문의해주세요."
     end
   end

@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
     level == 999
   end
 
+  def unconfirmed?
+    level.zero?
+  end
+
   def update_nickname(new_name)
     old_user_name = name
     self.name = new_name
@@ -29,16 +33,20 @@ class User < ActiveRecord::Base
 
   def valid_password?(password)
     if legacy_password.present?
-      if BCrypt::Password.new(legacy_password) == password && self
-        self.password = password
-        self.legacy_password = nil
-        save!
-        true
-      else
-        false
-      end
+      validate_legacy_password(password)
     else
       super
+    end
+  end
+
+  def validate_legacy_password(password)
+    if BCrypt::Password.new(legacy_password) == password && self
+      self.password = password
+      self.legacy_password = nil
+      save!
+      true
+    else
+      false
     end
   end
 

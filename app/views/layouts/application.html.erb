@@ -26,7 +26,6 @@
   <![endif]-->
 
 <!-- Mobile Menu Start -->
-<% if current_user %>
 <nav id="mobileNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas visible-xs-*" role="navigation">
   <%= link_to @app.home_name, '#', class: "navmenu-brand" %>
   <ul class="nav navmenu-nav">
@@ -64,7 +63,6 @@
   </button>
   <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navbar-brand" %>
 </div>
-<% end %>
 <!-- Mobile Menu End -->
 
 <div class="container-fluid">
@@ -82,7 +80,6 @@
           <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navbar-brand" %>
         </div>
 
-        <% if current_user %>
         <div class="collapse navbar-collapse" id="div-nav-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
@@ -127,7 +124,6 @@
             </div>
           </form>
         </div><!-- /.navbar-collapse -->
-        <% end %>
       </nav>
       <!-- Desktop Menu End -->
     </div>

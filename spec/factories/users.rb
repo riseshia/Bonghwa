@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 FactoryGirl.define do
+  factory :unconfirmed_user, class: User do
+    id "1000"
+    login_id "user_id"
+    name "user_name"
+    password "userpwd"
+    password_confirmation "userpwd"
+    level "1"
+  end
+
   factory :user, class: User do
     id "1000"
     login_id "user_id"

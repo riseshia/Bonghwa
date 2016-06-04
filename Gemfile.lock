@@ -86,7 +86,7 @@ GEM
       climate_control (>= 0.0.3, < 1.0)
     code_analyzer (0.4.5)
       sexp_processor
-    codeclimate-test-reporter (0.5.0)
+    codeclimate-test-reporter (0.5.1)
       simplecov (>= 0.7.1, < 1.0.0)
     concurrent-ruby (1.0.2)
     database_rewinder (0.5.3)

@@ -20,6 +20,9 @@ Rails.application.routes.draw do
     resources :users, except: [:destroy, :new, :create] do
       put :lvup, on: :member
     end
+
+    get "app/edit", controller: :app, action: :edit
+    put "app/update", controller: :app, action: :update
   end
 
   controller :api do

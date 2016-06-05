@@ -3,6 +3,9 @@
 	<div class="span6 offset3">
 		<!-- form start -->
 		<div class="row-fluid" style="margin-bottom:10px;">
+      <% if notice %>
+        <div><%= notice %></div>
+      <% end %>
 			<div class="white-box">
 				<%= render partial: "app_form", locals: { app: @app } %>
 			</div>

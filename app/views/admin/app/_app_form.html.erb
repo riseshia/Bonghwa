@@ -1,0 +1,55 @@
+<%= form_for(app, url: admin_app_update_path, method: :put, html: {class: "form-horizontal", id: "app_edit_form"}) do |f| %>
+  <% if app.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(app.errors.count, "error") %> prohibited this app from being saved:</h2>
+
+      <ul>
+      <% app.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<legend>Server Setting</legend>
+<div class="control-group">
+  <%= f.label :home_name, "App Name:", class: "control-label" %>
+  <div class="controls">
+  <%= f.text_field :home_name, placeholder: "App Name", class: "input-block-level" %>
+  </div>
+</div>
+<div class="control-group">
+  <%= f.label :home_link, "Banner Link:", class: "control-label" %>
+  <div class="controls">
+  <%= f.text_field :home_link, placeholder: "Banner Link", class: "input-block-level" %>
+  </div>
+</div>
+<div class="control-group">
+  <%= f.label :app_name, "Title:", class: "control-label" %>
+  <div class="controls">
+  <%= f.text_field :app_name, placeholder: "Title", class: "input-block-level" %>
+  </div>
+</div>
+<div class="control-group">
+  <%= f.label :use_script, "명령어 사용 여부:", class: "control-label" %>
+  <div class="controls">
+  <%=f.check_box :use_script %>
+  </div>
+</div>
+<div class="control-group">
+  <%= f.label :show_widget, "트위터 위젯 사용 여부:", class: "control-label" %>
+  <div class="controls">
+  <%=f.check_box :show_widget %>
+  </div>
+</div>
+<div class="control-group">
+  <%= f.label :widget_link, "트위터 위젯 링크:", class: "control-label" %>
+  <div class="controls">
+  <%= f.text_field :widget_link, placeholder: "Widget Link", class: "input-block-level" %>
+  </div>
+</div>
+<div class="control-group">
+  <div class="controls" >
+  <%= f.submit "Submit", class: "btn btn-primary" %>
+  </div>
+</div>
+<% end %>

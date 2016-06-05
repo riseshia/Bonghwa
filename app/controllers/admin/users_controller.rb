@@ -2,8 +2,7 @@
 
 module Admin
   # UsersController
-  class UsersController < ApplicationController
-    before_action :admin_check
+  class UsersController < Admin::BaseController
     before_action :set_user, except: :index
     before_action :duplicated_name_check, only: [:update]
 

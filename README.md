@@ -1,5 +1,6 @@
 # Bonghwa
-Bonghwa is a private SNS for small group. At first, It was developed for its developer's community.
+
+Bonghwa is a private SNS for small group.
 
 ## Environments
 * Ruby on Rails

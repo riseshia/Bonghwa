@@ -10,11 +10,7 @@ Rails.application.routes.draw do
     get "help" => :help
     get "wait" => :wait
   end
-
-  controller :admin do
-    get "admin/edit" => :edit
-    put "admin/update" => :update
-  end
+  root to:  "view#timeline", as: "index"
 
   namespace :admin do
     resources :users, except: [:destroy, :new, :create] do
@@ -23,6 +19,8 @@ Rails.application.routes.draw do
 
     get "app/edit", controller: :app, action: :edit
     put "app/update", controller: :app, action: :update
+
+    resources :links, except: [:show]
   end
 
   controller :api do
@@ -37,12 +35,5 @@ Rails.application.routes.draw do
     get "api/pulling" => :pulling
   end
 
-  controller :bonghwa do
-    get "bonghwa" => :index
-  end
-
-  resources :links, except: [:show]
-
   resources :users, only: [:show, :edit, :update]
-  root to:  "view#timeline", as: "index"
 end

@@ -15,12 +15,12 @@
       <tr>
         <td><%= link.name %></td>
         <td><%= link.link_to %></td>
-        <td><%= link_to 'Edit', edit_link_path(link) %> | <%= link_to 'Destroy', link_path(link), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to "Edit", edit_admin_link_path(link) %> | <%= link_to "Destroy", admin_link_path(link), method: :delete, data: { confirm: "Are you sure?" } %></td>
       </tr>
     <% end %>
     </table>
     <div class="pull-right">
-    <%= link_to 'New Link', new_link_path %>
+    <%= link_to "New Link", new_admin_link_path %>
     </div>
   <br />
   </div>

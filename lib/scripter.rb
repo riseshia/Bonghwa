@@ -5,12 +5,11 @@ end
 
 # Scripter
 module Scripter
-  COMMANDS = {}
-
   module_function
 
   def register(command, target_module)
-    COMMANDS[command] = target_module
+    @comments ||= {}
+    @comments[command] = target_module
   end
 
   def execute(params)
@@ -28,9 +27,9 @@ module Scripter
   end
 
   def cmd_find(input)
-    return COMMANDS[input] if COMMANDS[input].present?
+    return @comments[input] if @comments[input].present?
 
-    command_obj = COMMANDS.find do |cmd, _method|
+    command_obj = @comments.find do |cmd, _method|
       next if cmd.is_a? String
       cmd.match(input)
     end

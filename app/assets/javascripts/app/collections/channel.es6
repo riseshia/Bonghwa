@@ -38,7 +38,11 @@
 
     load: function () {
       this.stopPullingTimer()
-      return $.get("/api/now?type=" + window.PAGE_TYPE).then((json) => {
+      const params = {
+        type: window.PAGE_TYPE,
+        ts: +(new Date())
+      }
+      return $.get("/api/now" + this.buildParams(params)).then((json) => {
         const fws = _.map(json.fws, (fw) => { fw["state"] = window.FW_STATE.IN_TL; return new app.Firewood(fw) })
         app.firewoods.reset(fws)
         const users = _.map(json.users, (user) => { return new app.User(user) })
@@ -54,7 +58,12 @@
 
       const firstFw = app.firewoods.first()
       const recentId = (firstFw ? firstFw.get("id") : 0)
-      return $.get("/api/pulling.json?after=" + recentId + "&type=" + window.PAGE_TYPE).then( (json) => {
+      const params = {
+        after: recentId,
+        type: window.PAGE_TYPE,
+        ts: +(new Date())
+      }
+      return $.get("/api/pulling.json" + this.buildParams(params)).then( (json) => {
         let state = ( window.localStorage["live_stream"] == "1" ) ? window.FW_STATE.IN_TL : window.FW_STATE.IN_STACK
         if ( isLive ) {
           state = window.FW_STATE.IN_TL
@@ -116,8 +125,14 @@
       const self = app.channel
       const firewoods = app.firewoods
       self.logGetLock = true
+      const params = {
+        before: firewoods.last().get("id"),
+        count: self.sizeWhenBottomLoading,
+        type: window.PAGE_TYPE,
+        ts: +(new Date())
+      }
 
-      return $.get("/api/trace.json?before=" + firewoods.last().get("id") + "&count=" + self.sizeWhenBottomLoading + "&type=" + window.PAGE_TYPE, (json) => {
+      return $.get("/api/trace.json" + this.buildParams(params), (json) => {
         if ( json.fws.length != 0 ) {
           const fws = _.map(json.fws, (fw) => { fw["state"] = window.FW_STATE.IN_LOG; return new app.Firewood(fw) })
           firewoods.addSome(fws, window.FW_STATE.IN_LOG)
@@ -136,6 +151,13 @@
       } else {
         self.trigger("ajaxError")
       }
+    },
+
+    buildParams: function (params) {
+      const paramStrs = _.map(params, (value, key) => {
+        return `${key}=${value}`
+      })
+      return `?${paramStrs.join("&")}`
     }
   })
 })()

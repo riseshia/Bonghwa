@@ -12,14 +12,14 @@ class ApiController < ApplicationController
       app: @app,
       user: @user
     )
-    render_result request
+    render json: JSON.dump("")
   end
 
   def destroy
     @fw = Firewood.find(params[:id])
     @fw.destroy if @fw.editable? @user
 
-    render_result request
+    render json: JSON.dump("")
   end
 
   # 지금 시점으로부터 가장 최근의 장작을 50개 불러온다.
@@ -37,7 +37,7 @@ class ApiController < ApplicationController
     update_login_info
     @users = recent_users
 
-    render_result request, "fws" => @firewoods, "users" => @users
+    render json: JSON.dump("fws" => @firewoods, "users" => @users)
   end
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
@@ -45,7 +45,7 @@ class ApiController < ApplicationController
     @mts = Firewood.find_mt(params[:prev_mt], @user.id)
                    .map(&:to_hash_for_api)
 
-    render_result request, "fws" => @mts
+    render json: JSON.dump("fws" => @mts)
   end
 
   # after 이후의 장작을 최대 1000개까지 내림차순으로 받아온다.
@@ -64,7 +64,7 @@ class ApiController < ApplicationController
     update_login_info
     @users = recent_users
 
-    render_result request, "fws" => @firewoods, "users" => @users
+    render json: JSON.dump("fws" => @firewoods, "users" => @users)
   end
 
   def trace
@@ -82,21 +82,14 @@ class ApiController < ApplicationController
                            .me(@user.id, limit)
                  end.map(&:to_hash_for_api)
     update_login_info
-    render_result request, "fws" => @firewoods, "users" => @users
+
+    render json: JSON.dump("fws" => @firewoods, "users" => @users)
   end
 
   private
 
   def limit_count_to_50(number)
     number > 50 ? 50 : number
-  end
-
-  def render_result(request, hash = {})
-    if request.xhr?
-      render json: JSON.dump(hash.empty? ? "" : hash)
-    else
-      render inline: "<textarea>" + (hash.empty? ? "" : hash) + "</textarea>"
-    end
   end
 
   def escape_tags(str)

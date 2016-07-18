@@ -17,9 +17,7 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    if params[:user][:password] != params[:user][:password_confirmation]
-      render action: "edit", notice: "password and confimation is different."
-    elsif @user.update(password: params[:user][:password])
+    if @user.update(user_params)
       redirect_to @user, notice: "User was successfully updated."
     else
       render action: "edit"
@@ -29,7 +27,7 @@ class UsersController < ApplicationController
   private
 
   def duplicated_name_check
-    if params[:name] == "System"
+    if params.require(:user).permit(:name) == "System"
       return redirect_to :back, notice: "그 이름은 사용하실 수 없습니다."
     end
   end
@@ -47,7 +45,6 @@ class UsersController < ApplicationController
   # Never trust parameters from the scary internet,
   # only allow the white list through.
   def user_params
-    params.require(:user).permit(:login_id, :name,
-                                 :password, :password_confirmation)
+    params.require(:user).permit(:name, :password, :password_confirmation)
   end
 end

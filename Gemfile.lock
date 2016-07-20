@@ -312,7 +312,7 @@ DEPENDENCIES
   paperclip (~> 4.0)
   poltergeist
   puma
-  rails
+  rails (~> 4.2)
   rails_best_practices
   redis-rails
   rspec-collection_matchers

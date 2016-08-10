@@ -84,7 +84,7 @@ GEM
     cliver (0.3.2)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
-    code_analyzer (0.4.5)
+    code_analyzer (0.4.6)
       sexp_processor
     codeclimate-test-reporter (0.6.0)
       simplecov (>= 0.7.1, < 1.0.0)

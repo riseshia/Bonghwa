@@ -9,8 +9,6 @@ class Firewood < ActiveRecord::Base
   around_create :send_dm, if: proc { |fw| fw.dm? && !fw.system_dm? }
 
   after_create :execute_cmd, if: :cmd?
-  after_create :add_to_redis
-  before_destroy :remove_from_redis
 
   belongs_to :user
   belongs_to :attach
@@ -37,24 +35,6 @@ class Firewood < ActiveRecord::Base
       .order("id DESC").limit(1)
   end
 
-  # Public Method
-  def self.timeline_with_cache(user)
-    RedisWrapper.zrange("fws", 0, -1).map do |fw|
-      Firewood.new(JSON.parse(fw))
-    end.select do |fw|
-      fw.visible? user.id
-    end
-  end
-
-  def self.after_than(after_id, user)
-    RedisWrapper.zrevrangebyscore("fws", "+inf", "(#{after_id}")
-                .map do |fw|
-                  Firewood.new(JSON.parse(fw))
-                end.select do |fw|
-                  fw.visible? user.id
-                end
-  end
-
   def cmd?
     contents.match("^/.+").present?
   end
@@ -77,12 +57,15 @@ class Firewood < ActiveRecord::Base
 
   def to_hash_for_api
     {
-      "id" => id, "is_dm" => is_dm,
+      "id" => id,
+      "is_dm" => is_dm,
       "mt_root" => mt_root,
       "prev_mt" => prev_mt,
       "user_id" => user_id,
       "name" => user_name,
       "contents" => contents,
+      "img_id" => attach_id,
+      "img_adult_flg" => attach&.adult_flg,
       "img_link" => img_link,
       "created_at" => created_at.strftime("%D %T")
     }
@@ -108,38 +91,6 @@ class Firewood < ActiveRecord::Base
 
   private
 
-  def add_to_redis
-    RedisWrapper.zadd("fws", id, to_json)
-
-    return true unless normal?
-    return true if RedisWrapper.zrange("fws", 0, -1).size < 50
-    loop do
-      last_fw = RedisWrapper.zrange("fws", 0, 0).first
-      RedisWrapper.zremrangebyrank("fws", 0, 0)
-      last_idx = JSON.parse(last_fw)["id"]
-      break if Firewood.find(last_idx).normal?
-    end
-  end
-
-  def remove_from_redis
-    RedisWrapper.zremrangebyscore("fws", id, id)
-
-    cached = RedisWrapper.zrange("fws", 0, 0)
-    if normal? && cached.present?
-      idx = JSON.parse(cached.first)["id"] - 1
-      loop do
-        break if idx == 0
-        unless Firewood.exists?(id: idx)
-          idx -= 1
-          next
-        end
-        fw = Firewood.find(idx)
-        RedisWrapper.zadd("fws", fw.id, fw.to_json)
-        break if fw.normal?
-      end
-    end
-  end
-
   def default_values
     self.is_dm ||= 0
     self.attach_id ||= 0
@@ -155,14 +106,8 @@ class Firewood < ActiveRecord::Base
     raise "내용이 없습니다." if contents.blank? && attached_file.blank?
 
     if attached_file.present?
-      attach = Attach.create!(img: attached_file)
+      attach = Attach.create!(img: attached_file, adult_flg: adult_check.present?)
       self.attach_id = attach.id
-      if adult_check
-        self.contents += " <span class='has-image text-warning'>" \
-                         "[후방주의 #{attach.id}]</span>"
-      else
-        self.contents += " <span class='has-image'>[이미지 #{attach.id}]</span>"
-      end
     end
   end
 

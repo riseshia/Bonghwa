@@ -21,6 +21,10 @@
 //= require bootstrap.min
 //= require jasny-bootstrap.min
 //= require inOnScreen
+//= require react
+//= require react_ujs
 //= require app/app
-//= require caret
-//= require_tree .
+//= require_tree ./app/collections
+//= require_tree ./app/models
+//= require_tree ./app/routers
+//= require_tree ./app/views

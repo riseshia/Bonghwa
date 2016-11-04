@@ -27,7 +27,7 @@ class ApiController < ApplicationController
     type = params[:type]
     @firewoods = case type
                  when "1" # Now
-                   Firewood.timeline_with_cache(@user)
+                   Firewood.trace(@user.id, 50)
                  when "2" # Mt
                    Firewood.mention(@user.id, @user.name, 50)
                  when "3" # Me
@@ -51,15 +51,17 @@ class ApiController < ApplicationController
   # after 이후의 장작을 최대 1000개까지 내림차순으로 받아온다.
   def pulling
     type = params[:type]
+    limit = 1000
 
     @firewoods = case type
                  when "1" # Now
-                   Firewood.after_than(params[:after], @user)
+                   Firewood.after(params[:after])
+                           .trace(@user.id, limit)
                  when "2" # Mt
                    Firewood.after(params[:after])
-                           .mention(@user.id, @user.name, 1000)
+                           .mention(@user.id, @user.name, limit)
                  when "3" # Me
-                   Firewood.after(params[:after]).me(@user.id, 1000)
+                   Firewood.after(params[:after]).me(@user.id, limit)
                  end.map(&:to_hash_for_api)
     update_login_info
     @users = recent_users

@@ -27,7 +27,13 @@
     "_": false,
     "jQuery": false,
     "$": false,
-    "app": false
+    "app": false,
+    "Firewoods": false,
+    "FirewoodForm": false,
+    "Users": false,
+    "MobileUsers": false,
+    "React": false,
+    "ReactDOM": false
   },
   "env": {
     "es6": true,

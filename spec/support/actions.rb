@@ -2,7 +2,7 @@
 
 module Actions
   def type(message)
-    find(:xpath, "//div[@contenteditable='true']").set(message)
+    find("#contents").set(message)
   end
 
   def submit

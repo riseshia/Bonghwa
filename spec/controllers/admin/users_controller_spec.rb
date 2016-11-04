@@ -27,8 +27,11 @@ module Admin
         sign_in @user
       end
 
-      describe "#create" do
+      describe "#index" do
+        render_views
+
         it "has a 200 status code" do
+          create(:unconfirmed_user)
           get :index
           expect(response.status).to eq(200)
         end

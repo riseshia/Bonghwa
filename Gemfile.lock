@@ -88,7 +88,9 @@ GEM
       sexp_processor
     codeclimate-test-reporter (0.6.0)
       simplecov (>= 0.7.1, < 1.0.0)
+    coffee-script-source (1.10.0)
     concurrent-ruby (1.0.2)
+    connection_pool (2.2.0)
     database_rewinder (0.6.5)
     debug_inspector (0.0.2)
     devise (4.2.0)
@@ -186,6 +188,13 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.1.0)
     rake (11.3.0)
+    react-rails (1.9.0)
+      babel-transpiler (>= 0.7.0)
+      coffee-script-source (~> 1.8)
+      connection_pool
+      execjs
+      railties (>= 3.2)
+      tilt
     redis (3.3.1)
     redis-actionpack (5.0.0)
       actionpack (>= 4.0.0, < 6)
@@ -310,6 +319,7 @@ DEPENDENCIES
   puma
   rails (~> 4.2.7.1)
   rails_best_practices
+  react-rails
   redis-rails
   rspec-collection_matchers
   rspec-rails
@@ -324,4 +334,4 @@ DEPENDENCIES
   will_paginate (= 3.0.7)
 
 BUNDLED WITH
-   1.12.5
+   1.13.2

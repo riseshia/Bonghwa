@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
 
   has_many :firewoods
 
+  before_create :default_recent_login
+
   def admin?
     level == 999
   end
@@ -61,5 +63,9 @@ class User < ActiveRecord::Base
 
   def email_changed?
     false
+  end
+
+  def default_recent_login
+    self.recent_login = Time.zone.now
   end
 end

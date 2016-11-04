@@ -8,6 +8,7 @@ gem "mysql2", "~> 0.4"
 # in production environments by default.
 gem "sprockets", ">= 3.0.0"
 gem "sprockets-es6"
+gem "react-rails"
 
 gem "sass-rails"
 gem "uglifier"

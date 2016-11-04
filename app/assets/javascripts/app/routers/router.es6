@@ -3,9 +3,9 @@
 
   const BWRouter = Backbone.Router.extend({
     routes: {
-      "now": "typeNow",
-      "mt": "typeMt",
-      "me": "typeMe"
+      now: "typeNow",
+      mt: "typeMt",
+      me: "typeMe"
     },
 
     typeNow: function () {

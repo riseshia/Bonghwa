@@ -5,27 +5,22 @@
     el: "body",
 
     initialize: function () {
-      this.$title = this.$("#title")
-      this.$hotkeyImgAutoOpen = this.$("#img_auto_open_op")
-      this.$hotkeyLiveStream = this.$("#live_stream_op")
-      this.$tagSelector = this.$("#select-tag")
-      this.$info = this.$("#info")
+      app.originTitle = $("title").text()
 
       // load initial state from localStorage
-      window.localStorage["auto_image_open"] = (window.localStorage["auto_image_open"] == "1" ? "0" : "1")
-      this.toggleImgAutoOpen(null, true)
-      window.localStorage["live_stream"] = (window.localStorage["live_stream"] == "1" ? "0" : "1")
-      this.toggleLiveStream(null, true)
-
-      this.listenTo(app.firewoods, "activeTag", this.setTagSelector)
-      this.listenTo(app.channel, "ajaxError", this.disableApp)
+      if (localStorage.getItem("auto_image_open") === "1") {
+        app.defaultIsOpened = true
+      } else {
+        app.defaultIsOpened = false
+      }
 
       if (this.$info.length) {
         this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }))
-        this.$info.find(".link_url").click((e) => { e.stopPropagation() })
+        this.$info.find(".link_url").click(e => { e.stopPropagation() })
       }
 
       $(document).keycut()
+      app.render()
     },
 
     events: {
@@ -33,46 +28,38 @@
       "click #live_stream_op": "toggleLiveStream",
       "click #focus_hotkey": "focusToInput",
       "click #refresh_hotkey": "refreshTL",
-      "keypress #select-tag": "selectNewTag",
       "click #info": "removeInfo"
     },
 
-    toggleImgAutoOpen: function (e, silent) {
-      if ( e ) {
-        e.preventDefault()
-      }
+    toggleImgAutoOpen: function (e) {
+      if (e) { e.preventDefault() }
 
-      const $iao = this.$hotkeyImgAutoOpen
-      const newState = (window.localStorage["auto_image_open"] == "1" ? "0" : "1")
-      window.localStorage["auto_image_open"] = newState
+      const $iao = this.$("#img_auto_open_op")
+      const newState = (localStorage.getItem("auto_image_open") == "1" ? "0" : "1")
+      localStorage.setItem("auto_image_open", newState)
       let msg
 
       $iao.toggleClass("true")
-      if (newState == "1") {
+      if (newState === "1") {
         $iao.html($iao.html() + "<span class='glyphicon glyphicon-ok'></span>")
         msg = "이미지 자동 열기가 활성화되었습니다."
-        app.firewoods.trigger("timeline:unFoldAll")
+        app.unfoldImageAll()
       } else {
         $iao.find(".glyphicon-ok").remove()
         msg = "이미지 자동 열기가 비활성화되었습니다."
-        app.firewoods.trigger("timeline:foldAll")
+        app.foldImageAll()
       }
 
-      if ( !silent ) {
-        this.notifyWithWindow(msg, "alert-info")
-      }
-
+      this.notifyWithWindow(msg, "alert-info")
       return this
     },
 
-    toggleLiveStream: function (e, silent) {
-      if ( e ) {
-        e.preventDefault()
-      }
+    toggleLiveStream: function (e) {
+      if ( e ) { e.preventDefault() }
 
-      const $ls = this.$hotkeyLiveStream
-      const newState = (window.localStorage["live_stream"] == "1" ? "0" : "1")
-      window.localStorage["live_stream"] = newState
+      const $ls = this.$("#live_stream_op")
+      const newState = (localStorage.getItem("live_stream") == "1" ? "0" : "1")
+      localStorage.setItem("live_stream", newState)
       let msg
 
       $ls.toggleClass("true")
@@ -86,17 +73,13 @@
         app.channel.toggleLiveStream(false)
       }
 
-      if ( !silent ) {
-        this.notifyWithWindow(msg, "alert-info")
-      }
-
+      this.notifyWithWindow(msg, "alert-info")
       return this
     },
 
     refreshTL: function (e) {
       e.preventDefault()
       app.channel.load()
-
       return this
     },
 
@@ -128,42 +111,11 @@
       return this
     },
 
-    selectNewTag: function (e) {
-      if ( e.which === window.ENTER_KEY ) {
-        e.preventDefault()
-        const newTag = this.$tagSelector.val()
-
-        if ( newTag[0] != "#" && newTag.length > 1) {
-          alert("태그는 #으로 시작해야합니다.")
-        } else {
-          app.firewoods.highlightTag(newTag)
-        }
-      }
-    },
-
-    setTagSelector: function (tag) {
-      this.$tagSelector.val(tag)
-    },
-
     removeInfo: function () {
-      const $self = this.$info
-      $self.slideUp( () => {
-        $self.remove()
+      const $info = this.$("#info")
+      $info.slideUp( () => {
+        $info.remove()
       })
-    },
-
-    disableApp: function () {
-      const $panel = $(".panel-info")
-      $panel.removeClass("panel-info")
-            .addClass("panel-danger")
-      $("#info, #div-form").css("background-color","#f2dede")
-      $("#new_firewood").find("fieldset").attr("disabled","a")
-      $("#commit").removeClass("btn-primary").addClass("btn-danger")
-      $("#timeline_stack")
-        .css("background-color","#f5c5c5")
-        .html("서버와의 접속이 끊어졌습니다. 새로고침 해주세요.")
-        .slideDown()
-      this.$title.html("새로고침 해주세요.")
     }
   })
 })(jQuery)

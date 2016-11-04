@@ -65,7 +65,7 @@ ul.navbar-right {
   height: initial;
 }
 
-#contents[bw-text-empty=true] {
+.bw-text-empty #contents {
   color: #aaa;
 }
 
@@ -93,7 +93,7 @@ ul.navbar-right {
   word-wrap: break-word;
 }
 
-.firewood[is_dm] {
+.firewood.is_dm {
   color: #888;
 }
 
@@ -263,4 +263,16 @@ ul.navbar-right {
     text-align: right;
     color: #4A97BD;
   }
+}
+
+#timeline_stack {
+  display: none;
+}
+
+.fileinput-exists {
+  float: none;
+}
+
+.fileinput-new {
+  margin: 0;
 }

@@ -58,6 +58,8 @@ RSpec.describe Firewood, type: :model do
                "name" => firewood.user_name,
                "contents" => firewood.contents,
                "img_link" => firewood.img_link,
+               "img_id" => 0,
+               "img_adult_flg" => nil,
                "created_at" => firewood.created_at.strftime("%D %T"))
     end
   end

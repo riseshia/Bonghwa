@@ -29,12 +29,7 @@
 <nav id="mobileNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas visible-xs-*" role="navigation">
   <%= link_to @app.home_name, '#', class: "navmenu-brand" %>
   <ul class="nav navmenu-nav">
-    <li id="users-mobile">
-      <div id="users-header-mobile">접속자수</div>
-      <dl id="users-body-mobile">
-      </dl>
-    </li>
-
+    <li id="users-mobile"></li>
     <li class="active"><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
     <li><%= link_to "Mt", "/#mt", class: "mt_nav all_nav" %></li>
     <li><%= link_to "Me", "/#me", class: "me_nav all_nav" %></li>
@@ -44,7 +39,7 @@
     <li><a href="<%= admin_app_edit_path %>" id="etc-dropdown-admin">Admin</a></li>
     <li class="divider"></li>
     <% end %>
-    <li><a href="<%= user_path(@user) if @user %>" id="etc-dropdown-setting">Profile</a></li>
+    <li><a href="<%= user_path(@user) %>" id="etc-dropdown-setting">Profile</a></li>
     <li><a href="<%= option_path %>" id="etc-dropdown-setting">Setting</a></li>
     <li class="divider"></li>
     <% @links.each do |link| %>
@@ -118,11 +113,6 @@
               </ul>
             </li>
           </ul>
-          <form class='navbar-form navbar-right hidden-xs'>
-            <div class='form-group' id='div-select-tag'>
-              <input autocomplete='off' class='form-control' id='select-tag' placeholder='#Now' type='text'>
-            </div>
-          </form>
         </div><!-- /.navbar-collapse -->
       </nav>
       <!-- Desktop Menu End -->

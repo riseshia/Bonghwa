@@ -1,34 +1,33 @@
-<h2>Sign up</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <h2 class="text-center">Sign up</h2>
+      <% if notice %><small style="color: red;"><%=notice%></small><% end %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= devise_error_messages! %>
 
-  <div class="field">
-    <%= f.label :login_id %><br />
-    <%= f.text_field :login_id, autofocus: true, placeholder: "ID for login" %>
+        <div class="field">
+          <%= f.text_field :login_id, autofocus: true, placeholder: "로그인용 아이디", class: "form-control" %>
+        </div>
+
+        <div class="field">
+          <%= f.password_field :password, autocomplete: "off", placeholder: "비밀번호", class: "form-control" %>
+        </div>
+
+        <div class="field">
+          <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "비밀번호 재입력", class: "form-control" %>
+        </div>
+
+        <div class="field">
+          <%= f.text_field :name, placeholder: "사용할 닉네임(이후에 변경가능)", class: "form-control" %>
+        </div>
+
+        <div class="actions text-center">
+          <%= f.submit "Sign up", class: "btn btn-primary" %>
+          <%= render "users/shared/links" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off", placeholder: "Password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Password Confirmation" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, placeholder: "Nickname" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+</div>

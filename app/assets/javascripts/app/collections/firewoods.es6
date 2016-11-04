@@ -9,37 +9,35 @@
       this.add(fws)
 
       if ( type == window.FW_STATE.IN_STACK ) {
-        this.trigger("add:stack")
+        window._updateStackNotice()
       } else if ( type == window.FW_STATE.IN_TL ) {
-        this.trigger("add:prepend")
+        this.flushStack()
       } else {
-        this.trigger("add:append")
+        const newFws = app.firewoods.where({ state: window.FW_STATE.IN_LOG })
+        _.each(newFws, fw => { fw.set("state", 0) })
       }
     },
 
-    getPreviousFws: function (fw, limit) {
-      let prev_id = fw.get("prev_mt")
-      let tmp = fw
+    getPreviousFws: function (prev_id, limit) {
+      let fw_id = prev_id
       const fws = []
       
-      if ( !this.findWhere({id: prev_id}) ) {
+      if ( !this.findWhere({id: fw_id}) ) {
         return []
       }
 
-      for (let i = 0; i < limit && prev_id != 0; i++) {
-        tmp = this.findWhere({id: prev_id})
+      for (let i = 0; i < limit && fw_id != 0; i++) {
+        const tmp = this.findWhere({id: fw_id})
         fws.push(tmp)
-        prev_id = tmp.get("prev_mt")
+        fw_id = tmp.get("prev_mt")
       }
 
       return fws
     },
 
-    highlightTag: function (tag) {
-      this.each((fw) => {
-        fw.activeTag(tag)
-      })
-      this.trigger("activeTag", tag)
+    flushStack: function() {
+      const newFws = app.firewoods.where({ state: window.FW_STATE.IN_STACK })
+      _.each(newFws, fw => { fw.set("state", 0) })
     },
 
     comparator: function(fw) {

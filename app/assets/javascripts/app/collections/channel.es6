@@ -135,6 +135,7 @@
           firewoods.addSome(fws, window.FW_STATE.IN_LOG)
         }
         self.logGetLock = false
+        app.render()
       })
     },
 

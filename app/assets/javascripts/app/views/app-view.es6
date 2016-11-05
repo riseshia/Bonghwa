@@ -14,9 +14,10 @@
         app.defaultIsOpened = false
       }
 
-      if (this.$info.length) {
-        this.$info.html(this.$info.html().autoLink({ target: "_blank", rel: "nofollow" }))
-        this.$info.find(".link_url").click(e => { e.stopPropagation() })
+      const $info = this.$("#info")
+      if ($info.length) {
+        $info.html($info.html().autoLink({ target: "_blank", rel: "nofollow" }))
+        $info.find(".link_url").click(e => { e.stopPropagation() })
       }
 
       $(document).keycut()

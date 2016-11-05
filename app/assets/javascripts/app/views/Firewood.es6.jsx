@@ -62,9 +62,13 @@ class Firewood extends React.Component {
     }
   }
 
+  unescaped_contents() {
+    return this.props.contents.replace("&lt;", "<").replace("&gt;", ">")
+  }
+
   render() {
-    const contentsNodes = this.props.contents.split(" ").
-    map((token) => {
+    const contentsNodes = this.unescaped_contents().split(" ").
+    map(token => {
       if (_.isString(token) && this.isMtTarget(token)) {
         return (
           [<span className="mt-target">

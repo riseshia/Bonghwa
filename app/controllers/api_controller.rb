@@ -6,7 +6,7 @@ class ApiController < ApplicationController
       user_id: @user.id,
       user_name: @user.name,
       prev_mt: params[:firewood][:prev_mt],
-      contents: escape_tags(params[:firewood][:contents]),
+      contents: params[:firewood][:contents],
       attached_file: params[:attach],
       adult_check: params[:adult_check],
       app: @app,
@@ -92,10 +92,6 @@ class ApiController < ApplicationController
 
   def limit_count_to_50(number)
     number > 50 ? 50 : number
-  end
-
-  def escape_tags(str)
-    str.gsub("<", "&lt;").gsub(">", "&gt;")
   end
 
   def recent_users

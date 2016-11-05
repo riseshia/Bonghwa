@@ -13,6 +13,7 @@ const ReactAutolink = (() => {
         const match = word.match(delimiter)
         if (match) {
           let url = match[0] 
+          let shortenUrl
 
           const segments = url.split("/")
           // no scheme given, so check host portion length
@@ -21,14 +22,14 @@ const ReactAutolink = (() => {
           }
 
           if (url.length > 20) {
-            url = url.substring(0, 17) + "..." 
+            shortenUrl = url.substring(0, 17) + "..." 
           }
 
           options.className = "link_url"
           options.href = strStartsWith(url, "http") ? url : `http://${url}`
 
           return React.createElement(
-            "a", options, url
+            "a", options, shortenUrl
           )
         } else {
           return word

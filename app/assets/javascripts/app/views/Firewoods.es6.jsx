@@ -12,7 +12,7 @@ class Firewoods extends React.Component {
   }
 
   _flushStack() {
-    const $title = $("#title")
+    const $title = $("title")
     const $stack = $("#timeline_stack")
     $(".last_top").removeClass("last_top").attr("style", "")
     $(".div-firewood:first").addClass("last_top").attr("style", "border-top-width:3px;")
@@ -21,7 +21,7 @@ class Firewoods extends React.Component {
       return fw.get("state") == -1 && fw.get("img_link") !== "0"
     })
     app.firewoods.flushStack()
-    $title.html(this.originTitle)
+    $title.html(this.props.originTitle)
     $stack.html("").slideUp(200)
 
     if ( localStorage.getItem("auto_image_open") == "1" ) {
@@ -45,13 +45,13 @@ class Firewoods extends React.Component {
 
   _updateStackNotice() {
     const fws = app.firewoods.where({ state: window.FW_STATE.IN_STACK})
-    const $title = $("#title")
+    const $title = $("title")
     const $stack = $("#timeline_stack")
 
     if ( fws.length == 0 ) {
       return false
     }
-    $title.html(`${this.originTitle} (${fws.length})`)
+    $title.html(`${this.props.originTitle} (${fws.length})`)
     $stack
       .html(`<a href='#' id='notice_stack_new'>새 장작이 ${fws.length}개 있습니다.</a>`)
       .slideDown(200)

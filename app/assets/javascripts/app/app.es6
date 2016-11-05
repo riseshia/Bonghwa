@@ -35,7 +35,8 @@ window.app = {
     ReactDOM.render(
       React.createElement(Firewoods, {
         firewoods: app.firewoods.models,
-        defaultIsOpened: app.defaultIsOpened
+        defaultIsOpened: app.defaultIsOpened,
+        originTitle: app.originTitle
       }),
       document.getElementById("firewoods-react")
     )

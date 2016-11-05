@@ -108,7 +108,7 @@ class FirewoodForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    const $title = $("#title")
+    const $title = $("title")
     const $stack = $("#timeline_stack")
     const $form = $("#new_firewood")
 

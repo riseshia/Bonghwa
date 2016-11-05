@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    @user = User.find_by_id(params[:id])
+    @user = User.find_by(id: params[:id])
   end
 
   # GET /users/1/edit
@@ -27,15 +27,13 @@ class UsersController < ApplicationController
   private
 
   def duplicated_name_check
-    if params.require(:user).permit(:name) == "System"
-      return redirect_to :back, notice: "그 이름은 사용하실 수 없습니다."
-    end
+    redirect_to :back, notice: "그 이름은 사용하실 수 없습니다." \
+      if params.require(:user).permit(:name) == "System"
   end
 
   def editable
-    if @user.id != params[:id].to_i && !@user.admin?
-      return redirect_to index_url, notice: "접근 하실 수 없습니다."
-    end
+    redirect_to index_url, notice: "접근 하실 수 없습니다." \
+      if @user.id != params[:id].to_i && !@user.admin?
   end
 
   def set_user

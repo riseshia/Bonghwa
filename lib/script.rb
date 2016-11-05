@@ -5,7 +5,7 @@ class Script
 
   def initialize(firewood)
     tokens = firewood.contents.split(" ").reject do |el|
-      el.start_with?('#') # remove tags
+      el.start_with?("#") # remove tags
     end
     @command = tokens.shift
     @args = tokens

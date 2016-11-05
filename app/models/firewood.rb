@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # Firewood
-class Firewood < ActiveRecord::Base
+class Firewood < ApplicationRecord
   # Callback
   before_create :default_values
   before_create :attachment_support
@@ -10,8 +10,8 @@ class Firewood < ActiveRecord::Base
 
   after_create :execute_cmd, if: :cmd?
 
-  belongs_to :user
-  belongs_to :attach
+  belongs_to :user, optional: true # for bot handling
+  belongs_to :attach, optional: true
 
   attr_accessor :attached_file, :adult_check, :app, :user
 
@@ -23,8 +23,8 @@ class Firewood < ActiveRecord::Base
   scope :me, lambda { |user_id, limit|
     where(user_id: user_id).order("id DESC").limit(limit)
   }
-  scope :after, -> (after) { where("id > ?", after) }
-  scope :before, -> (before) { where("id < ?", before) }
+  scope :after, ->(after) { where("id > ?", after) }
+  scope :before, ->(before) { where("id < ?", before) }
   scope :trace, lambda { |user_id, limit|
     where("is_dm = 0 OR is_dm = ? OR user_id = ?", user_id, user_id)
       .order("id DESC").limit(limit)
@@ -44,11 +44,11 @@ class Firewood < ActiveRecord::Base
   end
 
   def system_dm?
-    dm? && user_id == 0
+    dm? && user_id.zero?
   end
 
   def normal?
-    is_dm == 0
+    is_dm.zero?
   end
 
   def visible?(session_user_id)
@@ -72,7 +72,7 @@ class Firewood < ActiveRecord::Base
   end
 
   def img_link
-    attach_id != 0 ? attach.img.url : "0"
+    attach_id.zero? ? "0" : attach.img.url
   end
 
   def editable?(user)
@@ -112,14 +112,14 @@ class Firewood < ActiveRecord::Base
   end
 
   def send_dm
-    fw_parsed = self.contents.match('^!(\S+)\s(.+)') # parsing
+    fw_parsed = contents.match('^!(\S+)\s(.+)') # parsing
     enable_to_send = true
     message = ""
     if fw_parsed.nil?
       message = "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
       enable_to_send = false
     else
-      dm_user = User.find_by_name(fw_parsed[1]) # user check
+      dm_user = User.find_by(name: fw_parsed[1]) # user check
       if dm_user.nil?
         message = "존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요."
         enable_to_send = false
@@ -131,7 +131,7 @@ class Firewood < ActiveRecord::Base
     yield
 
     Firewood.system_dm(user_id: user_id, message: message) \
-      if !enable_to_send && user_id != 0
+      if !enable_to_send && user_id.nonzero?
   end
 
   def execute_cmd

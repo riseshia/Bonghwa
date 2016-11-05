@@ -28,14 +28,15 @@ class ApplicationController < ActionController::Base
   end
 
   def block_unconfirmed
-    if @user.unconfirmed?
-      redirect_to wait_path, notice: "가입 대기 상태입니다. 관리자에게 문의해주세요."
-    end
+    
+    redirect_to wait_path,
+                notice: "가입 대기 상태입니다. 관리자에게 문의해주세요." \
+                  if @user.unconfirmed?
   end
 
   def admin_check
-    unless @user.admin?
-      redirect_to index_path, notice: "접근 권한이 없습니다. 관리자에게 문의해주세요."
-    end
+    redirect_to index_path,
+                notice: "접근 권한이 없습니다. 관리자에게 문의해주세요." \
+                  unless @user.admin?
   end
 end

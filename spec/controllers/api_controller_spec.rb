@@ -5,7 +5,7 @@ RSpec.describe ApiController, type: :controller do
   context "Not Logined" do
     it "has a 302 status code" do
       create(:app)
-      post :create, firewood: attributes_for(:normal_message)
+      post :create, params: { firewood: attributes_for(:normal_message) }
       expect(response.status).to eq(302)
     end
   end
@@ -16,15 +16,15 @@ RSpec.describe ApiController, type: :controller do
       sign_in create(:user)
     end
 
-    describe 'POST #create' do
+    describe "POST #create" do
       it "has a 200 status code" do
-        post :create, firewood: attributes_for(:normal_message)
+        post :create, params: { firewood: attributes_for(:normal_message) }
         expect(response.status).to eq(200)
       end
 
       it "create new firewood" do
         expect do
-          post :create, firewood: attributes_for(:normal_message)
+          post :create, params: { firewood: attributes_for(:normal_message) }
         end.to change(Firewood, :count).by(1)
       end
     end

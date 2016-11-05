@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # Attach
-class Attach < ActiveRecord::Base
+class Attach < ApplicationRecord
   has_attached_file :img,
                     path: ":rails_root/public/system/" \
                           ":attachment/:id/:style/:filename",

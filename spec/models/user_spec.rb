@@ -11,7 +11,7 @@ RSpec.describe User, type: :model do
     it { should have_many(:firewoods) }
   end
 
-  describe '#admin?' do
+  describe "#admin?" do
     it "should return false" do
       expect(create(:user).admin?).to be(false)
     end

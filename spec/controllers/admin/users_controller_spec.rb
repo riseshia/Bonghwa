@@ -40,13 +40,13 @@ module Admin
       describe "#lvup" do
         it "will update level to 1 of user" do
           user = create(:unconfirmed_user)
-          put :lvup, id: user.to_param
+          put :lvup, params: { id: user.to_param }
           expect(user.reload.level).to eq(1)
           expect(response).to redirect_to(admin_users_path)
         end
 
         it "will no effect with admin level" do
-          put :lvup, id: @user.to_param
+          put :lvup, params: { id: @user.to_param }
           expect(@user.reload.level).to eq(999)
           expect(response).to redirect_to(admin_users_path)
         end

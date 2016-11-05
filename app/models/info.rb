@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # Info
-class Info < ActiveRecord::Base
+class Info < ApplicationRecord
   after_create :add_to_redis
   after_destroy :remove_from_redis
 

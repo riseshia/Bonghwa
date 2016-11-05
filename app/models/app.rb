@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # App
-class App < ActiveRecord::Base
+class App < ApplicationRecord
   after_save :add_to_redis
 
   validates :app_name, presence: true

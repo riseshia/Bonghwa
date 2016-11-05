@@ -25,11 +25,8 @@ development:
 # Do not set this db to the same as development or production.
 
 test:
-  <<: *mysql
-  database: bonghwa_test
-  username: bonghwa
-  password: 
-  host: localhost
+  <<: *default
+  database: db/test.sqlite3
 
 production:
   <<: *mysql

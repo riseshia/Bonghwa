@@ -40,7 +40,7 @@ module Admin
 
       describe "#update" do
         it "will update app_name" do
-          put :update, app: valid_attributes
+          put :update, params: { app: valid_attributes }
           expect(response).to redirect_to(admin_app_edit_path)
           expect(App.first.app_name).to eq("New Name")
         end

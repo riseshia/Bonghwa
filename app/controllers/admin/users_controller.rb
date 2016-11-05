@@ -17,7 +17,7 @@ module Admin
 
     # PUT /users/1/lvup
     def lvup
-      @user = User.find_by_id(params[:id])
+      @user = User.find_by(id: params[:id])
       @user.level = 1 if @user.unconfirmed?
 
       if @user.save
@@ -43,9 +43,8 @@ module Admin
     private
 
     def duplicated_name_check
-      if params[:name] == "System"
-        return redirect_to :back, notice: "그 이름은 사용하실 수 없습니다."
-      end
+      redirect_to :back, notice: "그 이름은 사용하실 수 없습니다." \
+        if params[:name] == "System"
     end
 
     def set_user

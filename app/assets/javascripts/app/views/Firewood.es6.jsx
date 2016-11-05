@@ -131,7 +131,7 @@ class Firewood extends React.Component {
     }
 
     $.ajax({
-      url: "/api/destroy?id=" + dataId,
+      url: `/api/destroy?id=${dataId}`,
       type: "delete",
       dataType: "json"
     }).then(() => {

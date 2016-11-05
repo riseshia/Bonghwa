@@ -88,4 +88,7 @@ Rails.application.configure do
 
   # Paperclip
   Paperclip.options[:command_path] = "usr/bin"
+
+  # React production
+  config.react.variant = :production
 end

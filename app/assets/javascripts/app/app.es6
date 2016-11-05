@@ -75,7 +75,6 @@ $(() => {
         $(document).scrollTop(0)
         e.stopPropagation()
       }
-      return false
     })
   }
 })

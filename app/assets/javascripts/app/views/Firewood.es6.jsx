@@ -147,9 +147,13 @@ class Firewood extends React.Component {
     event.preventDefault()
     event.stopPropagation()
 
+    const userName = $.cookie("user_name") 
     const $this = $(event.target).parent().parent().parent().parent()
     const targets = $this.find(".mt-target")
-    const arr = _.map(targets, (target) => { return $(target).text() })
+    const arr = targets
+                  .toArray()
+                  .map(target => $(target).text())
+                  .filter(target => !target.endsWith(userName))
     arr.unshift((this.props.is_dm == 0 ? "@":"!") + this.props.name)
 
     window._appendMt(_.uniq(arr), this.props.id)

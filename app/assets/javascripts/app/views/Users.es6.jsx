@@ -11,7 +11,7 @@ class Users extends React.Component {
     return this.props.users.map(user => {
       return (
         <li key={user.name} className="list-group-item div-username">
-          <User name={user.name} clkUsername={this._clkUsername}/>
+          <User name={user.name} clkUsernameFactory={this.clkUsernameFactory}/>
         </li>
       )
     })
@@ -30,8 +30,10 @@ class Users extends React.Component {
     )
   }
 
-  _clkUsername() {
-    const arr = [`@${this.props.name}`]
-    window._appendMt(arr)
+  clkUsernameFactory(name) {
+    return () => {
+      const arr = [`@${name}`]
+      window._appendMt(arr)
+    }
   }
 }

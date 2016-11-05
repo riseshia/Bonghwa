@@ -3,7 +3,7 @@ function User(props) {
     <a
       className="mt-clk"
       href="#"
-      onClick={props.clkUsername.bind(this)}>
+      onClick={props.clkUsernameFactory(props.name)}>
       {props.name}
     </a>
   )

@@ -11,7 +11,7 @@ class MobileUsers extends React.Component {
     return this.props.users.map(user => {
       return (
         <dd key={user.name}>
-          <User name={user.name} clkUsername={this._clkUsername}/>
+          <User name={user.name} clkUsernameFactory={this.clkUsernameFactory}/>
         </dd>
       )
     })
@@ -30,9 +30,11 @@ class MobileUsers extends React.Component {
     )
   }
 
-  _clkUsername() {
-    const arr = [`@${this.props.name}`]
-    window._appendMt(arr)
-    $("#mobileNavmenu").offcanvas("hide")
+  clkUsernameFactory(name) {
+    return () => {
+      const arr = [`@${name}`]
+      window._appendMt(arr)
+      $("#mobileNavmenu").offcanvas("hide")
+    }
   }
 }

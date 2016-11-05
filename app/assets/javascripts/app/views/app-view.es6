@@ -88,7 +88,7 @@
       e.preventDefault()
 
       $("html, body").animate({scrollTop: 0}, 600)
-      app.util.placeCaretAtEnd("contents")
+      $("#contents").focus()
 
       return this
     },

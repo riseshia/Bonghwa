@@ -18,11 +18,13 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 ENV["RAILS_ENV"] ||= "test"
 
+require "simplecov"
 require "coveralls"
+SimpleCov.start "rails" do
+  add_filter "/spec/"
+  add_filter "/config/"
+end
 Coveralls.wear!
-
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start if ENV["CODECLIMATE_REPO_TOKEN"]
 
 RSpec.configure do |config|
   # The settings below are suggested to provide a good initial experience

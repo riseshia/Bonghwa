@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
 
   def app_setting
     @app = App.first_with_cache
-    @links = Link.all_with_cache
   end
 
   def set_current_user
@@ -28,15 +27,16 @@ class ApplicationController < ActionController::Base
   end
 
   def block_unconfirmed
-    
-    redirect_to wait_path,
-                notice: "가입 대기 상태입니다. 관리자에게 문의해주세요." \
-                  if @user.unconfirmed?
+    if @user.unconfirmed?
+      redirect_to wait_path,
+                  notice: "가입 대기 상태입니다. 관리자에게 문의해주세요."
+    end
   end
 
   def admin_check
-    redirect_to index_path,
-                notice: "접근 권한이 없습니다. 관리자에게 문의해주세요." \
-                  unless @user.admin?
+    unless @user.admin?
+      redirect_to index_path,
+                  notice: "접근 권한이 없습니다. 관리자에게 문의해주세요."
+    end
   end
 end

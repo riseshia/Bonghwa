@@ -319,7 +319,7 @@ DEPENDENCIES
   capistrano-secrets-yml (~> 1.0.0)
   capistrano3-puma
   capybara
-  codeclimate-test-reporter
+  codeclimate-test-reporter (~> 1.0.0)
   coveralls
   database_rewinder
   devise

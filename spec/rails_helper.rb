@@ -5,9 +5,6 @@ require File.expand_path("../../config/environment", __FILE__)
 require "rspec/rails"
 require "factory_girl_rails"
 
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start if ENV["CODECLIMATE_REPO_TOKEN"]
-
 require "capybara/rspec"
 require "capybara/rails"
 require "capybara/poltergeist"

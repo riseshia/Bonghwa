@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "rubocop": "git diff --name-only --diff-filter=ACMRTUXB --cached | grep '\\.rb' | xargs bundle exec rubocop",
+    "rubocop": "git diff --name-only --diff-filter=ACMRTUXB --cached | grep '\\.rb' | grep -v db/schema.rb | xargs bundle exec rubocop",
     "eslint": "git diff --name-only --diff-filter=ACMRTUXB --cached | grep '\\.es6' | xargs node_modules/.bin/eslint"
   },
   "pre-commit": [

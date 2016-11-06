@@ -45,7 +45,7 @@ group :test do
   gem "capybara"
   gem "poltergeist"
   gem "shoulda-matchers", "~> 3.0"
-  gem "simplecov", require: false
-  gem "codeclimate-test-reporter", require: false
+  gem "simplecov"
+  gem "codeclimate-test-reporter", "~> 1.0.0"
   gem "database_rewinder"
 end

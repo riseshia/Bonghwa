@@ -13,12 +13,13 @@
     initialize: function (firewoods, users) {
       this.firewoods = firewoods
       this.users = users
+      this.isLive = JSON.parse(localStorage.getItem("live_stream"))
       $(document).ajaxError(this.ajaxError)
     },
 
     setPullingTimer: function() {
       const speed = (this.isLive ? 1000 : 10000)
-      this.pullingTimer = setTimeout(this.pulling, speed)
+      this.pullingTimer = setTimeout(this.pulling.bind(this), speed)
       return this
     },
 
@@ -27,13 +28,11 @@
       return this
     },
 
-    toggleLiveStream: function(isLive) {
-      if ( isLive === undefined ) {
-        this.isLive = !this.isLive
-      } else {
-        this.isLive = isLive
-      }
+    toggleLiveStream: function() {
+      this.isLive = !this.isLive
+      localStorage.setItem("live_stream", this.isLive)
       this.stopPullingTimer().setPullingTimer()
+      return this.isLive
     },
 
     load: function () {
@@ -43,10 +42,10 @@
         ts: +(new Date())
       })
       return $.get(`/api/now${params}`).then(json => {
-        const fws = _.map(json.fws, (fw) => { fw["state"] = window.FW_STATE.IN_TL; return new app.Firewood(fw) })
+        const fws = _.map(json.fws, fw => new app.Firewood(fw))
         app.firewoods.reset(fws)
         
-        const users = _.map(json.users, (user) => { return new app.User(user) })
+        const users = _.map(json.users, user => new app.User(user))
         app.users.reset(users)
         
         app.render()
@@ -54,9 +53,9 @@
       })
     },
 
-    pulling: function (isLive, isUserTriggered) {
-      const self = app.channel
-      self.stopPullingTimer()
+    pulling: function (isUserTriggered = false) {
+      const shouldVisible = this.isLive || isUserTriggered
+      this.stopPullingTimer()
 
       const firstFw = app.firewoods.first()
       const recentId = (firstFw ? firstFw.get("id") : 0)
@@ -65,32 +64,31 @@
         type: window.PAGE_TYPE,
         ts: +(new Date())
       })
-      return $.get(`/api/pulling.json${params}`).then(json => {
-        let state = (localStorage.getItem("live_stream") == "1") ? window.FW_STATE.IN_TL : window.FW_STATE.IN_STACK
-        if ( isLive ) {
-          state = window.FW_STATE.IN_TL
-        }
 
+      return $.get(`/api/pulling.json${params}`).then(json => {
         if (json.fws) {
-          if (isUserTriggered && json.fws.length == 0) {
+          if (isUserTriggered && json.fws.length === 0) {
             window._flashForm()
           }
 
-          const fws = _.map(json.fws, (fw) => { fw["state"] = window.FW_STATE.IN_STACK; return new app.Firewood(fw) })
-          
-          app.firewoods.addSome(fws, state)
+          const fws = _.map(json.fws, fw => {
+            fw.isVisible = shouldVisible
+            return new app.Firewood(fw)
+          })
+          app.firewoods.addSome(fws)
+
           if ( localStorage.getItem("auto_image_open") == "1" ) {
-            const fwsHasImg = fws.filter((fw) => { return fw.get("img_link") != "0" })
-            _.each(fwsHasImg, (fw) => { fw.trigger("unFold") })
+            const fwsHasImg = fws.filter(fw => { return fw.get("img_link") != "0" })
+            _.each(fwsHasImg, fw => fw.trigger("unFold"))
           }
         }
 
         if (json.users) {
-          const users = _.map(json.users, (user) => { return new app.User(user) })
+          const users = _.map(json.users, user => new app.User(user))
           app.users.reset(users)
-          app.render()
         }
-        self.setPullingTimer()
+        app.render()
+        this.setPullingTimer()
       })
     },
 
@@ -109,7 +107,7 @@
       success: function () {
         const self = app.channel
         self.fwPostLock = false
-        self.pulling(true)
+        self.pulling()
         window.ajaxSuccess()
 
         if (document.activeElement.getAttribute("id") == "contents") {
@@ -131,8 +129,10 @@
 
       return $.get("/api/trace.json" + params, (json) => {
         if ( json.fws.length != 0 ) {
-          const fws = _.map(json.fws, (fw) => { fw["state"] = window.FW_STATE.IN_LOG; return new app.Firewood(fw) })
-          firewoods.addSome(fws, window.FW_STATE.IN_LOG)
+          const fws = _.map(json.fws, (fw) => {
+            return new app.Firewood(fw)
+          })
+          firewoods.addSome(fws)
         }
         self.logGetLock = false
         app.render()

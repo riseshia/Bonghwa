@@ -1,18 +1,17 @@
 window.ENTER_KEY = 13
 window.ESC_KEY = 27
-window.FW_STATE = {IN_STACK: -1, IN_TL: 0, IN_LOG: 1}
 window.PAGE_TYPE = 1
 window.app = {
   defaultIsOpened: false,
 
   foldImageAll: () => {
     app.defaultIsOpened = false
-    window._render()
+    app.render()
   },
 
   unfoldImageAll: () => {
     app.defaultIsOpened = true
-    window._render()
+    app.render()
   },
 
   disableApp: () => {
@@ -34,7 +33,7 @@ window.app = {
   render: () => {
     ReactDOM.render(
       React.createElement(Firewoods, {
-        firewoods: app.firewoods.models,
+        firewoods: app.firewoods.toJSON(),
         defaultIsOpened: app.defaultIsOpened,
         originTitle: app.originTitle
       }),

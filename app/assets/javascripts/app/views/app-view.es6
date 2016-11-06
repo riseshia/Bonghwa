@@ -59,19 +59,16 @@
       if ( e ) { e.preventDefault() }
 
       const $ls = this.$("#live_stream_op")
-      const newState = (localStorage.getItem("live_stream") == "1" ? "0" : "1")
-      localStorage.setItem("live_stream", newState)
+      const newState = app.channel.toggleLiveStream()
       let msg
 
       $ls.toggleClass("true")
-      if (newState == "1") {
+      if (newState === true) {
         $ls.html($ls.html() + "<span class='glyphicon glyphicon-ok'></span>")
         msg = "Live Stream이 활성화되었습니다."
-        app.channel.toggleLiveStream(true)
       } else {
         $ls.find(".glyphicon-ok").remove()
         msg = "Live Stream이 비활성화되었습니다."
-        app.channel.toggleLiveStream(false)
       }
 
       this.notifyWithWindow(msg, "alert-info")

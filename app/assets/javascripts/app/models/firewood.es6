@@ -12,7 +12,7 @@
       contents: "Init Contents",
       img_link: "0",
       created_at: "00/00/00 00:00:00",
-      state: window.FW_STATE.IN_STACK,
+      isVisible: true,
       isOpened: false,
       isHighlighted: false
     }

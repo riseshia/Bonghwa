@@ -113,7 +113,7 @@ class FirewoodForm extends React.Component {
     const $form = $("#new_firewood")
 
     if (this._isFormEmpty()) {
-      app.channel.pulling(true, true)
+      app.channel.pulling(true)
     } else {
       $form.ajaxSubmit(app.channel.ajaxBasicOptions)
     }

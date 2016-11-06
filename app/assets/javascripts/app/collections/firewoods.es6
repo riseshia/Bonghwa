@@ -5,17 +5,8 @@
   const Firewoods = Backbone.Collection.extend({
     model: app.Firewood,
 
-    addSome: function (fws, type) {
+    addSome: function (fws) {
       this.add(fws)
-
-      if ( type == window.FW_STATE.IN_STACK ) {
-        window._updateStackNotice()
-      } else if ( type == window.FW_STATE.IN_TL ) {
-        this.flushStack()
-      } else {
-        const newFws = app.firewoods.where({ state: window.FW_STATE.IN_LOG })
-        _.each(newFws, fw => { fw.set("state", 0) })
-      }
     },
 
     getPreviousFws: function (prev_id, limit) {
@@ -36,8 +27,9 @@
     },
 
     flushStack: function() {
-      const newFws = app.firewoods.where({ state: window.FW_STATE.IN_STACK })
-      _.each(newFws, fw => { fw.set("state", 0) })
+      app.firewoods.
+        where({ isVisible: false }).
+        forEach(fw => fw.set("isVisible", true))
     },
 
     comparator: function(fw) {

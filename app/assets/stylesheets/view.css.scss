@@ -71,12 +71,12 @@ ul.navbar-right {
 
 #notice_stack_new {
   color: rgb(10,10,10);
+  line-height: 2.0;
 }
 
 #timeline_stack {
   text-align: center;
   background-color: rgb(66, 139, 202);
-  padding: 5px;
 }
 
 .tagged {
@@ -103,6 +103,10 @@ ul.navbar-right {
 
 .has-image, .delete, .link_url, .fw-tag {
   color: #3A87AD;
+}
+
+.last_top {
+  border-top-width: 3px;
 }
 
 #timeline {
@@ -263,10 +267,6 @@ ul.navbar-right {
     text-align: right;
     color: #4A97BD;
   }
-}
-
-#timeline_stack {
-  display: none;
 }
 
 .fileinput-exists {

@@ -2,7 +2,6 @@ class Firewoods extends React.Component {
   constructor(props) {
     super(props)
 
-    window._updateStackNotice = this._updateStackNotice.bind(this)
     this._flushStack = this._flushStack.bind(this)
     this._isNearBottom = this._isNearBottom.bind(this)
 
@@ -13,60 +12,69 @@ class Firewoods extends React.Component {
 
   _flushStack() {
     const $title = $("title")
-    const $stack = $("#timeline_stack")
-    $(".last_top").removeClass("last_top").attr("style", "")
-    $(".div-firewood:first").addClass("last_top").attr("style", "border-top-width:3px;")
+    $(".last_top").removeClass("last_top")
+    $(".div-firewood:first").addClass("last_top")
 
-    const fws = app.firewoods.filter((fw) => {
-      return fw.get("state") == -1 && fw.get("img_link") !== "0"
-    })
     app.firewoods.flushStack()
     $title.html(this.props.originTitle)
-    $stack.html("").slideUp(200)
-
-    if ( localStorage.getItem("auto_image_open") == "1" ) {
-      _.each(fws, (fw) => { fw.trigger("unFold") })
-    }
+    app.render()
   }
 
   _isNearBottom() {
-    const fws = app.firewoods
-    const $bottomTarget = $(`.firewood[data-id=${fws.last(5)[0].get("id")}]`)
+    const fws = this.props.firewoods
+    const lastIdx = fws.length - 1
+    const $bottomTarget = $(`.firewood[data-id=${fws[lastIdx].id}]`)
 
     if ($bottomTarget.length === 0 ||
         !$bottomTarget.isOnScreen() ||
         app.channel.logGetLock ||
         fws.length < 49 ||
-        fws.last().get("id") < 10 ) {
+        fws[lastIdx].id < 10 ) {
       return false
     }
     app.channel.getLogs()
   }
 
   _updateStackNotice() {
-    const fws = app.firewoods.where({ state: window.FW_STATE.IN_STACK})
+    const fws = this.props.firewoods.filter(fw => !fw.isVisible)
     const $title = $("title")
     const $stack = $("#timeline_stack")
 
-    if ( fws.length == 0 ) {
+    if ( fws.length === 0 ) {
       return false
     }
     $title.html(`${this.props.originTitle} (${fws.length})`)
     $stack
-      .html(`<a href='#' id='notice_stack_new'>새 장작이 ${fws.length}개 있습니다.</a>`)
+      .html(`<a href="#" id="notice_stack_new">새 장작이 ${fws.length}개 있습니다.</a>`)
       .slideDown(200)
   }
 
   render() {
-    const fwNodes = this.props.firewoods.map(fw => {
-      return (
-        <Firewood key={`fw-${fw.get("id")}`} {...fw.toJSON()} defaultIsOpened={this.props.defaultIsOpened} />
+    let stackNode = null
+    const stackCount = this.props.firewoods.filter(fw => !fw.isVisible).length
+    if (stackCount) {
+      stackNode = (
+        <a href="#" id="notice_stack_new">
+          {`새 장작이 ${stackCount}개 있습니다.`}
+        </a>
       )
-    })
+    }
+    const fwNodes = this.props.firewoods.filter(fw => fw.isVisible)
+      .map(fw => {
+        return (
+          <Firewood
+            key={`fw-${fw.id}`}
+            {...fw}
+            defaultIsOpened={this.props.defaultIsOpened}
+          />
+        )
+      })
 
     return (
       <div>
-        <div id="timeline_stack" onClick={this._flushStack}></div>
+        <div id="timeline_stack" onClick={this._flushStack}>
+          {stackNode}
+        </div>
 
         <ul className="list-group" id="timeline">
           {fwNodes}

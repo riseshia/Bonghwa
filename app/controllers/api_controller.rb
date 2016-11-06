@@ -2,7 +2,7 @@
 # ApiController
 class ApiController < ApplicationController
   def create
-    @fw = Firewood.create(
+    Firewood.create(
       user_id: @user.id,
       user_name: @user.name,
       prev_mt: params[:firewood][:prev_mt],
@@ -12,40 +12,40 @@ class ApiController < ApplicationController
       app: @app,
       user: @user
     )
-    render json: JSON.dump("")
+
+    render_empty_json
   end
 
   def destroy
-    @fw = Firewood.find(params[:id])
-    @fw.destroy if @fw.editable? @user
+    fw = Firewood.find(params[:id])
+    fw.destroy if fw.editable? @user
 
-    render json: JSON.dump("")
+    render_empty_json
   end
 
-  # 지금 시점으로부터 가장 최근의 장작을 50개 불러온다.
+  # Get recent 50 firewood from now
   def now
     type = params[:type]
-    @firewoods = case type
-                 when "1" # Now
-                   Firewood.trace(@user.id, 50)
-                 when "2" # Mt
-                   Firewood.mention(@user.id, @user.name, 50)
-                 when "3" # Me
-                   Firewood.me(@user.id, 50)
+    firewoods = case type
+                when "1" # Now
+                  Firewood.trace(@user.id, 50)
+                when "2" # Mt
+                  Firewood.mention(@user.id, @user.name, 50)
+                when "3" # Me
+                  Firewood.me(@user.id, 50)
                  end.map(&:to_hash_for_api)
 
     update_login_info
-    @users = recent_users
+    users = recent_users
 
-    render json: JSON.dump("fws" => @firewoods, "users" => @users)
+    render_fws_and_users(firewoods, users)
   end
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
   def get_mt
-    @mts = Firewood.find_mt(params[:prev_mt], @user.id)
-                   .map(&:to_hash_for_api)
-
-    render json: JSON.dump("fws" => @mts)
+    mts = Firewood.find_mt(params[:prev_mt], @user.id)
+                  .map(&:to_hash_for_api)
+    render_fws(mts)
   end
 
   # after 이후의 장작을 최대 1000개까지 내림차순으로 받아온다.
@@ -53,39 +53,39 @@ class ApiController < ApplicationController
     type = params[:type]
     limit = 1000
 
-    @firewoods = case type
-                 when "1" # Now
-                   Firewood.after(params[:after])
-                           .trace(@user.id, limit)
-                 when "2" # Mt
-                   Firewood.after(params[:after])
-                           .mention(@user.id, @user.name, limit)
-                 when "3" # Me
-                   Firewood.after(params[:after]).me(@user.id, limit)
-                 end.map(&:to_hash_for_api)
+    firewoods = case type
+                when "1" # Now
+                  Firewood.after(params[:after])
+                          .trace(@user.id, limit)
+                when "2" # Mt
+                  Firewood.after(params[:after])
+                          .mention(@user.id, @user.name, limit)
+                when "3" # Me
+                  Firewood.after(params[:after]).me(@user.id, limit)
+                end.map(&:to_hash_for_api)
     update_login_info
-    @users = recent_users
+    users = recent_users
 
-    render json: JSON.dump("fws" => @firewoods, "users" => @users)
+    render_fws_and_users(firewoods, users)
   end
 
   def trace
     limit = limit_count_to_50 params[:count].to_i # Limit maximum size
     type = params[:type]
 
-    @firewoods = case type
-                 when "1" # Now
-                   Firewood.before(params[:before]).trace(@user.id, limit)
-                 when "2" # Mt
-                   Firewood.before(params[:before])
-                           .mention(@user.id, @user.name, limit)
-                 when "3" # Me
-                   Firewood.before(params[:before])
-                           .me(@user.id, limit)
-                 end.map(&:to_hash_for_api)
+    firewoods = case type
+                when "1" # Now
+                  Firewood.before(params[:before]).trace(@user.id, limit)
+                when "2" # Mt
+                  Firewood.before(params[:before])
+                          .mention(@user.id, @user.name, limit)
+                when "3" # Me
+                  Firewood.before(params[:before])
+                          .me(@user.id, limit)
+                end.map(&:to_hash_for_api)
     update_login_info
 
-    render json: JSON.dump("fws" => @firewoods, "users" => @users)
+    render_fws_and_users(firewoods, users)
   end
 
   private
@@ -104,5 +104,17 @@ class ApiController < ApplicationController
   def update_login_info
     RedisWrapper.zadd("active-users", Time.zone.now.to_i, @user.name) \
       unless @user.id == 1
+  end
+
+  def render_empty_json
+    render json: JSON.dump("")
+  end
+
+  def render_fws(firewoods)
+    render json: JSON.dump("fws" => firewoods)
+  end
+
+  def render_fws_and_users(firewoods, users)
+    render json: JSON.dump("fws" => firewoods, "users" => users)
   end
 end

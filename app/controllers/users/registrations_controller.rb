@@ -3,8 +3,8 @@ module Users
   class RegistrationsController < Devise::RegistrationsController
     skip_before_action :block_unconfirmed
     skip_before_action :set_current_user
-    before_action :configure_sign_up_params, only: [:create]
-    before_action :configure_account_update_params, only: [:update]
+    before_action :configure_sign_up_params, only: :create
+    before_action :configure_account_update_params, only: :update
 
     layout "users"
 

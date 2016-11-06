@@ -6,13 +6,13 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     user = User.find(params[:id])
-    render :show, locals: { user: user }
+    render_show(user)
   end
 
   # GET /users/1/edit
   def edit
     user = User.find(params[:id])
-    render :edit, locals: { user: user }
+    render_edit(user)
   end
 
   # PUT /users/1
@@ -20,9 +20,9 @@ class UsersController < ApplicationController
   def update
     user = User.find(params[:id])
     if user.update(user_params)
-      redirect_to user, notice: "User was successfully updated."
+      redirect_edit(user, "User was successfully updated.")
     else
-      render :edit, locals: { user: user }
+      render_edit(user)
     end
   end
 
@@ -37,5 +37,17 @@ class UsersController < ApplicationController
   # only allow the white list through.
   def user_params
     params.require(:user).permit(:password, :password_confirmation)
+  end
+
+  def render_show(user)
+    render :show, locals: { user: user }
+  end
+
+  def render_edit(user)
+    render :edit, locals: { user: user }
+  end
+
+  def redirect_edit(user, message)
+    redirect_to user, notice: message
   end
 end

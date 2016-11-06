@@ -5,16 +5,15 @@ module Admin
   class AppController < Admin::BaseController
     def edit
       app = App.first
-      render :edit, locals: { app: app }
+      render_edit(app)
     end
 
     def update
       app = App.first
       if app.update_attributes(app_params)
-        redirect_to admin_app_edit_path,
-                    notice: "app setting was successfully updated."
+        redirect_to_edit(app, "app setting was successfully updated.")
       else
-        render :edit, locals: { app: app }
+        render_edit(app)
       end
     end
 
@@ -23,6 +22,14 @@ module Admin
     def app_params
       params.require(:app).permit(:app_name, :home_link, :home_name,
                                   :show_widget, :use_script, :widget_link)
+    end
+
+    def render_edit(app)
+      render :edit, locals: { app: app }
+    end
+
+    def redirect_to_edit(app, message)
+      redirect_to edit_admin_app_path(app), notice: message
     end
   end
 end

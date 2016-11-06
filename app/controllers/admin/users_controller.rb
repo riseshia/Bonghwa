@@ -8,38 +8,37 @@ module Admin
     # GET /users
     def index
       users = User.paginate(page: params[:page], per_page: 10)
-      render :index, locals: { users: users }
+      render_index(users)
     end
 
     # GET /users/1/edit
     def edit
       user = User.find(params[:id])
-      render :edit, locals: { user: user }
+      render_edit(user)
     end
 
     # PUT /users/1/lvup
     def lvup
       user = User.find(params[:id])
-      user.level = 1 if user.unconfirmed?
+      user.lvup if user.unconfirmed?
 
       if user.save
         RedisWrapper.del("session-#{user.id}")
-        redirect_to admin_users_url,
-                    notice: "User was successfully updated."
+        redirect_index("User was successfully updated.")
       else
-        render :edit, locals: { user: user }
+        render_edit(user)
       end
     end
 
     # PUT /users/1
     def update
-      @user = User.find(params[:id])
+      user = User.find(params[:id])
       if params[:user][:password] != params[:user][:password_confirmation]
-        render action: "edit", notice: "password and confimation is different."
-      elsif @user.update(password: params[:user][:password])
-        redirect_to @user, notice: "User was successfully updated."
+        render_edit(user, "password and confimation is different.")
+      elsif user.update(password: params[:user][:password])
+        redirect_edit(user, "User was successfully updated.")
       else
-        render action: "edit"
+        render_edit(user)
       end
     end
 
@@ -48,6 +47,22 @@ module Admin
     def duplicated_name_check
       redirect_to :back, notice: "그 이름은 사용하실 수 없습니다." \
         if params[:name] == "System"
+    end
+
+    def render_index(users)
+      render :index, locals: { users: users }
+    end
+
+    def redirect_index(message)
+      redirect_to admin_users_path, notice: message
+    end
+
+    def render_edit(user, message = nil)
+      render :edit, locals: { user: user }, notice: message
+    end
+
+    def redirect_edit(user, message)
+      redirect_to user, notice: message
     end
 
     # Never trust parameters from the scary internet,

@@ -3,7 +3,7 @@ module Users
   class SessionsController < Devise::SessionsController
     skip_before_action :block_unconfirmed
     skip_before_action :set_current_user
-    before_action :configure_sign_in_params, only: [:create]
+    before_action :configure_sign_in_params, only: :create
 
     layout "users"
 

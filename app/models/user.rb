@@ -20,6 +20,10 @@ class User < ApplicationRecord
     level.zero?
   end
 
+  def lvup
+    self.level = 1
+  end
+
   def update_nickname(new_name)
     old_user_name = name
     self.name = new_name

@@ -38,6 +38,7 @@ group :development do
 end
 
 group :test do
+  gem "coveralls", require: false
   gem "rspec-rails"
   gem "rspec-collection_matchers"
   gem "factory_girl_rails", "~> 4.0"

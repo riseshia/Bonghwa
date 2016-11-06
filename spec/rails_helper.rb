@@ -5,15 +5,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require "rspec/rails"
 require "factory_girl_rails"
 
-require "simplecov"
 require "codeclimate-test-reporter"
-if ENV["CODECLIMATE_REPO_TOKEN"]
-  SimpleCov.start "rails" do
-    add_filter "vendor"
-    add_filter "spec"
-  end
-  CodeClimate::TestReporter.start
-end
+CodeClimate::TestReporter.start if ENV["CODECLIMATE_REPO_TOKEN"]
 
 require "capybara/rspec"
 require "capybara/rails"

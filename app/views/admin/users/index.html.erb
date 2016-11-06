@@ -11,7 +11,7 @@
       <th></th>
     </tr>
 
-  <% @users.each do |user| %>
+  <% users.each do |user| %>
     <tr>
       <td><%= user.login_id %></td>
       <td><%= user.name %></td>
@@ -26,5 +26,5 @@
 
   <br />
 
-<%= will_paginate @users %>
+<%= will_paginate users %>
 </div>

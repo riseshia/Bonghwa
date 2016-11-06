@@ -4,16 +4,17 @@ module Admin
   # AppController
   class AppController < Admin::BaseController
     def edit
+      app = App.first
+      render :edit, locals: { app: app }
     end
 
     def update
-      @app = App.first
-
-      if @app.update_attributes(app_params)
+      app = App.first
+      if app.update_attributes(app_params)
         redirect_to admin_app_edit_path,
                     notice: "app setting was successfully updated."
       else
-        render :edit
+        render :edit, locals: { app: app }
       end
     end
 

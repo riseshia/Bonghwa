@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     sessions: "users/sessions",
     registrations: "users/registrations"
   }
+
   controller :view do
     get "timeline" => :timeline
     get "option" => :option
@@ -17,10 +18,7 @@ Rails.application.routes.draw do
       put :lvup, on: :member
     end
 
-    get "app/edit", controller: :app, action: :edit
-    put "app/update", controller: :app, action: :update
-
-    resources :links, except: [:show]
+    resources :app, only: [:edit, :update]
   end
 
   controller :api do
@@ -29,9 +27,7 @@ Rails.application.routes.draw do
 
     get "api/now" => :now
     get "api/trace" => :trace
-
     get "api/get_mt" => :get_mt
-
     get "api/pulling" => :pulling
   end
 

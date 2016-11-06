@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 # ApplicationController
 class ApplicationController < ActionController::Base
-  before_action :app_setting
   before_action :authenticate_user!
+  before_action :set_context
   before_action :set_current_user
   before_action :block_unconfirmed
   protect_from_forgery with: :exception
 
   protected
 
-  def app_setting
+  def set_context
     @app = App.first_with_cache
   end
 
@@ -28,15 +28,17 @@ class ApplicationController < ActionController::Base
 
   def block_unconfirmed
     if @user.unconfirmed?
-      redirect_to wait_path,
-                  notice: "가입 대기 상태입니다. 관리자에게 문의해주세요."
+      redirect_to \
+        wait_path,
+        notice: "가입 대기 상태입니다. 관리자에게 문의해주세요."
     end
   end
 
   def admin_check
     unless @user.admin?
-      redirect_to index_path,
-                  notice: "접근 권한이 없습니다. 관리자에게 문의해주세요."
+      redirect_to \
+        index_path,
+        notice: "접근 권한이 없습니다. 관리자에게 문의해주세요."
     end
   end
 end

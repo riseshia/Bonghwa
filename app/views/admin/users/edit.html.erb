@@ -4,7 +4,7 @@
 		<div class="col-md-4" style="text-align:center;background-color:#fff;">
       <h2>Change Password</h2>
 
-      <%= form_for(@user, html: { method: :put }) do |f| %>
+      <%= form_for(user, html: { method: :put }) do |f| %>
         <div class="field">
           <%= f.label :password %><br />
           <%= f.password_field :password, autocomplete: "off" %>
@@ -20,7 +20,7 @@
         </div>
       <% end %>
 
-			<%= link_to 'Show', @user %>
+			<%= link_to "Show", user %>
 		</div>
 	</div>
 </div>

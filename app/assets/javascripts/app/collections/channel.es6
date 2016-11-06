@@ -107,7 +107,7 @@
       success: function () {
         const self = app.channel
         self.fwPostLock = false
-        self.pulling()
+        self.pulling(true)
         window.ajaxSuccess()
 
         if (document.activeElement.getAttribute("id") == "contents") {

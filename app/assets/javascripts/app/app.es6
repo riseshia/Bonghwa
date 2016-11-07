@@ -3,6 +3,7 @@ window.ESC_KEY = 27
 window.PAGE_TYPE = 1
 window.app = {
   defaultIsOpened: false,
+  users: [],
 
   foldImageAll: () => {
     app.defaultIsOpened = false
@@ -54,26 +55,45 @@ window.app = {
   }
 }
 
+const isNearBottom = () => {
+  if (!app.firewoods) { return }
+  const fws = app.firewoods.toJSON()
+  const lastIdx = fws.length - 1
+  const $bottomTarget = $(`.firewood[data-id=${fws[lastIdx].id}]`)
+
+  if ($bottomTarget.length === 0 ||
+      !$bottomTarget.isOnScreen() ||
+      app.channel.logGetLock ||
+      fws.length < 49 ||
+      fws[lastIdx].id < 10 ) {
+    return false
+  }
+  app.channel.getLogs()
+}
+
 $(() => {
   "use strict"
+  if (document.getElementById("firewoods") === null) { return }
 
-  if (document.getElementById("firewoods") !== null) {
-    app.channel = new app.Channel()
-    new app.AppView({}, { timeline_state: PAGE_TYPE })
-    Backbone.history.start()
+  new app.AppView({}, {})
+  Backbone.history.start()
 
-    $(".all_nav").click(e => {
-      const page = window.PAGE_TYPE
-      const clicked = (() => {
-        if ($(".now_nav").parent().hasClass("active")) return 1
-        else if ($(".mt_nav").parent().hasClass("active")) return 2
-        else return 3
-      })()
-      
-      if (page === clicked) {
-        $(document).scrollTop(0)
-        e.stopPropagation()
-      }
-    })
-  }
+  app.channel = new app.Channel()
+  app.channel.load()
+  app.channel.setPullingTimer()
+  setInterval(isNearBottom, 1000)
+
+  $(".all_nav").click(e => {
+    const page = window.PAGE_TYPE
+    const clicked = (() => {
+      if ($(".now_nav").parent().hasClass("active")) return 1
+      else if ($(".mt_nav").parent().hasClass("active")) return 2
+      else return 3
+    })()
+    
+    if (page === clicked) {
+      $(document).scrollTop(0)
+      e.stopPropagation()
+    }
+  })
 })

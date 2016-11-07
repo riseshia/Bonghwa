@@ -128,6 +128,7 @@ class ApiController < ApplicationController
                           .me(@user.id, limit)
                 end.map(&:to_hash_for_api)
     update_login_info
+    users = recent_users
 
     render_fws_and_users(firewoods, users)
   end

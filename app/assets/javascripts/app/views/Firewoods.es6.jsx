@@ -3,11 +3,6 @@ class Firewoods extends React.Component {
     super(props)
 
     this._flushStack = this._flushStack.bind(this)
-    this._isNearBottom = this._isNearBottom.bind(this)
-
-    app.channel.load()
-    app.channel.setPullingTimer()
-    setInterval(this._isNearBottom, 1000)
   }
 
   _flushStack() {
@@ -18,21 +13,6 @@ class Firewoods extends React.Component {
     app.firewoods.flushStack()
     $title.html(this.props.originTitle)
     app.render()
-  }
-
-  _isNearBottom() {
-    const fws = this.props.firewoods
-    const lastIdx = fws.length - 1
-    const $bottomTarget = $(`.firewood[data-id=${fws[lastIdx].id}]`)
-
-    if ($bottomTarget.length === 0 ||
-        !$bottomTarget.isOnScreen() ||
-        app.channel.logGetLock ||
-        fws.length < 49 ||
-        fws[lastIdx].id < 10 ) {
-      return false
-    }
-    app.channel.getLogs()
   }
 
   _updateStackNotice() {

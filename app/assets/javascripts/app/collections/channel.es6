@@ -10,9 +10,7 @@
     fwPostLock: false,
     logGetLock: false,
 
-    initialize: function (firewoods, users) {
-      this.firewoods = firewoods
-      this.users = users
+    initialize: function () {
       this.isLive = JSON.parse(localStorage.getItem("live_stream"))
       $(document).ajaxError(this.ajaxError)
     },
@@ -45,8 +43,7 @@
         const fws = _.map(json.fws, fw => new app.Firewood(fw))
         app.firewoods.reset(fws)
         
-        const users = _.map(json.users, user => new app.User(user))
-        app.users.reset(users)
+        app.users = json.users
         
         app.render()
         app.channel.setPullingTimer()
@@ -84,8 +81,7 @@
         }
 
         if (json.users) {
-          const users = _.map(json.users, user => new app.User(user))
-          app.users.reset(users)
+          app.users = json.users
         }
         app.render()
         this.setPullingTimer()

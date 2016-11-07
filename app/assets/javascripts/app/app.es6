@@ -44,11 +44,11 @@ window.app = {
       document.getElementById("new_firewood")
     )
     ReactDOM.render(
-      React.createElement(Users, {users: app.users.toJSON()}),
+      React.createElement(Users, {users: app.users}),
       document.getElementById("users-wrapper")
     )
     ReactDOM.render(
-      React.createElement(MobileUsers, {users: app.users.toJSON()}),
+      React.createElement(MobileUsers, {users: app.users}),
       document.getElementById("users-mobile")
     )
   }
@@ -58,7 +58,7 @@ $(() => {
   "use strict"
 
   if (document.getElementById("firewoods") !== null) {
-    app.channel = new app.Channel(app.firewoods, app.users)
+    app.channel = new app.Channel()
     new app.AppView({}, { timeline_state: PAGE_TYPE })
     Backbone.history.start()
 

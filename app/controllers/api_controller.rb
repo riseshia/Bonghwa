@@ -8,10 +8,54 @@ class ApiController < ApplicationController
       prev_mt: params[:firewood][:prev_mt],
       contents: params[:firewood][:contents],
       attached_file: params[:attach],
-      adult_check: params[:adult_check],
-      app: @app,
-      user: @user
+      adult_check: params[:adult_check]
     )
+
+    render_empty_json
+  end
+
+  def create_cmd
+    firewood = Firewood.create(
+      user_id: @user.id,
+      user_name: @user.name,
+      prev_mt: params[:firewood][:prev_mt],
+      contents: params[:firewood][:contents],
+      attached_file: params[:attach],
+      adult_check: params[:adult_check]
+    )
+    Scripter.execute(firewood: firewood, user: @user)
+
+    render_empty_json
+  end
+
+  def create_dm
+    contents = params[:firewood][:contents]
+    fw_parsed = contents.match('^!(\S+)\s(.+)') # parsing
+    enable_to_send = true
+    message = ""
+    if fw_parsed.nil?
+      message = "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
+      enable_to_send = false
+    else
+      dm_user = User.find_by(name: fw_parsed[1]) # user check
+      if dm_user.nil?
+        message = "존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요."
+        enable_to_send = false
+      end
+    end
+
+    Firewood.create(
+      user_id: @user.id,
+      user_name: @user.name,
+      prev_mt: params[:firewood][:prev_mt],
+      contents: params[:firewood][:contents],
+      attached_file: params[:attach],
+      adult_check: params[:adult_check],
+      is_dm: enable_to_send ? dm_user.id : @user.id
+    )
+
+    Firewood.system_dm(user_id: @user.id, message: message) \
+      if !enable_to_send && @user.id.nonzero?
 
     render_empty_json
   end
@@ -33,7 +77,7 @@ class ApiController < ApplicationController
                   Firewood.mention(@user.id, @user.name, 50)
                 when "3" # Me
                   Firewood.me(@user.id, 50)
-                 end.map(&:to_hash_for_api)
+                end.map(&:to_hash_for_api)
 
     update_login_info
     users = recent_users
@@ -42,7 +86,7 @@ class ApiController < ApplicationController
   end
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
-  def get_mt
+  def mts
     mts = Firewood.find_mt(params[:prev_mt], @user.id)
                   .map(&:to_hash_for_api)
     render_fws(mts)

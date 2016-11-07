@@ -6,14 +6,10 @@ class Firewood < ApplicationRecord
   before_create :attachment_support
   before_destroy :destroy_attach
 
-  around_create :send_dm, if: proc { |fw| fw.dm? && !fw.system_dm? }
-
-  after_create :execute_cmd, if: :cmd?
-
   belongs_to :user, optional: true # for bot handling
   belongs_to :attach, optional: true
 
-  attr_accessor :attached_file, :adult_check, :app, :user
+  attr_accessor :attached_file, :adult_check
 
   # Scope
   scope :mention, lambda { |user_id, user_name, count|
@@ -109,32 +105,5 @@ class Firewood < ApplicationRecord
       attach = Attach.create!(img: attached_file, adult_flg: adult_check.present?)
       self.attach_id = attach.id
     end
-  end
-
-  def send_dm
-    fw_parsed = contents.match('^!(\S+)\s(.+)') # parsing
-    enable_to_send = true
-    message = ""
-    if fw_parsed.nil?
-      message = "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
-      enable_to_send = false
-    else
-      dm_user = User.find_by(name: fw_parsed[1]) # user check
-      if dm_user.nil?
-        message = "존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요."
-        enable_to_send = false
-      end
-    end
-
-    self.is_dm = enable_to_send ? dm_user.id : user_id
-
-    yield
-
-    Firewood.system_dm(user_id: user_id, message: message) \
-      if !enable_to_send && user_id.nonzero?
-  end
-
-  def execute_cmd
-    Scripter.execute(firewood: self, user: User.find(user_id))
   end
 end

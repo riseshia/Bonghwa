@@ -1,4 +1,16 @@
 # frozen_string_literal: true
+class CmdConstraint
+  def matches?(request)
+    request.request_parameters["firewood"]["contents"].match("^/.+").present?
+  end
+end
+
+class DmConstraint
+  def matches?(request)
+    request.request_parameters["firewood"]["contents"].match("^!.+").present?
+  end
+end
+
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: "users/sessions",
@@ -22,12 +34,14 @@ Rails.application.routes.draw do
   end
 
   controller :api do
+    post "api/new" => :create_dm, constraints: DmConstraint.new
+    post "api/new" => :create_cmd, constraints: CmdConstraint.new
     post "api/new" => :create
     delete "api/destroy" => :destroy
 
     get "api/now" => :now
     get "api/trace" => :trace
-    get "api/get_mt" => :get_mt
+    get "api/get_mt" => :mts
     get "api/pulling" => :pulling
   end
 

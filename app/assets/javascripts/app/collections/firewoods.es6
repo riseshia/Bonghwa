@@ -27,7 +27,7 @@
     },
 
     flushStack: function() {
-      app.firewoods.
+      this.
         where({ isVisible: false }).
         forEach(fw => fw.set("isVisible", true))
     },

@@ -35,14 +35,44 @@ class SubFirewood extends React.Component {
     )
   }
 
+  unescaped_contents(firewood) {
+    return firewood.contents.replace("&lt;", "<").replace("&gt;", ">")
+  }
+
+  imageInfoTag(firewood) {
+    if (firewood.img_link === "0") { return }
+    if (firewood.img_adult_flg) {
+      return (
+        <span className="has-image text-warning">
+          {`[후방주의 ${firewood.img_id}] `}
+        </span>
+      )
+    } else {
+      return (
+        <span className="has-image">
+          {`[이미지 ${firewood.img_id}] `}
+        </span>
+      )
+    }
+  }
+
   textRender(firewood) {
+    const contentsNodes =
+      this.unescaped_contents(firewood).split(" ").
+      map(token => {
+        return [
+          ReactAutolink.autoLink(token, { target: "_blank", rel: "nofollow"}),
+          " "]
+      })
+
     return (
       <li key={firewood.id} className="list-group-item div-mention">
         <div className="mt-trace">
           <small>
             <a href="#">{ firewood.name }</a> :
             <span className="fw-contents">
-              { firewood.contents }
+              { contentsNodes }
+              { this.imageInfoTag(firewood) }
               <a href="#" className="delete"></a>
             </span>
           </small>

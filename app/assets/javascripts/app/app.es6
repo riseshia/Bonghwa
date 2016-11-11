@@ -76,12 +76,12 @@ $(() => {
   if (document.getElementById("firewoods") === null) { return }
 
   new app.AppView({}, {})
-  Backbone.history.start()
 
   app.channel = new app.Channel()
   app.channel.load()
   app.channel.setPullingTimer()
   setInterval(isNearBottom, 1000)
+  Backbone.history.start()
 
   $(".all_nav").click(e => {
     const page = window.PAGE_TYPE

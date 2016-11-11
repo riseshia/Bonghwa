@@ -5,6 +5,11 @@ const ReactAutolink = (() => {
     return str.slice(0, prefix.length) === prefix
   }
 
+  const clkLink = e => {
+    e.stopPropagation()
+    return false
+  }
+
   return {
     autoLink (text, options = {}) {
       if (!text) return []
@@ -12,8 +17,8 @@ const ReactAutolink = (() => {
       return text.split(delimiter).map(word => {
         const match = word.match(delimiter)
         if (match) {
-          let url = match[0] 
-          let shortenUrl
+          const url = match[0] 
+          let shortenUrl = url
 
           const segments = url.split("/")
           // no scheme given, so check host portion length
@@ -26,11 +31,10 @@ const ReactAutolink = (() => {
           }
 
           options.className = "link_url"
+          options.onClick = clkLink
           options.href = strStartsWith(url, "http") ? url : `http://${url}`
 
-          return React.createElement(
-            "a", options, shortenUrl
-          )
+          return React.createElement("a", options, shortenUrl)
         } else {
           return word
         }

@@ -61,7 +61,7 @@ class SubFirewood extends React.Component {
       this.unescaped_contents(firewood).split(" ").
       map(token => {
         return [
-          ReactAutolink.autoLink(token, { target: "_blank", rel: "nofollow"}),
+          ReactAutolink.autoLink(token, { target: "_blank", rel: "nofollow" }),
           " "]
       })
 

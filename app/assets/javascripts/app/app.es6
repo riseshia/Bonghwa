@@ -1,9 +1,8 @@
-window.ENTER_KEY = 13
-window.ESC_KEY = 27
-window.PAGE_TYPE = 1
 window.app = {
   defaultIsOpened: false,
+  pageType: 1,
   users: [],
+  firewoods: [],
 
   foldImageAll: () => {
     app.defaultIsOpened = false
@@ -34,7 +33,7 @@ window.app = {
   render: () => {
     ReactDOM.render(
       React.createElement(Firewoods, {
-        firewoods: app.firewoods.toJSON(),
+        firewoods: app.firewoods,
         defaultIsOpened: app.defaultIsOpened,
         originTitle: app.originTitle
       }),
@@ -57,7 +56,7 @@ window.app = {
 
 const isNearBottom = () => {
   if (!app.firewoods) { return }
-  const fws = app.firewoods.toJSON()
+  const fws = app.firewoods
   const lastIdx = fws.length - 1
   const $bottomTarget = $(`.firewood[data-id=${fws[lastIdx].id}]`)
 
@@ -84,7 +83,7 @@ $(() => {
   Backbone.history.start()
 
   $(".all_nav").click(e => {
-    const page = window.PAGE_TYPE
+    const page = app.pageType
     const clicked = (() => {
       if ($(".now_nav").parent().hasClass("active")) return 1
       else if ($(".mt_nav").parent().hasClass("active")) return 2

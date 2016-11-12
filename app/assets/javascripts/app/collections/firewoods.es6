@@ -1,41 +1,40 @@
 (function () {
   "use strict"
   const app = window.app
-
-  const Firewoods = Backbone.Collection.extend({
-    model: app.Firewood,
-
-    addSome: function (fws) {
-      this.add(fws)
-    },
-
-    getPreviousFws: function (prev_id, limit) {
+  
+  const FirewoodsFn = {
+    getPreviousFws(prev_id, limit) {
       let fw_id = prev_id
       const fws = []
       
-      if ( !this.findWhere({id: fw_id}) ) {
+      if (!this.findById(fw_id)) {
         return []
       }
 
       for (let i = 0; i < limit && fw_id != 0; i++) {
-        const tmp = this.findWhere({id: fw_id})
+        const tmp = this.findById(fw_id)
         fws.push(tmp)
-        fw_id = tmp.get("prev_mt")
+        fw_id = tmp.prev_mt
       }
 
       return fws
     },
 
-    flushStack: function() {
-      this.
-        where({ isVisible: false }).
-        forEach(fw => fw.set("isVisible", true))
+    findById(id) {
+      const fws = app.firewoods
+      
+      for(let i = 0; i!= fws.length; i++) {
+        if (fws[i].id == id) {
+          return fws[i]
+        }
+      }
+      return null
     },
 
-    comparator: function(fw) {
-      return -fw.get("id")
+    flushStack() {
+      app.firewoods.forEach(fw => fw.isVisible = true)
     }
-  })
+  }
 
-  app.firewoods = new Firewoods()
+  app.FirewoodsFn = FirewoodsFn
 })()

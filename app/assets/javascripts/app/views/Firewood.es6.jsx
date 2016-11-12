@@ -185,7 +185,7 @@ class Firewood extends React.Component {
   }
 
   unFold() {
-    const fws = app.firewoods.getPreviousFws(this.props.prev_mt, 5)
+    const fws = app.FirewoodsFn.getPreviousFws(this.props.prev_mt, 5)
     const $el = $(`div[data-id=${this.props.id}]`)
 
     if ( this.props.prev_mt !== 0 && fws.length === 0 ) {

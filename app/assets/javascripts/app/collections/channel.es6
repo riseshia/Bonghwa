@@ -36,13 +36,12 @@
     load: function () {
       this.stopPullingTimer()
       const params = app.channel.buildParams({
-        type: window.PAGE_TYPE,
+        type: app.pageType,
         ts: +(new Date())
       })
       return $.get(`/api/now${params}`).then(json => {
-        const fws = _.map(json.fws, fw => new app.Firewood(fw))
-        app.firewoods.reset(fws)
-        
+        _.each(json.fws, fw => ( fw.isVisible = true ))
+        app.firewoods = json.fws
         app.users = json.users
         
         app.render()
@@ -54,11 +53,11 @@
       const shouldVisible = this.isLive || isUserTriggered
       this.stopPullingTimer()
 
-      const firstFw = app.firewoods.first()
-      const recentId = (firstFw ? firstFw.get("id") : 0)
+      const firstFw = app.firewoods[0]
+      const recentId = (firstFw ? firstFw.id : 0)
       const params = app.channel.buildParams({
         after: recentId,
-        type: window.PAGE_TYPE,
+        type: app.pageType,
         ts: +(new Date())
       })
 
@@ -68,16 +67,16 @@
             window._flashForm()
           }
 
-          const fws = _.map(json.fws, fw => {
-            fw.isVisible = shouldVisible
-            return new app.Firewood(fw)
-          })
-          app.firewoods.addSome(fws)
+          _.each(json.fws, fw => ( fw.isVisible = shouldVisible ))
 
           if ( localStorage.getItem("auto_image_open") == "1" ) {
-            const fwsHasImg = fws.filter(fw => { return fw.get("img_link") != "0" })
-            _.each(fwsHasImg, fw => fw.trigger("unFold"))
+            json.fws.forEach(fw => {
+              if (fw.img_link != "0") {
+                fw.defaultIsOpened = true
+              }
+            })
           }
+          app.firewoods = json.fws.concat(app.firewoods)
         }
 
         if (json.users) {
@@ -115,20 +114,19 @@
     getLogs: function () {
       const self = app.channel
       const firewoods = app.firewoods
+      const lastIdx = firewoods.length - 1
       self.logGetLock = true
       const params = app.channel.buildParams({
-        before: firewoods.last().get("id"),
+        before: firewoods[lastIdx].id,
         count: self.sizeWhenBottomLoading,
-        type: window.PAGE_TYPE,
+        type: app.pageType,
         ts: +(new Date())
       })
 
       return $.get("/api/trace.json" + params, (json) => {
         if ( json.fws.length != 0 ) {
-          const fws = _.map(json.fws, (fw) => {
-            return new app.Firewood(fw)
-          })
-          firewoods.addSome(fws)
+          _.each(json.fws, fw => ( fw.isVisible = true ))
+          app.firewoods = app.firewoods.concat(json.fws)
         }
         self.logGetLock = false
         app.render()

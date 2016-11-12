@@ -1,7 +1,6 @@
 class Firewoods extends React.Component {
   constructor(props) {
     super(props)
-
     this._flushStack = this._flushStack.bind(this)
   }
 
@@ -10,7 +9,7 @@ class Firewoods extends React.Component {
     $(".last_top").removeClass("last_top")
     $(".div-firewood:first").addClass("last_top")
 
-    app.firewoods.flushStack()
+    app.FirewoodsFn.flushStack()
     $title.html(this.props.originTitle)
     app.render()
   }

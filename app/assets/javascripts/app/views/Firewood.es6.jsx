@@ -200,8 +200,7 @@ class Firewood extends React.Component {
         }, 0)
       })
     } else {
-      const subFws = fws.map(fw => fw.toJSON())
-      this.setState({subfws: subFws, isOpened: true})
+      this.setState({subfws: fws, isOpened: true})
       setTimeout(() => {
         $el.find(".fw-sub").slideDown(200)
       }, 0)

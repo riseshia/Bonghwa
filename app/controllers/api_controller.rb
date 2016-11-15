@@ -23,7 +23,7 @@ class ApiController < ApplicationController
       attached_file: params[:attach],
       adult_check: params[:adult_check]
     )
-    Scripter.execute(firewood: firewood, user: @user)
+    Scripter.execute(firewood: firewood, user: @user, app: @app)
 
     render_empty_json
   end

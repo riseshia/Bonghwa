@@ -26,11 +26,10 @@ class User < ApplicationRecord
 
   def update_nickname(new_name)
     old_user_name = name
-    self.name = new_name
-    state = save
+    state = update_attribute(:name, new_name)
     if state
       RedisWrapper.zrem("active-users", old_user_name)
-      RedisWrapper.zadd("active-users", Time.zone.now.to_i, name)
+      RedisWrapper.zadd("active-users", Time.zone.now.to_i, new_name)
       RedisWrapper.set("session-#{id}", to_json)
       RedisWrapper.expire("session-#{id}", 86_400)
     end

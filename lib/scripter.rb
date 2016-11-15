@@ -15,7 +15,7 @@ module Scripter
   def execute(params)
     script = Script.new(params[:firewood])
     new_params = { script: script }.merge(params)
-    command = if params[:firewood].app.use_script == 1
+    command = if params[:app].use_script == 1
                 cmd_find(script.command)
               else
                 :disabled_cmd

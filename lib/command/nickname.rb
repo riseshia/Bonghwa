@@ -6,7 +6,7 @@ module Command
 
     def run(params)
       script = params[:script]
-      user = params[:user]
+      user = User.find(params[:user].id)
       new_nickname = script.args.first
       old_user_name = user.name
 

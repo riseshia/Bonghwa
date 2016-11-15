@@ -27,7 +27,7 @@ module RedisWrapper
     instance.zadd("#{servername}:#{key}", order, value)
   end
 
-  def zerm(key, value)
+  def zrem(key, value)
     instance.zrem("#{servername}:#{key}", value)
   end
 

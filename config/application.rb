@@ -21,6 +21,9 @@ module Bonghwa
 
     config.autoload_paths << Rails.root.join("lib")
 
+    # add '/lib' to Eager Load path
+    config.eager_load_paths << Rails.root.join("lib")
+
     config.time_zone = "Seoul"
   end
 end

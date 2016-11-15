@@ -15,7 +15,7 @@
     <div id="div-widget">
       <!-- twitter widget start -->
       <% if @app.show_widget == 1 %>
-      <%= render partial: "widget", locals: { app: app } %>
+      <%= render partial: "widget", locals: { app: @app } %>
       <!-- twitter widget end -->
       <% end %>
     </div>

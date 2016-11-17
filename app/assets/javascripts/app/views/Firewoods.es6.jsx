@@ -11,7 +11,7 @@ class Firewoods extends React.Component {
 
     app.FirewoodsFn.flushStack()
     $title.html(this.props.originTitle)
-    app.render()
+    this.forceUpdate()
   }
 
   _updateStackNotice() {

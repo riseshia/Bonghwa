@@ -118,7 +118,7 @@ class FirewoodForm extends React.Component {
         data: {
           "firewood[contents]": this.state.value,
           "firewood[prev_mt]": this.state.prevMt,
-          "adult_check": this.state.adultCheck && "1"
+          "adult_check": this.state.adultCheck
         }
       }
       const options = _.extend({}, app.channel.ajaxBasicOptions, params)

@@ -102,7 +102,7 @@ class Firewood < ApplicationRecord
     raise "내용이 없습니다." if contents.blank? && attached_file.blank?
 
     if attached_file.present?
-      attach = Attach.create!(img: attached_file, adult_flg: adult_check.present?)
+      attach = Attach.create!(img: attached_file, adult_flg: adult_check == "true")
       self.attach_id = attach.id
     end
   end

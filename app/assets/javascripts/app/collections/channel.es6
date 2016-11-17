@@ -123,7 +123,7 @@
         ts: +(new Date())
       })
 
-      return $.get("/api/trace.json" + params, (json) => {
+      return $.get("/api/trace.json" + params, json => {
         if ( json.fws.length != 0 ) {
           _.each(json.fws, fw => ( fw.isVisible = true ))
           app.firewoods = app.firewoods.concat(json.fws)

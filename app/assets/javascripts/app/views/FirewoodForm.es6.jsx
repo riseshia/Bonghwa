@@ -5,6 +5,7 @@ class FirewoodForm extends React.Component {
     this.state = {
       maxCount: 150,
       value: "",
+      adultCheck: false,
       prevMt: 0
     }
 
@@ -14,6 +15,7 @@ class FirewoodForm extends React.Component {
     this._isFormEmpty = this._isFormEmpty.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleTextChange = this.handleTextChange.bind(this)
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     $("#new_firewood").submit(this.handleSubmit)
     $("span[rel=tooltip]").tooltip()
@@ -30,7 +32,6 @@ class FirewoodForm extends React.Component {
             <input
               id="contents"
               className="form-control"
-              name="firewood[contents]"
               placeholder="New..."
               autoComplete="off"
               onChange={this.handleTextChange}
@@ -48,13 +49,12 @@ class FirewoodForm extends React.Component {
               </span>
               <span className="fileinput-filename"></span>
               <a href="#" className="close fileinput-exists" data-dismiss="fileinput">{"×"}</a>
-              <input type="checkbox" name="adult_check" id="adult_check" value="1" />
+              <input type="checkbox" checked={this.state.adultCheck} id="adult_check" onChange={this.handleCheckboxChange}/>
               <span className="text-warning">{" 후방주의"}</span>
             </div>
             <div className="pull-right" id="div-submit">
               <span id="remaining_count">{remainingCount}</span>
               <input type="submit" name="commit" value={commitBtnText} id="commit" className="btn btn-primary" data-loading-text="Wait...." />
-              <input type="hidden" value={this.state.prevMt} name="firewood[prev_mt]" id="firewood_prev_mt" />
             </div>
           </div>
         </div>
@@ -67,7 +67,6 @@ class FirewoodForm extends React.Component {
     const $commitBtn = $("#commit")
 
     $form.clearForm()
-    this.setState({html: ""})
     $("#img").val("")
     $(".fileinput-preview").html("")
     $(".fileinput")
@@ -75,7 +74,7 @@ class FirewoodForm extends React.Component {
       .addClass("fileinput-new")
     $(".fileinput-filename").html("")
     $commitBtn.button("reset")
-    this.setState({value: "", prevMt: 0})
+    this.setState({value: "", prevMt: 0, adultCheck: false})
   }
 
   _appendMt(names, target) {
@@ -115,10 +114,17 @@ class FirewoodForm extends React.Component {
     if (this._isFormEmpty()) {
       app.channel.pulling(true)
     } else {
-      $form.ajaxSubmit(app.channel.ajaxBasicOptions)
+      const params = {
+        data: {
+          "firewood[contents]": this.state.value,
+          "firewood[prev_mt]": this.state.prevMt,
+          "adult_check": this.state.adultCheck && "1"
+        }
+      }
+      const options = _.extend({}, app.channel.ajaxBasicOptions, params)
+      $form.ajaxSubmit(options)
     }
     $title.html(this.props.originTitle)
-    $stack.html("").slideUp(200)
 
     return false
   }
@@ -126,6 +132,12 @@ class FirewoodForm extends React.Component {
   handleTextChange(event) {
     const slicedValue = event.target.value.slice(0, this.state.maxCount)
     this.setState({value: slicedValue})
+    event.stopPropagation()
+  }
+
+  handleCheckboxChange(event) {
+    const value = event.target.checked
+    this.setState({adultCheck: value})
     event.stopPropagation()
   }
 

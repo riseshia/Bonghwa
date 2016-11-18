@@ -13,6 +13,7 @@
 
       for (let i = 0; i < limit && fw_id != 0; i++) {
         const tmp = this.findById(fw_id)
+        if (!tmp) { break }
         fws.push(tmp)
         fw_id = tmp.prev_mt
       }

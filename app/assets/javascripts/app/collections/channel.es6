@@ -40,8 +40,11 @@
         ts: +(new Date())
       })
       return $.get(`/api/now${params}`).then(json => {
-        _.each(json.fws, fw => ( fw.isVisible = true ))
-        app.firewoods = json.fws
+        const fws = json.fws.map(fw => {
+          fw.isVisible = true
+          return fw
+        })
+        app.FirewoodsFn.prependSome(fws)
         app.users = json.users
         
         app.render()
@@ -67,16 +70,19 @@
             window._flashForm()
           }
 
-          _.each(json.fws, fw => ( fw.isVisible = shouldVisible ))
+          const fws = json.fws.map(fw => {
+            fw.isVisible = shouldVisible
+            return fw
+          })
 
           if ( localStorage.getItem("auto_image_open") == "1" ) {
-            json.fws.forEach(fw => {
+            fws.forEach(fw => {
               if (fw.img_link != "0") {
                 fw.defaultIsOpened = true
               }
             })
           }
-          app.firewoods = json.fws.concat(app.firewoods)
+          app.FirewoodsFn.prependSome(fws)
         }
 
         if (json.users) {
@@ -125,8 +131,11 @@
 
       return $.get("/api/trace.json" + params, json => {
         if ( json.fws.length != 0 ) {
-          _.each(json.fws, fw => ( fw.isVisible = true ))
-          app.firewoods = app.firewoods.concat(json.fws)
+          const fws = json.fws.map(fw => {
+            fw.isVisible = true
+            return fw
+          })
+          app.FirewoodsFn.appendSome(fws)
         }
         self.logGetLock = false
         app.render()

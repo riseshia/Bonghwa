@@ -2,7 +2,7 @@ class Firewood extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      subfws: [],
+      subfws: props.parents,
       isOpened: this.props.defaultIsOpened
     }
     this.handleDelete = this.handleDelete.bind(this)
@@ -62,12 +62,8 @@ class Firewood extends React.Component {
     }
   }
 
-  unescaped_contents() {
-    return this.props.contents.replace("&lt;", "<").replace("&gt;", ">")
-  }
-
   render() {
-    const contentsNodes = this.unescaped_contents().split(" ").
+    const contentsNodes = this.props.contents.split(" ").
     map(token => {
       if (_.isString(token) && this.isMtTarget(token)) {
         return (
@@ -82,6 +78,11 @@ class Firewood extends React.Component {
     let classes = "row firewood mt-to"
     if (this.props.is_dm > 0) {
       classes += " is_dm"
+    }
+
+    const style = {}
+    if (!this.state.isOpened) {
+      style.display = "none"
     }
 
     return (
@@ -101,7 +102,7 @@ class Firewood extends React.Component {
               </span>
               { this.deletable() }
             </div>
-            <div className="fw-sub">
+            <div className="fw-sub" style={style}>
               { this.renderSubView() }
             </div>
           </div>
@@ -114,14 +115,12 @@ class Firewood extends React.Component {
   }
 
   renderSubView() {
-    if (this.state.isOpened) {
-      return (
-        <SubFirewood
-          firewoods={ this.state.subfws }
-          imgLink={ this.props.img_link }
-        />
-      )
-    }
+    return (
+      <SubFirewood
+        firewoods={ this.state.subfws }
+        imgLink={ this.props.img_link }
+      />
+    )
   }
 
   handleDelete (event) {
@@ -148,12 +147,8 @@ class Firewood extends React.Component {
     event.stopPropagation()
 
     const userName = $.cookie("user_name") 
-    const $this = $(event.target).parent().parent().parent().parent()
-    const targets = $this.find(".mt-target")
-    const arr = targets
-                  .toArray()
-                  .map(target => $(target).text())
-                  .filter(target => !target.endsWith(userName))
+    const targets = this.props.mentioned
+    const arr = targets.filter(target => !target.endsWith(userName))
     arr.unshift((this.props.is_dm == 0 ? "@":"!") + this.props.name)
 
     window._appendMt(_.uniq(arr), this.props.id)
@@ -185,8 +180,8 @@ class Firewood extends React.Component {
   }
 
   unFold() {
-    const fws = app.FirewoodsFn.getPreviousFws(this.props.prev_mt, 5)
     const $el = $(`div[data-id=${this.props.id}]`)
+    const fws = this.state.subfws
 
     if ( this.props.prev_mt !== 0 && fws.length === 0 ) {
       $("<div class='loading' style='display:none;'>로딩중입니다.</div>")
@@ -200,10 +195,8 @@ class Firewood extends React.Component {
         }, 0)
       })
     } else {
-      this.setState({subfws: fws, isOpened: true})
-      setTimeout(() => {
-        $el.find(".fw-sub").slideDown(200)
-      }, 0)
+      this.setState({isOpened: true})
+      $el.find(".fw-sub").slideDown(200)
     }
   }
 }

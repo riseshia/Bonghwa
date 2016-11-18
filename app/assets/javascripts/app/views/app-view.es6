@@ -16,7 +16,7 @@
 
       const $info = this.$("#info")
       if ($info.length) {
-        $info.html($info.html().autoLink({ target: "_blank", rel: "nofollow" }))
+        $info.html($info.html())
         $info.find(".link_url").click(e => { e.stopPropagation() })
       }
 

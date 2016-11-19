@@ -91,16 +91,12 @@ class FirewoodForm extends React.Component {
   }
 
   _isbwTextEmpty() {
-    return this.state.value.length === 0
+    return this.state.value.search(/^\s*$/) === 0
   }
 
   _isFormEmpty() {
-    if ( $("div.fileinput-exists").length === 0 ) {
-      const contents = $("#contents")
-      const str = contents.val()
-      if ( this._isbwTextEmpty() || str.search(/^\s+$/) != -1 ) {
-        return true
-      }
+    if ($("div.fileinput-exists").length === 0 && this._isbwTextEmpty()) {
+      return true
     }
     return false
   }
@@ -108,7 +104,6 @@ class FirewoodForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     const $title = $("title")
-    const $stack = $("#timeline_stack")
     const $form = $("#new_firewood")
 
     if (this._isFormEmpty()) {
@@ -131,7 +126,11 @@ class FirewoodForm extends React.Component {
 
   handleTextChange(event) {
     const slicedValue = event.target.value.slice(0, this.state.maxCount)
-    this.setState({value: slicedValue})
+    const newState = {value: slicedValue}
+    if (slicedValue.length === 0) {
+      newState.prevMt = 0
+    }
+    this.setState(newState)
     event.stopPropagation()
   }
 

@@ -46,6 +46,7 @@
         })
         app.FirewoodsFn.prependSome(fws)
         app.users = json.users
+        app.infos = json.infos
         
         app.render()
         app.channel.setPullingTimer()

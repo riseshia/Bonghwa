@@ -3,6 +3,8 @@ window.app = {
   pageType: 1,
   users: [],
   firewoods: [],
+  infos: [],
+  infosVisible: true,
 
   foldImageAll: () => {
     app.defaultIsOpened = false
@@ -31,6 +33,12 @@ window.app = {
   },
 
   render: () => {
+    ReactDOM.render(
+      React.createElement(Informations, {
+        infos: app.infos, infosVisible: app.infosVisible
+      }),
+      document.getElementById("infos-wrapper")
+    )
     ReactDOM.render(
       React.createElement(Firewoods, {
         firewoods: app.firewoods,

@@ -14,12 +14,6 @@
         app.defaultIsOpened = false
       }
 
-      const $info = this.$("#info")
-      if ($info.length) {
-        $info.html($info.html())
-        $info.find(".link_url").click(e => { e.stopPropagation() })
-      }
-
       $(document).keycut()
       app.render()
     },
@@ -28,8 +22,7 @@
       "click #img_auto_open_op": "toggleImgAutoOpen",
       "click #live_stream_op": "toggleLiveStream",
       "click #focus_hotkey": "focusToInput",
-      "click #refresh_hotkey": "refreshTL",
-      "click #info": "removeInfo"
+      "click #refresh_hotkey": "refreshTL"
     },
 
     toggleImgAutoOpen: function (e) {
@@ -107,13 +100,6 @@
         .fadeOut(1000)
 
       return this
-    },
-
-    removeInfo: function () {
-      const $info = this.$("#info")
-      $info.slideUp( () => {
-        $info.remove()
-      })
     }
   })
 })(jQuery)

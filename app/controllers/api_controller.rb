@@ -70,19 +70,21 @@ class ApiController < ApplicationController
   # Get recent 50 firewood from now
   def now
     type = params[:type]
-    firewoods = case type
-                when "1" # Now
-                  Firewood.trace(@user.id, 50)
-                when "2" # Mt
-                  Firewood.mention(@user.id, @user.name, 50)
-                when "3" # Me
-                  Firewood.me(@user.id, 50)
-                end.map(&:to_hash_for_api)
+    firewoods = \
+      case type
+      when "1" # Now
+        Firewood.trace(@user.id, 50)
+      when "2" # Mt
+        Firewood.mention(@user.id, @user.name, 50)
+      when "3" # Me
+        Firewood.me(@user.id, 50)
+      end.map(&:to_hash_for_api)
 
     update_login_info
+    infos = Info.all.map(&:to_hash_for_api)
     users = recent_users
 
-    render_fws_and_users(firewoods, users)
+    render_fws_and_users(firewoods, users, infos)
   end
 
   # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
@@ -159,7 +161,12 @@ class ApiController < ApplicationController
     render json: JSON.dump("fws" => firewoods)
   end
 
-  def render_fws_and_users(firewoods, users)
-    render json: JSON.dump("fws" => firewoods, "users" => users)
+  def render_fws_and_users(firewoods, users, infos = nil)
+    data = {
+      "fws" => firewoods,
+      "users" => users,
+      "infos" => infos
+    }.compact
+    render json: JSON.dump(data)
   end
 end

@@ -5,7 +5,7 @@ class ViewController < ApplicationController
 
   def timeline
     new_fw = Firewood.new
-    infos = Info.all_with_cache
+    infos = Info.all
     render :timeline, locals: { new_fw: new_fw, infos: infos }
   end
 

@@ -3,6 +3,10 @@
   const app = window.app
   
   const FirewoodsFn = {
+    reset(fws) {
+      app.firewoods = fws.map(fw => this.parse(fw))
+    },
+
     prependSome(fws) {
       for(let i = fws.length - 1; i >= 0; i--) {
         const fw = this.parse(fws[i])

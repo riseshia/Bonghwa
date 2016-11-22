@@ -107,7 +107,7 @@ class FirewoodForm extends React.Component {
     const $form = $("#new_firewood")
 
     if (this._isFormEmpty()) {
-      app.channel.pulling(true)
+      app.channel.pulling(app.pageType, true)
     } else {
       const params = {
         data: {

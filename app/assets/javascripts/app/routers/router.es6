@@ -9,21 +9,21 @@
     },
 
     typeNow: function () {
+      if (app.pageType != 1) { app.channel.load(1) }
       app.pageType = 1
       this._toggleNavbarMenu(".now_nav")
-      app.channel.load()
     },
 
     typeMt: function () {
+      if (app.pageType != 2) { app.channel.load(2) }
       app.pageType = 2
       this._toggleNavbarMenu(".mt_nav")
-      app.channel.load()
     },
 
     typeMe: function () {
+      if (app.pageType != 3) { app.channel.load(3) }
       app.pageType = 3
       this._toggleNavbarMenu(".me_nav")
-      app.channel.load()
     },
 
     _toggleNavbarMenu: function (toggleSelector) {

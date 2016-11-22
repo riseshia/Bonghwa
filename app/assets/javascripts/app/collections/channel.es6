@@ -17,7 +17,9 @@
 
     setPullingTimer: function() {
       const speed = (this.isLive ? 1000 : 10000)
-      this.pullingTimer = setTimeout(this.pulling.bind(this), speed)
+      this.pullingTimer = setTimeout(() => {
+        this.pulling(app.pageType)
+      }, speed)
       return this
     },
 
@@ -33,10 +35,10 @@
       return this.isLive
     },
 
-    load: function () {
+    load: function (pageType) {
       this.stopPullingTimer()
       const params = app.channel.buildParams({
-        type: app.pageType,
+        type: pageType,
         ts: +(new Date())
       })
       return $.get(`/api/now${params}`).then(json => {
@@ -44,7 +46,7 @@
           fw.isVisible = true
           return fw
         })
-        app.FirewoodsFn.prependSome(fws)
+        app.FirewoodsFn.reset(fws)
         app.users = json.users
         app.infos = json.infos
         
@@ -53,7 +55,7 @@
       })
     },
 
-    pulling: function (isUserTriggered = false) {
+    pulling: function (pageType, isUserTriggered = false) {
       const shouldVisible = this.isLive || isUserTriggered
       this.stopPullingTimer()
 
@@ -61,7 +63,7 @@
       const recentId = (firstFw ? firstFw.id : 0)
       const params = app.channel.buildParams({
         after: recentId,
-        type: app.pageType,
+        type: pageType,
         ts: +(new Date())
       })
 
@@ -84,6 +86,9 @@
             })
           }
           app.FirewoodsFn.prependSome(fws)
+          if (shouldVisible) {
+            app.FirewoodsFn.flushStack()
+          }
         }
 
         if (json.users) {
@@ -91,6 +96,31 @@
         }
         app.render()
         this.setPullingTimer()
+      })
+    },
+
+    getLogs: function (pageType) {
+      const self = app.channel
+      const firewoods = app.firewoods
+      const lastIdx = firewoods.length - 1
+      self.logGetLock = true
+      const params = app.channel.buildParams({
+        before: firewoods[lastIdx].id,
+        count: self.sizeWhenBottomLoading,
+        type: pageType,
+        ts: +(new Date())
+      })
+
+      return $.get("/api/trace.json" + params, json => {
+        if ( json.fws.length != 0 ) {
+          const fws = json.fws.map(fw => {
+            fw.isVisible = true
+            return fw
+          })
+          app.FirewoodsFn.appendSome(fws)
+        }
+        self.logGetLock = false
+        app.render()
       })
     },
 
@@ -109,38 +139,13 @@
       success: function () {
         const self = app.channel
         self.fwPostLock = false
-        self.pulling(true)
+        self.pulling(app.pageType, true)
         window.ajaxSuccess()
 
         if (document.activeElement.getAttribute("id") == "contents") {
           $(document.activeElement).blur().focus()
         }
       }
-    },
-
-    getLogs: function () {
-      const self = app.channel
-      const firewoods = app.firewoods
-      const lastIdx = firewoods.length - 1
-      self.logGetLock = true
-      const params = app.channel.buildParams({
-        before: firewoods[lastIdx].id,
-        count: self.sizeWhenBottomLoading,
-        type: app.pageType,
-        ts: +(new Date())
-      })
-
-      return $.get("/api/trace.json" + params, json => {
-        if ( json.fws.length != 0 ) {
-          const fws = json.fws.map(fw => {
-            fw.isVisible = true
-            return fw
-          })
-          app.FirewoodsFn.appendSome(fws)
-        }
-        self.logGetLock = false
-        app.render()
-      })
     },
 
     ajaxError: function () {

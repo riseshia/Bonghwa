@@ -63,19 +63,16 @@ window.app = {
 }
 
 const isNearBottom = () => {
-  if (!app.firewoods) { return }
   const fws = app.firewoods
-  const lastIdx = fws.length - 1
-  const $bottomTarget = $(`.firewood[data-id=${fws[lastIdx].id}]`)
+  if (fws.length < 50) { return false }
+  if (app.channel.logGetLock) { return false }
 
-  if ($bottomTarget.length === 0 ||
-      !$bottomTarget.isOnScreen() ||
-      app.channel.logGetLock ||
-      fws.length < 49 ||
-      fws[lastIdx].id < 10 ) {
-    return false
-  }
-  app.channel.getLogs()
+  const lastIdx = fws.length - 1
+  if (fws[lastIdx].id < 10) { return false }
+  const $bottomTarget = $(`.firewood[data-id=${fws[lastIdx].id}]`)
+  if ($bottomTarget.length === 0) { return false }
+  if (!$bottomTarget.isOnScreen()) { return false }
+  app.channel.getLogs(app.pageType)
 }
 
 $(() => {
@@ -85,7 +82,7 @@ $(() => {
   new app.AppView({}, {})
 
   app.channel = new app.Channel()
-  app.channel.load()
+  app.channel.load(app.pageType)
   app.channel.setPullingTimer()
   setInterval(isNearBottom, 1000)
   Backbone.history.start()

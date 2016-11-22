@@ -70,7 +70,7 @@
 
     refreshTL: function (e) {
       e.preventDefault()
-      app.channel.load()
+      app.channel.load(app.pageType)
       return this
     },
 

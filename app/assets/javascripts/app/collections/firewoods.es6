@@ -49,9 +49,7 @@
       let fw_id = prev_id
       const fws = []
       
-      if (!this.findById(fw_id)) {
-        return []
-      }
+      if (!fw_id || !this.findById(fw_id)) { return [] }
 
       for (let i = 0; i < limit && fw_id != 0; i++) {
         const tmp = this.findById(fw_id)

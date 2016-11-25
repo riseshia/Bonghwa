@@ -3,7 +3,8 @@ class Firewood extends React.Component {
     super(props)
     this.state = {
       subfws: props.parents,
-      isOpened: this.props.defaultIsOpened
+      isOpened: this.props.defaultIsOpened,
+      isLoading: false
     }
     this.handleDelete = this.handleDelete.bind(this)
     this.handleClickUsername = this.handleClickUsername.bind(this)
@@ -20,9 +21,21 @@ class Firewood extends React.Component {
 
   deletable() {
     if (Number($.cookie("user_id")) == this.props.user_id) {
-      return (<a href="#"
-                 onClick={this.handleDelete}
-                 className="delete">[x]</a>)
+      return (
+        <a href="#"
+           onClick={this.handleDelete}
+           className="delete">
+          {"[x]"}
+        </a>
+      )
+    }
+  }
+
+  isLoading() {
+    if (this.state.isLoading) {
+      return <span className="blinking">{" 로딩중입니다."}</span>
+    } else {
+      return null
     }
   }
 
@@ -101,6 +114,7 @@ class Firewood extends React.Component {
                 { this.imageInfoTag() }
               </span>
               { this.deletable() }
+              { this.isLoading() }
             </div>
             <div className="fw-sub" style={style}>
               { this.renderSubView() }
@@ -180,19 +194,16 @@ class Firewood extends React.Component {
   }
 
   unFold() {
+    if (this.state.isLoading) { return }
     const $el = $(`div[data-id=${this.props.id}]`)
     const fws = this.state.subfws
 
-    if ( this.props.prev_mt !== 0 && fws.length === 0 ) {
-      $("<div class='loading' style='display:none;'>로딩중입니다.</div>")
-        .insertAfter($el.find(".fw-main")).slideDown(200)
+    if (this.props.prev_mt !== 0 && fws.length === 0) {
+      this.setState({isLoading: true})
 
       this.ajaxMtLoad().then(json => {
-        this.setState({subfws: json.fws, isOpened: true})
-        $el.find(".loading").remove()
-        setTimeout(() => {
-          $el.find(".fw-sub").slideDown(200)
-        }, 0)
+        this.setState({subfws: json.fws, isOpened: true, isLoading: false})
+        setTimeout(() => $el.find(".fw-sub").slideDown(200), 0)
       })
     } else {
       this.setState({isOpened: true})

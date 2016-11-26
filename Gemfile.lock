@@ -91,7 +91,7 @@ GEM
       sexp_processor
     codeclimate-test-reporter (1.0.3)
       simplecov
-    coffee-script-source (1.10.0)
+    coffee-script-source (1.11.1)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.1)
     coveralls (0.8.15)

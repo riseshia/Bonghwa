@@ -18,36 +18,41 @@ end
 
 class FirewoodTest < ActiveSupport::TestCase
   def test_scope_mention
-    expected_sql = \
-      "SELECT  \"firewoods\".* FROM \"firewoods\"" \
-      " WHERE (is_dm = 1 OR contents like '%@user%') ORDER BY id DESC LIMIT 5"
-    assert_equal expected_sql, Firewood.mention(1, "user", 5).to_sql
+    create_firewood(is_dm: 1)
+    create_firewood(contents: "@user test")
+
+    assert_equal 2, Firewood.mention(1, "user", 5).count
   end
 
   def test_scope_me
-    expected_sql = \
-      "SELECT  \"firewoods\".* FROM \"firewoods\"" \
-      " WHERE \"firewoods\".\"user_id\" = 1 ORDER BY id DESC LIMIT 5"
-    assert_equal expected_sql, Firewood.me(1, 5).to_sql
+    create_firewood(user_id: 1)
+    create_firewood(user_id: 1, contents: "@user test")
+
+    assert_equal 2, Firewood.me(1, 5).count
+    assert_equal 1, Firewood.me(1, 1).count
   end
 
   def test_trace
-    expected_sql = \
-      "SELECT  \"firewoods\".* FROM \"firewoods\"" \
-      " WHERE (is_dm = 0 OR is_dm = 1 OR user_id = 1) ORDER BY id DESC LIMIT 5"
-    assert_equal expected_sql, Firewood.trace(1, 5).to_sql
+    create_firewood(user_id: 10)
+    create_firewood(user_id: 10)
+    create_firewood(is_dm: 2)
+
+    assert_equal 2, Firewood.trace(10, 5).count
+    assert_equal 1, Firewood.trace(10, 1).count
   end
 
   def test_scope_after
-    expected_sql = \
-      "SELECT \"firewoods\".* FROM \"firewoods\" WHERE (id > 5)"
-    assert_equal expected_sql, Firewood.after(5).to_sql
+    fw = create_firewood
+
+    assert_equal 0, Firewood.after(fw.id).count
+    assert_equal 1, Firewood.after(fw.id - 1).count
   end
 
   def test_scope_before
-    expected_sql = \
-      "SELECT \"firewoods\".* FROM \"firewoods\" WHERE (id < 5)"
-    assert_equal expected_sql, Firewood.before(5).to_sql
+    fw = create_firewood
+
+    assert_equal 0, Firewood.before(fw.id).count
+    assert_equal 1, Firewood.before(fw.id + 1).count
   end
 
   def test_cmd_returns_true

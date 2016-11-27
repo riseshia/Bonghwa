@@ -22,14 +22,14 @@ gem "figaro"
 gem "devise"
 gem "paperclip", "~> 4.0"
 
+gem "capistrano",             require: false
+gem "capistrano-rbenv",       require: false
+gem "capistrano-rails",       require: false
+gem "capistrano-bundler",     require: false
+gem "capistrano-secrets-yml", "~> 1.0.0", require: false
+gem "capistrano3-puma",       require: false
+
 group :development do
-  gem "capistrano",             require: false
-  gem "capistrano-rbenv",       require: false
-  gem "capistrano-rails",       require: false
-  gem "capistrano-bundler",     require: false
-  gem "capistrano-secrets-yml", "~> 1.0.0"
-  gem "capistrano3-puma",       require: false
-  
   gem "web-console", "~> 2.0"
   gem "byebug"
 
@@ -39,13 +39,12 @@ group :development do
 end
 
 group :test do
+  gem "byebug"
   gem "coveralls", require: false
-  gem "rspec-rails"
-  gem "rspec-collection_matchers"
+  gem "minitest-rails"
   gem "factory_girl_rails", "~> 4.0"
   gem "capybara"
   gem "poltergeist"
-  gem "shoulda-matchers", "~> 3.0"
   gem "simplecov"
   gem "codeclimate-test-reporter", "~> 1.0.0"
   gem "database_rewinder"

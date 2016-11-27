@@ -39,13 +39,12 @@ group :development do
 end
 
 group :test do
-  gem "byebug"
-  gem "coveralls", require: false
-  gem "minitest-rails"
-  gem "factory_girl_rails", "~> 4.0"
   gem "capybara"
+  gem "codeclimate-test-reporter", "~> 1.0.0"
+  gem "coveralls", require: false
+  gem "database_rewinder"
+  gem "factory_girl_rails", "~> 4.0"
+  gem "minitest-rails"
   gem "poltergeist"
   gem "simplecov"
-  gem "codeclimate-test-reporter", "~> 1.0.0"
-  gem "database_rewinder"
 end

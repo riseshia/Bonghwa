@@ -69,7 +69,7 @@ class SubFirewood extends React.Component {
       <li key={firewood.id} className="list-group-item div-mention">
         <div className="mt-trace">
           <small>
-            <a href="#">{ firewood.name }</a> :
+            <a href="#">{ firewood.name }</a>{ ": " }
             <span className="fw-contents">
               { contentsNodes }
               { this.imageInfoTag(firewood) }

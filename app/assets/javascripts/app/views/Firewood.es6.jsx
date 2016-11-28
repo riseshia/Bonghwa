@@ -109,7 +109,7 @@ class Firewood extends React.Component {
                  href="#"
                  onClick={this.handleClickUsername}>
                 { this.props.name }
-              </a> : <span className="fw-contents">
+              </a>{ " : " }<span className="fw-contents">
                 { contentsNodes }
                 { this.imageInfoTag() }
               </span>

@@ -55,6 +55,31 @@ class FirewoodTest < ActiveSupport::TestCase
     assert_equal 1, Firewood.before(fw.id + 1).count
   end
 
+  def test_system_dm_returns_true
+    fw = build_firewood(is_dm: 1, user_id: 0)
+    assert fw.system_dm?
+  end
+
+  def test_system_dm_returns_false_with_normal_fw
+    fw = build_firewood(user_id: 0)
+    refute fw.system_dm?
+  end
+
+  def test_system_dm_returns_false_with_dm
+    fw = build_firewood(is_dm: 1, user_id: 1)
+    refute fw.system_dm?
+  end
+
+  def test_find_mt_returns_correct_normal_fw
+    target = create_firewood
+    assert_equal target, Firewood.find_mt(target.id, target.user_id).first
+  end
+
+  def test_find_mt_returns_correct_dm
+    target = create_firewood(is_dm: 3, user_id: 3)
+    assert_equal target, Firewood.find_mt(target.id, target.user_id).first
+  end
+
   def test_cmd_returns_true
     fw = build_firewood(contents: "/some_command params")
     assert fw.cmd?
@@ -78,21 +103,6 @@ class FirewoodTest < ActiveSupport::TestCase
   def test_dm_returns_false
     fw = build_firewood(contents: "normal text")
     refute fw.dm?
-  end
-
-  def test_system_dm_returns_true
-    fw = build_firewood(is_dm: 1, user_id: 0)
-    assert fw.system_dm?
-  end
-
-  def test_system_dm_returns_false_with_normal_fw
-    fw = build_firewood(user_id: 0)
-    refute fw.system_dm?
-  end
-
-  def test_system_dm_returns_false_with_dm
-    fw = build_firewood(is_dm: 1, user_id: 1)
-    refute fw.system_dm?
   end
 
   def test_normal_returns_true

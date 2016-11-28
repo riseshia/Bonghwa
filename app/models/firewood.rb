@@ -26,6 +26,16 @@ class Firewood < ApplicationRecord
       .order("id DESC").limit(limit)
   }
 
+  # Class Method
+  def self.system_dm(params)
+    create(
+      user_id: 0,
+      user_name: "System",
+      contents: params[:message],
+      is_dm: params[:user_id]
+    )
+  end
+
   def self.find_mt(prev_mt, user_id)
     where("(id = ?) AND (is_dm = 0 OR is_dm = ?)", prev_mt, user_id)
       .order("id DESC").limit(1)
@@ -73,16 +83,6 @@ class Firewood < ApplicationRecord
 
   def editable?(user)
     user_id == user.id
-  end
-
-  # Class Method
-  def self.system_dm(params)
-    create(
-      user_id: 0,
-      user_name: "System",
-      contents: params[:message],
-      is_dm: params[:user_id]
-    )
   end
 
   private

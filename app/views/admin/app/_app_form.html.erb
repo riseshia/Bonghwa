@@ -1,4 +1,4 @@
-<%= form_for([:admin, app], method: :put, html: {class: "form-horizontal", id: "app_edit_form"}) do |f| %>
+<%= form_for(admin_app_path, method: :put, html: {class: "form-horizontal", id: "app_edit_form"}) do |f| %>
   <% if app.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(app.errors.count, "error") %> prohibited this app from being saved:</h2>
@@ -10,6 +10,7 @@
       </ul>
     </div>
   <% end %>
+
 <legend>Server Setting</legend>
 <div class="control-group">
   <%= f.label :home_name, "App Name:", class: "control-label" %>

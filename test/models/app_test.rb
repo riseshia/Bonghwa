@@ -19,7 +19,7 @@ class AppTest < ActiveSupport::TestCase
   validate_presence_of(:app_name)
 
   def teardown
-    RedisWrapper.set("app-data", {})
+    RedisWrapper.del("app-data")
   end
 
   def test_first_with_cache_when_exist

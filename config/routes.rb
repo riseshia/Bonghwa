@@ -12,7 +12,6 @@ class DmConstraint
 end
 
 Rails.application.routes.draw do
-  resources :apps
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations"
@@ -31,7 +30,8 @@ Rails.application.routes.draw do
       put :lvup, on: :member
     end
 
-    resources :app, only: [:edit, :update]
+    get :app, to: "app#edit"
+    patch :app, to: "app#update"
   end
 
   controller :api do

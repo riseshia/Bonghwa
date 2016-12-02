@@ -35,7 +35,7 @@
     <li><%= link_to "Me", "/#me", class: "me_nav all_nav" %></li>
     <% if @user.admin? %>
     <li><a href="<%= admin_users_path %>" id="etc-dropdown-users">Users</a></li>
-    <li><a href="<%= edit_admin_app_path(@app) %>" id="etc-dropdown-admin">Admin</a></li>
+    <li><a href="<%= admin_app_path %>" id="etc-dropdown-admin">Admin</a></li>
     <li class="divider"></li>
     <% end %>
     <li><a href="<%= user_path(@user) %>" id="etc-dropdown-setting">Profile</a></li>
@@ -93,7 +93,7 @@
               <ul class="dropdown-menu" role="menu">
                 <% if @user.admin? %>
                 <li><a href="<%= admin_users_path %>" id="etc-dropdown-users">Users</a></li>
-                <li><a href="<%= edit_admin_app_path(@app) %>" id="etc-dropdown-admin">Admin</a></li>
+                <li><a href="<%= admin_app_path %>" id="etc-dropdown-admin">Admin</a></li>
                 <li class="divider"></li>
                 <% end %>
                 <li><a href="<%= user_path(@user) %>" id="etc-dropdown-setting">Profile</a></li>

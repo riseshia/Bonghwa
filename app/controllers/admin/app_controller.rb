@@ -11,7 +11,7 @@ module Admin
     def update
       app = App.first
       if app.update_attributes(app_params)
-        redirect_to_edit(app, "app setting was successfully updated.")
+        redirect_to_app("app setting was successfully updated.")
       else
         render_edit(app)
       end
@@ -28,8 +28,8 @@ module Admin
       render :edit, locals: { app: app }
     end
 
-    def redirect_to_edit(app, message)
-      redirect_to edit_admin_app_path(app), notice: message
+    def redirect_to_app(message)
+      redirect_to admin_app_path, notice: message
     end
   end
 end

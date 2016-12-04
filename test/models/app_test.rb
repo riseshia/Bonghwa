@@ -1,20 +1,6 @@
 # frozen_string_literal: true
 require "test_helper"
 
-def build_app(params = {})
-  default_params = {
-    home_name: "Bonghwa",
-    home_link: "/",
-    app_name: "App",
-    use_script: 1
-  }
-  App.new(default_params.merge(params))
-end
-
-def create_app(params = {})
-  build_app(params).save
-end
-
 class AppTest < ActiveSupport::TestCase
   validate_presence_of(:app_name)
 

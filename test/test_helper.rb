@@ -18,8 +18,11 @@ Dir[Rails.root.join("test/supports/**/*.rb")].each { |f| require f }
 
 module ActiveSupport
   class TestCase
+    self.use_transactional_tests = false
+
     def setup
       DatabaseRewinder.clean_all
+      RedisWrapper.instance = MockRedis.new
     end
 
     def teardown

@@ -47,4 +47,5 @@ group :test do
   gem "minitest-rails"
   gem "poltergeist"
   gem "simplecov"
+  gem "mock_redis"
 end

@@ -1,20 +1,6 @@
 # frozen_string_literal: true
 require "test_helper"
 
-def build_user(params = {})
-  default_params = {
-    login_id: "login_id",
-    name: "name",
-    password: "password",
-    level: 0
-  }
-  User.new(default_params.merge(params))
-end
-
-def create_user(params = {})
-  build_user(params).tap(&:save)
-end
-
 class UserTest < ActiveSupport::TestCase
   def redis
     RedisWrapper

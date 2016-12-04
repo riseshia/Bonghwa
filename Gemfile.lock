@@ -142,6 +142,7 @@ GEM
     minitest-rails (3.0.0)
       minitest (~> 5.8)
       railties (~> 5.0)
+    mock_redis (0.17.1)
     mysql2 (0.4.5)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -310,6 +311,7 @@ DEPENDENCIES
   foreman
   jquery-rails
   minitest-rails
+  mock_redis
   mysql2 (~> 0.4)
   paperclip (~> 4.0)
   poltergeist

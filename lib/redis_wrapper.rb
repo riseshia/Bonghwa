@@ -19,6 +19,10 @@ module RedisWrapper
     )
   end
 
+  def instance=(ins)
+    @instance = ins
+  end
+
   def servername
     @servername
   end

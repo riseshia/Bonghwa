@@ -144,7 +144,7 @@ class FirewoodTest < ActiveSupport::TestCase
       "name" => fw.user_name, "contents" => fw.contents,
       "img_id" => fw.attach_id, "img_link" => fw.img_link,
       "img_adult_flg" => fw.attach&.adult_flg,
-      "created_at" => fw.created_at.strftime("%D %T")
+      "created_at" => fw.formatted_created_at
     }
 
     assert_equal expected_hash, fw.to_hash_for_api
@@ -176,6 +176,13 @@ class FirewoodTest < ActiveSupport::TestCase
     user = User.new(id: 20)
 
     refute fw.editable?(user)
+  end
+
+  def test_formatted_created_at
+    dt = Time.zone.now
+    fw = build_firewood(created_at: dt)
+
+    assert dt.strftime("%y/%m/%d %T"), fw.formatted_created_at
   end
 
   def test_system_dm_works

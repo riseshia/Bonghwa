@@ -73,7 +73,7 @@ class Firewood < ApplicationRecord
       "img_id" => attach_id,
       "img_adult_flg" => attach&.adult_flg,
       "img_link" => img_link,
-      "created_at" => created_at.strftime("%D %T")
+      "created_at" => formatted_created_at
     }
   end
 
@@ -83,6 +83,10 @@ class Firewood < ApplicationRecord
 
   def editable?(user)
     user_id == user.id
+  end
+
+  def formatted_created_at
+    created_at.strftime("%y/%m/%d %T")
   end
 
   private

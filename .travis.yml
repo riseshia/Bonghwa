@@ -1,12 +1,10 @@
 language: ruby
 rvm:
   - 2.3.1
+  - 2.4.0-preview3
 services:
   - mysql
-  - redis-server
-cache:
-  directories:
-    - vendor/bundle
+cache: bundler
 before_script:
   - mv config/database.yml config/database.yml.old
   - cp config/database.yml.ci config/database.yml

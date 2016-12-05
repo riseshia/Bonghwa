@@ -24,15 +24,16 @@ class User < ApplicationRecord
     self.level = 1
   end
 
+  def lvup!
+    return unless unconfirmed?
+    lvup
+    save!
+  end
+
   def update_nickname(new_name)
     old_user_name = name
     state = update(name: new_name)
-    if state
-      redis.zrem("active-users", old_user_name)
-      redis.zadd("active-users", Time.zone.now.to_i, new_name)
-      redis.set("session-#{id}", to_json)
-      redis.expire("session-#{id}", 86_400)
-    end
+    refresh_redis(old_user_name) if state
     state
   end
 
@@ -72,6 +73,14 @@ class User < ApplicationRecord
 
   def default_recent_login
     self.recent_login = Time.zone.now
+  end
+
+  def refresh_redis(old_user_name)
+    reload
+    redis.zrem("active-users", old_user_name)
+    redis.zadd("active-users", Time.zone.now.to_i, name)
+    redis.set("session-#{id}", to_json)
+    redis.expire("session-#{id}", 86_400)
   end
 
   def redis

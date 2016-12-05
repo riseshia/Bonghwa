@@ -16,17 +16,19 @@ require "minitest/pride"
 
 Dir[Rails.root.join("test/supports/**/*.rb")].each { |f| require f }
 
+RedisWrapper.instance = MockRedis.new
+
 module ActiveSupport
   class TestCase
     self.use_transactional_tests = false
 
     def setup
       DatabaseRewinder.clean_all
-      RedisWrapper.instance = MockRedis.new
     end
 
     def teardown
       DatabaseRewinder.clean
+      RedisWrapper.instance = MockRedis.new
     end
   end
 end

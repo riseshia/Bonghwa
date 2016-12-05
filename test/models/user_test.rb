@@ -41,6 +41,18 @@ class UserTest < ActiveSupport::TestCase
     refute user.unconfirmed?
   end
 
+  def test_lvup
+    user = build_user(level: 0)
+    user.lvup
+    assert_equal 1, user.level
+  end
+
+  def test_lvup_bang
+    user = create_user(level: 0)
+    user.lvup!
+    assert_equal 1, user.reload.level
+  end
+
   def test_update_nickname_returns_true
     user = create_user
     assert user.update_nickname("new_nick")
@@ -54,9 +66,6 @@ class UserTest < ActiveSupport::TestCase
 
   def test_update_nickname_update_redis_cache
     user = create_user
-    redis.zrem("active-users", "new_nick")
-    redis.set("session-#{user.id}", nil)
-
     user.update_nickname("new_nick")
 
     ts = Time.zone.now.to_i

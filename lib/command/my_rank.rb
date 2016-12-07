@@ -7,16 +7,19 @@ module Command
     def run(params)
       script = params[:script]
       user = params[:user]
-      return "이 명령어에는 추가적인 인수가 필요하지 않습니다. '/내등수'라고 명령해주세요." \
-        unless script.args.empty?
 
-      rs = Firewood.select("user_id, count(*) as count")
-                   .where("created_at > ?", Time.zone.now - 1.month)
-                   .group("user_id")
-                   .order("count DESC, user_id ASC")
+      if script.args.empty?
+        rs = Firewood.select("user_id, count(*) as count")
+                     .where("created_at > ?", Time.zone.now - 1.month)
+                     .group("user_id")
+                     .order("count DESC, user_id ASC")
 
-      idx = rs.map(&:user_id).index(user.id)
-      "#{user.name}님이 던지신 장작은 #{rs[idx].count}개로, 현재 #{idx + 1}등 입니다."
+        idx = rs.map(&:user_id).index(user.id) || 0
+        "#{user.name}님이 던지신 장작은 #{rs[idx]&.count}개로," \
+        " 현재 #{idx + 1}등 입니다."
+      else
+        "이 명령어는 추가 인수를 받지 않습니다. '/내등수'라고 명령해주세요."
+      end
     end
   end
 end

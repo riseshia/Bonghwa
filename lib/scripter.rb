@@ -12,21 +12,19 @@ module Scripter
     @comments[command] = target_module
   end
 
-  def execute(params)
-    script = Script.new(params[:firewood])
-    new_params = { script: script }.merge(params)
-    command = if params[:app].use_script == 1
-                cmd_find(script.command)
-              else
-                :disabled_cmd
-              end
+  def execute(firewood:, app:, user:)
+    script = Script.new(firewood)
+    new_params = { script: script, firewood: firewood, app: app, user: user }
 
+    command = cmd_find(script.command, app)
     send_feedback(
       command.send(:run, new_params)
     )
   end
 
-  def cmd_find(input)
+  def cmd_find(input, app)
+    return @comments["disabled"] unless app.script_enabled?
+
     return @comments[input] if @comments[input].present?
 
     command_obj = @comments.find do |cmd, _method|
@@ -34,7 +32,7 @@ module Scripter
       cmd.match(input)
     end
 
-    command_obj ? command_obj.last : :not_found
+    command_obj ? command_obj.last : @comments["not_found"]
   end
 
   def send_feedback(message)
@@ -45,15 +43,8 @@ module Scripter
     )
   end
 
-  def not_found(params)
-    script = params[:script]
-    "명령어 '#{script.command}'를 찾을 수 없습니다."
-  end
-
-  def disabled_cmd(_params)
-    "명령 기능이 비활성화되어 있습니다. 관리자에게 문의하세요."
-  end
-
+  register "disabled", Command::Disabled
+  register "not_found", Command::NotFound
   register "/주사위", Command::SimpleDice
   register %r{\/[0-9]+d[0-9]+}, Command::ExtendedDice
   register "/코인", Command::Coin

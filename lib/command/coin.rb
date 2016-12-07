@@ -9,7 +9,7 @@ module Command
       if script.args.empty?
         "#{rand(1..2) == 1 ? '앞면' : '뒷면'}이 나왔습니다."
       else
-        "명령어는 '/코인'입니다."
+        "'/코인'은 인수를 받지 않습니다."
       end
     end
   end

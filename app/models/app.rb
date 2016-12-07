@@ -17,4 +17,8 @@ class App < ApplicationRecord
   def add_to_redis
     RedisWrapper.set("app-data", to_json)
   end
+
+  def script_enabled?
+    use_script == 1
+  end
 end

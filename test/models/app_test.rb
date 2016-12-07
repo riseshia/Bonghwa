@@ -31,4 +31,14 @@ class AppTest < ActiveSupport::TestCase
 
     assert mock.verify
   end
+
+  def test_script_enabled_returns_true
+    app = build_app(use_script: 1)
+    assert app.script_enabled?
+  end
+
+  def test_script_enabled_returns_false
+    app = build_app(use_script: 0)
+    refute app.script_enabled?
+  end
 end

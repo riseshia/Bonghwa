@@ -26,7 +26,31 @@ module ActiveSupport
     end
 
     def create_app(params = {})
-      build_app(params).save
+      build_app(params).tap(&:save)
+    end
+
+    def build_firewood(params = {})
+      default_params = {
+        attach_id: 0,
+        is_dm: 0,
+        mt_root: 0,
+        contents: "Contents",
+        prev_mt: 0
+      }
+      Firewood.new(default_params.merge(params))
+    end
+
+    def create_firewood(params = {})
+      build_firewood(params).tap(&:save)
+    end
+
+    def build_info(params = {})
+      default_params = { infomation: "Information" }
+      Info.new(default_params.merge(params))
+    end
+
+    def create_info(params = {})
+      build_info(params).tap(&:save)
     end
   end
 end

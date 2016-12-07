@@ -10,6 +10,6 @@ before_script:
   - cp config/database.yml.ci config/database.yml
   - RAILS_ENV=test bin/rails db:create db:schema:load
 script:
-  - CODECLIMATE_REPO_TOKEN=1898c1592d89355927dfccc9815ec3f91fa5fa32e2eb1333977b008d4c9e96dc bin/rails test
+  - bin/rails test
   - bundle exec codeclimate-test-reporter
 install: bundle install

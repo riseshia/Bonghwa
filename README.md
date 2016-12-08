@@ -11,7 +11,7 @@ Bonghwa is a private SNS for small group.
 
 ## Code Climate
 [![Code Climate](https://codeclimate.com/github/riseshia/Bonghwa/badges/gpa.svg)](https://codeclimate.com/github/riseshia/Bonghwa)
-[![Coverage Status](https://coveralls.io/repos/github/riseshia/Bonghwa/badge.svg?branch=i190)](https://coveralls.io/github/riseshia/Bonghwa?branch=i190)
+[![Coverage Status](https://coveralls.io/repos/github/riseshia/Bonghwa/badge.svg?branch=master)](https://coveralls.io/github/riseshia/Bonghwa?branch=master)
 
 ## License
 Bonghwa is released under the [MIT License](http://www.opensource.org/licenses/MIT).

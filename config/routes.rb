@@ -23,7 +23,8 @@ Rails.application.routes.draw do
     get "help" => :help
     get "wait" => :wait
   end
-  root to:  "view#timeline", as: "index"
+
+  root to:  "view#timeline"
 
   namespace :admin do
     resources :users, except: [:destroy, :new, :create] do

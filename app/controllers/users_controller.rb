@@ -19,18 +19,20 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     user = User.find(params[:id])
-    if user.update(user_params)
-      redirect_edit(user, "User was successfully updated.")
+    new_password = params[:user][:password]
+    if new_password != params[:user][:password_confirmation]
+      render_edit(user, "password and confimation is different.")
     else
-      render_edit(user)
+      user.update!(password: new_password)
+      redirect_edit(user, "User was successfully updated.")
     end
   end
 
   private
 
   def editable
-    redirect_to root_url, notice: "접근 하실 수 없습니다." \
-      if @user.id != params[:id].to_i && !@user.admin?
+    redirect_to root_path, notice: "접근 하실 수 없습니다." \
+      if @user.id != params[:id].to_i
   end
 
   # Never trust parameters from the scary internet,
@@ -43,11 +45,11 @@ class UsersController < ApplicationController
     render :show, locals: { user: user }
   end
 
-  def render_edit(user)
-    render :edit, locals: { user: user }
+  def render_edit(user, message = nil)
+    render :edit, locals: { user: user }, notice: message
   end
 
   def redirect_edit(user, message)
-    redirect_to user, notice: message
+    redirect_to edit_user_path(user), notice: message
   end
 end

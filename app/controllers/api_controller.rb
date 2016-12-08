@@ -2,7 +2,7 @@
 # ApiController
 class ApiController < ApplicationController
   def create
-    Firewood.create(
+    Firewood.create!(
       user_id: @user.id,
       user_name: @user.name,
       prev_mt: params[:firewood][:prev_mt],
@@ -15,7 +15,7 @@ class ApiController < ApplicationController
   end
 
   def create_cmd
-    firewood = Firewood.create(
+    firewood = Firewood.create!(
       user_id: @user.id,
       user_name: @user.name,
       prev_mt: params[:firewood][:prev_mt],

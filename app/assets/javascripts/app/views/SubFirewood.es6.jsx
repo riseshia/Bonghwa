@@ -4,12 +4,9 @@ class SubFirewood extends React.Component {
   }
 
   render() {
-    const textNodes = this.props.firewoods.map(firewood => {
-      return this.textRender(firewood)
-    })
     return (
       <div>
-        {textNodes}
+        {this.textsRender()}
         {this.imgRender()}
       </div>
     )
@@ -18,6 +15,11 @@ class SubFirewood extends React.Component {
   imgClass() {
     const $window = $(window)
     return $window.width() > $window.height() ? "img-standard" : "img-mobile"
+  }
+
+  textsRender() {
+    if (!this.props.isTextOpened) { return }
+    return this.props.firewoods.map(firewood => this.textRender(firewood))
   }
 
   imgRender() {

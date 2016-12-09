@@ -1,5 +1,5 @@
 window.app = {
-  defaultIsOpened: false,
+  defaultIsImgOpened: false,
   pageType: 1,
   users: [],
   firewoods: [],
@@ -7,12 +7,12 @@ window.app = {
   infosVisible: true,
 
   foldImageAll: () => {
-    app.defaultIsOpened = false
+    app.defaultIsImgOpened = false
     app.render()
   },
 
   unfoldImageAll: () => {
-    app.defaultIsOpened = true
+    app.defaultIsImgOpened = true
     app.render()
   },
 
@@ -42,7 +42,7 @@ window.app = {
     ReactDOM.render(
       React.createElement(Firewoods, {
         firewoods: app.firewoods,
-        defaultIsOpened: app.defaultIsOpened,
+        defaultIsImgOpened: app.defaultIsImgOpened,
         originTitle: app.originTitle
       }),
       document.getElementById("firewoods-react")

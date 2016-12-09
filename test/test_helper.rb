@@ -3,7 +3,6 @@ ENV["RAILS_ENV"] = "test"
 require "simplecov"
 require "coveralls"
 SimpleCov.start "rails" do
-  add_filter "/spec/"
   add_filter "/test/"
   add_filter "/config/"
 end

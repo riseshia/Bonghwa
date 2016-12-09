@@ -44,7 +44,7 @@ class Firewoods extends React.Component {
           <Firewood
             key={`fw-${fw.id}`}
             {...fw}
-            defaultIsOpened={this.props.defaultIsOpened}
+            defaultIsImgOpened={this.props.defaultIsImgOpened}
           />
         )
       })

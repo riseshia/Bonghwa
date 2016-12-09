@@ -3,7 +3,8 @@ class Firewood extends React.Component {
     super(props)
     this.state = {
       subfws: props.parents,
-      isOpened: this.props.defaultIsOpened,
+      isImgOpened: this.props.defaultIsImgOpened,
+      isTextOpened: false,
       isLoading: false
     }
     this.handleDelete = this.handleDelete.bind(this)
@@ -14,8 +15,8 @@ class Firewood extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if(this.props.defaultIsOpened !== nextProps.defaultIsOpened) {
-      nextState.isOpened = nextProps.defaultIsOpened
+    if(this.props.defaultIsImgOpened !== nextProps.defaultIsImgOpened) {
+      nextState.isImgOpened = nextProps.defaultIsImgOpened
     }
   }
 
@@ -39,12 +40,16 @@ class Firewood extends React.Component {
     }
   }
 
-  isMtTarget (token) {
+  isMtTarget(token) {
     if (token.length < 3) { return false }
     return token[0] === "@" || token[0] === "!"
   }
 
-  highlightMyName (name) {
+  isOpened() {
+    return this.state.isImgOpened || this.state.isTextOpened
+  }
+
+  highlightMyName(name) {
     const myName = $.cookie("user_name")
 
     if (name === "@" + myName || name === "!" + myName) {
@@ -94,7 +99,7 @@ class Firewood extends React.Component {
     }
 
     const style = {}
-    if (!this.state.isOpened) {
+    if (!this.isOpened()) {
       style.display = "none"
     }
 
@@ -131,6 +136,7 @@ class Firewood extends React.Component {
   renderSubView() {
     return (
       <SubFirewood
+        isTextOpened={ this.state.isTextOpened }
         firewoods={ this.state.subfws }
         imgLink={ this.props.img_link }
       />
@@ -174,7 +180,7 @@ class Firewood extends React.Component {
     if ( this.props.prev_mt === 0 &&
          this.props.img_link === "0" ) {
       // Do nothing
-    } else if ( this.state.isOpened ) {
+    } else if ( this.isOpened() ) {
       this.fold()
     } else {
       this.unFold()
@@ -184,7 +190,7 @@ class Firewood extends React.Component {
   fold() {
     const $el = $(`div[data-id=${this.props.id}]`)
     $el.find(".fw-sub").slideUp(() => {
-      this.setState({isOpened: false})
+      this.setState({isTextOpened: false, isImgOpened: false})
     })
   }
 
@@ -202,11 +208,16 @@ class Firewood extends React.Component {
       this.setState({isLoading: true})
 
       this.ajaxMtLoad().then(json => {
-        this.setState({subfws: json.fws, isOpened: true, isLoading: false})
+        this.setState({
+          subfws: json.fws,
+          isImgOpened: true,
+          isTextOpened: true,
+          isLoading: false
+        })
         setTimeout(() => $el.find(".fw-sub").slideDown(200), 0)
       })
     } else {
-      this.setState({isOpened: true})
+      this.setState({isImgOpened: true, isTextOpened: true})
       $el.find(".fw-sub").slideDown(200)
     }
   }

@@ -9,9 +9,9 @@
 
       // load initial state from localStorage
       if (localStorage.getItem("auto_image_open") === "1") {
-        app.defaultIsOpened = true
+        app.defaultIsImgOpened = true
       } else {
-        app.defaultIsOpened = false
+        app.defaultIsImgOpened = false
       }
 
       $(document).keycut()

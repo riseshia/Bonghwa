@@ -137,6 +137,7 @@ class Firewood extends React.Component {
     return (
       <SubFirewood
         isTextOpened={ this.state.isTextOpened }
+        isImgOpened={ this.state.isImgOpened }
         firewoods={ this.state.subfws }
         imgLink={ this.props.img_link }
       />
@@ -214,11 +215,9 @@ class Firewood extends React.Component {
           isTextOpened: true,
           isLoading: false
         })
-        setTimeout(() => $el.find(".fw-sub").slideDown(200), 0)
       })
     } else {
       this.setState({isImgOpened: true, isTextOpened: true})
-      $el.find(".fw-sub").slideDown(200)
     }
   }
 }

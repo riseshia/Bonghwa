@@ -14,24 +14,11 @@ class Firewoods extends React.Component {
     this.forceUpdate()
   }
 
-  _updateStackNotice() {
-    const fws = this.props.firewoods.filter(fw => !fw.isVisible)
-    const $title = $("title")
-    const $stack = $("#timeline_stack")
-
-    if ( fws.length === 0 ) {
-      return false
-    }
-    $title.html(`${this.props.originTitle} (${fws.length})`)
-    $stack
-      .html(`<a href="#" id="notice_stack_new">새 장작이 ${fws.length}개 있습니다.</a>`)
-      .slideDown(200)
-  }
-
   render() {
     let stackNode = null
     const stackCount = this.props.firewoods.filter(fw => !fw.isVisible).length
-    if (stackCount) {
+    if (stackCount > 0) {
+      app.Title.render(stackCount)
       stackNode = (
         <a href="#" id="notice_stack_new">
           {`새 장작이 ${stackCount}개 있습니다.`}

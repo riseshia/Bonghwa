@@ -77,6 +77,14 @@ ul.navbar-right {
 #timeline_stack {
   text-align: center;
   background-color: rgb(66, 139, 202);
+
+  .reconnect {
+    text-decoration: underline;
+
+    &:hover {
+      color: black;
+    }
+  }
 }
 
 .tagged {

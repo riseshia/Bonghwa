@@ -27,7 +27,7 @@ window.app = {
     $("#commit").removeClass("btn-primary").addClass("btn-danger")
     $("#timeline_stack")
       .css("background-color","#f5c5c5")
-      .html("서버와의 접속이 끊어졌습니다. 새로고침 해주세요.")
+      .html("서버와의 접속이 끊어졌습니다. <a href='/' class='reconnect'>여기를 눌러서 새로고침 해주세요.</a>")
       .slideDown()
     $title.html("새로고침 해주세요.")
   },

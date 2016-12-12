@@ -2,27 +2,13 @@
 # ApiController
 class ApiController < ApplicationController
   def create
-    Firewood.create!(
-      user_id: @user.id,
-      user_name: @user.name,
-      prev_mt: params[:firewood][:prev_mt],
-      contents: params[:firewood][:contents],
-      attached_file: params[:attach],
-      adult_check: params[:adult_check]
-    )
+    Firewood.create!(fw_params)
 
     render_empty_json
   end
 
   def create_cmd
-    firewood = Firewood.create!(
-      user_id: @user.id,
-      user_name: @user.name,
-      prev_mt: params[:firewood][:prev_mt],
-      contents: params[:firewood][:contents],
-      attached_file: params[:attach],
-      adult_check: params[:adult_check]
-    )
+    firewood = Firewood.create!(fw_params)
     Scripter.execute(firewood: firewood, user: @user, app: @app)
 
     render_empty_json
@@ -45,13 +31,7 @@ class ApiController < ApplicationController
     end
 
     Firewood.create(
-      user_id: @user.id,
-      user_name: @user.name,
-      prev_mt: params[:firewood][:prev_mt],
-      contents: params[:firewood][:contents],
-      attached_file: params[:attach],
-      adult_check: params[:adult_check],
-      is_dm: enable_to_send ? dm_user.id : @user.id
+      { is_dm: enable_to_send ? dm_user.id : @user.id }.merge(fw_params)
     )
 
     Firewood.system_dm(user_id: @user.id, message: message) \
@@ -99,16 +79,15 @@ class ApiController < ApplicationController
     type = params[:type]
     limit = 1000
 
-    firewoods = case type
-                when "1" # Now
-                  Firewood.after(params[:after])
-                          .trace(@user.id, limit)
-                when "2" # Mt
-                  Firewood.after(params[:after])
-                          .mention(@user.id, @user.name, limit)
-                when "3" # Me
-                  Firewood.after(params[:after]).me(@user.id, limit)
-                end.map(&:to_hash_for_api)
+    firewoods = \
+      case type
+      when "1" # Now
+        Firewood.after(params[:after]).trace(@user.id, limit)
+      when "2" # Mt
+        Firewood.after(params[:after]).mention(@user.id, @user.name, limit)
+      when "3" # Me
+        Firewood.after(params[:after]).me(@user.id, limit)
+      end.map(&:to_hash_for_api)
     update_login_info
     users = recent_users
 
@@ -168,5 +147,16 @@ class ApiController < ApplicationController
       "infos" => infos
     }.compact
     render json: JSON.dump(data)
+  end
+
+  def fw_params
+    {
+      user_id: @user.id,
+      user_name: @user.name,
+      prev_mt: params[:firewood][:prev_mt],
+      contents: params[:firewood][:contents],
+      attached_file: params[:attach],
+      adult_check: params[:adult_check]
+    }
   end
 end

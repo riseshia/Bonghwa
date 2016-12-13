@@ -43,7 +43,6 @@ group :test do
   gem "codeclimate-test-reporter", "~> 1.0.0"
   gem "coveralls", require: false
   gem "database_rewinder"
-  gem "factory_girl_rails", "~> 4.0"
   gem "minitest-rails"
   gem "poltergeist"
   gem "simplecov"

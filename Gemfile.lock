@@ -111,11 +111,6 @@ GEM
     docile (1.1.5)
     erubis (2.7.0)
     execjs (2.7.0)
-    factory_girl (4.7.0)
-      activesupport (>= 3.0.0)
-    factory_girl_rails (4.7.0)
-      factory_girl (~> 4.7.0)
-      railties (>= 3.0.0)
     figaro (1.1.1)
       thor (~> 0.14)
     foreman (0.82.0)
@@ -306,7 +301,6 @@ DEPENDENCIES
   coveralls
   database_rewinder
   devise
-  factory_girl_rails (~> 4.0)
   figaro
   foreman
   jquery-rails

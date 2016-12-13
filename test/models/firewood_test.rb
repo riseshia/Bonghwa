@@ -1,21 +1,6 @@
 # frozen_string_literal: true
 require "test_helper"
 
-def build_firewood(params = {})
-  default_params = {
-    attach_id: 0, is_dm: 0, mt_root: 0,
-    prev_mt: 0, user_id: 1,
-    user_name: "user",
-    contents: "Yeah",
-    created_at: Time.zone.now
-  }
-  Firewood.new(default_params.merge(params))
-end
-
-def create_firewood(params = {})
-  build_firewood(params).tap(&:save)
-end
-
 class FirewoodTest < ActiveSupport::TestCase
   def test_scope_mention
     create_firewood(is_dm: 1)

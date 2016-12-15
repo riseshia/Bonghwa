@@ -10,14 +10,12 @@ class AppTest < ActiveSupport::TestCase
 
   def test_first_with_cache_when_exist
     create_app
-
     assert App.first_with_cache
   end
 
   def test_first_with_cache_when_not_exist
     create_app
     RedisWrapper.set("app-data", {})
-
     assert App.first_with_cache
   end
 

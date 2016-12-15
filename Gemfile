@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 source "https://rubygems.org"
 
 gem "rails", "5.0.0.1"
@@ -36,6 +37,8 @@ group :development do
   gem "rubocop",                require: false
   gem "rails_best_practices",   require: false
   gem "foreman"
+  gem "guard"
+  gem "guard-minitest"
 end
 
 group :test do

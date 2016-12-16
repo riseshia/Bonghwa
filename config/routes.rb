@@ -35,16 +35,16 @@ Rails.application.routes.draw do
     patch :app, to: "app#update"
   end
 
-  controller :api do
-    post "api/new" => :create_dm, constraints: DmConstraint.new
-    post "api/new" => :create_cmd, constraints: CmdConstraint.new
-    post "api/new" => :create
-    delete "api/destroy" => :destroy
+  namespace :api do
+    post :new, to: "entry#create_dm", constraints: DmConstraint.new
+    post :new, to: "entry#create_cmd", constraints: CmdConstraint.new
+    post :new, to: "entry#create"
+    delete :destroy, to: "entry#destroy"
 
-    get "api/now" => :now
-    get "api/trace" => :trace
-    get "api/get_mt" => :mts
-    get "api/pulling" => :pulling
+    get :now, to: "entry#now"
+    get :trace, to: "entry#trace"
+    get :get_mt, to: "entry#mts"
+    get :pulling, to: "entry#pulling"
   end
 
   resources :users, only: [:show, :edit, :update]

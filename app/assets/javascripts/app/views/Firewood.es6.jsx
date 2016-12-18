@@ -178,7 +178,7 @@ class Firewood extends React.Component {
   handleToggleSubView (event) {
     event.stopPropagation()
 
-    if ( this.props.prev_mt === 0 &&
+    if ( this.props.prev_mt_id === 0 &&
          this.props.img_link === "0" ) {
       // Do nothing
     } else if ( this.isOpened() ) {
@@ -196,8 +196,8 @@ class Firewood extends React.Component {
   }
 
   ajaxMtLoad() {
-    const prev_mt = this.props.prev_mt
-    return $.get(`/api/get_mt.json?prev_mt=${prev_mt}`)
+    const prev_mt_id = this.props.prev_mt_id
+    return $.get(`/api/get_mt.json?prev_mt_id=${prev_mt_id}`)
   }
 
   unFold() {
@@ -205,7 +205,7 @@ class Firewood extends React.Component {
     const $el = $(`div[data-id=${this.props.id}]`)
     const fws = this.state.subfws
 
-    if (this.props.prev_mt !== 0 && fws.length === 0) {
+    if (this.props.prev_mt_id !== 0 && fws.length === 0) {
       this.setState({isLoading: true})
 
       this.ajaxMtLoad().then(json => {

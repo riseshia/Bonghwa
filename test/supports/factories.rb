@@ -35,7 +35,7 @@ module ActiveSupport
         is_dm: 0,
         contents: "Contents",
         root_mt_id: 0,
-        prev_mt: 0
+        prev_mt_id: 0
       }
       Firewood.new(default_params.merge(params))
     end

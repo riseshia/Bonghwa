@@ -6,7 +6,7 @@ class FirewoodForm extends React.Component {
       maxCount: 150,
       value: "",
       adultCheck: false,
-      prevMt: 0,
+      prevMtId: 0,
       rootMtId: 0
     }
 
@@ -75,14 +75,14 @@ class FirewoodForm extends React.Component {
       .addClass("fileinput-new")
     $(".fileinput-filename").html("")
     $commitBtn.button("reset")
-    this.setState({value: "", prevMt: 0, rootMtId: 0, adultCheck: false})
+    this.setState({value: "", prevMtId: 0, rootMtId: 0, adultCheck: false})
   }
 
   _appendMt(names, targetId = 0, rootMtId = 0) {
     const newRootFw = rootMtId == 0 ? targetId : rootMtId
     this.setState({
       value: names.join(" ") + " " + this.state.value,
-      prevMt: targetId, rootMtId: newRootFw
+      prevMtId: targetId, rootMtId: newRootFw
     })
     $("#contents").focus()
   }
@@ -114,7 +114,7 @@ class FirewoodForm extends React.Component {
       const params = {
         data: {
           "firewood[contents]": this.state.value,
-          "firewood[prev_mt]": this.state.prevMt,
+          "firewood[prev_mt_id]": this.state.prevMtId,
           "firewood[root_mt_id]": this.state.rootMtId,
           "adult_check": this.state.adultCheck
         }
@@ -131,7 +131,7 @@ class FirewoodForm extends React.Component {
     const slicedValue = event.target.value.slice(0, this.state.maxCount)
     const newState = {value: slicedValue}
     if (slicedValue.length === 0) {
-      newState.prevMt = 0
+      newState.prevMtId = 0
       newState.rootMtId = 0
     }
     this.setState(newState)

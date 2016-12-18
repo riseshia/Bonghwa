@@ -125,7 +125,7 @@ class FirewoodTest < ActiveSupport::TestCase
     expected_hash = {
       "id" => fw.id,
       "is_dm" => fw.is_dm, "root_mt_id" => fw.root_mt_id,
-      "prev_mt" => fw.prev_mt, "user_id" => fw.user_id,
+      "prev_mt_id" => fw.prev_mt_id, "user_id" => fw.user_id,
       "name" => fw.user_name, "contents" => fw.contents,
       "img_id" => fw.attach_id, "img_link" => fw.img_link,
       "img_adult_flg" => fw.attach&.adult_flg,

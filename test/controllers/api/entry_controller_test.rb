@@ -89,7 +89,7 @@ module Api
 
     def test_mts
       fw = create_firewood(user: user)
-      get :mts, params: { prev_mt: fw.id }
+      get :mts, params: { prev_mt_id: fw.id }
       assert_response 200
     end
 

@@ -69,7 +69,7 @@ module Api
 
     # 지정한 멘션의 루트를 가지는 것을 최근 것부터 1개 긁어서 json으로 돌려준다.
     def mts
-      mts = Firewood.find_mt(params[:prev_mt], @user.id)
+      mts = Firewood.find_mt(params[:prev_mt_id], @user.id)
                     .map(&:to_hash_for_api)
       render_fws(mts)
     end
@@ -153,7 +153,7 @@ module Api
       {
         user_id: @user.id,
         user_name: @user.name,
-        prev_mt: params[:firewood][:prev_mt],
+        prev_mt_id: params[:firewood][:prev_mt_id],
         root_mt_id: params[:firewood][:root_mt_id],
         contents: params[:firewood][:contents],
         attached_file: params[:attach],

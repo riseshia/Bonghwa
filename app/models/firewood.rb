@@ -36,8 +36,8 @@ class Firewood < ApplicationRecord
     )
   end
 
-  def self.find_mt(prev_mt, user_id)
-    where("(id = ?) AND (is_dm = 0 OR is_dm = ?)", prev_mt, user_id)
+  def self.find_mt(prev_mt_id, user_id)
+    where("(id = ?) AND (is_dm = 0 OR is_dm = ?)", prev_mt_id, user_id)
       .order("id DESC").limit(1)
   end
 
@@ -65,7 +65,7 @@ class Firewood < ApplicationRecord
     {
       "id" => id,
       "is_dm" => is_dm,
-      "prev_mt" => prev_mt,
+      "prev_mt_id" => prev_mt_id,
       "root_mt_id" => root_mt_id,
       "user_id" => user_id,
       "name" => user_name,
@@ -95,7 +95,7 @@ class Firewood < ApplicationRecord
     self.is_dm ||= 0
     self.attach_id ||= 0
     self.mt_root ||= 0
-    self.prev_mt ||= 0
+    self.prev_mt_id ||= 0
   end
 
   def destroy_attach

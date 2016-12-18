@@ -38,8 +38,8 @@
     },
 
     setupParents(fw) {
-      if (fw.prev_mt !== 0) {
-        fw.parents = this.getPreviousFws(fw.prev_mt, 5)
+      if (fw.prev_mt_id !== 0) {
+        fw.parents = this.getPreviousFws(fw.prev_mt_id, 5)
       } else {
         fw.parents = []
       }
@@ -55,7 +55,7 @@
         const tmp = this.findById(fw_id)
         if (!tmp) { break }
         fws.push(tmp)
-        fw_id = tmp.prev_mt
+        fw_id = tmp.prev_mt_id
       }
 
       return fws

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161217045330) do
+ActiveRecord::Schema.define(version: 20161218041553) do
 
   create_table "apps", force: :cascade do |t|
     t.string   "home_name"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20161217045330) do
     t.string   "user_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "prev_mt",    default: 0
+    t.integer  "prev_mt_id", default: 0
     t.integer  "root_mt_id", default: 0
     t.index ["attach_id"], name: "index_firewoods_on_attach_id"
     t.index ["user_id"], name: "index_firewoods_on_user_id"

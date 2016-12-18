@@ -65,8 +65,8 @@ class Firewood < ApplicationRecord
     {
       "id" => id,
       "is_dm" => is_dm,
-      "mt_root" => mt_root,
       "prev_mt" => prev_mt,
+      "root_mt_id" => root_mt_id,
       "user_id" => user_id,
       "name" => user_name,
       "contents" => contents,

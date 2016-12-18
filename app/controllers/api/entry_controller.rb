@@ -4,7 +4,6 @@ module Api
   class EntryController < Api::BaseController
     def create
       Firewood.create!(fw_params)
-
       render_empty_json
     end
 
@@ -155,6 +154,7 @@ module Api
         user_id: @user.id,
         user_name: @user.name,
         prev_mt: params[:firewood][:prev_mt],
+        root_mt_id: params[:firewood][:root_mt_id],
         contents: params[:firewood][:contents],
         attached_file: params[:attach],
         adult_check: params[:adult_check]

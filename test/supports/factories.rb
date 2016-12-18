@@ -33,8 +33,8 @@ module ActiveSupport
       default_params = {
         attach_id: 0,
         is_dm: 0,
-        mt_root: 0,
         contents: "Contents",
+        root_mt_id: 0,
         prev_mt: 0
       }
       Firewood.new(default_params.merge(params))

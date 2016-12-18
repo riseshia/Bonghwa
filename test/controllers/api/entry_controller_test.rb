@@ -15,15 +15,24 @@ module Api
     def test_create_fw
       assert_difference "Firewood.count" do
         post :create, params: {
-          firewood: {
-            prev_mt: 0, contents: "firewoods"
-          },
-          attached_file: nil,
-          adult_check: nil
+          firewood: { prev_mt: 0, contents: "firewoods" },
+          attached_file: nil, adult_check: nil
         }
       end
-
       assert_response 200
+    end
+
+    def test_create_with_root
+      fw = create_firewood
+
+      assert_difference "Firewood.count" do
+        post :create, params: {
+          firewood: { contents: "firewoods", prev_mt: 0, root_mt_id: fw.id },
+          attached_file: nil, adult_check: nil
+        }
+      end
+      assert_response 200
+      assert_equal fw.id, Firewood.last.root_mt_id
     end
 
     def test_create_cmd

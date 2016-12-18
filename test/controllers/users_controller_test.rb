@@ -31,11 +31,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_response 200
   end
 
-  def test_edit_redirected_to_root
-    get :edit, params: { id: user.id + 1 }
-    assert_redirected_to root_path
-  end
-
   def test_update_success_to_update
     before_password = user.password
 

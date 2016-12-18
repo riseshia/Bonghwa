@@ -124,7 +124,7 @@ class FirewoodTest < ActiveSupport::TestCase
     fw = create_firewood
     expected_hash = {
       "id" => fw.id,
-      "is_dm" => fw.is_dm, "mt_root" => fw.mt_root,
+      "is_dm" => fw.is_dm, "root_mt_id" => fw.root_mt_id,
       "prev_mt" => fw.prev_mt, "user_id" => fw.user_id,
       "name" => fw.user_name, "contents" => fw.contents,
       "img_id" => fw.attach_id, "img_link" => fw.img_link,

@@ -172,7 +172,7 @@ class Firewood extends React.Component {
     const arr = targets.filter(target => !target.endsWith(userName))
     arr.unshift((this.props.is_dm == 0 ? "@":"!") + this.props.name)
 
-    window._appendMt(_.uniq(arr), this.props.id)
+    window._appendMt(_.uniq(arr), this.props.id, this.props.root_mt_id)
   }
 
   handleToggleSubView (event) {

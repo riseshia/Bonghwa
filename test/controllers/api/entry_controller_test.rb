@@ -89,11 +89,11 @@ module Api
 
     def test_mts_has_same_root
       fw = create_firewood(user: user)
-      create_firewood(user: user, root_mt_id: fw.id)
+      target = create_firewood(user: user, root_mt_id: fw.id)
       create_firewood(user: user) # should not be loaded
-      get :mts, params: { root_mt_id: fw.id }
+      get :mts, params: { root_mt_id: fw.id, target_id: target.id }
       assert_response 200
-      assert_equal 2, JSON.parse(response.body)["fws"].size
+      assert_equal 1, JSON.parse(response.body)["fws"].size
     end
 
     def test_pulling

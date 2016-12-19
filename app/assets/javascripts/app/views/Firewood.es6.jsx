@@ -197,7 +197,9 @@ class Firewood extends React.Component {
 
   ajaxMtLoad() {
     const rootMtId = this.props.root_mt_id
-    return $.get(`/api/get_mt.json?root_mt_id=${rootMtId}`)
+    return $.get(`/api/get_mt.json?`, {
+      root_mt_id: rootMtId, target_id: this.props.id
+    })
   }
 
   unFold() {

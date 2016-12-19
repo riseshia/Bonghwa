@@ -68,7 +68,7 @@ module Api
     end
 
     def mts
-      mts = Firewood.mts_of(params[:root_mt_id], @user.id)
+      mts = Firewood.mts_of(params[:root_mt_id], @user.id, params[:target_id])
                     .map(&:to_hash_for_api)
       render_fws(mts)
     end

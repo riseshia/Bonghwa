@@ -36,9 +36,9 @@ class Firewood < ApplicationRecord
     )
   end
 
-  def self.mts_of(root_mt_id, user_id, limit_num = 5)
-    where("(root_mt_id = ? OR id = ?) AND (is_dm = 0 OR is_dm = ?)",
-          root_mt_id, root_mt_id, user_id)
+  def self.mts_of(root_mt_id, user_id, target_id, limit_num = 5)
+    where("id < ? AND (root_mt_id = ? OR id = ?) AND (is_dm = 0 OR is_dm = ?)",
+          target_id, root_mt_id, root_mt_id, user_id)
       .order("id DESC").limit(limit_num)
   end
 

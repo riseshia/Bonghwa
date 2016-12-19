@@ -40,6 +40,20 @@ class FirewoodTest < ActiveSupport::TestCase
     assert_equal 1, Firewood.before(fw.id + 1).count
   end
 
+  def test_mts_of_returns_correct_normal_fw
+    root_fw = create_firewood
+    target = create_firewood(root_mt_id: root_fw.id)
+    create_firewood(root_mt_id: root_fw.id)
+    assert_equal 1, Firewood.mts_of(root_fw.id, target.user_id, target.id).count
+  end
+
+  def test_mts_of_returns_correct_dm
+    root_fw = create_firewood
+    target = create_firewood(is_dm: 3, user_id: 3, root_mt_id: root_fw.id)
+    create_firewood(root_mt_id: root_fw.id)
+    assert_equal 1, Firewood.mts_of(root_fw.id, target.user_id, target.id).count
+  end
+
   def test_system_dm_returns_true
     fw = build_firewood(is_dm: 1, user_id: 0)
     assert fw.system_dm?
@@ -53,18 +67,6 @@ class FirewoodTest < ActiveSupport::TestCase
   def test_system_dm_returns_false_with_dm
     fw = build_firewood(is_dm: 1, user_id: 1)
     refute fw.system_dm?
-  end
-
-  def test_mts_of_returns_correct_normal_fw
-    root_fw = create_firewood
-    target = create_firewood(root_mt_id: root_fw.id)
-    assert_equal 2, Firewood.mts_of(root_fw.id, target.user_id).count
-  end
-
-  def test_mts_of_returns_correct_dm
-    root_fw = create_firewood
-    target = create_firewood(is_dm: 3, user_id: 3, root_mt_id: root_fw.id)
-    assert_equal 2, Firewood.mts_of(root_fw.id, target.user_id).count
   end
 
   def test_cmd_returns_true

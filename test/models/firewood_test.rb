@@ -55,14 +55,16 @@ class FirewoodTest < ActiveSupport::TestCase
     refute fw.system_dm?
   end
 
-  def test_find_mt_returns_correct_normal_fw
-    target = create_firewood
-    assert_equal target, Firewood.find_mt(target.id, target.user_id).first
+  def test_mts_of_returns_correct_normal_fw
+    root_fw = create_firewood
+    target = create_firewood(root_mt_id: root_fw.id)
+    assert_equal 2, Firewood.mts_of(root_fw.id, target.user_id).count
   end
 
-  def test_find_mt_returns_correct_dm
-    target = create_firewood(is_dm: 3, user_id: 3)
-    assert_equal target, Firewood.find_mt(target.id, target.user_id).first
+  def test_mts_of_returns_correct_dm
+    root_fw = create_firewood
+    target = create_firewood(is_dm: 3, user_id: 3, root_mt_id: root_fw.id)
+    assert_equal 2, Firewood.mts_of(root_fw.id, target.user_id).count
   end
 
   def test_cmd_returns_true

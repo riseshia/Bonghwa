@@ -36,9 +36,10 @@ class Firewood < ApplicationRecord
     )
   end
 
-  def self.find_mt(prev_mt_id, user_id)
-    where("(id = ?) AND (is_dm = 0 OR is_dm = ?)", prev_mt_id, user_id)
-      .order("id DESC").limit(1)
+  def self.mts_of(root_mt_id, user_id, limit_num = 5)
+    where("(root_mt_id = ? OR id = ?) AND (is_dm = 0 OR is_dm = ?)",
+          root_mt_id, root_mt_id, user_id)
+      .order("id DESC").limit(limit_num)
   end
 
   def cmd?
@@ -104,10 +105,10 @@ class Firewood < ApplicationRecord
 
   def attachment_support
     raise "내용이 없습니다." if contents.blank? && attached_file.blank?
+    return if attached_file.blank?
 
-    if attached_file.present?
-      attach = Attach.create!(img: attached_file, adult_flg: adult_check == "true")
-      self.attach_id = attach.id
-    end
+    attach = \
+      Attach.create!(img: attached_file, adult_flg: adult_check == "true")
+    self.attach_id = attach.id
   end
 end

@@ -196,16 +196,18 @@ class Firewood extends React.Component {
   }
 
   ajaxMtLoad() {
-    const prev_mt_id = this.props.prev_mt_id
-    return $.get(`/api/get_mt.json?prev_mt_id=${prev_mt_id}`)
+    const rootMtId = this.props.root_mt_id
+    return $.get(`/api/get_mt.json?root_mt_id=${rootMtId}`)
   }
 
   unFold() {
     if (this.state.isLoading) { return }
     const $el = $(`div[data-id=${this.props.id}]`)
-    const fws = this.state.subfws
+    const subfws = this.state.subfws
+    const noRoot = subfws.filter(fw => fw.id === this.props.root_mt_id)
+                         .length === 0
 
-    if (this.props.prev_mt_id !== 0 && fws.length === 0) {
+    if (this.props.prev_mt_id !== 0 && noRoot) {
       this.setState({isLoading: true})
 
       this.ajaxMtLoad().then(json => {

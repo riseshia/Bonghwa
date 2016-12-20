@@ -4,7 +4,8 @@
   
   const FirewoodsFn = {
     reset(fws) {
-      app.firewoods = fws.map(fw => this.parse(fw))
+      app.firewoods = []
+      this.prependSome(fws)
     },
 
     prependSome(fws) {

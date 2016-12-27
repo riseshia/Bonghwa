@@ -93,7 +93,7 @@ GEM
       simplecov
     coderay (1.1.1)
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.0.3)
+    concurrent-ruby (1.0.4)
     connection_pool (2.2.1)
     coveralls (0.8.17)
       json (>= 1.8, < 3)
@@ -163,7 +163,7 @@ GEM
     nenv (0.3.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (3.2.0)
+    net-ssh (4.0.0)
     nio4r (1.2.1)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)

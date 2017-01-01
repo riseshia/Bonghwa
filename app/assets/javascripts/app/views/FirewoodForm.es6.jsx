@@ -50,6 +50,7 @@ class FirewoodForm extends React.Component {
               </span>
               <span className="fileinput-filename"></span>
               <a href="#" className="close fileinput-exists" data-dismiss="fileinput">{"×"}</a>
+              {" "}
               <input type="checkbox" checked={this.state.adultCheck} id="adult_check" onChange={this.handleCheckboxChange}/>
               <span className="text-warning">{" 후방주의"}</span>
             </div>

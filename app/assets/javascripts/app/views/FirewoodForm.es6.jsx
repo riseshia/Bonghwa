@@ -56,6 +56,7 @@ class FirewoodForm extends React.Component {
             </div>
             <div className="pull-right" id="div-submit">
               <span id="remaining_count">{remainingCount}</span>
+              {" "}
               <input type="submit" name="commit" value={commitBtnText} id="commit" className="btn btn-primary" data-loading-text="Wait...." />
             </div>
           </div>

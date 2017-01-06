@@ -48,10 +48,14 @@ class FirewoodTest < ActiveSupport::TestCase
   end
 
   def test_mts_of_returns_correct_dm
-    root_fw = create_firewood
-    target = create_firewood(is_dm: 3, user_id: 3, root_mt_id: root_fw.id)
-    create_firewood(root_mt_id: root_fw.id)
-    assert_equal 1, Firewood.mts_of(root_fw.id, target.user_id, target.id).count
+    root_fw = create_firewood(user_id: 10)
+    from_you = create_firewood(is_dm: 10, user_id: 3,
+                               root_mt_id: root_fw.id, prev_mt_id: root_fw.id)
+    from_me = create_firewood(is_dm: 3, user_id: 10,
+                              root_mt_id: root_fw.id, prev_mt_id: from_you.id)
+    target = create_firewood(is_dm: 10, user_id: 3,
+                             root_mt_id: root_fw.id, prev_mt_id: from_me.id)
+    assert_equal 3, Firewood.mts_of(root_fw.id, target.user_id, target.id).count
   end
 
   def test_system_dm_returns_true
@@ -122,21 +126,6 @@ class FirewoodTest < ActiveSupport::TestCase
   def test_visible_returns_false
     fw = build_firewood(is_dm: 1)
     refute fw.visible?(100)
-  end
-
-  def test_to_hash_for_api
-    fw = create_firewood
-    expected_hash = {
-      "id" => fw.id,
-      "is_dm" => fw.is_dm, "root_mt_id" => fw.root_mt_id,
-      "prev_mt_id" => fw.prev_mt_id, "user_id" => fw.user_id,
-      "name" => fw.user_name, "contents" => fw.contents,
-      "img_id" => fw.attach_id, "img_link" => fw.img_link,
-      "img_adult_flg" => fw.attach&.adult_flg,
-      "created_at" => fw.formatted_created_at
-    }
-
-    assert_equal expected_hash, fw.to_hash_for_api
   end
 
   def test_img_link_return_zero

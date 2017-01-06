@@ -17,7 +17,7 @@ module Api
         post :create, params: {
           firewood: { prev_mt: 0, contents: "firewoods" },
           attached_file: nil, adult_check: nil
-        }
+        }, format: :json
       end
       assert_response 200
     end
@@ -29,7 +29,7 @@ module Api
         post :create, params: {
           firewood: { contents: "firewoods", prev_mt: 0, root_mt_id: fw.id },
           attached_file: nil, adult_check: nil
-        }
+        }, format: :json
       end
       assert_response 200
       assert_equal fw.id, Firewood.last.root_mt_id
@@ -43,7 +43,7 @@ module Api
           },
           attached_file: nil,
           adult_check: nil
-        }
+        }, format: :json
       end
 
       assert_response 200
@@ -57,7 +57,7 @@ module Api
           },
           attached_file: nil,
           adult_check: nil
-        }
+        }, format: :json
       end
 
       assert_response 200
@@ -66,7 +66,7 @@ module Api
     def test_destroy_success
       fw = create_firewood(user: user)
       assert_difference "Firewood.count", -1 do
-        delete :destroy, params: { id: fw.id }
+        delete :destroy, params: { id: fw.id }, format: :json
       end
 
       assert_response 200
@@ -76,14 +76,14 @@ module Api
       another_user = create_user
       fw = create_firewood(user: another_user)
       assert_no_difference "Firewood.count" do
-        delete :destroy, params: { id: fw.id }
+        delete :destroy, params: { id: fw.id }, format: :json
       end
 
       assert_response 200
     end
 
     def test_now
-      get :now, params: { type: "1" }
+      get :now, params: { type: "1" }, format: :json
       assert_response 200
     end
 
@@ -91,18 +91,21 @@ module Api
       fw = create_firewood(user: user)
       target = create_firewood(user: user, root_mt_id: fw.id)
       create_firewood(user: user) # should not be loaded
-      get :mts, params: { root_mt_id: fw.id, target_id: target.id }
+      get :mts, params: {
+        root_mt_id: fw.id, target_id: target.id
+      }, format: :json
+
       assert_response 200
       assert_equal 1, JSON.parse(response.body)["fws"].size
     end
 
     def test_pulling
-      get :pulling, params: { type: "1" }
+      get :pulling, params: { type: "1" }, format: :json
       assert_response 200
     end
 
     def test_trace
-      get :pulling, params: { type: "2" }
+      get :pulling, params: { type: "2" }, format: :json
       assert_response 200
     end
   end

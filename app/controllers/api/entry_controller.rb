@@ -58,19 +58,18 @@ module Api
           Firewood.mention(@user.id, @user.name, 50)
         when "3" # Me
           Firewood.me(@user.id, 50)
-        end.map(&:to_hash_for_api)
+        end
 
       update_login_info
-      infos = Info.all.map(&:to_hash_for_api)
+      infos = Info.all
       users = recent_users
 
-      render_fws_and_users(firewoods, users, infos)
+      render_json(firewoods, users, infos)
     end
 
     def mts
       mts = Firewood.mts_of(params[:root_mt_id], @user.id, params[:target_id])
-                    .map(&:to_hash_for_api)
-      render_fws(mts)
+      render_json(mts)
     end
 
     # after 이후의 장작을 최대 1000개까지 내림차순으로 받아온다.
@@ -86,11 +85,11 @@ module Api
           Firewood.after(params[:after]).mention(@user.id, @user.name, limit)
         when "3" # Me
           Firewood.after(params[:after]).me(@user.id, limit)
-        end.map(&:to_hash_for_api)
+        end
       update_login_info
       users = recent_users
 
-      render_fws_and_users(firewoods, users)
+      render_json(firewoods, users)
     end
 
     def trace
@@ -106,11 +105,11 @@ module Api
                   when "3" # Me
                     Firewood.before(params[:before])
                             .me(@user.id, limit)
-                  end.map(&:to_hash_for_api)
+                  end
       update_login_info
       users = recent_users
 
-      render_fws_and_users(firewoods, users)
+      render_json(firewoods, users)
     end
 
     private
@@ -135,17 +134,10 @@ module Api
       render json: JSON.dump("")
     end
 
-    def render_fws(firewoods)
-      render json: JSON.dump("fws" => firewoods)
-    end
-
-    def render_fws_and_users(firewoods, users, infos = nil)
-      data = {
-        "fws" => firewoods,
-        "users" => users,
-        "infos" => infos
-      }.compact
-      render json: JSON.dump(data)
+    def render_json(firewoods, users = nil, infos = nil)
+      render "api/entry", locals: {
+        firewoods: firewoods, users: users, infos: infos
+      }
     end
 
     def fw_params

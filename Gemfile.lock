@@ -88,7 +88,7 @@ GEM
       climate_control (>= 0.0.3, < 1.0)
     code_analyzer (0.4.7)
       sexp_processor
-    codeclimate-test-reporter (1.0.4)
+    codeclimate-test-reporter (1.0.5)
       simplecov
     coderay (1.1.1)
     coffee-script-source (1.12.2)

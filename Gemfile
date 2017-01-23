@@ -23,13 +23,6 @@ gem "figaro"
 gem "devise"
 gem "paperclip", "~> 4.0"
 
-gem "capistrano",             require: false
-gem "capistrano-rbenv",       require: false
-gem "capistrano-rails",       require: false
-gem "capistrano-bundler",     require: false
-gem "capistrano-secrets-yml", "~> 1.0.0", require: false
-gem "capistrano3-puma",       require: false
-
 group :development do
   gem "web-console", "~> 2.0"
   gem "byebug"
@@ -39,6 +32,14 @@ group :development do
   gem "foreman"
   gem "guard"
   gem "guard-minitest"
+
+  # Deployment
+  gem "capistrano",             require: false
+  gem "capistrano-rbenv",       require: false
+  gem "capistrano-rails",       require: false
+  gem "capistrano-bundler",     require: false
+  gem "capistrano-secrets-yml", "~> 1.0.0", require: false
+  gem "capistrano3-puma",       require: false
 end
 
 group :test do

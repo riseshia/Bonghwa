@@ -11,4 +11,4 @@ before_script:
 script:
   - bin/rails test
   - bundle exec codeclimate-test-reporter
-install: bundle install
+install: bundle install --without production development

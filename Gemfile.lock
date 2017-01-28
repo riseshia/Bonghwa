@@ -53,7 +53,7 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
     byebug (9.0.6)
-    capistrano (3.7.1)
+    capistrano (3.7.2)
       airbrussh (>= 1.0.0)
       capistrano-harrow
       i18n
@@ -192,7 +192,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     public_suffix (2.0.5)
-    puma (3.6.2)
+    puma (3.7.0)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)

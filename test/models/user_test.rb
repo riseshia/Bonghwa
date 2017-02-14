@@ -41,12 +41,6 @@ class UserTest < ActiveSupport::TestCase
     refute user.unconfirmed?
   end
 
-  def test_lvup
-    user = build_user(level: 0)
-    user.lvup
-    assert_equal 1, user.level
-  end
-
   def test_lvup_bang
     user = create_user(level: 0)
     user.lvup!
@@ -112,6 +106,28 @@ class UserTest < ActiveSupport::TestCase
     Time.zone.stub(:now, expected_time) do
       user = create_user
       assert_equal expected_time.to_i, user.recent_login.to_i
+    end
+  end
+
+  def test_update_login_info
+    ts = Time.zone.now.to_i
+    user = create_user(name: "tester")
+    user.update_login_info(ts)
+
+    users = RedisWrapper.zrangebyscore("active-users", ts - 10, ts + 10)
+                        .sort.map { |user| { "name" => user } }
+    assert_includes users, { "name" => user.name }
+  end
+
+  def test_on_timeline
+    ts = Time.zone.now.to_i
+    RedisWrapper.zadd("active-users", ts, "tester")
+    [
+      [ts - 20, ts - 10, []],
+      [ts - 10, ts + 10, [{ "name" => "tester" }]],
+      [ts + 10, ts + 20, []]
+    ].each do |from_ts, to_ts, expected|
+      assert_equal expected, User.on_timeline(from_ts, to_ts)
     end
   end
 end

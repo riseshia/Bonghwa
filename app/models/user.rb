@@ -12,6 +12,11 @@ class User < ApplicationRecord
 
   before_create :default_recent_login
 
+  def self.on_timeline(from, to)
+    RedisWrapper.zrangebyscore("active-users", from, to)
+                .sort.map { |user_name| { "name" => user_name } }
+  end
+
   def admin?
     level == 999
   end
@@ -20,21 +25,18 @@ class User < ApplicationRecord
     level.zero?
   end
 
-  def lvup
-    self.level = 1
-  end
-
   def lvup!
     return unless unconfirmed?
-    lvup
-    save!
+    update_column(:level, 1)
   end
 
   def update_nickname(new_name)
     old_user_name = name
-    state = update(name: new_name)
-    refresh_redis(old_user_name) if state
-    state
+    if result = update(name: new_name)
+      refresh_redis(old_user_name)
+    else
+      result
+    end
   end
 
   def valid_password?(password)
@@ -56,6 +58,11 @@ class User < ApplicationRecord
     end
   end
 
+  def update_login_info(ts)
+    RedisWrapper.zadd("active-users", ts, name)
+  end
+
+  # Devise related method
   def reset_password!(*args)
     self.legacy_password = nil
     super
@@ -68,6 +75,7 @@ class User < ApplicationRecord
   def email_changed?
     false
   end
+  # Devise related method end
 
   private
 

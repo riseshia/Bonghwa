@@ -60,7 +60,7 @@ module Api
           Firewood.me(@user.id, 50)
         end
 
-      update_login_info
+      update_login_info(@user)
       infos = Info.all
       users = recent_users
 
@@ -86,7 +86,7 @@ module Api
         when "3" # Me
           Firewood.after(params[:after]).me(@user.id, limit)
         end
-      update_login_info
+      update_login_info(@user)
       users = recent_users
 
       render_json(firewoods, users)
@@ -106,7 +106,7 @@ module Api
                     Firewood.before(params[:before])
                             .me(@user.id, limit)
                   end
-      update_login_info
+      update_login_info(@user)
       users = recent_users
 
       render_json(firewoods, users)
@@ -121,13 +121,11 @@ module Api
     def recent_users
       now_timestamp = Time.zone.now.to_i
       before_timestamp = now_timestamp - 40
-      RedisWrapper.zrangebyscore("active-users", before_timestamp, now_timestamp)
-                  .sort.map { |user| { "name" => user } }
+      User.on_timeline(before_timestamp, now_timestamp)
     end
 
-    def update_login_info
-      RedisWrapper.zadd("active-users", Time.zone.now.to_i, @user.name) \
-        unless @user.id == 1
+    def update_login_info(user)
+      user.update_login_info(Time.zone.now.to_i)
     end
 
     def render_empty_json

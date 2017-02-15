@@ -10,7 +10,7 @@ gem "sprockets", ">= 3.0.0"
 gem "sprockets-es6"
 gem "react-rails"
 
-gem "jbuilder"
+gem "jb"
 
 gem "sass-rails"
 gem "uglifier"

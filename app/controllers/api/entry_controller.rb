@@ -132,7 +132,7 @@ module Api
       render json: JSON.dump("")
     end
 
-    def render_json(firewoods, users = nil, infos = nil)
+    def render_json(firewoods, users = [], infos = [])
       render "api/entry", locals: {
         firewoods: firewoods, users: users, infos: infos
       }

@@ -1,0 +1,21 @@
+{
+  fws: firewoods.map do |fw|
+    {
+      id: fw.id,
+      is_dm: fw.is_dm,
+      prev_mt_id: fw.prev_mt_id,
+      root_mt_id: fw.root_mt_id,
+      user_id: fw.user_id,
+      name: fw.user_name,
+      contents: fw.contents,
+      img_id: fw.attach_id,
+      img_adult_flg: fw.attach&.adult_flg,
+      img_link: fw.img_link,
+      created_at: fw.formatted_created_at
+    }
+  end,
+  users: users,
+  infos: infos.map do |info|
+    { id: info.id, information: info.infomation }
+  end
+}

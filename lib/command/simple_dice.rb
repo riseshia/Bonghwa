@@ -10,7 +10,8 @@ module Command
 
       dice_size = args.empty? ? 6 : args[0]&.to_i || 0
       if (1..100).cover?(dice_size)
-        "#{rand(1..dice_size)}이(가) 나왔습니다."
+        rd = Random.new
+        "#{rd.rand(dice_size) + 1}이(가) 나왔습니다."
       else
         "인수 지정이 잘못되었습니다. 2에서 100 사이의 자연수를 입력해주세요."
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161218041553) do
+ActiveRecord::Schema.define(version: 20170217002754) do
 
   create_table "apps", force: :cascade do |t|
     t.string   "home_name"
@@ -23,16 +23,6 @@ ActiveRecord::Schema.define(version: 20161218041553) do
     t.datetime "updated_at"
   end
 
-  create_table "attaches", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "img_file_name"
-    t.string   "img_content_type"
-    t.integer  "img_file_size"
-    t.datetime "img_updated_at"
-    t.boolean  "adult_flg",        default: false, null: false
-  end
-
   create_table "firewoods", force: :cascade do |t|
     t.string   "contents"
     t.integer  "attach_id"
@@ -42,9 +32,10 @@ ActiveRecord::Schema.define(version: 20161218041553) do
     t.string   "user_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "prev_mt_id", default: 0
-    t.integer  "root_mt_id", default: 0
-    t.index ["attach_id"], name: "index_firewoods_on_attach_id"
+    t.integer  "prev_mt_id",        default: 0
+    t.integer  "root_mt_id",        default: 0
+    t.boolean  "image_adult_flg",   default: false, null: false
+    t.string   "image"
     t.index ["user_id"], name: "index_firewoods_on_user_id"
   end
 

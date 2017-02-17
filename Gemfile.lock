@@ -82,10 +82,15 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    climate_control (0.1.0)
+    carrierwave (1.0.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
+    carrierwave-bombshelter (0.2.2)
+      activesupport (>= 3.2.0)
+      carrierwave
+      fastimage
     cliver (0.3.2)
-    cocaine (0.5.8)
-      climate_control (>= 0.0.3, < 1.0)
     code_analyzer (0.4.7)
       sexp_processor
     codeclimate-test-reporter (1.0.5)
@@ -111,9 +116,14 @@ GEM
     docile (1.1.5)
     erubis (2.7.0)
     execjs (2.7.0)
+    fastimage (2.0.1)
+      addressable (~> 2)
     ffi (1.9.17)
     figaro (1.1.1)
       thor (~> 0.14)
+    file_validators (2.1.0)
+      activemodel (>= 3.0)
+      mime-types (>= 1.0)
     foreman (0.83.0)
       thor (~> 0.19.1)
     formatador (0.2.5)
@@ -153,7 +163,6 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mimemagic (0.3.0)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     minitest-rails (3.0.0)
@@ -173,12 +182,6 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     orm_adapter (0.5.0)
-    paperclip (4.3.7)
-      activemodel (>= 3.2.0)
-      activesupport (>= 3.2.0)
-      cocaine (~> 0.5.5)
-      mime-types
-      mimemagic (= 0.3.0)
     parser (2.4.0.0)
       ast (~> 2.2)
     poltergeist (1.13.0)
@@ -334,11 +337,14 @@ DEPENDENCIES
   capistrano-secrets-yml (~> 1.0.0)
   capistrano3-puma
   capybara
+  carrierwave (~> 1.0)
+  carrierwave-bombshelter
   codeclimate-test-reporter (~> 1.0.0)
   coveralls
   database_rewinder
   devise
   figaro
+  file_validators
   foreman
   guard
   guard-minitest
@@ -347,7 +353,6 @@ DEPENDENCIES
   minitest-rails
   mock_redis
   mysql2 (~> 0.4)
-  paperclip (~> 4.0)
   poltergeist
   puma
   rails (= 5.0.1)

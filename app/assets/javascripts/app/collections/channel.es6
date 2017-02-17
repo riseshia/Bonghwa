@@ -80,7 +80,7 @@
 
           if ( localStorage.getItem("auto_image_open") == "1" ) {
             fws.forEach(fw => {
-              if (fw.img_link != "0") {
+              if (fw.image_url) {
                 fw.defaultIsImgOpened = true
               }
             })

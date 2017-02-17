@@ -31,11 +31,11 @@ module ActiveSupport
 
     def build_firewood(params = {})
       default_params = {
-        attach_id: 0,
         is_dm: 0,
         contents: "Contents",
         root_mt_id: 0,
-        prev_mt_id: 0
+        prev_mt_id: 0,
+        image: nil
       }
       Firewood.new(default_params.merge(params))
     end

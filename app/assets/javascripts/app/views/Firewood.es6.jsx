@@ -62,19 +62,19 @@ class Firewood extends React.Component {
   }
 
   imageInfoTag() {
-    if (this.props.img_link === "0") {
+    if (!this.props.image_url) {
       return
     }
-    if (this.props.img_adult_flg) {
+    if (this.props.image_adult_flg) {
       return (
         <span className="has-image text-warning">
-          {`[후방주의 ${this.props.img_id}] `}
+          {`[후방주의 ${this.props.id}] `}
         </span>
       )
     } else {
       return (
         <span className="has-image">
-          {`[이미지 ${this.props.img_id}] `}
+          {`[이미지 ${this.props.id}] `}
         </span>
       )
     }
@@ -139,7 +139,7 @@ class Firewood extends React.Component {
         isTextOpened={ this.state.isTextOpened }
         isImgOpened={ this.state.isImgOpened }
         firewoods={ this.state.subfws }
-        imgLink={ this.props.img_link }
+        imgLink={ this.props.image_url }
       />
     )
   }
@@ -179,7 +179,7 @@ class Firewood extends React.Component {
     event.stopPropagation()
 
     if ( this.props.prev_mt_id === 0 &&
-         this.props.img_link === "0" ) {
+         !this.props.image_url) {
       // Do nothing
     } else if ( this.isOpened() ) {
       this.fold()

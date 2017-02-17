@@ -21,9 +21,11 @@ module Bonghwa
       { expires_in: 90.minutes }
 
     config.autoload_paths << Rails.root.join("lib")
+    config.autoload_paths << Rails.root.join("app/uploaders")
 
     # add '/lib' to Eager Load path
     config.eager_load_paths << Rails.root.join("lib")
+    config.eager_load_paths << Rails.root.join("app/uploaders")
 
     config.time_zone = "Seoul"
 

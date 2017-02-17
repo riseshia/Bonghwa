@@ -43,17 +43,17 @@ class SubFirewood extends React.Component {
   }
 
   imageInfoTag(firewood) {
-    if (firewood.img_link === "0") { return }
-    if (firewood.img_adult_flg) {
+    if (!firewood.image_url) { return }
+    if (firewood.image_adult_flg) {
       return (
         <span className="has-image text-warning">
-          {`[후방주의 ${firewood.img_id}] `}
+          {`[후방주의 ${firewood.id}] `}
         </span>
       )
     } else {
       return (
         <span className="has-image">
-          {`[이미지 ${firewood.img_id}] `}
+          {`[이미지 ${firewood.id}] `}
         </span>
       )
     }

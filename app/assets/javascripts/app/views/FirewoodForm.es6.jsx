@@ -46,7 +46,7 @@ class FirewoodForm extends React.Component {
               <span className="btn btn-default btn-file" rel="tooltip" data-placement="right" data-original-title="5MB 이하. jpg, png, gif">
                 <span className="fileinput-new">{"Pic"}</span>
                 <span className="fileinput-exists">{"Change"}</span>
-                <input type="file" name="attach" id="img" accept="image/*" />
+                <input type="file" name="image" id="img" accept="image/*" />
               </span>
               <span className="fileinput-filename"></span>
               <a href="#" className="close fileinput-exists" data-dismiss="fileinput">{"×"}</a>

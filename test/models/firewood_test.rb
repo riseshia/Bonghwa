@@ -128,17 +128,17 @@ class FirewoodTest < ActiveSupport::TestCase
     refute fw.visible?(100)
   end
 
-  def test_img_link_return_zero
-    fw = build_firewood(attach_id: 0)
-
-    assert_equal "0", fw.img_link
+  def test_image_url_return_nil
+    assert_nil build_firewood(image: nil).image_url
   end
 
-  def test_img_link_return_img_url
-    attach = Attach.new(id: 1)
-    fw = build_firewood(attach: attach)
+  def test_image_url_return_correct_url
+    fw = build_firewood
+    expected = "image_url"
 
-    assert_equal "/imgs/original/missing.png", fw.img_link
+    fw.stub(:image, OpenStruct.new(url: expected)) do
+      assert_equal expected, fw.image_url
+    end
   end
 
   def test_editable_returns_true

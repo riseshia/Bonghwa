@@ -145,8 +145,8 @@ module Api
         prev_mt_id: params[:firewood][:prev_mt_id],
         root_mt_id: params[:firewood][:root_mt_id],
         contents: params[:firewood][:contents],
-        attached_file: params[:attach],
-        adult_check: params[:adult_check]
+        image: params[:image],
+        image_adult_flg: params[:adult_check] || false
       }
     end
   end

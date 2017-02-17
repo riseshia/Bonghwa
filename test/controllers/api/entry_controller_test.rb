@@ -15,8 +15,7 @@ module Api
     def test_create_fw
       assert_difference "Firewood.count" do
         post :create, params: {
-          firewood: { prev_mt: 0, contents: "firewoods" },
-          attached_file: nil, adult_check: nil
+          firewood: { prev_mt: 0, contents: "firewoods" }
         }, format: :json
       end
       assert_response 200
@@ -27,8 +26,7 @@ module Api
 
       assert_difference "Firewood.count" do
         post :create, params: {
-          firewood: { contents: "firewoods", prev_mt: 0, root_mt_id: fw.id },
-          attached_file: nil, adult_check: nil
+          firewood: { contents: "firewoods", prev_mt: 0, root_mt_id: fw.id }
         }, format: :json
       end
       assert_response 200
@@ -38,11 +36,7 @@ module Api
     def test_create_cmd
       assert_difference "Firewood.count", 2 do
         post :create_cmd, params: {
-          firewood: {
-            prev_mt: 0, contents: "/코인"
-          },
-          attached_file: nil,
-          adult_check: nil
+          firewood: { prev_mt: 0, contents: "/코인" }
         }, format: :json
       end
 
@@ -52,11 +46,7 @@ module Api
     def test_create_dm
       assert_difference "Firewood.count" do
         post :create_dm, params: {
-          firewood: {
-            prev_mt: 0, contents: "!#{user.name} dmdm"
-          },
-          attached_file: nil,
-          adult_check: nil
+          firewood: { prev_mt: 0, contents: "!#{user.name} dmdm" }
         }, format: :json
       end
 

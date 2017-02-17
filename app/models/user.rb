@@ -32,7 +32,9 @@ class User < ApplicationRecord
 
   def update_nickname(new_name)
     old_user_name = name
-    if result = update(name: new_name)
+    result = update(name: new_name)
+
+    if result
       refresh_redis(old_user_name)
     else
       result

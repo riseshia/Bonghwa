@@ -8,9 +8,8 @@
       user_id: fw.user_id,
       name: fw.user_name,
       contents: fw.contents,
-      img_id: fw.attach_id,
-      img_adult_flg: fw.attach&.adult_flg,
-      img_link: fw.img_link,
+      image_url: fw.image_url,
+      image_adult_flg: fw.image_adult_flg,
       created_at: fw.formatted_created_at
     }
   end,

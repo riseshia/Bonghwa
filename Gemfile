@@ -21,11 +21,16 @@ gem "redis-rails"
 gem "will_paginate"
 gem "figaro"
 gem "devise"
-gem "paperclip", "~> 4.0"
+gem "carrierwave", "~> 1.0"
+gem "carrierwave-bombshelter"
+gem "file_validators"
+
+group :development, :test do
+  gem "byebug"
+end
 
 group :development do
   gem "web-console", "~> 2.0"
-  gem "byebug"
 
   gem "rubocop",                require: false
   gem "rails_best_practices",   require: false

@@ -10,7 +10,7 @@
       user_id: 0,
       name: "initName",
       contents: "Init Contents",
-      img_link: "0",
+      image_url: null,
       created_at: "00/00/00 00:00:00",
       isVisible: true,
       isOpened: false,

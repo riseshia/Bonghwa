@@ -3,13 +3,11 @@
 class Firewood < ApplicationRecord
   # Callback
   before_create :default_values
-  before_create :attachment_support
-  before_destroy :destroy_attach
 
   belongs_to :user, optional: true # for bot handling
-  belongs_to :attach, optional: true
 
-  attr_accessor :attached_file, :adult_check
+  mount_uploader :image, ImageUploader
+  delegate :url, to: :image, prefix: true, allow_nil: true
 
   # Public Scope
   scope :mention, lambda { |user_id, user_name, count|
@@ -38,6 +36,8 @@ class Firewood < ApplicationRecord
   scope :visible_by, lambda { |user_id|
     where("is_dm IN (0, :user_id) OR user_id = :user_id", user_id: user_id)
   }
+
+  validates :image, file_size: { less_than: 5.megabytes }
 
   # Class Method
   def self.system_dm(params)
@@ -69,10 +69,6 @@ class Firewood < ApplicationRecord
     normal? || is_dm == session_user_id || user_id == session_user_id
   end
 
-  def img_link
-    attach_id.zero? ? "0" : attach.img.url
-  end
-
   def editable?(user)
     user_id == user.id
   end
@@ -85,21 +81,7 @@ class Firewood < ApplicationRecord
 
   def default_values
     self.is_dm ||= 0
-    self.attach_id ||= 0
     self.mt_root ||= 0
     self.prev_mt_id ||= 0
-  end
-
-  def destroy_attach
-    attach.destroy if attach.present?
-  end
-
-  def attachment_support
-    raise "내용이 없습니다." if contents.blank? && attached_file.blank?
-    return if attached_file.blank?
-
-    attach = \
-      Attach.create!(img: attached_file, adult_flg: adult_check == "true")
-    self.attach_id = attach.id
   end
 end

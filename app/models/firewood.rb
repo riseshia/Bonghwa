@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 # Firewood
 class Firewood < ApplicationRecord
-  # Callback
-  before_create :default_values
-
   belongs_to :user, optional: true # for bot handling
 
   mount_uploader :image, ImageUploader
@@ -75,13 +72,5 @@ class Firewood < ApplicationRecord
 
   def formatted_created_at
     created_at.strftime("%y/%m/%d %T")
-  end
-
-  private
-
-  def default_values
-    self.is_dm ||= 0
-    self.mt_root ||= 0
-    self.prev_mt_id ||= 0
   end
 end

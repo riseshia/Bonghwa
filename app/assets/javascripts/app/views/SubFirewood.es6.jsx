@@ -24,7 +24,7 @@ class SubFirewood extends React.Component {
 
   imgRender() {
     if (!this.props.isImgOpened) { return }
-    if (this.props.imgLink == "0") { return }
+    if (!this.props.imgLink) { return }
 
     return (
       <div className="img-content">

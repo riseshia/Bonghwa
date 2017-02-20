@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require_relative "ignore_warning"
 require_relative "boot"
 
 require "rails/all"

@@ -5,10 +5,6 @@ require "carrierwave/test/matchers"
 class ImageUploderTest < ActiveSupport::TestCase
   include CarrierWave::Test::Matchers
 
-  def test_file_path
-    Rails.root.join("test", "assets", "test.jpg")
-  end
-
   def setup
     ImageUploader.enable_processing = true
     firewood = OpenStruct.new
@@ -29,5 +25,11 @@ class ImageUploderTest < ActiveSupport::TestCase
   def test_uploaded_file_has_correct_format
     tz = Time.zone.now
     assert @uploader.filename.start_with?(tz.strftime("%Y%m%d"))
+  end
+
+  private
+
+  def test_file_path
+    Rails.root.join("test", "assets", "test.jpg")
   end
 end

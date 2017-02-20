@@ -4,9 +4,7 @@ require "test_helper"
 module Admin
   class UsersControllerTest < ActionController::TestCase
     def setup
-      create_app
-      @user = create_user(level: 999, login_id: "admin", name: "admin")
-      sign_in @user
+      sign_in users(:luna)
     end
 
     def test_index_returns_200
@@ -15,46 +13,46 @@ module Admin
     end
 
     def test_edit_returns_200
-      user = create_user
-      get :edit, params: { id: user.id }
+      asahi = users(:asahi)
+      get :edit, params: { id: asahi.id }
       assert_response 200
     end
 
     def test_lvup_updates_status
-      user = create_user(level: 0)
-      put :lvup, params: { id: user.id }
+      gnunu = users(:gnunu)
+      put :lvup, params: { id: gnunu.id }
 
       assert_redirected_to admin_users_path
-      assert_equal 1, user.reload.level
-      assert_nil RedisWrapper.get("session-#{user.id}")
+      assert_equal 1, gnunu.reload.level
+      assert_nil RedisWrapper.get("session-#{gnunu.id}")
     end
 
     def test_update_success_to_update
-      user = create_user
-      before_password = user.password
+      asahi = users(:asahi)
+      new_password = "new_pass"
 
       put :update, params: {
-        id: user.id, user: {
-          password: "new_pass", password_confirmation: "new_pass"
+        id: asahi.id, user: {
+          password: new_password, password_confirmation: new_password
         }
       }
 
-      assert_redirected_to edit_admin_user_path(user)
-      refute user.reload.valid_password?(before_password)
+      assert_redirected_to edit_admin_user_path(asahi)
+      assert asahi.reload.valid_password?(new_password)
     end
 
     def test_update_fail_to_update
-      user = create_user
-      before_password = user.password
+      asahi = users(:asahi)
+      new_password = "new_pass"
 
       put :update, params: {
-        id: user.id, user: {
-          password: "new_pass", password_confirmation: "wrong_pass"
+        id: asahi.id, user: {
+          password: new_password, password_confirmation: "wrong_pass"
         }
       }
 
       assert_response 200
-      assert user.reload.valid_password?(before_password)
+      refute asahi.reload.valid_password?(new_password)
     end
   end
 end

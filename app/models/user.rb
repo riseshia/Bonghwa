@@ -49,17 +49,6 @@ class User < ApplicationRecord
     end
   end
 
-  def validate_legacy_password(password)
-    if BCrypt::Password.new(legacy_password) == password && self
-      self.password = password
-      self.legacy_password = nil
-      save!
-      true
-    else
-      false
-    end
-  end
-
   def update_login_info(ts)
     RedisWrapper.zadd("active-users", ts, name)
   end
@@ -80,6 +69,17 @@ class User < ApplicationRecord
   # Devise related method end
 
   private
+
+  def validate_legacy_password(password)
+    if BCrypt::Password.new(legacy_password) == password && self
+      self.password = password
+      self.legacy_password = nil
+      save!
+      true
+    else
+      false
+    end
+  end
 
   def default_recent_login
     self.recent_login = Time.zone.now

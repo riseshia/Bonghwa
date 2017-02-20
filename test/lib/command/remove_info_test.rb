@@ -3,18 +3,6 @@ require "test_helper"
 
 module Command
   class RemoveInfoTest < ActiveSupport::TestCase
-    def normal_user
-      build_user(level: 1)
-    end
-
-    def admin
-      build_user(level: 999)
-    end
-
-    def dummy_params(user, args = [])
-      { script: OpenStruct.new(args: args), user: user }
-    end
-
     def test_no_permission
       params = dummy_params(normal_user, ["1"])
       assert_equal "권한이 없습니다.", RemoveInfo.run(params)
@@ -32,17 +20,30 @@ module Command
     end
 
     def test_rejects_not_exist_info
-      params = dummy_params(admin, ["1"])
+      params = dummy_params(admin, [Info.count + 1])
       assert_equal "삭제할 공지사항이 없습니다.", RemoveInfo.run(params)
     end
 
     def test_success
-      create_info
-      params = dummy_params(admin, ["1"])
+      params = dummy_params(admin, [Info.count])
 
       assert_difference "Info.count", -1 do
         assert_equal "삭제 완료되었습니다.", RemoveInfo.run(params)
       end
+    end
+
+    private
+
+    def normal_user
+      users(:asahi)
+    end
+
+    def admin
+      users(:luna)
+    end
+
+    def dummy_params(user, args = [])
+      { script: OpenStruct.new(args: args), user: user }
     end
   end
 end

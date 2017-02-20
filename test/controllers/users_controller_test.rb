@@ -3,12 +3,7 @@ require "test_helper"
 
 class UsersControllerTest < ActionController::TestCase
   def setup
-    create_app
     sign_in user
-  end
-
-  def user
-    @user ||= create_user(level: 1)
   end
 
   def test_show_redirected_to_root
@@ -46,14 +41,21 @@ class UsersControllerTest < ActionController::TestCase
 
   def test_update_fail_to_update
     before_password = user.password
+    new_password = "new_pass"
 
     put :update, params: {
       id: user.id, user: {
-        password: "new_pass", password_confirmation: "wrong_pass"
+        password: new_password, password_confirmation: "wrong_pass"
       }
     }
 
     assert_response 200
-    assert user.reload.valid_password?(before_password)
+    refute user.reload.valid_password?(new_password)
+  end
+
+  private
+
+  def user
+    @user ||= users(:asahi)
   end
 end

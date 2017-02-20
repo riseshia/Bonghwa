@@ -1,0 +1,25 @@
+luna:
+  login_id: luna
+  name: Luna
+  level: 999
+
+asahi:
+  login_id: asahi
+  name: Asahi
+  level: 1
+
+gnunu:
+  login_id: gnunu
+  name: Risona
+  level: 0
+
+minato:
+  login_id: minato
+  name: Minato
+  level: 1
+
+yachiyo:
+  login_id: yachiyo
+  name: Yachiyo
+  level: 1
+  legacy_password: hashed_password

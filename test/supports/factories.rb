@@ -1,56 +1,36 @@
 # frozen_string_literal: true
 module ActiveSupport
   class TestCase
-    def build_user(params = {})
-      default_params = {
-        login_id: "login_id",
-        name: "name",
-        password: "password",
-        level: 0
-      }
-      User.new(default_params.merge(params))
+    def say(user, text)
+      Firewood.create(user: user, user_name: user.name, contents: text)
     end
 
-    def create_user(params = {})
-      build_user(params).tap(&:save)
+    def public_system(text)
+      Firewood.create(user_id: 0, user_name: "Server", contents: text)
     end
 
-    def build_app(params = {})
-      default_params = {
-        home_name: "Bonghwa",
-        home_link: "/",
-        app_name: "App",
-        use_script: 1
-      }
-      App.new(default_params.merge(params))
+    def dm_system(text, user)
+      Firewood.create(
+        user_id: 0, user_name: "Server", is_dm: user.id, contents: text
+      )
     end
 
-    def create_app(params = {})
-      build_app(params).tap(&:save)
+    def mention(from_user, to_fw, text)
+      root_mt_id = to_fw.root_mt_id.zero? ? to_fw.id : to_fw.root_mt_id
+      prefix = to_fw.is_dm.zero? ? "@" : "!"
+      is_dm = to_fw.is_dm.zero? ? 0 : to_fw.user_id
+
+      Firewood.create(
+        user: from_user, user_name: from_user.name,
+        contents: "#{prefix}#{to_fw.user_name} #{text}",
+        prev_mt_id: to_fw.id, root_mt_id: root_mt_id, is_dm: is_dm
+      )
     end
 
-    def build_firewood(params = {})
-      default_params = {
-        is_dm: 0,
-        contents: "Contents",
-        root_mt_id: 0,
-        prev_mt_id: 0,
-        image: nil
-      }
-      Firewood.new(default_params.merge(params))
-    end
-
-    def create_firewood(params = {})
-      build_firewood(params).tap(&:save)
-    end
-
-    def build_info(params = {})
-      default_params = { infomation: "Information" }
-      Info.new(default_params.merge(params))
-    end
-
-    def create_info(params = {})
-      build_info(params).tap(&:save)
+    def dm(from_user, to_user, text)
+      Firewood.create(
+        user: from_user, dm_user: to_user, contents: "!#{to_user.name} #{text}"
+      )
     end
   end
 end

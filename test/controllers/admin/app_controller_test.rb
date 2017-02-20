@@ -4,9 +4,7 @@ require "test_helper"
 module Admin
   class AppControllerTest < ActionController::TestCase
     def setup
-      create_app
-      @user = create_user(level: 999)
-      sign_in @user
+      sign_in users(:luna)
     end
 
     def test_edit_returns_200

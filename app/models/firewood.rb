@@ -2,6 +2,15 @@
 # Firewood
 class Firewood < ApplicationRecord
   belongs_to :user, optional: true # for bot handling
+  belongs_to :root_mt, foreign_key: :root_mt_id,
+                       class_name: "Firewood",
+                       optional: true
+  belongs_to :prev_mt, foreign_key: :prev_mt_id,
+                       class_name: "Firewood",
+                       optional: true
+  belongs_to :dm_user, foreign_key: :is_dm,
+                       class_name: "User",
+                       optional: true
 
   mount_uploader :image, ImageUploader
   delegate :url, to: :image, prefix: true, allow_nil: true

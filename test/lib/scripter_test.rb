@@ -3,7 +3,7 @@ require "test_helper"
 
 class ScripterTest < ActiveSupport::TestCase
   def setup
-    @app = create_app
-    @user = create_user
+    @app = apps(:bonghwa)
+    @user = users(:asahi)
   end
 end

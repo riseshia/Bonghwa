@@ -10,5 +10,4 @@ before_script:
   - RAILS_ENV=test bin/rails db:create db:schema:load
 script:
   - bin/rails test
-  - bundle exec codeclimate-test-reporter
 install: bundle install --without production development

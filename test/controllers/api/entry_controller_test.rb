@@ -47,6 +47,32 @@ module Api
       assert_response 200
     end
 
+    def test_create_dm_without_content
+      assert_difference "Firewood.count", 2 do
+        post :create_dm, params: {
+          firewood: { prev_mt: 0, contents: "!#{user.name}" }
+        }, format: :json
+      end
+
+      assert_response 200
+    end
+
+    def test_create_dm_without_content_but_with_image
+      file = fixture_file_upload(
+        Rails.root.join("test", "assets", "test.jpg"), "image/jpeg"
+      )
+
+      assert_difference "Firewood.count" do
+        post :create_dm, params: {
+          firewood: { prev_mt: 0, contents: "!#{user.name}" },
+          image: file
+        }, format: :json
+      end
+
+      assert_response 200
+      assert JSON.parse(response.body).blank?
+    end
+
     def test_destroy_success
       fw = firewoods(:good_morning_from_asahi)
 

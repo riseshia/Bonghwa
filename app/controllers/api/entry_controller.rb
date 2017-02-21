@@ -16,10 +16,11 @@ module Api
 
     def create_dm
       contents = params[:firewood][:contents]
-      fw_parsed = contents.match('^!(\S+)\s(.+)') # parsing
+      fw_parsed = contents.match('^!(\S+)(\s(.+))?') # parsing
       enable_to_send = true
       message = ""
-      if fw_parsed.nil?
+
+      if params[:image].blank? && (fw_parsed.nil? || fw_parsed[2].nil?)
         message = "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
         enable_to_send = false
       else

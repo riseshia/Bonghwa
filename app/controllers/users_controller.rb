@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
     new_password = params[:user][:password]
     if new_password != params[:user][:password_confirmation]
-      render_edit(user, "password and confimation is different.")
+      render_edit(user, "password and confirmation is different.")
     else
       user.update!(password: new_password)
       redirect_edit(user, "User was successfully updated.")

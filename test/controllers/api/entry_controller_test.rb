@@ -64,8 +64,7 @@ module Api
 
       assert_difference "Firewood.count" do
         post :create_dm, params: {
-          firewood: { prev_mt: 0, contents: "!#{user.name}" },
-          image: file
+          firewood: { prev_mt: 0, contents: "!#{user.name}", image: file },
         }, format: :json
       end
 

@@ -5,7 +5,7 @@ class FirewoodForm extends React.Component {
     this.state = {
       maxCount: 150,
       value: "",
-      adultCheck: false,
+      adultFlg: false,
       prevMtId: 0,
       rootMtId: 0
     }
@@ -46,12 +46,12 @@ class FirewoodForm extends React.Component {
               <span className="btn btn-default btn-file" rel="tooltip" data-placement="right" data-original-title="5MB 이하. jpg, png, gif">
                 <span className="fileinput-new">{"Pic"}</span>
                 <span className="fileinput-exists">{"Change"}</span>
-                <input type="file" name="image" id="img" accept="image/*" />
+                <input type="file" name="firewood[image]" id="img" accept="image/*" />
               </span>
               <span className="fileinput-filename"></span>
               <a href="#" className="close fileinput-exists" data-dismiss="fileinput">{"×"}</a>
               {" "}
-              <input type="checkbox" checked={this.state.adultCheck} id="adult_check" onChange={this.handleCheckboxChange}/>
+              <input type="checkbox" checked={this.state.adultFlg} id="adult_flg" onChange={this.handleCheckboxChange}/>
               <span className="text-warning">{" 후방주의"}</span>
             </div>
             <div className="pull-right" id="div-submit">
@@ -77,7 +77,7 @@ class FirewoodForm extends React.Component {
       .addClass("fileinput-new")
     $(".fileinput-filename").html("")
     $commitBtn.button("reset")
-    this.setState({value: "", prevMtId: 0, rootMtId: 0, adultCheck: false})
+    this.setState({value: "", prevMtId: 0, rootMtId: 0, adultFlg: false})
   }
 
   _appendMt(names, targetId = 0, rootMtId = 0) {
@@ -118,7 +118,7 @@ class FirewoodForm extends React.Component {
           "firewood[contents]": this.state.value,
           "firewood[prev_mt_id]": this.state.prevMtId,
           "firewood[root_mt_id]": this.state.rootMtId,
-          "adult_check": this.state.adultCheck
+          "firewood[image_adult_flg]": this.state.adultFlg
         }
       }
       const options = _.extend({}, app.channel.ajaxBasicOptions, params)
@@ -142,7 +142,7 @@ class FirewoodForm extends React.Component {
 
   handleCheckboxChange(event) {
     const value = event.target.checked
-    this.setState({adultCheck: value})
+    this.setState({adultFlg: value})
     event.stopPropagation()
   }
 

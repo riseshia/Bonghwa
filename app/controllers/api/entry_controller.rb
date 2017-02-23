@@ -15,12 +15,12 @@ module Api
     end
 
     def create_dm
-      contents = params[:firewood][:contents]
+      contents = fw_params[:contents]
       fw_parsed = contents.match('^!(\S+)(\s(.+))?') # parsing
       enable_to_send = true
       message = ""
 
-      if params[:image].blank? && (fw_parsed.nil? || fw_parsed[2].nil?)
+      if fw_params[:image].blank? && (fw_parsed.nil? || fw_parsed[2].nil?)
         message = "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
         enable_to_send = false
       else
@@ -61,7 +61,7 @@ module Api
           Firewood.me(@user.id, 50)
         end
 
-      update_login_info(@user)
+      @user.update_login_info(Time.zone.now.to_i)
       infos = Info.all
       users = recent_users
 
@@ -87,7 +87,8 @@ module Api
         when "3" # Me
           Firewood.after(params[:after]).me(@user.id, limit)
         end
-      update_login_info(@user)
+
+      @user.update_login_info(Time.zone.now.to_i)
       users = recent_users
 
       render_json(firewoods, users)
@@ -107,7 +108,7 @@ module Api
                     Firewood.before(params[:before])
                             .me(@user.id, limit)
                   end
-      update_login_info(@user)
+      @user.update_login_info(Time.zone.now.to_i)
       users = recent_users
 
       render_json(firewoods, users)
@@ -125,10 +126,6 @@ module Api
       User.on_timeline(before_timestamp, now_timestamp)
     end
 
-    def update_login_info(user)
-      user.update_login_info(Time.zone.now.to_i)
-    end
-
     def render_empty_json
       render json: JSON.dump("")
     end
@@ -140,15 +137,11 @@ module Api
     end
 
     def fw_params
-      {
-        user_id: @user.id,
-        user_name: @user.name,
-        prev_mt_id: params[:firewood][:prev_mt_id],
-        root_mt_id: params[:firewood][:root_mt_id],
-        contents: params[:firewood][:contents],
-        image: params[:image],
-        image_adult_flg: params[:adult_check] || false
-      }
+      @ps ||= \
+        params.
+          require(:firewood).
+          permit(:prev_mt_id, :root_mt_id, :contents, :image, :image_adult_flg).
+          to_h.merge(user_id: @user.id, user_name: @user.name)
     end
   end
 end

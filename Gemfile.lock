@@ -140,7 +140,7 @@ GEM
     guard-minitest (2.4.6)
       guard-compat (~> 1.2)
       minitest (>= 3.0)
-    i18n (0.8.0)
+    i18n (0.8.1)
     jb (0.4.1)
       multi_json
     jquery-rails (4.2.2)
@@ -300,7 +300,7 @@ GEM
     term-ansicolor (1.4.0)
       tins (~> 1.0)
     thor (0.19.4)
-    thread_safe (0.3.5)
+    thread_safe (0.3.6)
     tilt (2.0.6)
     tins (1.13.2)
     tzinfo (1.2.2)

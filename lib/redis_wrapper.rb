@@ -70,12 +70,4 @@ module RedisWrapper
   def del(key)
     instance.del("#{servername}:#{key}")
   end
-
-  def clean
-    del("fws")
-    del("app-infos")
-    del("app-data")
-    del("app-links")
-    del("active-users")
-  end
 end

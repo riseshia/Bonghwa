@@ -7,44 +7,50 @@ class FirewoodTest < ActiveSupport::TestCase
     asahi = users(:asahi)
     fw = firewoods(:good_morning_from_luna)
 
-    assert_difference "Firewood.mention(luna.id, luna.name, 5).count" do
+    assert_difference "Firewood.mention(luna, 5).count" do
       mention asahi, fw, "おはようございます。"
     end
+    assert_equal 1, Firewood.mention(luna, 1).count
   end
 
   def test_scope_mention_with_dm
     luna = users(:luna)
     asahi = users(:asahi)
 
-    assert_difference "Firewood.mention(luna.id, luna.name, 5).count" do
+    assert_difference "Firewood.mention(luna, 5).count" do
       dm asahi, luna, "ルナ様への初メールです！"
     end
+    assert_equal 1, Firewood.mention(luna, 1).count
   end
 
   def test_scope_me
     asahi = users(:asahi)
 
-    assert_difference "Firewood.me(asahi.id, 10).count" do
+    assert_difference "Firewood.me(asahi, 10).count" do
       say asahi, "皆さん、おはようございます！"
     end
-    assert_equal 1, Firewood.me(asahi.id, 1).count
+    assert_equal 1, Firewood.me(asahi, 1).count
   end
 
   def test_trace
     asahi = users(:asahi)
 
-    assert_difference "Firewood.trace(asahi.id, 10).count" do
+    assert_difference "Firewood.trace(asahi, 10).count" do
       say asahi, "皆さん、おはようございます！"
     end
-    assert_equal 1, Firewood.trace(asahi.id, 1).count
+    assert_equal 1, Firewood.trace(asahi, 1).count
   end
 
   def test_scope_after
     asahi = users(:asahi)
 
-    assert_difference "Firewood.after(0, 10).count" do
+    assert_difference "Firewood.after(0).count" do
       say asahi, "皆さん、おはようございます！"
     end
+  end
+
+  def test_scope_after_with_no_param
+    refute Firewood.after.to_sql.include? "WHERE"
   end
 
   def test_scope_before
@@ -54,6 +60,10 @@ class FirewoodTest < ActiveSupport::TestCase
     assert_difference "Firewood.before(second_last.id + 100).count" do
       say asahi, "朝食の用意ができております。"
     end
+  end
+
+  def test_scope_before_with_no_param
+    refute Firewood.before.to_sql.include? "WHERE"
   end
 
   def test_mts_of_returns_correct_normal_fw

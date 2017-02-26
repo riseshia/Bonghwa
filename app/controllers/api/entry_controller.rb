@@ -48,76 +48,40 @@ module Api
       render_empty_json
     end
 
-    # Get recent 50 firewood from now
     def now
-      type = params[:type]
-      firewoods = \
-        case type
-        when "1" # Now
-          Firewood.trace(@user.id, 50)
-        when "2" # Mt
-          Firewood.mention(@user.id, @user.name, 50)
-        when "3" # Me
-          Firewood.me(@user.id, 50)
-        end
-
-      @user.update_login_info(Time.zone.now.to_i)
-      infos = Info.all
-      users = recent_users
-
-      render_json(firewoods, users, infos)
+      render_timeline(50, @user)
     end
 
     def mts
-      mts = Firewood.mts_of(params[:root_mt_id], @user.id, params[:target_id])
-      render_json(mts)
+      render_json(
+        Firewood.mts_of(params[:root_mt_id], @user.id, params[:target_id])
+      )
     end
 
-    # after 이후의 장작을 최대 1000개까지 내림차순으로 받아온다.
     def pulling
-      type = params[:type]
-      limit = 1000
-
-      firewoods = \
-        case type
-        when "1" # Now
-          Firewood.after(params[:after]).trace(@user.id, limit)
-        when "2" # Mt
-          Firewood.after(params[:after]).mention(@user.id, @user.name, limit)
-        when "3" # Me
-          Firewood.after(params[:after]).me(@user.id, limit)
-        end
-
-      @user.update_login_info(Time.zone.now.to_i)
-      users = recent_users
-
-      render_json(firewoods, users)
+      render_timeline(1000, @user)
     end
 
     def trace
-      limit = limit_count_to_50 params[:count].to_i # Limit maximum size
-      type = params[:type]
-
-      firewoods = case type
-                  when "1" # Now
-                    Firewood.before(params[:before]).trace(@user.id, limit)
-                  when "2" # Mt
-                    Firewood.before(params[:before])
-                            .mention(@user.id, @user.name, limit)
-                  when "3" # Me
-                    Firewood.before(params[:before])
-                            .me(@user.id, limit)
-                  end
-      @user.update_login_info(Time.zone.now.to_i)
-      users = recent_users
-
-      render_json(firewoods, users)
+      limit = params[:count].to_i.clamp(0, 50) # Limit maximum size
+      render_timeline(limit, @user)
     end
 
     private
 
-    def limit_count_to_50(number)
-      number > 50 ? 50 : number
+    def render_timeline(limit, user)
+      scope = Firewood.fetch_scope_for_type(params[:type])
+      firewoods =
+        Firewood.
+        before(params[:before]).
+        after(params[:after]).
+        send(scope, @user, limit)
+
+      user.update_login_info(Time.zone.now.to_i)
+      users = recent_users
+      infos = Info.all
+
+      render_json(firewoods, users, infos)
     end
 
     def recent_users

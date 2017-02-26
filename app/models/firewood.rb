@@ -16,16 +16,16 @@ class Firewood < ApplicationRecord
   delegate :url, to: :image, prefix: true, allow_nil: true
 
   # Public Scope
-  scope :mention, lambda { |user_id, user_name, count|
-    where("is_dm = ? OR contents like ?", user_id, "%@#{user_name}%")
+  scope :mention, lambda { |user, count|
+    where("is_dm = ? OR contents like ?", user.id, "%@#{user.name}%")
       .order_by_id
       .limit(count)
   }
-  scope :me, lambda { |user_id, limit|
-    where(user_id: user_id).order_by_id.limit(limit)
+  scope :me, lambda { |user, limit|
+    where(user_id: user.id).order_by_id.limit(limit)
   }
-  scope :trace, lambda { |user_id, limit|
-    visible_by(user_id).order_by_id.limit(limit)
+  scope :trace, lambda { |user, limit|
+    visible_by(user.id).order_by_id.limit(limit)
   }
   scope :mts_of, lambda { |root_mt_id, user_id, target_id, limit_num = 5|
     before(target_id)
@@ -35,8 +35,8 @@ class Firewood < ApplicationRecord
       .limit(limit_num)
   }
   scope :order_by_id, -> { order(id: :desc) }
-  scope :after, ->(id) { where("id > ?", id) }
-  scope :before, ->(id) { where("id < ?", id) }
+  scope :after, ->(id) { where("id > ?", id) if id }
+  scope :before, ->(id) { where("id < ?", id) if id }
 
   # Private Scope
   scope :visible_by, lambda { |user_id|
@@ -44,6 +44,13 @@ class Firewood < ApplicationRecord
   }
 
   validates :image, file_size: { less_than: 5.megabytes }
+  validate :validate_dm, on: :dm
+
+  TYPE_TO_SCOPE = {
+    "1" => :trace,
+    "2" => :mention,
+    "3" => :me
+  }
 
   # Class Method
   def self.system_dm(params)
@@ -53,6 +60,10 @@ class Firewood < ApplicationRecord
       contents: params[:message],
       is_dm: params[:user_id]
     )
+  end
+
+  def self.fetch_scope_for_type(type)
+    TYPE_TO_SCOPE[type]
   end
 
   def cmd?

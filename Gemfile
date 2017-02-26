@@ -25,6 +25,8 @@ gem "carrierwave", "~> 1.0"
 gem "carrierwave-bombshelter"
 gem "file_validators"
 
+gem "newrelic_rpm"
+
 group :development, :test do
   gem "byebug"
 end

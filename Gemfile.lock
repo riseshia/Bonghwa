@@ -172,6 +172,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
+    newrelic_rpm (3.18.1.330)
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
@@ -349,6 +350,7 @@ DEPENDENCIES
   minitest-rails
   mock_redis
   mysql2 (~> 0.4)
+  newrelic_rpm
   poltergeist
   puma
   rails (= 5.0.1)

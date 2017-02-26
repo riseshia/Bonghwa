@@ -17,27 +17,20 @@ module Api
     def create_dm
       contents = fw_params[:contents]
       fw_parsed = contents.match('^!(\S+)(\s(.+))?') # parsing
-      enable_to_send = true
-      message = ""
 
-      if fw_params[:image].blank? && (fw_parsed.nil? || fw_parsed[2].nil?)
-        message = "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 양식으로 작성해주세요."
-        enable_to_send = false
-      else
-        dm_user = User.find_by(name: fw_parsed[1]) # user check
+      raise "잘못된 DM 명령입니다. '!상대 보내고 싶은 내용'이라는 " \
+            "양식으로 작성해주세요." \
+        if fw_params[:image].blank? && (fw_parsed.nil? || fw_parsed[2].nil?)
+
+      dm_user = User.find_by(name: fw_parsed[1]) # user check
+      raise "존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요." \
         if dm_user.nil?
-          message = "존재하지 않는 상대입니다. 정확한 닉네임으로 보내보세요."
-          enable_to_send = false
-        end
-      end
 
-      Firewood.create(
-        { is_dm: enable_to_send ? dm_user.id : @user.id }.merge(fw_params)
-      )
-
-      Firewood.system_dm(user_id: @user.id, message: message) \
-        if !enable_to_send && @user.id.nonzero?
-
+      Firewood.create({ is_dm: dm_user.id }.merge(fw_params))
+    rescue Exception => e
+      Firewood.create({ is_dm: @user.id }.merge(fw_params))
+      Firewood.system_dm(user_id: @user.id, message: e.message)
+    ensure
       render_empty_json
     end
 

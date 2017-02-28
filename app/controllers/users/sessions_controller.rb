@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 module Users
+  # SessionsController
   class SessionsController < Devise::SessionsController
     skip_before_action :block_unconfirmed
     skip_before_action :set_current_user
@@ -15,8 +16,7 @@ module Users
     # POST /resource/sign_in
     def create
       super
-      current_user.recent_login = Time.zone.now
-      current_user.save
+      current_user.update(recent_login: Time.zone.now)
     end
 
     # DELETE /resource/sign_out

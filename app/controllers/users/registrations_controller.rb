@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 module Users
+  # SessionsController
   class RegistrationsController < Devise::RegistrationsController
     skip_before_action :block_unconfirmed
     skip_before_action :set_current_user
@@ -51,7 +52,8 @@ module Users
 
     # If you have extra params to permit, append them to the sanitizer.
     def configure_account_update_params
-      devise_parameter_sanitizer.permit(:account_update, keys: [:login_id, :name])
+      devise_parameter_sanitizer.permit(:account_update,
+                                        keys: [:login_id, :name])
     end
 
     # The path used after sign up.

@@ -7,8 +7,8 @@ module Users
       request.env["devise.mapping"] = Devise.mappings[:user]
     end
 
-    def test_create_returns_200
-      t = Time.zone.now
+    def test_create_refresh_timestamp
+      t = Time.zone.now - 1.second
       asahi = users(:asahi)
       password = "password"
       asahi.update(password: "password")
@@ -17,7 +17,7 @@ module Users
         user: { login_id: asahi.login_id, password: password, remember_me: 0 }
       }
       assert_response 302
-      assert asahi.reload.recent_login > t
+      assert asahi.reload.recent_login >= t
     end
 
     def test_destroy_session

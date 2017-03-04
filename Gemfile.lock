@@ -115,7 +115,7 @@ GEM
     erubis (2.7.0)
     execjs (2.7.0)
     fastimage (2.1.0)
-    ffi (1.9.17)
+    ffi (1.9.18)
     figaro (1.1.1)
       thor (~> 0.14)
     file_validators (2.1.0)

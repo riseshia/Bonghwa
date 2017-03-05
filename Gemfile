@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 source "https://rubygems.org"
 
-gem "rails", "5.0.1"
+gem "rails", "5.0.2"
 gem "puma"
 gem "sqlite3"
 gem "mysql2", "~> 0.4"

@@ -81,7 +81,7 @@ class Firewood extends React.Component {
   }
 
   render() {
-    const contentsNodes = this.props.contents.split(" ").
+    const contentsNodes = this.props.contents.split(/\s/).
     map(token => {
       if (_.isString(token) && this.isMtTarget(token)) {
         return (

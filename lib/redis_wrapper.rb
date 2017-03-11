@@ -51,22 +51,6 @@ module RedisWrapper
     instance.expire("#{servername}:#{key}", time)
   end
 
-  def zrange(key, start_idx, end_idx)
-    instance.zrange("#{servername}:#{key}", start_idx, end_idx)
-  end
-
-  def zrevrangebyscore(key, options, ids)
-    instance.zrevrangebyscore("#{servername}:#{key}", options, ids)
-  end
-
-  def zremrangebyscore(key, from, to)
-    instance.zremrangebyscore("#{servername}:#{key}", from, to)
-  end
-
-  def zremrangebyrank(key, from, to)
-    instance.zremrangebyrank("#{servername}:#{key}", from, to)
-  end
-
   def del(key)
     instance.del("#{servername}:#{key}")
   end

@@ -47,8 +47,17 @@ window.app = {
       }),
       document.getElementById("firewoods-react")
     )
+
+    let formProps = {}
+    if (localStorage) {
+      const cache = localStorage.getItem("form_cache")
+      if (cache) {
+        formProps = JSON.parse(cache)
+      }
+    }
+    formProps.originTitle = app.originTitle
     ReactDOM.render(
-      React.createElement(FirewoodForm, {originTitle: app.originTitle}),
+      React.createElement(FirewoodForm, formProps),
       document.getElementById("new_firewood")
     )
     ReactDOM.render(

@@ -3,11 +3,11 @@ class FirewoodForm extends React.Component {
     super(props)
 
     this.state = {
-      maxCount: 150,
-      value: "",
-      adultFlg: false,
-      prevMtId: 0,
-      rootMtId: 0
+      maxCount: this.props.maxCount || 150,
+      value: this.props.value || "",
+      adultFlg: this.props.adultFlg || false,
+      prevMtId: this.props.prevMtId || 0,
+      rootMtId: this.props.rootMtId || 0
     }
 
     window.ajaxSuccess = this._formClear.bind(this)
@@ -105,6 +105,10 @@ class FirewoodForm extends React.Component {
     return false
   }
 
+  componentDidUpdate() {
+    this.cacheState()
+  }
+
   handleSubmit(event) {
     event.preventDefault()
     const $title = $("title")
@@ -149,5 +153,11 @@ class FirewoodForm extends React.Component {
   handleChange(event) {
     this.setState({value: event.target.value})
     event.stopPropagation()
+  }
+
+  cacheState() {
+    if(!localStorage) { return }
+
+    localStorage.setItem("form_cache", JSON.stringify(this.state))
   }
 }

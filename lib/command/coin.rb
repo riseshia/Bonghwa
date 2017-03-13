@@ -4,6 +4,10 @@ module Command
   module Coin
     module_function
 
+    def matched?(input)
+      input == "/코인"
+    end
+
     def run(params)
       script = params[:script]
       if script.args.empty?

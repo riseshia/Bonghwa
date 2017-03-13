@@ -4,6 +4,10 @@ module Command
   module Nickname
     module_function
 
+    def matched?(input)
+      "/닉" == input
+    end
+
     def run(params)
       script = params[:script]
       user = User.find(params[:user].id)

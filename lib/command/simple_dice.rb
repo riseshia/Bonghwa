@@ -4,6 +4,10 @@ module Command
   module SimpleDice
     module_function
 
+    def matched?(input)
+      "/주사위" == input
+    end
+
     def run(params)
       args = params[:script].args
       return "명령어는 '/주사위 {면수:생략시 6}'입니다." if args.size > 1

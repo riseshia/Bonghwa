@@ -4,6 +4,10 @@ module Command
   module RemoveInfo
     module_function
 
+    def matched?(input)
+      "/공지삭제" == input
+    end
+
     def run(params)
       script = params[:script]
       user = params[:user]

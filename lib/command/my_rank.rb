@@ -4,6 +4,10 @@ module Command
   module MyRank
     module_function
 
+    def matched?(input)
+      "/내등수" == input
+    end
+
     def run(params)
       script = params[:script]
       user = params[:user]

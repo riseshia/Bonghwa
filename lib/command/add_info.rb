@@ -4,6 +4,10 @@ module Command
   module AddInfo
     module_function
 
+    def matched?(input)
+      input == "/공지추가"
+    end
+
     def run(params)
       script = params[:script]
       user = params[:user]

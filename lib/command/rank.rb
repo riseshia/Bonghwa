@@ -4,6 +4,10 @@ module Command
   module Rank
     module_function
 
+    def matched?(input)
+      "/등수" == input
+    end
+
     def run(params)
       script = params[:script]
       if script.args.empty?

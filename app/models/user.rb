@@ -12,8 +12,10 @@ class User < ApplicationRecord
 
   before_create :default_recent_login
 
-  def self.on_timeline(from, to)
-    RedisWrapper.zrangebyscore("active-users", from, to)
+  # Admit last 20 second footprint is active
+  def self.on_timeline(at_dt)
+    before_20_sec = at_dt - 20
+    RedisWrapper.zrangebyscore("active-users", before_20_sec, at_dt)
                 .sort.map { |user_name| { "name" => user_name } }
   end
 

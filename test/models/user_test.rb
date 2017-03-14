@@ -130,11 +130,11 @@ class UserTest < ActiveSupport::TestCase
     user_name = "asahi"
     RedisWrapper.zadd("active-users", ts, user_name)
     [
-      [ts - 20, ts - 10, []],
-      [ts - 10, ts + 10, [{ "name" => user_name }]],
-      [ts + 10, ts + 20, []]
-    ].each do |from_ts, to_ts, expected|
-      assert_equal expected, User.on_timeline(from_ts, to_ts)
+      [ts - 10, []],
+      [ts + 10, [{ "name" => user_name }]],
+      [ts + 30, []]
+    ].each do |to_ts, expected|
+      assert_equal expected, User.on_timeline(to_ts)
     end
   end
 end

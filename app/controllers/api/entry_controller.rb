@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # Api::BaseController
 module Api
+  # EntryController
   class EntryController < Api::BaseController
     def create
       Firewood.create!(fw_params)
@@ -65,10 +66,10 @@ module Api
     def render_timeline(limit, user)
       scope = Firewood.fetch_scope_for_type(params[:type])
       firewoods =
-        Firewood.
-        before(params[:before]).
-        after(params[:after]).
-        send(scope, @user, limit)
+        Firewood
+        .before(params[:before])
+        .after(params[:after])
+        .send(scope, @user, limit)
 
       user.update_login_info(Time.zone.now.to_i)
       users = recent_users
@@ -79,8 +80,7 @@ module Api
 
     def recent_users
       now_timestamp = Time.zone.now.to_i
-      before_timestamp = now_timestamp - 40
-      User.on_timeline(before_timestamp, now_timestamp)
+      User.on_timeline(now_timestamp)
     end
 
     def render_empty_json
@@ -94,11 +94,11 @@ module Api
     end
 
     def fw_params
-      @ps ||= \
-        params.
-          require(:firewood).
-          permit(:prev_mt_id, :root_mt_id, :contents, :image, :image_adult_flg).
-          to_h.merge(user_id: @user.id, user_name: @user.name)
+      @ps ||=
+        params
+        .require(:firewood)
+        .permit(:prev_mt_id, :root_mt_id, :contents, :image, :image_adult_flg)
+        .to_h.merge(user_id: @user.id, user_name: @user.name)
     end
   end
 end

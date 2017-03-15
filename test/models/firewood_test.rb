@@ -53,6 +53,23 @@ class FirewoodTest < ActiveSupport::TestCase
     refute Firewood.after.to_sql.include? "WHERE"
   end
 
+  def test_scope_after_or_equal
+    asahi = users(:asahi)
+
+    base_fw = say asahi, "皆さん、おはようございます！"
+    assert_difference "Firewood.after_or_equal(base_fw.id + 1).count" do
+      say asahi, "皆さん、おはようございます！" # id + 1
+    end
+
+    assert_no_difference "Firewood.after_or_equal(base_fw.id + 3).count" do
+      say asahi, "皆さん、おはようございます！" # id + 2
+    end
+  end
+
+  def test_scope_after_or_equal_with_no_param
+    refute Firewood.after_or_equal.to_sql.include? "WHERE"
+  end
+
   def test_scope_before
     asahi = users(:asahi)
     second_last = say asahi, "皆さん、おはようございます！"

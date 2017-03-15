@@ -28,7 +28,8 @@ class Firewood < ApplicationRecord
     visible_by(user.id).order_by_id.limit(limit)
   }
   scope :mts_of, lambda { |root_mt_id, user_id, target_id, limit_num = 5|
-    before(target_id)
+    after_or_equal(root_mt_id)
+      .before(target_id)
       .where("root_mt_id = :fw_id OR id = :fw_id", fw_id: root_mt_id)
       .visible_by(user_id)
       .order_by_id
@@ -36,6 +37,7 @@ class Firewood < ApplicationRecord
   }
   scope :order_by_id, -> { order(id: :desc) }
   scope :after, ->(id) { where("id > ?", id) if id }
+  scope :after_or_equal, ->(id) { where("id >= ?", id) if id }
   scope :before, ->(id) { where("id < ?", id) if id }
 
   # Private Scope

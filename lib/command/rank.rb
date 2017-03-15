@@ -11,9 +11,9 @@ module Command
     def run(params)
       script = params[:script]
       if script.args.empty?
-        rs = Firewood.select("user_name, count(*) as count")
+        rs = Firewood.select("user_name, count(id) as count")
                      .where("created_at > ?", Time.zone.now - 1.month)
-                     .group("user_id")
+                     .group(:user_name)
                      .order("count DESC")
                      .limit(5)
         rs.map.with_index do |row, index|

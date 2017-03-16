@@ -4,65 +4,63 @@
 
 body {
   -webkit-appearance: none;
-  padding-top: 50px;
   background-color: rgb(247, 247, 249);
+  padding-top: 50px;
 }
 
 a {
-  color:rgb(0,0,0);
+  color: #000000;
 }
 
 .container-fluid {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 ul.navbar-right {
-  margin-right: 0px;
+  margin-right: 0;
 }
 
 .row {
-  padding-left: 0px;
-  padding-right: 0px;
-  margin-left: 0px;
-  margin-right: 0px;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 #div-form {
-  padding-top: 5px;
+  background-color: #d9edf7;
   padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
-  background-color: #d9edf7;
+  padding-top: 5px;
 
   .form-group {
-    margin-left: 0px;
-    margin-right: 0px;
     margin-bottom: 5px;
+    margin-left: 0;
+    margin-right: 0;
+
     .col-sm-12 {
-      padding-left: 0px;
-      padding-right: 0px;
+      padding-left: 0;
+      padding-right: 0;
     }
-  }
-  [contentEditable=true]:empty:not(:focus):before{
-    content:attr(data-ph)
   }
 }
 
 .cut-side-padding {
-  padding-left: 0px;
-  padding-right: 0px; 
-  margin-top: 0px; 
+  margin-top: 0; 
+  padding-left: 0;
+  padding-right: 0; 
 }
 
 #contents {
-  white-space: pre-wrap;       /* css-3 */
-  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-  white-space: -pre-wrap;      /* Opera 4-6 */
-  white-space: -o-pre-wrap;    /* Opera 7 */
-  word-wrap: break-word; 
-  min-height: 34px;
   height: initial;
+  min-height: 34px;
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: pre-wrap;       /* css-3 */
+  word-wrap: break-word; 
 }
 
 .bw-text-empty #contents {
@@ -71,24 +69,24 @@ ul.navbar-right {
 
 #notice_stack_new {
   color: rgb(10,10,10);
-  line-height: 2.0;
+  line-height: 2;
 }
 
 #timeline_stack {
-  text-align: center;
   background-color: rgb(66, 139, 202);
+  text-align: center;
 
   .reconnect {
     text-decoration: underline;
 
     &:hover {
-      color: black;
+      color: #000000;
     }
   }
 }
 
 .tagged {
-  background-color: #E5F8FF;
+  background-color: #e5f8ff;
 }
 
 .wrapper > .col-md-3 {
@@ -96,13 +94,13 @@ ul.navbar-right {
 }
 
 .firewood {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
   word-wrap: break-word;
-}
 
-.firewood.is_dm {
-  color: #888;
+  .is_dm {
+    color: #888;
+  }
 }
 
 .time {
@@ -110,7 +108,7 @@ ul.navbar-right {
 }
 
 .has-image, .delete, .link_url, .fw-tag {
-  color: #3A87AD;
+  color: #3a87ad;
 }
 
 .last_top {
@@ -119,32 +117,33 @@ ul.navbar-right {
 
 #timeline {
   .list-group-item {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-    border-left-width: 0px;
-    border-right-width: 0px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 
-    .col-md-10, .col-md-2 {
+    .col-md-10,
+    .col-md-2 {
       padding-left: 5px;
       padding-right: 5px;
     }
   }
 
   .div-firewood {
-    padding-top: 3px;
     padding-bottom: 3px;
     padding-left: 5px;
     padding-right: 5px;
+    padding-top: 3px;
 
     .img-content .img-standard {
-      max-width:640px;
-      max-height:390px;
+      max-height: 390px;
+      max-width: 640px;
     }
 
     .img-content .img-mobile {
-      max-width:100%;
+      max-width: 100%;
     }
 
     .img-content p {
@@ -152,22 +151,22 @@ ul.navbar-right {
     }
 
     .div-mention {
-      border-top: 0px;
-      border-bottom: 0px;
-      padding-top: 0px;
-      padding-bottom: 0px;
-      padding-left: 10px;
-      padding-right: 0px;
       background-color: transparent;
+      border-bottom: 0;
+      border-top: 0;
+      padding-bottom: 0;
+      padding-left: 10px;
+      padding-right: 0;
+      padding-top: 0;
     }
   }
 }
 
 .div-username {
-  padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 5px;
   padding-right: 5px;
+  padding-top: 1px;
 }
 
 .text-warning {
@@ -175,31 +174,30 @@ ul.navbar-right {
 }
 
 .top-fixed {
-  width: 100%;
-  top: 0px;
   background-color: rgb(217, 237, 247);
   border-bottom: 1px solid #ccc;
-
   margin-top: -70px;
-  padding-top: 80px;
   padding-bottom: 10px;
+  padding-top: 80px;
+  top: 0;
+  width: 100%;
 
   h4 {
-    margin-top: 0px;
+    margin-top: 0;
   }
 }
 
 .alert {
+  display: none;
   min-width: 100px;
   padding: 3px;
   position: fixed;
   z-index: 99;
-  display: none;
 }
 
 #mobileNavmenu {
   background-color: #222;
-  border-left: 0px;
+  border-left: 0;
   width: 200px;
 
   .navmenu-brand {
@@ -210,19 +208,21 @@ ul.navbar-right {
     a {
       color: #ddd;
     }
+
     a:hover {
       color: #fff;
     }
   }
+
   li.active > a {
     background-color: #777;
   }
 
   #users-mobile {
-    padding-top: 10px;
-    padding-left: 15px;
-    padding-bottom: 5px;
     background-color: #eee;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-top: 10px;
   }
 
   dl {
@@ -230,11 +230,13 @@ ul.navbar-right {
     margin-top: 5px;
 
     dd {
-      margin-bottom: 5px;   
+      margin-bottom: 5px;
       margin-left: 10px;
+
       a {
         color: #111;
       }
+
       a:hover {
         color: #333;
       }
@@ -243,37 +245,35 @@ ul.navbar-right {
 }
 
 #mobile-userlist-div {
-  padding-top: 50px;
-
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
+  bottom: 0;
   font-size: 1.3em;
-  overflow:auto;
+  height: 100%;
+  overflow: auto;
+  padding-top: 50px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
 
   ul {
-    padding-top: 10px;
     padding-left: 15px;
     padding-right: 15px;
+    padding-top: 10px;
   }
 }
 
 .mobile-userlist-trigger {
-  position: fixed;
-  top: 80%;
-  right: 0px;
-  padding: 3px 5px 2px 5px;
-  margin-right: 15px;
-
   background-color: #ddd;
+  margin-right: 15px;
+  padding: 3px 5px 2px;
+  position: fixed;
+  right: 0;
+  top: 80%;
 
   span {
-    font-size: 2.0em;
+    color: #4a97bd;
+    font-size: 2em;
     text-align: right;
-    color: #4A97BD;
   }
 }
 
@@ -286,19 +286,22 @@ ul.navbar-right {
 }
 
 .blinking {
-  animation:blink 1s ease-in-out infinite alternate;
+  animation: blink 1s ease-in-out infinite alternate;
 }
+
 @-webkit-keyframes blink{
-  0% {opacity:0;}
-  100% {opacity:1;}
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
+
 @-moz-keyframes blink{
-  0% {opacity:0;}
-  100% {opacity:1;}
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
+
 @keyframes blink{
-  0% {opacity:0;}
-  100% {opacity:1;}
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
 
 .text-small {

@@ -11,15 +11,14 @@ AllCops:
     - '**/Rakefile'
   Exclude:
     - 'bin/**/*'
-    - 'db/**/*'
     - 'config/**/*'
-    - 'script/**/*'
-    - 'bin/**'
+    - 'db/**/*'
     - 'log/**/*'
     - 'public/**/*'
+    - 'script/**/*'
+    - 'test/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
-    - 'node_modules/**/*'
   UseCache: false
   DisplayStyleGuide: true
   TargetRubyVersion: 2.3

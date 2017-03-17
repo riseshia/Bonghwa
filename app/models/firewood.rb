@@ -52,7 +52,7 @@ class Firewood < ApplicationRecord
     "1" => :trace,
     "2" => :mention,
     "3" => :me
-  }
+  }.freeze
 
   # Class Method
   def self.system_dm(params)

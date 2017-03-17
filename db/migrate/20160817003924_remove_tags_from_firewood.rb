@@ -1,7 +1,7 @@
 class RemoveTagsFromFirewood < ActiveRecord::Migration
   def up
     add_column :attaches, :adult_flg, :boolean, default: false, null: false
-    
+
     Firewood.where.not(attach_id: 0).find_each do |firewood|
       attach = firewood.attach
       adult_tag = " <span class='has-image text-warning'>" \

@@ -90,7 +90,8 @@ class FirewoodTest < ActiveSupport::TestCase
     second_last = mention asahi, fw, "朝食の用意ができております。"
     last = mention luna, second_last, "わかった。すぐ行く。"
 
-    be_one = Firewood.mts_of(second_last.root_mt_id, luna.id, second_last.id).count
+    be_one =
+      Firewood.mts_of(second_last.root_mt_id, luna.id, second_last.id).count
     assert_equal 1, be_one
     be_two = Firewood.mts_of(last.root_mt_id, asahi.id, last.id).count
     assert_equal 2, be_two

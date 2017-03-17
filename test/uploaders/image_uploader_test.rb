@@ -18,11 +18,11 @@ class ImageUploderTest < ActiveSupport::TestCase
     @uploader.remove!
   end
 
-  def test_uploaded_file_has_correct_format
+  def test_uploaded_file_has_correct_content_type
     assert_equal "image/jpeg", @uploader.content_type
   end
 
-  def test_uploaded_file_has_correct_format
+  def test_uploaded_file_has_correct_time_format
     tz = Time.zone.now
     assert @uploader.filename.start_with?(tz.strftime("%Y%m%d"))
   end

@@ -12,7 +12,7 @@ module Command
       regexp = /개\)/
       assert_match regexp, Rank.run(dummy_params)
     end
-    
+
     private
 
     def dummy_params(args = [])

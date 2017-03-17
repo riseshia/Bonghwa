@@ -70,7 +70,6 @@ class UserTest < ActiveSupport::TestCase
 
   def test_valid_password_returns_true_with_legacy
     user = users(:yachiyo)
-    hashed_password = user.legacy_password
     old_password = "old_password"
 
     BCrypt::Password.stub(:new, old_password) do
@@ -83,7 +82,6 @@ class UserTest < ActiveSupport::TestCase
 
   def test_valid_password_returns_false_with_legacy
     user = users(:yachiyo)
-    hashed_password = "the other hashed string"
     wrong_password = "wrong_password"
     correct_password = "old_password"
 
@@ -120,7 +118,7 @@ class UserTest < ActiveSupport::TestCase
     user = users(:asahi)
     user.update_login_info(ts)
     users = RedisWrapper.zrangebyscore("active-users", ts - 10, ts + 10)
-                        .sort.map { |user| { "name" => user } }
+                        .sort.map { |u| { "name" => u } }
 
     assert_includes users, "name" => user.name
   end

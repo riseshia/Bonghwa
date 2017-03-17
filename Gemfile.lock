@@ -61,6 +61,8 @@ GEM
     capistrano-bundler (1.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
+    capistrano-nvm (0.0.6)
+      capistrano (~> 3.1)
     capistrano-rails (1.2.3)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
@@ -145,6 +147,7 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (2.0.3)
+    libv8 (3.16.14.19)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -254,6 +257,7 @@ GEM
       redis-store (~> 1.2.0)
     redis-store (1.2.0)
       redis (>= 2.2)
+    ref (2.0.0)
     require_all (1.4.0)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
@@ -297,6 +301,9 @@ GEM
       net-ssh (>= 2.8.0)
     term-ansicolor (1.4.0)
       tins (~> 1.0)
+    therubyracer (0.12.3)
+      libv8 (~> 3.16.14.15)
+      ref
     thor (0.19.4)
     thread_safe (0.3.6)
     tilt (2.0.6)
@@ -328,6 +335,7 @@ DEPENDENCIES
   byebug
   capistrano
   capistrano-bundler
+  capistrano-nvm
   capistrano-rails
   capistrano-rbenv
   capistrano-secrets-yml (~> 1.0.0)
@@ -362,6 +370,7 @@ DEPENDENCIES
   sprockets (>= 3.0.0)
   sprockets-es6
   sqlite3
+  therubyracer
   uglifier
   web-console (~> 2.0)
   will_paginate

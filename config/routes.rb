@@ -12,6 +12,8 @@ class DmConstraint
 end
 
 Rails.application.routes.draw do
+  get 'frontend/index'
+
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations"
@@ -25,6 +27,7 @@ Rails.application.routes.draw do
   end
 
   root to:  "view#timeline"
+  get :app, to: redirect("app.html")
 
   namespace :admin do
     resources :users, except: [:destroy, :new, :create] do

@@ -6,6 +6,7 @@ gem "puma"
 gem "sqlite3"
 gem "mysql2", "~> 0.4"
 
+gem "therubyracer"
 gem "sprockets", ">= 3.0.0"
 gem "sprockets-es6"
 gem "react-rails"
@@ -44,6 +45,7 @@ group :development do
   gem "capistrano",             require: false
   gem "capistrano-rbenv",       require: false
   gem "capistrano-rails",       require: false
+  gem "capistrano-nvm",       require: false
   gem "capistrano-bundler",     require: false
   gem "capistrano-secrets-yml", "~> 1.0.0", require: false
   gem "capistrano3-puma",       require: false

@@ -29,7 +29,8 @@ class User < ApplicationRecord
 
   def lvup!
     return unless unconfirmed?
-    update_column(:level, 1)
+    update(level: 1)
+    RedisWrapper.del("session-#{id}")
   end
 
   def update_nickname(new_name)

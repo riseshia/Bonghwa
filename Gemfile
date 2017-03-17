@@ -3,28 +3,40 @@ source "https://rubygems.org"
 
 gem "rails", "5.0.2"
 gem "puma"
-gem "sqlite3"
-gem "mysql2", "~> 0.4"
 
 gem "therubyracer"
 gem "sprockets", ">= 3.0.0"
 gem "sprockets-es6"
 gem "react-rails"
+gem "jquery-rails"
 
-gem "jb"
 
 gem "sass-rails"
 gem "uglifier"
-gem "jquery-rails"
-gem "bcrypt"
-gem "redis", "3.3.1"
-gem "redis-rails"
-gem "will_paginate"
+
+gem "jb"
+
+gem "kaminari"
+
+# Environment Variable
 gem "figaro"
+
+# Auth
 gem "devise"
+gem "bcrypt"
+
+# Fileupload
 gem "carrierwave", "~> 1.0"
 gem "carrierwave-bombshelter"
 gem "file_validators"
+
+# Redis
+gem "redis", "3.3.1"
+gem "redis-rails"
+
+# DB
+gem "sqlite3"
+gem "mysql2", "~> 0.4"
 
 gem "newrelic_rpm"
 

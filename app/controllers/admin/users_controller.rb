@@ -5,7 +5,7 @@ module Admin
   class UsersController < Admin::BaseController
     # GET /users
     def index
-      users = User.paginate(page: params[:page], per_page: 10)
+      users = User.page(params[:page])
       render_index(users)
     end
 
@@ -17,9 +17,7 @@ module Admin
 
     # PUT /users/1/lvup
     def lvup
-      user = User.find(params[:id])
-      user.lvup!
-      RedisWrapper.del("session-#{user.id}")
+      User.find(params[:id]).lvup!
       redirect_index("User was successfully updated.")
     end
 

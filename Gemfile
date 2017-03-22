@@ -10,7 +10,6 @@ gem "sprockets-es6"
 gem "react-rails"
 gem "jquery-rails"
 
-
 gem "sass-rails"
 gem "uglifier"
 
@@ -57,7 +56,7 @@ group :development do
   gem "capistrano",             require: false
   gem "capistrano-rbenv",       require: false
   gem "capistrano-rails",       require: false
-  gem "capistrano-nvm",       require: false
+  gem "capistrano-nvm",         require: false
   gem "capistrano-bundler",     require: false
   gem "capistrano-secrets-yml", "~> 1.0.0", require: false
   gem "capistrano3-puma",       require: false

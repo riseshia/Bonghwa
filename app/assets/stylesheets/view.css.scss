@@ -98,7 +98,7 @@ ul.navbar-right {
   padding-right: 0;
   word-wrap: break-word;
 
-  .is_dm {
+  &.is_dm {
     color: #888;
   }
 }

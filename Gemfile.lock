@@ -61,7 +61,7 @@ GEM
     capistrano-bundler (1.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
-    capistrano-nvm (0.0.6)
+    capistrano-nvm (0.0.7)
       capistrano (~> 3.1)
     capistrano-rails (1.2.3)
       capistrano (~> 3.1)
@@ -72,7 +72,7 @@ GEM
     capistrano-secrets-yml (1.0.0)
       capistrano (>= 3.1)
       sshkit (>= 1.2.0)
-    capistrano3-puma (3.0.2)
+    capistrano3-puma (3.0.3)
       capistrano (~> 3.7)
       capistrano-bundler
       puma (~> 3.4)

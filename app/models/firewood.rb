@@ -36,9 +36,9 @@ class Firewood < ApplicationRecord
       .limit(limit_num)
   }
   scope :order_by_id, -> { order(id: :desc) }
-  scope :after, ->(id) { where("id > ?", id) if id }
-  scope :after_or_equal, ->(id) { where("id >= ?", id) if id }
-  scope :before, ->(id) { where("id < ?", id) if id }
+  scope :after, ->(id = nil) { where("id > ?", id) if id }
+  scope :after_or_equal, ->(id = nil) { where("id >= ?", id) if id }
+  scope :before, ->(id = nil) { where("id < ?", id) if id }
 
   # Private Scope
   scope :visible_by, lambda { |user_id|

@@ -23,6 +23,7 @@ gem "figaro"
 # Auth
 gem "devise"
 gem "bcrypt"
+gem "simple_token_authentication"
 
 # Fileupload
 gem "carrierwave", "~> 1.0"

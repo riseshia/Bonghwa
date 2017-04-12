@@ -50,5 +50,9 @@ Rails.application.routes.draw do
     get :pulling, to: "entry#pulling"
   end
 
+  namespace :aapi do
+    resource :sessions, only: %i(create destroy)
+  end
+
   resources :users, only: [:show, :edit, :update]
 end

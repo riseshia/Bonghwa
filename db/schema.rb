@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170220001517) do
+ActiveRecord::Schema.define(version: 20170411235352) do
 
   create_table "apps", force: :cascade do |t|
     t.string   "home_name"
@@ -51,18 +51,20 @@ ActiveRecord::Schema.define(version: 20170220001517) do
     t.string   "login_id"
     t.string   "legacy_password"
     t.string   "name"
-    t.integer  "level",               default: 0
+    t.integer  "level",                           default: 0
     t.datetime "recent_login"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email",               default: "", null: false
-    t.string   "encrypted_password",  default: "", null: false
+    t.string   "email",                           default: "", null: false
+    t.string   "encrypted_password",              default: "", null: false
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",       default: 0,  null: false
+    t.integer  "sign_in_count",                   default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "authentication_token", limit: 30
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
   end
 
 end

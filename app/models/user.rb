@@ -1,6 +1,9 @@
 # frozen_string_literal: true
+
 # User
 class User < ApplicationRecord
+  acts_as_token_authenticatable
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable, :recoverable
   devise :database_authenticatable, :registerable,
@@ -70,6 +73,15 @@ class User < ApplicationRecord
     false
   end
   # Devise related method end
+
+  def generate_token
+    new_token =
+      SimpleTokenAuthentication::TokenGenerator.instance.generate_token
+    update(authentication_token: new_token)
+    self
+  end
+
+  alias clear_token generate_token
 
   private
 

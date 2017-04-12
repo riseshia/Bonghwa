@@ -207,6 +207,7 @@ GEM
     public_suffix (2.0.5)
     puma (3.8.2)
     rack (2.0.1)
+    rack-cors (0.4.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.0.2)
@@ -374,6 +375,7 @@ DEPENDENCIES
   newrelic_rpm
   poltergeist
   puma
+  rack-cors
   rails (= 5.0.2)
   rails_best_practices
   react-rails

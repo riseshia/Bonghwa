@@ -24,6 +24,7 @@ gem "figaro"
 # Auth
 gem "bcrypt"
 gem "devise"
+gem "rack-cors", require: "rack/cors"
 gem "simple_token_authentication"
 
 # Fileupload

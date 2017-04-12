@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # RedisWrapper
 module RedisWrapper
   module_function

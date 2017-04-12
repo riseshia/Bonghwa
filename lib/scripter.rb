@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Dir["lib/command/*.rb"].each do |lib|
   require lib.gsub("lib/", "")
 end

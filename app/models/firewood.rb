@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Firewood
 class Firewood < ApplicationRecord
   belongs_to :user, optional: true # for bot handling

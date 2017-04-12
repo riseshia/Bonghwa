@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "test_helper"
 
 class ScriptTest < ActiveSupport::TestCase
@@ -14,7 +15,7 @@ class ScriptTest < ActiveSupport::TestCase
 
   def test_returns_correct_parsed_args
     script = setup_script("command args1 args2")
-    assert_equal %w(args1 args2), script.args
+    assert_equal %w[args1 args2], script.args
   end
 
   def test_returns_correct_parsed_command
@@ -24,7 +25,7 @@ class ScriptTest < ActiveSupport::TestCase
 
   def test_ignore_tags_included
     script = setup_script("command args1 args2 #tag")
-    assert_equal %w(args1 args2), script.args
+    assert_equal %w[args1 args2], script.args
     assert_equal "args1 args2", script.arg
   end
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # App
 class App < ApplicationRecord
   after_save :add_to_redis

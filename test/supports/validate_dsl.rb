@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ValidateDsl
   def klass
     @klass ||= const_get(to_s.gsub("Test", "").to_sym)

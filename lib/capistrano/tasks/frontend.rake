@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 namespace :frontend do
   desc "Deploy webpack based-front end"
   task :deploy do

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module ActiveSupport
   class TestCase
     def say(user, text)

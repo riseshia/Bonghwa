@@ -96,4 +96,19 @@ class Firewood < ApplicationRecord
   def formatted_created_at
     created_at.strftime("%y/%m/%d %T")
   end
+
+  def serialize
+    {
+      id: id,
+      is_dm: is_dm,
+      prev_mt_id: prev_mt_id,
+      root_mt_id: root_mt_id,
+      user_id: user_id,
+      name: user_name,
+      contents: contents,
+      image_url: image_url,
+      image_adult_flg: image_adult_flg,
+      created_at: formatted_created_at
+    }
+  end
 end

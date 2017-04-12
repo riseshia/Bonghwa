@@ -3,7 +3,7 @@
 require "test_helper"
 
 module Aapi
-  class SessionsControllerTest < ActionController::TestCase
+  class SessionControllerTest < ActionController::TestCase
     def test_create_session_correctly
       expected_token = "some_token"
 
@@ -11,7 +11,8 @@ module Aapi
         :generate_token, expected_token
       ) do
         post :create, params: { login_id: user.login_id,
-                                password: correct_password }
+                                password: correct_password },
+                      format: :json
 
         assert_response :ok
         assert_response_json_to_be "token" => expected_token

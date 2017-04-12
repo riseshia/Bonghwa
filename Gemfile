@@ -33,7 +33,7 @@ gem "carrierwave-bombshelter"
 gem "file_validators"
 
 # Redis
-gem "redis", "3.3.1"
+gem "redis"
 gem "redis-rails"
 
 # DB
@@ -47,7 +47,7 @@ group :development, :test do
 end
 
 group :development do
-  gem "web-console", "~> 2.0"
+  gem "web-console"
 
   gem "foreman"
   gem "guard"

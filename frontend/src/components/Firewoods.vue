@@ -1,20 +1,47 @@
 <template>
   <div class="row">
     <div class="col-sm-12">
-      <firewood></firewood>
+      <firewood v-for="fw in firewoods" :key="fw.id"
+                :id="fw.id"
+                :contents="fw.contents"
+                :createdAt="fw.createdAt"
+                :imageAdultFlg="fw.imageAdultFlg"
+                :imageUrl="fw.imageUrl"
+                :isDm="fw.isDm"
+                :name="fw.name"
+                :mentionedNames="fw.mentionedNames"
+                :prevMtId="fw.prevMtId"
+                :rootMtId="fw.rootMtId"
+                :userId="fw.userId"
+                :isImgOpened="fw.isImgOpened"
+                :isTextOpened="fw.isTextOpened"
+                :persisted="fw.persisted"
+      ></firewood>
     </div>
   </div>
 </template>
 
 <script>
 import Firewood from "./Firewood"
+import EventBus from "../EventBus"
 
 export default {
   name: "firewoods",
   components: {
     Firewood
   },
-  props: ["firewoods"],
+  beforeCreate() {
+    const vm = this
+    EventBus.$on("firewoods", (firewoods) => {
+      vm.firewoods = firewoods
+    })
+  },
+  data() {
+    return {
+      firewoods: [],
+      defaultIsImgOpened: false
+    }
+  },
   computed: {
     stackCount() {
       return this.firewoods.filter(fw => !fw.isVisible).length

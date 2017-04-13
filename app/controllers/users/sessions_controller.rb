@@ -18,12 +18,15 @@ module Users
     def create
       super
       current_user.update(recent_login: Time.zone.now)
+      current_user.generate_token.reload
+      cookies[:token] = current_user.authentication_token
     end
 
     # DELETE /resource/sign_out
-    # def destroy
-    #   super
-    # end
+    def destroy
+      current_user.clear_token
+      super
+    end
 
     protected
 

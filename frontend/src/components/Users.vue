@@ -1,32 +1,37 @@
 <template>
   <div class="row">
     <div class="col-sm-12">
-      <h4>Users(N)</h4>
+      <h4>Users({{ users.length }}명)</h4>
       <ul class="list-unstyled">
-        <user></user>
-        <user></user>
-        <user></user>
+        <li v-for="user in users" :key="user.name">
+          <a href="#" @click.stop.prevent="addMention">{{ user.name }}</a>
+        </li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import User from "./User"
+import EventBus from "../EventBus"
 
 export default {
   name: "users",
   components: {
     User
   },
-  props: ["users"],
+  beforeCreate() {
+    const vm = this
+    EventBus.$on("users", (users) => {
+      vm.users = users
+    })
+  },
+  data() {
+    return { users: [] }
+  },
   methods: {
-    // clkUsernameFactory(name) {
-    //   return () => {
-    //     const arr = [`@${name}`]
-    //     window._appendMt(arr)
-    //   }
-    // }
+    addMention() {
+      EventBus.$emit("add-mention", { names: [`@${this.name}`] })
+    }
   }
 }
 </script>

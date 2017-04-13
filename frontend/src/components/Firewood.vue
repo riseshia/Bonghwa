@@ -1,8 +1,10 @@
 <template>
-  <div class="row">
+  <div :class="{ row: true, 'text-muted': !persisted || isDm }">
     <div class="col-sm-auto">
-      <div>Name</div>
-      <div>04/10 16:25</div>
+      <div class="text-right">
+        <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
+      </div>
+      <div>{{ createdAt }}</div>
       <div class="text-right">
         <a href="#">*</a>
         <a href="#">[x]</a>
@@ -11,18 +13,15 @@
     <div class="col">
       <div class="row">
         <div class="col-sm-12">
-          さぁ忘れましょう　その未来が
-          また血塗られて　ゆくなんて
-          生ぬるい風　とぐろ巻いたら　それが多分 合図
-          抜け出していって　抜け出していって　
-          悲しすぎる運命から
-          あなたは　奈落の花じゃない
+          {{ contents }}
         </div>
       </div>
 
-      <sub-firewood></sub-firewood>
+      <div v-if="isTextOpened">
+        <sub-firewood></sub-firewood>
+      </div>
 
-      <div class="row no-gutters">
+      <div v-if="isImgOpened" class="row no-gutters">
         <div class="col-sm-12">
           Image Area
         </div>
@@ -33,6 +32,7 @@
 
 <script>
 import SubFirewood from "./SubFirewood"
+import EventBus from "../EventBus"
 
 export default {
   name: "firewood",
@@ -40,14 +40,13 @@ export default {
     SubFirewood
   },
   props: [
-    "contents", "created_at", "id", "image_adult_flg", "image_url", "is_dm",
-    "name", "prev_mt_id", "root_mt_id", "user_id", "defaultIsImgOpened"
+    "contents", "createdAt", "id", "imageAdultFlg", "imageUrl", "isDm",
+    "name", "mentionedNames", "prevMtId", "rootMtId", "userId",
+    "isImgOpened", "isTextOpened", "persisted"
   ],
   data() {
     return {
       subfws: [],
-      isImgOpened() { return this.props.defaultIsImgOpened },
-      isTextOpened: false,
       isLoading: false
     }
   },
@@ -57,6 +56,13 @@ export default {
     }
   },
   methods: {
+    addMention() {
+      const prefix = this.isDm ? "!" : "@"
+      EventBus.$emit("add-mention", {
+        names: this.mentionedNames.concat([prefix + this.name]),
+        id: this.id
+      })
+    },
     handleDelete() {
       this.$emit("delete")
     },

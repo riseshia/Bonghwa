@@ -50,8 +50,6 @@ export default {
     FirewoodForm,
     Informations,
     Users
-  },
-  data() {
   }
 }
 </script>

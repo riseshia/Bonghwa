@@ -33,6 +33,7 @@ module.exports = {
       'js': 'never',
       'vue': 'never'
     }],
+    'no-console': ["error", { allow: ["log", "warn", "error"] }],
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
       'optionalDependencies': ['test/unit/index.js']

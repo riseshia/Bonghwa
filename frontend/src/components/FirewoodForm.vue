@@ -93,15 +93,24 @@ export default {
     },
     submit() {
       const formData = this.formData()
+      const lastFwId = Store.getState("firewoods")[0].id
       Agent.submitForm({ firewood: formData }, () => {
-        Agent.getWithAuth("app").then((json) => {
-          const fws = json.fws.map(FirewoodSerializer)
+        const type = Store.getState("global").type
+        Agent.getWithAuth(
+          "firewoods/pulling",
+          { after: lastFwId, type }
+        ).then((json) => {
+          const newFws = json.fws.map(fw => (FirewoodSerializer(fw)))
+          const fws = newFws.concat(Store.getState("firewoods")).filter((fw) => {
+            fw.inStack = false
+            return fw.persisted
+          })
           Store.setState("firewoods", fws)
         })
       })
       this.clearForm()
       formData.persisted = false
-      formData.name = Store.getState("user").name
+      formData.name = Store.getState("user").user_name
       formData.created_at = "--/--/-- --:--:--"
       Store.prependElement("firewoods", FirewoodSerializer(formData))
     },

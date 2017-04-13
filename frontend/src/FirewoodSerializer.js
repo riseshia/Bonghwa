@@ -1,5 +1,6 @@
+import Store from "./Store"
+
 const dPersisted = true
-const dIsImgOpened = false
 const dIsTextOpened = false
 
 function isMtTarget(token) {
@@ -10,6 +11,9 @@ function isMtTarget(token) {
 export default function (obj) {
   const mentioned = obj.contents.split(" ")
                        .filter(token => (isMtTarget(token)))
+  const dIsImgOpened = Store.getState("global").isImageAutoOpen
+  const dInStack = !Store.getState("global").isLiveStreaming
+  const owned = Store.getState("user").user_id === obj.user_id
 
   return {
     contents: obj.contents,
@@ -24,6 +28,8 @@ export default function (obj) {
     userId: obj.user_id,
     mentionedNames: mentioned,
     persisted: obj.persisted === undefined ? dPersisted : obj.persisted,
+    isDeletable: owned,
+    inStack: obj.inStack === undefined ? dInStack : obj.inStack,
     isImgOpened: obj.isImgOpened === undefined ? dIsImgOpened : obj.isImgOpened,
     isTextOpened: obj.isTextOpened === undefined ? dIsTextOpened : obj.isTextOpened
   }

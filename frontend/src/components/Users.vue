@@ -16,9 +16,6 @@ import EventBus from "../EventBus"
 
 export default {
   name: "users",
-  components: {
-    User
-  },
   beforeCreate() {
     const vm = this
     EventBus.$on("users", (users) => {

@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ row: true, 'text-muted': !persisted || isDm }">
+  <div :class="{ row: true, 'text-muted': isDeleted || !persisted || isDm }">
     <div class="col-sm-auto">
       <div class="text-right">
         <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
@@ -7,7 +7,8 @@
       <div>{{ createdAt }}</div>
       <div class="text-right">
         <a href="#">*</a>
-        <a href="#">[x]</a>
+        <a v-if="isDeletable" @click.stop.prevent="destroy"
+           href="#">[x]</a>
       </div>
     </div>
     <div class="col">
@@ -33,6 +34,8 @@
 <script>
 import SubFirewood from "./SubFirewood"
 import EventBus from "../EventBus"
+import Agent from "../Agent"
+import Store from "../Store"
 
 export default {
   name: "firewood",
@@ -42,17 +45,13 @@ export default {
   props: [
     "contents", "createdAt", "id", "imageAdultFlg", "imageUrl", "isDm",
     "name", "mentionedNames", "prevMtId", "rootMtId", "userId",
-    "isImgOpened", "isTextOpened", "persisted"
+    "isDeletable", "isImgOpened", "isTextOpened", "persisted"
   ],
   data() {
     return {
       subfws: [],
-      isLoading: false
-    }
-  },
-  computed: {
-    isDeletable() {
-      return true
+      isLoading: false,
+      isDeleted: false
     }
   },
   methods: {
@@ -63,14 +62,18 @@ export default {
         id: this.id
       })
     },
-    handleDelete() {
-      this.$emit("delete")
-    },
-    handleClickUsername() {
-      this.$emit("clkusername")
-    },
-    handleToggleSubView() {
-      this.$emit("togglesubview")
+    destroy() {
+      /* eslint-disable no-alert */
+      if (!confirm("삭제하시겠습니까?")) {
+        return
+      }
+
+      this.isDeleted = true
+      const vm = this
+      Agent.deleteWithAuth(`firewoods/${this.id}`).done(() => {
+        const fws = Store.getState("firewoods").filter(fw => (fw.id !== vm.id))
+        Store.setState("firewoods", fws)
+      })
     }
   }
 }

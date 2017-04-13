@@ -2,9 +2,7 @@ import EventBus from "./EventBus"
 
 class Store {
   constructor() {
-    this.state = {
-      user: { name: "User" }
-    }
+    this.state = {}
   }
 
   setState(key, value) {
@@ -21,10 +19,17 @@ class Store {
     this.emit(key)
   }
 
+  prependElements(key, values) {
+    this.state[key] = values.concat(this.state[key])
+    this.emit(key)
+  }
+
   deliverAll() {
-    this.emit("firewoods")
     this.emit("users")
+    this.emit("user")
+    this.emit("app")
     this.emit("informations")
+    this.emit("firewoods")
   }
 
   emit(key) {

@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-sm-12">
-      <firewood v-for="fw in firewoods" :key="fw.id"
+      <firewood v-for="fw in visibleFws" :key="fw.id"
                 :id="fw.id"
                 :contents="fw.contents"
                 :createdAt="fw.createdAt"
@@ -14,6 +14,7 @@
                 :rootMtId="fw.rootMtId"
                 :userId="fw.userId"
                 :isImgOpened="fw.isImgOpened"
+                :isDeletable="fw.isDeletable"
                 :isTextOpened="fw.isTextOpened"
                 :persisted="fw.persisted"
       ></firewood>
@@ -36,6 +37,7 @@ export default {
       vm.firewoods = firewoods
     })
   },
+  props: ["isLiveStreaming", "isImageAutoOpen"],
   data() {
     return {
       firewoods: [],
@@ -43,11 +45,8 @@ export default {
     }
   },
   computed: {
-    stackCount() {
-      return this.firewoods.filter(fw => !fw.isVisible).length
-    },
     visibleFws() {
-      return this.firewoods
+      return this.firewoods.filter(fw => (!fw.inStack))
     }
   },
   methods: {

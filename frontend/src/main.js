@@ -21,11 +21,19 @@ require("bootstrap")
 
 Agent.authenticate(loginId, password).then(() => {
   Agent.getWithAuth("app").then((json) => {
-    const fws = json.fws.map(FirewoodSerializer)
-
-    Store.setState("firewoods", fws)
+    Store.setState("global", {
+      type: 1,
+      isImageAutoOpen: false,
+      isLiveStreaming: false
+    })
+    Store.setState("user", json.user)
+    Store.setState("firewoods", json.fws.map((fw) => {
+      fw.inStack = false
+      return FirewoodSerializer(fw)
+    }))
     Store.setState("informations", json.infos)
     Store.setState("users", json.users)
+    Store.setState("app", json.app)
 
     Channel.start()
 

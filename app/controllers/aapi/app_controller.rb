@@ -10,14 +10,28 @@ module Aapi
         users: users_data,
         infos: infos_data,
         fws: fws_data,
-        app: app_data
+        app: app_data,
+        user: user_data
       }
     end
 
     private
 
     def app_data
-      App.first_with_cache
+      app = App.first_with_cache
+      {
+        home_name: app.home_name,
+        home_link: app.home_link,
+        app_name: app.app_name,
+        widget_link: app.widget_link
+      }
+    end
+
+    def user_data
+      {
+        user_id: current_user.id,
+        user_name: current_user.name
+      }
     end
 
     def users_data

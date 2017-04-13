@@ -12,7 +12,7 @@ module Aapi
       get :show, format: :json
 
       assert_response :ok
-      assert_response_json_has_keys %w(users infos fws app)
+      assert_response_json_has_keys %w(users infos fws app user)
     end
   end
 end

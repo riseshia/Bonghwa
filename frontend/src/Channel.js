@@ -1,24 +1,42 @@
-class Channel {
-  constructor() {
-    this.pullingDictionary = {
-      users: 5,
-      pulling: 1,
-      infos: 30
-    }
-  }
+import Agent from "./Agent"
+import Store from "./Store"
+import FirewoodSerializer from "./FirewoodSerializer"
 
-  start() {
-    const keys = Object.keys(this.pullingDictionary)
-    for (let i = 0; i !== keys.length; i += 1) {
-      const key = keys[i]
-      // this.register(key, this.pullingDictionary[key])
-      console.log(`${key} is registered`)
-    }
-  }
-  //
-  // register(key, interval) {
-  //   console.log(key + " is registered")
-  // }
+const fetchInformations = () => {
+  Agent.getWithAuth("infos").then((json) => {
+    if (json.infos.length === 0) { return }
+    Store.setState("informations", json.infos)
+  })
 }
-    // Agent.getWithAuth("app")
-export default new Channel()
+
+const fetchUsers = () => {
+  Agent.getWithAuth("users").then((json) => {
+    Store.setState("users", json.users)
+  })
+}
+
+const fetchFirewoods = () => {
+  const lastFwId = Store.getState("firewoods")[0].id
+  const type = Store.getState("global").type
+  Agent.getWithAuth(
+    "firewoods/pulling",
+    { after: lastFwId, type }
+  ).then((json) => {
+    if (json.fws.length === 0) { return }
+    Store.prependElements("firewoods", json.fws.map(FirewoodSerializer))
+  })
+}
+
+const registerTimer = (fn, delay) => {
+  setInterval(fn, delay)
+}
+
+const Channel = {
+  start() {
+    registerTimer(fetchUsers, 5000)
+    registerTimer(fetchInformations, 30000)
+    registerTimer(fetchFirewoods, 1000)
+  }
+}
+
+export default Channel

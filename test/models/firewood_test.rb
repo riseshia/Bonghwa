@@ -211,7 +211,7 @@ class FirewoodTest < ActiveSupport::TestCase
     fw = firewoods(:good_morning_from_luna)
     dt = fw.created_at
 
-    assert_equal dt.strftime("%y/%m/%d %T"), fw.formatted_created_at
+    assert_equal dt.strftime("%m/%d %T"), fw.formatted_created_at
   end
 
   def test_system_dm_works

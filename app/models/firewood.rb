@@ -94,7 +94,7 @@ class Firewood < ApplicationRecord
   end
 
   def formatted_created_at
-    created_at.strftime("%y/%m/%d %T")
+    created_at.strftime("%m/%d %T")
   end
 
   def serialize

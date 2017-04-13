@@ -7,8 +7,8 @@
         <informations></informations>
         <stack-status></stack-status>
         <firewoods
-          :isLiveStreaming="isLiveStreaming"
-          :isImageAutoOpen="isImageAutoOpen"
+          :isLiveStreaming="global.isLiveStreaming"
+          :isImageAutoOpen="global.isImageAutoOpen"
         ></firewoods>
       </div>
 
@@ -38,7 +38,7 @@
             <div id="widget">
               <a class="twitter-timeline"
                  href="https://twitter.com/"
-                 :data-widget-id="twitterIdentifier">Widget</a>
+                 :data-widget-id="app.twitterIdentifier">Widget</a>
             </div>
           </div>
         </div>
@@ -49,15 +49,14 @@
 </template>
 
 <script>
+import EventBus from "./EventBus"
+import Actions from "./Actions"
+
 import Firewoods from "./components/Firewoods"
 import StackStatus from "./components/StackStatus"
 import FirewoodForm from "./components/FirewoodForm"
 import Informations from "./components/Informations"
 import Users from "./components/Users"
-import Store from "./Store"
-import EventBus from "./EventBus"
-import Agent from "./Agent"
-import FirewoodSerializer from "./FirewoodSerializer"
 
 export default {
   name: "app",
@@ -70,10 +69,11 @@ export default {
   },
   beforeCreate() {
     const vm = this
+    EventBus.$on("app", (obj) => {
+      vm.app = obj
+    })
     EventBus.$on("global", (obj) => {
-      vm.isImageAutoOpen = obj.isImageAutoOpen
-      vm.isLiveStreaming = obj.isLiveStreaming
-      vm.type = obj.type
+      vm.global = obj
     })
   },
   mounted() {
@@ -83,25 +83,14 @@ export default {
     window.$("#widget").append(script)
   },
   data() {
-    const global = Store.getState("global")
     return {
-      type: global.type,
-      isImageAutoOpen: global.isImageAutoOpen,
-      isLiveStreaming: global.isLiveStreaming,
-      twitterIdentifier: Store.getState("app").widget_link
+      global: {},
+      app: {}
     }
   },
   methods: {
     changeType(type) {
-      const global = Store.getState("global")
-      global.type = type
-      Store.setState("global", global)
-      Agent.getWithAuth("firewoods/now", { type }).then((json) => {
-        Store.setState("firewoods", json.fws.map((fw) => {
-          fw.inStack = false
-          return FirewoodSerializer(fw)
-        }))
-      })
+      Actions.changeType(type)
     }
   }
 }

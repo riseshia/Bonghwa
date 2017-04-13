@@ -41,10 +41,8 @@
 </template>
 
 <script>
-import Agent from "../Agent"
-import Store from "../Store"
 import EventBus from "../EventBus"
-import FirewoodSerializer from "../FirewoodSerializer"
+import Actions from "../Actions"
 
 const CONTENTS_MAX_LEN = 150
 
@@ -53,7 +51,7 @@ export default {
   mounted() {
     this.form = window.$("#new_firewood")
     EventBus.$on("add-mention", this.addMention)
-    Agent.setupForm(this.form)
+    Actions.setupForm(this)
   },
   data() {
     return {
@@ -92,27 +90,7 @@ export default {
       }
     },
     submit() {
-      const formData = this.formData()
-      const lastFwId = Store.getState("firewoods")[0].id
-      Agent.submitForm({ firewood: formData }, () => {
-        const type = Store.getState("global").type
-        Agent.getWithAuth(
-          "firewoods/pulling",
-          { after: lastFwId, type }
-        ).then((json) => {
-          const newFws = json.fws.map(fw => (FirewoodSerializer(fw)))
-          const fws = newFws.concat(Store.getState("firewoods")).filter((fw) => {
-            fw.inStack = false
-            return fw.persisted
-          })
-          Store.setState("firewoods", fws)
-        })
-      })
-      this.clearForm()
-      formData.persisted = false
-      formData.name = Store.getState("user").user_name
-      formData.created_at = "--/--/-- --:--:--"
-      Store.prependElement("firewoods", FirewoodSerializer(formData))
+      Actions.createFirewood(this)
     },
     clearForm() {
       this.form.clearForm()

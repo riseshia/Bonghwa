@@ -34,8 +34,7 @@
 <script>
 import SubFirewood from "./SubFirewood"
 import EventBus from "../EventBus"
-import Agent from "../Agent"
-import Store from "../Store"
+import Actions from "../Actions"
 
 export default {
   name: "firewood",
@@ -68,12 +67,7 @@ export default {
         return
       }
 
-      this.isDeleted = true
-      const vm = this
-      Agent.deleteWithAuth(`firewoods/${this.id}`).done(() => {
-        const fws = Store.getState("firewoods").filter(fw => (fw.id !== vm.id))
-        Store.setState("firewoods", fws)
-      })
+      Actions.destroyFirewood(this)
     }
   }
 }

@@ -3,9 +3,7 @@
 import Vue from "vue"
 import App from "./App"
 import Channel from "./Channel"
-import Agent from "./Agent"
-import Store from "./Store"
-import FirewoodSerializer from "./FirewoodSerializer"
+import Actions from "./Actions"
 
 // Start Bootstrap & jQuery
 window.$ = require("jquery")
@@ -19,22 +17,8 @@ window.Tether = require("tether")
 require("bootstrap")
 // End Bootstrap & jQuery
 
-Agent.authenticate(loginId, password).then(() => {
-  Agent.getWithAuth("app").then((json) => {
-    Store.setState("global", {
-      type: 1,
-      isImageAutoOpen: false,
-      isLiveStreaming: false
-    })
-    Store.setState("user", json.user)
-    Store.setState("firewoods", json.fws.map((fw) => {
-      fw.inStack = false
-      return FirewoodSerializer(fw)
-    }))
-    Store.setState("informations", json.infos)
-    Store.setState("users", json.users)
-    Store.setState("app", json.app)
-
+Actions.authenticate(loginId, password).then(() => {
+  Actions.loadApplication().then(() => {
     Channel.start()
 
     /* eslint-disable no-new */
@@ -43,6 +27,6 @@ Agent.authenticate(loginId, password).then(() => {
       template: "<App/>",
       components: { App }
     })
-    Store.deliverAll()
+    Actions.refreashApplication()
   })
 })

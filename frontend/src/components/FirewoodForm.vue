@@ -5,7 +5,7 @@
         enctype="multipart/form-data"
         action="aapi/firewoods"
         accept-charset="UTF-8">
-    <div class="row">
+    <div class="row no-gutters">
       <div class="col-sm-12">
         <div class="form-group">
           <input
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div class="row justify-content-between">
+    <div class="row no-gutters justify-content-between">
       <div class="col">
         <label class="custom-file">
           <input type="file" name="firewood[image]" class="custom-file-input">
@@ -109,6 +109,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+form {
+  padding: 10px;
+}
 </style>
 

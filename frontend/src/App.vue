@@ -1,7 +1,7 @@
 <template>
   <!-- Start Main Contents  -->
   <div id="app" class="container-fluid">
-    <div class="row clearfx">
+    <div class="row">
       <div class="col-sm-9">
         <firewood-form></firewood-form>
         <informations></informations>
@@ -176,6 +176,11 @@ export default {
 
 <style>
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
+
+.container-fluid {
+  padding-left: 0;
+  padding-right: 0;
+}
 
 .dropdown-toggle::after {
     display: inline-block;

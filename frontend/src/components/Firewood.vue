@@ -22,23 +22,27 @@
         </div>
       </div>
 
-      <div v-if="isTextOpened">
-        <sub-firewood
-          :firewoods="parents"
-        ></sub-firewood>
-      </div>
+      <transition name="sliding">
+        <div v-if="isImgOpened">
+          <div v-if="isTextOpened && parents.length">
+            <sub-firewood
+              :firewoods="parents"
+            ></sub-firewood>
+          </div>
 
-      <div v-if="isImgOpened && imageUrl" class="row no-gutters">
-        <div class="col-sm-12">
-          <figure class="figure">
-            <img class="figure-img img-fluid rounded" :src="imageUrl">
-            <figcaption class="figure-caption text-center">
-              <a :href="imageUrl" @click.stop="true"
-                 target="_blank">크게 보기</a>
-            </figcaption>
-          </figure>
+          <div v-if="isImgOpened && imageUrl" class="row no-gutters">
+            <div class="col-sm-12">
+              <figure class="figure">
+                <img class="figure-img img-fluid rounded" :src="imageUrl">
+                <figcaption class="figure-caption text-center">
+                  <a :href="imageUrl" @click.stop="true"
+                     target="_blank">크게 보기</a>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -133,5 +137,14 @@ export default {
 img {
   max-height: 500px;
   max-width: 500px;
+}
+
+.sliding-enter-active, .sliding-leave-active {
+  transition: max-height .5s;
+  overflow: hidden;
+  max-height: 600px;
+}
+.sliding-enter, .sliding-leave-to {
+  max-height: 0;
 }
 </style>

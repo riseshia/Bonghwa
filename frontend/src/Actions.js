@@ -6,6 +6,9 @@ const Actions = {
   authenticate(loginId, password) {
     return Agent.authenticate(loginId, password)
   },
+  destroySession() {
+    return Agent.destroySession()
+  },
   refreashApplication() {
     Store.deliverAll()
   },

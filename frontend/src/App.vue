@@ -37,6 +37,10 @@
                    @click.prevent.stop="changeType(3)">Me</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="#"
+                   @click.prevent.stop="signOut">Exit</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link dropdown-toggle" href="#"
                    @click.prevent.stop="toggleOptionsMenu">Options</a>
                 <ul v-if="optionsOpened">
@@ -158,6 +162,14 @@ export default {
       return {
         'nav-link': true,
         active: this.global.type === type
+      }
+    },
+    signOut() {
+      if (confirm("정말로 로그아웃하시겠어요?")) {
+        const router = this.$router
+        Actions.destroySession().then(() => {
+          router.push("/sign_in")
+        })
       }
     }
   }

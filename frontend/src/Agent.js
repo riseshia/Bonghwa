@@ -29,6 +29,14 @@ class Agent {
     })
   }
 
+  destroySession() {
+    const self = this
+    return self.deleteWithAuth("session").then(() => {
+      self.identifier = null
+      self.token = null
+    })
+  }
+
   getWithAuth(path, params = {}) {
     return this.requestWithAuth("GET", path, params)
   }

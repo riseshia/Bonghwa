@@ -1,15 +1,15 @@
 <template>
-  <div class="row no-gutters">
+  <div class="row no-gutters fw-parents">
     <div class="col">
       <div
         v-for="fw in parsedFirewoods"
         :key="fw.id"
         class="row no-gutters">
-        <div class="col-sm-auto">
-          <div>{{ fw.name }}</div>
-          <div>{{ fw.createdAt }}</div>
+        <div class="col-sm-auto meta-info">
+          {{ fw.createdAt }} -
+          {{ fw.name }}
         </div>
-        <div class="col">
+        <div class="col message">
           <span v-html="fw.contents"></span>
           <span
             v-if="fw.imageUrl"
@@ -34,10 +34,11 @@ export default {
 
         return {
           id: fw.id,
+          name: fw.name,
           contents: autolink(fw.contents, { classes }),
           imageAdultFlg: fw.imageAdultFlg,
           imageUrl: fw.imageUrl,
-          createdAt: fw.createdAt
+          createdAt: fw.createdAt.split(" ")[1]
         }
       })
     }
@@ -45,5 +46,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.fw-parents {
+  font-size: 90%;
+}
+.message::before {
+  content: ":";
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.message {
+}
 </style>

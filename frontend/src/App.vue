@@ -84,6 +84,8 @@ import StackStatus from "./components/StackStatus"
 import FirewoodForm from "./components/FirewoodForm"
 import Informations from "./components/Informations"
 import Users from "./components/Users"
+import NativeComponent from "./components/NativeComponent"
+import Channel from "./Channel"
 
 export default {
   name: "app",
@@ -131,6 +133,16 @@ export default {
     visibleFws() {
       return this.firewoods.filter(fw => (!fw.inStack))
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(() => {
+      Actions.loadApplication().then(() => {
+        Channel.start()
+        NativeComponent.start()
+        Actions.refreashApplication()
+        next()
+      })
+    })
   },
   methods: {
     changeType(type) {

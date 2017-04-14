@@ -20,8 +20,8 @@ class Agent {
         login_id: identifier,
         password
       }
-    }).done((json) => {
-      if (json.token) {
+    }).then((json) => {
+      if (json.status === "success") {
         this.identifier = identifier
         this.token = json.token
       }

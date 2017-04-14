@@ -8,18 +8,27 @@ module Aapi
     def create
       info = permitted_params
       user = User.find_by(login_id: info[:login_id])
-      if user.valid_password?(info[:password])
+      if user&.valid_password?(info[:password])
         user.generate_token.reload
-        render json: { token: user.authentication_token }
+        render json: {
+          status: "success",
+          token: user.authentication_token
+        }
       else
-        render json: { message: "fail to create session" }
+        render json: {
+          status: "fail",
+          message: "fail to create session"
+        }
       end
     end
 
     def destroy
       current_user.clear_token
       sign_out current_user
-      render json: { message: "good bye" }
+      render json: {
+        status: "success",
+        message: "good bye"
+      }
     end
 
     private

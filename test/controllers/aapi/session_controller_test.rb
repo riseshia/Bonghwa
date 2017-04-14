@@ -15,7 +15,8 @@ module Aapi
                       format: :json
 
         assert_response :ok
-        assert_response_json_to_be "token" => expected_token
+        assert_response_json_to_be "status"=>"success",
+                                   "token" => expected_token
       end
     end
 
@@ -24,7 +25,8 @@ module Aapi
                               password: "wrong_password" }
 
       assert_response :ok
-      assert_response_json_to_be "message" => "fail to create session"
+      assert_response_json_to_be "status"=>"fail",
+                                 "message" => "fail to create session"
     end
 
     def test_destroy_session_correctly
@@ -34,7 +36,7 @@ module Aapi
       delete :destroy
 
       assert_response :ok
-      assert_response_json_to_be "message" => "good bye"
+      assert_response_json_to_be "status"=>"success", "message" => "good bye"
       assert_not_equal user.reload.authentication_token, old_token
     end
 

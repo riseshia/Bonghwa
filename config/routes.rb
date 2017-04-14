@@ -12,7 +12,7 @@ class DmConstraint
 end
 
 Rails.application.routes.draw do
-  get 'frontend/index'
+  get "beta", to: "frontend#index"
 
   devise_for :users, controllers: {
     sessions: "users/sessions",

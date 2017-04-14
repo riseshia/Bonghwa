@@ -15,6 +15,7 @@ class Store {
   }
 
   deliverAll() {
+    this.emit("global")
     this.emit("users")
     this.emit("user")
     this.emit("app")

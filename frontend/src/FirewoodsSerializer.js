@@ -20,11 +20,12 @@ function indexing(fw) {
 function parentsFor(fw) {
   const parents = []
   let nextId = fw.prevMtId
+  let parentFw = find(nextId)
 
-  while (nextId !== 0) {
-    const parentFw = find(nextId)
+  while (parentFw) {
     parents.push(parentFw)
     nextId = parentFw.prevMtId
+    parentFw = find(nextId)
   }
 
   return parents

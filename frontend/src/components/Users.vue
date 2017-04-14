@@ -26,8 +26,8 @@ export default {
     return { users: [] }
   },
   methods: {
-    addMention() {
-      EventBus.$emit("add-mention", { names: [`@${this.name}`] })
+    addMention(event) {
+      EventBus.$emit("add-mention", { names: [`@${event.target.innerText}`] })
     }
   }
 }

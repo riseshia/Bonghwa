@@ -23,17 +23,17 @@
                 {{ app.home_name }}
               </a>
             </h3>
-            <ul class="nav flex-column">
+            <ul class="nav flex-column nav-pills">
               <li class="nav-item">
-                <a class="nav-link active" href="#"
+                <a :class="navClassObject(1)" href="#"
                    @click.prevent.stop="changeType(1)">Now</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"
+                <a :class="navClassObject(2)" href="#"
                    @click.prevent.stop="changeType(2)">Mt</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"
+                <a :class="navClassObject(3)" href="#"
                    @click.prevent.stop="changeType(3)">Me</a>
               </li>
               <li class="nav-item">
@@ -141,6 +141,12 @@ export default {
     },
     toggleOption(key) {
       Actions.toggleGlobalOption(key)
+    },
+    navClassObject(type) {
+      return {
+        'nav-link': true,
+        active: this.global.type === type
+      }
     }
   }
 }

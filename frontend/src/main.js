@@ -4,6 +4,7 @@ import Vue from "vue"
 import App from "./App"
 import Channel from "./Channel"
 import Actions from "./Actions"
+import NativeComponent from "./components/NativeComponent"
 
 // Start Bootstrap & jQuery
 window.$ = require("jquery")
@@ -27,6 +28,7 @@ Actions.authenticate(loginId, password).then(() => {
       template: "<App/>",
       components: { App }
     })
+    NativeComponent.start()
     Actions.refreashApplication()
   })
 })

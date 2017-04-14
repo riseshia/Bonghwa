@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ row: true, 'text-muted': isDeleted || !persisted || isDm }">
+  <div
+    :class="{ row: true, firewood: true, 'text-muted': isMuted }"
+    @click.stop.prevent="toggleSelf"
+  >
     <div class="col-sm-auto">
       <div class="text-right">
         <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
@@ -15,16 +18,19 @@
       <div class="row">
         <div class="col-sm-12">
           {{ contents }}
+          <span v-if="imageUrl">[이미지]</span>
         </div>
       </div>
 
       <div v-if="isTextOpened">
-        <sub-firewood></sub-firewood>
+        <sub-firewood
+          :firewoods="parents"
+        ></sub-firewood>
       </div>
 
-      <div v-if="isImgOpened" class="row no-gutters">
+      <div v-if="isImgOpened && imageUrl" class="row no-gutters">
         <div class="col-sm-12">
-          Image Area
+          <img :src="imageUrl">
         </div>
       </div>
     </div>
@@ -43,14 +49,22 @@ export default {
   },
   props: [
     "contents", "createdAt", "id", "imageAdultFlg", "imageUrl", "isDm",
-    "name", "mentionedNames", "prevMtId", "rootMtId", "userId",
-    "isDeletable", "isImgOpened", "isTextOpened", "persisted"
+    "name", "mentionedNames", "prevMtId", "rootMtId", "parents", "userId",
+    "isDeletable", "persisted", "isImageAutoOpen"
   ],
   data() {
     return {
-      subfws: [],
-      isLoading: false,
+      isImgOpened: this.$props.isImageAutoOpen,
+      isTextOpened: false,
       isDeleted: false
+    }
+  },
+  computed: {
+    isMuted() {
+      return this.isDeleted || !this.persisted || this.isDm
+    },
+    isOpened() {
+      return this.isImgOpened || this.isTextOpened
     }
   },
   methods: {
@@ -58,8 +72,17 @@ export default {
       const prefix = this.isDm ? "!" : "@"
       EventBus.$emit("add-mention", {
         names: this.mentionedNames.concat([prefix + this.name]),
+        rootMtId: this.rootMtId,
         id: this.id
       })
+    },
+    toggleSelf() {
+      let nextState = true
+      if (this.isOpened) {
+        nextState = false
+      }
+      this.isImgOpened = nextState
+      this.isTextOpened = nextState
     },
     destroy() {
       /* eslint-disable no-alert */

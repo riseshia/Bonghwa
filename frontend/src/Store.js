@@ -14,22 +14,13 @@ class Store {
     return this.state[key]
   }
 
-  prependElement(key, value) {
-    this.state[key].unshift(value)
-    this.emit(key)
-  }
-
-  prependElements(key, values) {
-    this.state[key] = values.concat(this.state[key])
-    this.emit(key)
-  }
-
   deliverAll() {
     this.emit("users")
     this.emit("user")
     this.emit("app")
     this.emit("informations")
     this.emit("firewoods")
+    this.emit("stackedCount")
   }
 
   emit(key) {

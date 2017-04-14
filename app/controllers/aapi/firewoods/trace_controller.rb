@@ -7,7 +7,7 @@ module Aapi
       include FirewoodsCommon
 
       def index
-        limit = params[:count].to_i.clamp(0, 50) # Limit maximum size
+        limit = params[:limit].to_i.clamp(0, 50) # Limit maximum size
         render json: { fws: fws_data(limit) }
       end
     end

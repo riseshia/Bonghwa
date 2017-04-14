@@ -106,9 +106,17 @@ class Firewood < ApplicationRecord
       user_id: user_id,
       name: user_name,
       contents: contents,
-      image_url: image_url,
+      image_url: image_url_with_host,
       image_adult_flg: image_adult_flg,
       created_at: formatted_created_at
     }
+  end
+
+  def image_url_with_host
+    if image_url
+      ENV["BW_IMAGE_HOST"] + image_url
+    else
+      nil
+    end
   end
 end

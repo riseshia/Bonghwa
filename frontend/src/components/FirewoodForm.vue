@@ -77,8 +77,8 @@ export default {
     addMention(data) {
       const uniqueNames = window.$.unique(data.names)
       this.contents = `${uniqueNames.join(" ")} ${this.contents}`
-      this.prevMtId = this.id
-      this.rootMtId = this.rootMtId || this.id || 0
+      this.prevMtId = data.id
+      this.rootMtId = data.rootMtId || data.id || 0
       window.$("#contents").focus()
     },
     formData() {
@@ -90,7 +90,13 @@ export default {
       }
     },
     submit() {
-      Actions.createFirewood(this)
+      if (this.contents.length === 0) {
+        Actions.fetchFirewoods().then(() => {
+          Actions.flushStack()
+        })
+      } else {
+        Actions.createFirewood(this)
+      }
     },
     clearForm() {
       this.form.clearForm()

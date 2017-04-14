@@ -5,17 +5,24 @@
       <div class="col-sm-9">
         <firewood-form></firewood-form>
         <informations></informations>
-        <stack-status></stack-status>
+        <stack-status
+          :stackedCount="stackedCount"
+        ></stack-status>
         <firewoods
           :isLiveStreaming="global.isLiveStreaming"
           :isImageAutoOpen="global.isImageAutoOpen"
+          :firewoods="visibleFws"
         ></firewoods>
       </div>
 
       <div class="col-sm-3">
         <div class="row">
           <div class="col-sm-12">
-            <h3>Bonghwa</h3>
+            <h3>
+              <a target="_blank" :href="app.home_link">
+                {{ app.home_name }}
+              </a>
+            </h3>
             <ul class="nav flex-column">
               <li class="nav-item">
                 <a class="nav-link active" href="#"
@@ -29,6 +36,26 @@
                 <a class="nav-link" href="#"
                    @click.prevent.stop="changeType(3)">Me</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link dropdown-toggle" href="#"
+                   @click.prevent.stop="toggleOptionsMenu">Options</a>
+                <ul v-if="optionsOpened">
+                  <li>
+                    <a href="#"
+                       @click.prevent.stop="toggleOption('isImageAutoOpen')">
+                      [{{ global.isImageAutoOpen ? "o" : "x" }}]
+                      Image auto open
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#"
+                       @click.prevent.stop="toggleOption('isLiveStreaming')">
+                      [{{ global.isLiveStreaming ? "o" : "x" }}]
+                      Live Stream
+                    </a>
+                  </li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -38,7 +65,7 @@
             <div id="widget">
               <a class="twitter-timeline"
                  href="https://twitter.com/"
-                 :data-widget-id="app.twitterIdentifier">Widget</a>
+                 :data-widget-id="app.widget_link">Widget</a>
             </div>
           </div>
         </div>
@@ -75,6 +102,12 @@ export default {
     EventBus.$on("global", (obj) => {
       vm.global = obj
     })
+    EventBus.$on("firewoods", (firewoods) => {
+      vm.firewoods = firewoods
+    })
+    EventBus.$on("stackedCount", (count) => {
+      vm.stackedCount = count
+    })
   },
   mounted() {
     const script = document.createElement("script")
@@ -84,18 +117,47 @@ export default {
   },
   data() {
     return {
-      global: {},
-      app: {}
+      global: {
+        isImageAutoOpen: false,
+        isLiveStreaming: false
+      },
+      app: {},
+      firewoods: [],
+      stackedCount: 0,
+      optionsOpened: false
+    }
+  },
+  computed: {
+    visibleFws() {
+      return this.firewoods.filter(fw => (!fw.inStack))
     }
   },
   methods: {
     changeType(type) {
       Actions.changeType(type)
+    },
+    toggleOptionsMenu() {
+      this.optionsOpened = !this.optionsOpened
+    },
+    toggleOption(key) {
+      Actions.toggleGlobalOption(key)
     }
   }
 }
 </script>
 
 <style>
-@import '../node_modules/bootstrap/dist/css/bootstrap.css'
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+
+.dropdown-toggle::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .3em;
+    vertical-align: middle;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-left: .3em solid transparent;
+}
 </style>

@@ -37,14 +37,21 @@ export default {
   },
   computed: {
     parsedInfomations() {
-      return this.informations.map(info => (
-        { id: info.id, information: autolink(info.information) }
+      return this.informations.map((info, idx) => (
+        {
+          id: info.id,
+          information: `${idx + 1}. ${autolink(info.information)}`
+        }
       ))
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
+.alert {
+  border-radius: 0;
+  border: 0px solid transparent;
+}
 </style>
 

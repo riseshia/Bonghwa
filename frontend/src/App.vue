@@ -186,6 +186,10 @@ export default {
   padding-right: 0;
 }
 
+body {
+  font-size: 0.9rem;
+}
+
 .nav-menu a {
   color: #333;
 }

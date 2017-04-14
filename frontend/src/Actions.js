@@ -50,6 +50,9 @@ const Actions = {
         })
         Store.setState("firewoods", fws)
         Actions.updateStackCount()
+
+        // Fetching for /nick
+        if (json.user) { Store.setState("user", json.user) }
       })
     })
     vm.clearForm()

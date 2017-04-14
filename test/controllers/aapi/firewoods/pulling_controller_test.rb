@@ -14,7 +14,7 @@ module Aapi
           get :index, params: { type: t }, format: :json
 
           assert_response :ok
-          assert_response_json_has_keys %w[fws]
+          assert_response_json_has_keys %w[fws user]
         end
       end
     end

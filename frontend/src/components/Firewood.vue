@@ -3,47 +3,39 @@
     :class="{ row: true,  'no-gutters': true, firewood: true, 'text-muted': isMuted }"
     @click="toggleSelf"
   >
-    <div class="col-sm-auto meta-info">
-      <div class="d-flex justify-content-between">
+    <div class="col-sm-12 message d-flex justify-content-between">
+      <div>
+        <a href="#" @click.stop.prevent="addMention">{{ name }}</a> :
+        <span v-html="parsedContents"></span>
+        <span
+          v-if="imageUrl"
+          :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">[이미지]</span>
         <a v-if="isDeletable" @click.stop.prevent="destroy"
            href="#">[x]</a>
-        <span v-if="!isDeletable"></span>
-        <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
       </div>
       <div class="text-small">{{ createdAt }}</div>
     </div>
-    <div class="col message">
-      <div class="row no-gutters">
-        <div class="col-sm-12">
-          <span v-html="parsedContents"></span>
-          <span
-            v-if="imageUrl"
-            :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">[이미지]</span>
+    <transition name="sliding">
+      <div class="col-sm-12" v-if="isImgOpened">
+        <div v-if="isTextOpened && parents.length">
+          <sub-firewood
+            :firewoods="parents"
+          ></sub-firewood>
+        </div>
+
+        <div v-if="isImgOpened && imageUrl" class="row no-gutters">
+          <div class="col-sm-12">
+            <figure class="figure">
+              <img class="figure-img img-fluid rounded" :src="imageUrl">
+              <figcaption class="figure-caption text-center">
+                <a :href="imageUrl" @click.stop="true"
+                   target="_blank">크게 보기</a>
+              </figcaption>
+            </figure>
+          </div>
         </div>
       </div>
-
-      <transition name="sliding">
-        <div v-if="isImgOpened">
-          <div v-if="isTextOpened && parents.length">
-            <sub-firewood
-              :firewoods="parents"
-            ></sub-firewood>
-          </div>
-
-          <div v-if="isImgOpened && imageUrl" class="row no-gutters">
-            <div class="col-sm-12">
-              <figure class="figure">
-                <img class="figure-img img-fluid rounded" :src="imageUrl">
-                <figcaption class="figure-caption text-center">
-                  <a :href="imageUrl" @click.stop="true"
-                     target="_blank">크게 보기</a>
-                </figcaption>
-              </figure>
-            </div>
-          </div>
-        </div>
-      </transition>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -119,14 +111,8 @@ export default {
   padding-top: 3px;
 }
 
-.meta-info {
-  width: 130px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 .message {
-  padding-left: 5px;
+  padding-left: 10px;
   padding-right: 10px;
 }
 

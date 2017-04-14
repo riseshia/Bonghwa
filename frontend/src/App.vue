@@ -123,10 +123,7 @@ export default {
   },
   data() {
     return {
-      global: {
-        isImageAutoOpen: false,
-        isLiveStreaming: false
-      },
+      global: {},
       app: {},
       firewoods: [],
       stackedCount: 0,

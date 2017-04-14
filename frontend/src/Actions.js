@@ -14,7 +14,7 @@ const Actions = {
   },
   loadApplication() {
     return Agent.getWithAuth("app").then((json) => {
-      Store.setState("global", {
+      Store.fetchState("global", {
         type: 1,
         isImageAutoOpen: false,
         isLiveStreaming: false
@@ -29,7 +29,7 @@ const Actions = {
   changeType(type) {
     const global = Store.getState("global")
     global.type = type
-    Store.setState("global", global)
+    Store.setState("global", global, true)
     Agent.getWithAuth("firewoods/now", { type }).then((json) => {
       Store.setState("firewoods", FirewoodsSerializer(json.fws, false))
     })
@@ -134,7 +134,7 @@ const Actions = {
   toggleGlobalOption(key) {
     const global = Store.getState("global")
     global[key] = !global[key]
-    Store.setState("global", global)
+    Store.setState("global", global, true)
   }
 }
 

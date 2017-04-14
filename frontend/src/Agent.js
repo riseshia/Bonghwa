@@ -1,7 +1,15 @@
+import CacheStorage from "./CacheStorage"
+
 class Agent {
   constructor() {
-    this.identifier = null
-    this.token = null
+    const cache = CacheStorage.get("auth")
+    if (cache) {
+      this.identifier = cache.identifier
+      this.token = cache.token
+    } else {
+      this.identifier = null
+      this.token = null
+    }
     this.$form = null
     this.apiHost = `${process.env.API_HOST}/aapi`
   }
@@ -24,6 +32,10 @@ class Agent {
       if (json.status === "success") {
         this.identifier = identifier
         this.token = json.token
+
+        CacheStorage.set("auth", {
+          identifier: this.identifier, token: this.token
+        })
       }
       return this.isLogined()
     })
@@ -34,6 +46,7 @@ class Agent {
     return self.deleteWithAuth("session").then(() => {
       self.identifier = null
       self.token = null
+      CacheStorage.delete("auth")
     })
   }
 

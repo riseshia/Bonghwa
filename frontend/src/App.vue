@@ -165,6 +165,7 @@ export default {
       }
     },
     signOut() {
+      /* eslint-disable no-alert */
       if (confirm("정말로 로그아웃하시겠어요?")) {
         const router = this.$router
         Actions.destroySession().then(() => {

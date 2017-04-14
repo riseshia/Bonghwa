@@ -52,6 +52,7 @@ export default {
     Actions.setupForm(this)
     this.form.find("input[type=file]").customFile()
   },
+  props: ["user"],
   data() {
     return {
       adultFlg: false,
@@ -74,8 +75,13 @@ export default {
   },
   methods: {
     addMention(data) {
-      const uniqueNames = window.$.unique(data.names)
-      this.contents = `${uniqueNames.join(" ")} ${this.contents}`
+      const currentUserName = this.user.user_name
+      const uniqueNames =
+        window.$.unique(data.names)
+          .filter(name => (!name.endsWith(currentUserName)))
+      if (uniqueNames.length > 0) {
+        this.contents = `${uniqueNames.join(" ")} ${this.contents}`
+      }
       this.prevMtId = data.id
       this.rootMtId = data.rootMtId || data.id || 0
       window.$("#contents").focus()

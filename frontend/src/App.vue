@@ -3,7 +3,9 @@
   <div id="app" class="container-fluid">
     <div class="row no-gutters">
       <div class="col-sm-9">
-        <firewood-form></firewood-form>
+        <firewood-form
+          :user="user"
+        ></firewood-form>
         <informations></informations>
         <stack-status
           :stackedCount="stackedCount"
@@ -103,6 +105,9 @@ export default {
     EventBus.$on("app", (obj) => {
       vm.app = obj
     })
+    EventBus.$on("user", (obj) => {
+      vm.user = obj
+    })
     EventBus.$on("global", (obj) => {
       vm.global = obj
     })
@@ -123,6 +128,7 @@ export default {
     return {
       global: {},
       app: {},
+      user: {},
       firewoods: [],
       stackedCount: 0,
       optionsOpened: false

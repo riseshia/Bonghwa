@@ -1,7 +1,7 @@
 <template>
   <div
     :class="{ row: true,  'no-gutters': true, firewood: true, 'text-muted': isMuted }"
-    @click.stop.prevent="toggleSelf"
+    @click="toggleSelf"
   >
     <div class="col-sm-auto meta-info">
       <div class="d-flex justify-content-between">
@@ -33,7 +33,8 @@
           <figure class="figure">
             <img class="figure-img img-fluid rounded" :src="imageUrl">
             <figcaption class="figure-caption text-center">
-              <a :href="imageUrl" target="_blank">크게 보기</a>
+              <a :href="imageUrl" @click.stop="true"
+                 target="_blank">크게 보기</a>
             </figcaption>
           </figure>
         </div>

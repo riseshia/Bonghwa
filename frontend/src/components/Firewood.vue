@@ -11,7 +11,8 @@
           v-if="imageUrl"
           :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">[이미지]</span>
         <a v-if="isDeletable" @click.stop.prevent="destroy"
-           href="#">[x]</a>
+           href="#">[x]
+        </a>
       </div>
       <div class="text-small">{{ createdAt }}</div>
     </div>
@@ -107,7 +108,7 @@ export default {
 <style scoped>
 .firewood {
   border-bottom: 1px solid #ddd;
-  padding-bottom: 3px;
+  padding-bottom: 2px;
   padding-top: 3px;
 }
 

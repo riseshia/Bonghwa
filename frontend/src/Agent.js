@@ -25,6 +25,7 @@ class Agent {
         this.identifier = identifier
         this.token = json.token
       }
+      return this.isLogined()
     })
   }
 

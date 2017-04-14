@@ -4,7 +4,6 @@ import Vue from "vue"
 import VueRouter from "vue-router"
 import App from "./App"
 import SignIn from "./SignIn"
-import Actions from "./Actions"
 import Agent from "./Agent"
 
 // Start Bootstrap & jQuery
@@ -45,11 +44,6 @@ const routes = [
   },
   { path: "*", redirect: "/sign_in" }
 ]
-const router = new VueRouter({
-  routes // routes: routes 의 약어
-})
+const router = new VueRouter({ routes })
 
-
-Actions.authenticate(loginId, password).then(() => {
-  new Vue({ router }).$mount("#app")
-})
+new Vue({ router }).$mount("#app")

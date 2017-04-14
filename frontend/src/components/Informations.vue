@@ -7,8 +7,10 @@
           <span aria-hidden="true">&times;</span>
         </button>
 
-        <p v-for="info in informations" :key="info.id" style="margin-bottom: 0;">
-          {{ info.information }}
+        <p
+          v-for="info in parsedInfomations" :key="info.id"
+          v-html="info.information"
+          style="margin-bottom: 0;">
         </p>
       </div>
     </div>
@@ -17,6 +19,7 @@
 
 <script>
 import EventBus from "../EventBus"
+import autolink from "../utils/autolink"
 
 export default {
   name: "informations",
@@ -30,6 +33,13 @@ export default {
     return {
       isVisible: true,
       informations: []
+    }
+  },
+  computed: {
+    parsedInfomations() {
+      return this.informations.map(info => (
+        { id: info.id, information: autolink(info.information) }
+      ))
     }
   }
 }

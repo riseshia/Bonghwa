@@ -17,7 +17,7 @@
     <div class="col">
       <div class="row">
         <div class="col-sm-12">
-          {{ contents }}
+          <span v-html="parsedContents"></span>
           <span v-if="imageUrl">[이미지]</span>
         </div>
       </div>
@@ -41,6 +41,7 @@
 import SubFirewood from "./SubFirewood"
 import EventBus from "../EventBus"
 import Actions from "../Actions"
+import autolink from "../utils/autolink"
 
 export default {
   name: "firewood",
@@ -65,6 +66,9 @@ export default {
     },
     isOpened() {
       return this.isImgOpened || this.isTextOpened
+    },
+    parsedContents() {
+      return autolink(this.contents)
     }
   },
   methods: {

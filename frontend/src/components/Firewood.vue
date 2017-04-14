@@ -30,7 +30,12 @@
 
       <div v-if="isImgOpened && imageUrl" class="row no-gutters">
         <div class="col-sm-12">
-          <img :src="imageUrl">
+          <figure class="figure">
+            <img class="figure-img img-fluid rounded" :src="imageUrl">
+            <figcaption class="figure-caption text-center">
+              <a :href="imageUrl" target="_blank">크게 보기</a>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </div>

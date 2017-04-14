@@ -34,8 +34,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .current-users {
   padding: 20px 15px;
+}
+
+li {
+  text-indent: 15px;
 }
 </style>

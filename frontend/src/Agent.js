@@ -3,8 +3,7 @@ class Agent {
     this.identifier = null
     this.token = null
     this.$form = null
-    // TODO extract
-    this.apiHost = "http://localhost:3000/aapi"
+    this.apiHost = `${process.env.API_HOST}/aapi`
   }
 
   isLogined() {

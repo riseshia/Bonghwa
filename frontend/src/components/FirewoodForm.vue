@@ -1,5 +1,5 @@
 <template>
-  <form class="form-horizontal"
+  <form class="form-horizontal bg-faded"
         role="form"
         id="new_firewood"
         enctype="multipart/form-data"
@@ -19,12 +19,10 @@
       </div>
     </div>
     <div class="row no-gutters justify-content-between">
-      <div class="col">
-        <label class="custom-file">
-          <input type="file" name="firewood[image]" class="custom-file-input">
-          <span class="custom-file-control">Pic</span>
-        </label>
-        <label class="form-check-label">
+      <div class="col form-inline">
+        <input type="file" class="custom-file-upload" name="firewood[image]">
+
+        <label class="form-check-label adult-flg text-danger">
           <input
             v-model="adultFlg"
             class="form-check-input" type="checkbox">
@@ -52,6 +50,7 @@ export default {
     this.form = window.$("#new_firewood")
     EventBus.$on("add-mention", this.addMention)
     Actions.setupForm(this)
+    this.form.find("input[type=file]").customFile()
   },
   data() {
     return {
@@ -113,5 +112,12 @@ export default {
 form {
   padding: 10px;
 }
-</style>
 
+.form-group {
+  margin-bottom: 0.5rem;
+}
+
+.adult-flg {
+  margin-left: 10px;
+}
+</style>

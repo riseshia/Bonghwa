@@ -4,7 +4,7 @@
       <div
         v-for="fw in parsedFirewoods"
         :key="fw.id"
-        class="row">
+        class="row no-gutters">
         <div class="col-sm-auto">
           <div>{{ fw.name }}</div>
           <div>{{ fw.createdAt }}</div>

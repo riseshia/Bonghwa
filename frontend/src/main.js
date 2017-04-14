@@ -11,6 +11,7 @@ window.$ = require("jquery")
 
 window.jQuery = window.$
 require("../vendor/jquery.form")
+require("../vendor/jquery.customFile")
 
 window.Tether = require("tether")
 

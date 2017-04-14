@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row no-gutters">
     <div class="col-sm-12">
       <firewood v-for="fw in firewoods" :key="fw.id"
                 :id="fw.id"

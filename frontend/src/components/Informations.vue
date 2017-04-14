@@ -1,5 +1,5 @@
 <template>
-  <div class="row" v-if="isVisible && informations.length > 0">
+  <div class="row no-gutters" v-if="isVisible && informations.length > 0">
     <div class="col-sm-12">
       <div class="alert alert-info alert-dismissible fade show" role="alert">
         <button type="button" class="close"
@@ -7,6 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
 
+        <h5>공지사항</h5>
         <p
           v-for="info in parsedInfomations" :key="info.id"
           v-html="info.information"
@@ -52,6 +53,7 @@ export default {
 .alert {
   border-radius: 0;
   border: 0px solid transparent;
+  margin-bottom: 0;
 }
 </style>
 

@@ -1,24 +1,24 @@
 <template>
   <div
-    :class="{ row: true, firewood: true, 'text-muted': isMuted }"
+    :class="{ row: true,  'no-gutters': true, firewood: true, 'text-muted': isMuted }"
     @click.stop.prevent="toggleSelf"
   >
-    <div class="col-sm-auto">
-      <div class="text-right">
-        <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
-      </div>
-      <div>{{ createdAt }}</div>
-      <div class="text-right">
-        <a href="#">*</a>
+    <div class="col-sm-auto meta-info">
+      <div class="d-flex justify-content-between">
         <a v-if="isDeletable" @click.stop.prevent="destroy"
            href="#">[x]</a>
+        <span v-if="!isDeletable"></span>
+        <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
       </div>
+      <div class="text-small">{{ createdAt }}</div>
     </div>
-    <div class="col">
-      <div class="row">
+    <div class="col message">
+      <div class="row no-gutters">
         <div class="col-sm-12">
           <span v-html="parsedContents"></span>
-          <span v-if="imageUrl" :class="{ 'text-danger': imageAdultFlg }">[이미지]</span>
+          <span
+            v-if="imageUrl"
+            :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">[이미지]</span>
         </div>
       </div>
 
@@ -102,5 +102,30 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.firewood {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 3px;
+  padding-top: 3px;
+}
+
+.meta-info {
+  width: 130px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.message {
+  padding-left: 5px;
+  padding-right: 10px;
+}
+
+.text-small {
+  font-size: 90%;
+}
+
+img {
+  max-height: 500px;
+  max-width: 500px;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <!-- Start Main Contents  -->
   <div id="app" class="container-fluid">
-    <div class="row">
+    <div class="row no-gutters">
       <div class="col-sm-9">
         <firewood-form></firewood-form>
         <informations></informations>
@@ -16,10 +16,10 @@
       </div>
 
       <div class="col-sm-3">
-        <div class="row">
+        <div class="row no-gutters nav-menu">
           <div class="col-sm-12">
-            <h3>
-              <a target="_blank" :href="app.home_link">
+            <h3 class="bg-inverse">
+              <a class="text-white" target="_blank" :href="app.home_link">
                 {{ app.home_name }}
               </a>
             </h3>
@@ -43,7 +43,7 @@
               <li class="nav-item">
                 <a class="nav-link dropdown-toggle" href="#"
                    @click.prevent.stop="toggleOptionsMenu">Options</a>
-                <ul v-if="optionsOpened">
+                <ul v-if="optionsOpened" class="list-unstyled options-menu">
                   <li>
                     <a href="#"
                        @click.prevent.stop="toggleOption('isImageAutoOpen')">
@@ -64,13 +64,11 @@
           </div>
         </div>
         <users></users>
-        <div class="row">
-          <div class="col-sm-12">
-            <div id="widget">
-              <a class="twitter-timeline"
-                 href="https://twitter.com/"
-                 :data-widget-id="app.widget_link">Widget</a>
-            </div>
+        <div class="row no-gutters widget-area">
+          <div class="col-sm-12" id="widget">
+            <a class="twitter-timeline"
+               href="https://twitter.com/"
+               :data-widget-id="app.widget_link">Widget</a>
           </div>
         </div>
       </div>
@@ -182,6 +180,28 @@ export default {
   padding-right: 0;
 }
 
+.nav-menu a {
+  color: #333;
+}
+
+.nav-menu h3 {
+  margin-bottom: 0;
+  padding: 10px 20px;
+}
+
+.nav-menu .nav-pills .nav-link {
+  border-radius: 0;
+}
+
+.nav-menu .nav-pills .nav-link.active {
+  background-color: #ddd;
+  color: #333;
+}
+
+.dropdown-toggle {
+  padding-bottom: 2px;
+}
+
 .dropdown-toggle::after {
     display: inline-block;
     width: 0;
@@ -192,5 +212,13 @@ export default {
     border-top: .3em solid;
     border-right: .3em solid transparent;
     border-left: .3em solid transparent;
+}
+
+.options-menu {
+  text-indent: 30px;
+}
+
+.widget-area {
+  border-top: 1px solid #eee;
 }
 </style>

@@ -1,10 +1,11 @@
 <template>
-  <div class="row">
+  <div class="row no-gutters current-users">
     <div class="col-sm-12">
       <h4>Users({{ users.length }}명)</h4>
+
       <ul class="list-unstyled">
         <li v-for="user in users" :key="user.name">
-          <a href="#" @click.stop.prevent="addMention">{{ user.name }}</a>
+          <a href="#" @click.stop.prevent="addMention">@{{ user.name }}</a>
         </li>
       </ul>
     </div>
@@ -27,11 +28,14 @@ export default {
   },
   methods: {
     addMention(event) {
-      EventBus.$emit("add-mention", { names: [`@${event.target.innerText}`] })
+      EventBus.$emit("add-mention", { names: [`${event.target.innerText}`] })
     }
   }
 }
 </script>
 
 <style>
+.current-users {
+  padding: 20px 15px;
+}
 </style>

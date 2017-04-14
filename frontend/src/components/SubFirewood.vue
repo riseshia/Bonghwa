@@ -11,6 +11,9 @@
         </div>
         <div class="col">
           <span v-html="fw.contents"></span>
+          <span
+            v-if="fw.imageUrl"
+            :class="{ 'text-danger': fw.imageAdultFlg }">[이미지]</span>
         </div>
       </div>
     </div>
@@ -25,13 +28,18 @@ export default {
   props: ["firewoods"],
   computed: {
     parsedFirewoods() {
-      return this.firewoods.map(fw => (
-        {
+      return this.firewoods.map((fw) => {
+        const classes = []
+        if (fw.imageAdultFlg) { classes.push("text-danger") }
+
+        return {
           id: fw.id,
-          contents: autolink(fw.contents),
+          contents: autolink(fw.contents, { classes }),
+          imageAdultFlg: fw.imageAdultFlg,
+          imageUrl: fw.imageUrl,
           createdAt: fw.createdAt
         }
-      ))
+      })
     }
   }
 }

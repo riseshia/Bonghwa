@@ -1,4 +1,4 @@
-const delimiter = /(^|\s)(https?:\/\/\S+(\.[^\s<]+))/gi
+const delimiter = /https?:\/\/\S+(\.[^\s<]+)/gi
 
 const buildAnker = (url, options) => {
   const href = url
@@ -6,7 +6,7 @@ const buildAnker = (url, options) => {
   let classes = ["linkUrl"]
 
   if (options.classes) {
-    classes = classes.contat(options.classes)
+    classes = classes.concat(options.classes)
   }
 
   if (url.length > 20) {

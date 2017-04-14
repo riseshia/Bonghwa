@@ -18,7 +18,7 @@
       <div class="row">
         <div class="col-sm-12">
           <span v-html="parsedContents"></span>
-          <span v-if="imageUrl">[이미지]</span>
+          <span v-if="imageUrl" :class="{ 'text-danger': imageAdultFlg }">[이미지]</span>
         </div>
       </div>
 
@@ -68,7 +68,9 @@ export default {
       return this.isImgOpened || this.isTextOpened
     },
     parsedContents() {
-      return autolink(this.contents)
+      const classes = []
+      if (this.imageAdultFlg) { classes.push("text-danger") }
+      return autolink(this.contents, { classes })
     }
   },
   methods: {

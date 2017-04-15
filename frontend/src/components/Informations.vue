@@ -1,5 +1,8 @@
 <template>
-  <div class="row no-gutters" v-if="isVisible && informations.length > 0">
+  <div
+    v-if="isVisible && informations.length > 0"
+    class="row no-gutters informations"
+  >
     <div class="col-sm-12">
       <div class="alert alert-info alert-dismissible fade show" role="alert">
         <button type="button" class="close"
@@ -50,6 +53,18 @@ export default {
 </script>
 
 <style scoped>
+/* Mobile */
+.informations {
+  margin-top: 125px;
+}
+
+/* PC */
+@media (min-width: 576px) {
+  .informations {
+    margin-top: 104px;
+  }
+}
+
 .alert {
   border-radius: 0;
   border: 0px solid transparent;

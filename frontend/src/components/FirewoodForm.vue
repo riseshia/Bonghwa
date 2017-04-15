@@ -1,5 +1,5 @@
 <template>
-  <form class="form-horizontal bg-faded"
+  <form class="form-horizontal bg-faded fixed-top firewood-form"
         role="form"
         id="new_firewood"
         enctype="multipart/form-data"
@@ -115,8 +115,16 @@ export default {
 </script>
 
 <style scoped>
-form {
+/* Mobile */
+.firewood-form {
   padding: 10px;
+}
+
+/* PC */
+@media (min-width: 576px) {
+  .firewood-form {
+    width: 75%;
+  }
 }
 
 .form-group {

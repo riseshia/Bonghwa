@@ -20,7 +20,7 @@
       <div class="col-sm-3">
         <div class="row no-gutters nav-menu">
           <div class="col-sm-12">
-            <h3 class="bg-inverse">
+            <h3 class="nav-brand bg-inverse">
               <a class="text-white" target="_blank" :href="app.home_link">
                 {{ app.home_name }}
               </a>
@@ -230,5 +230,9 @@ body {
 
 .widget-area {
   border-top: 1px solid #eee;
+}
+
+.nav-brand {
+  font-weight: normal;
 }
 </style>

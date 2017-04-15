@@ -19,7 +19,7 @@ class User < ApplicationRecord
   def self.on_timeline(at_dt)
     before_20_sec = at_dt - 20
     RedisWrapper.zrangebyscore("active-users", before_20_sec, at_dt)
-                .sort.map { |user_name| { "name" => user_name } }
+                .sort.map { |user_name| { "name" => ERB::Util.html_escape(user_name) } }
   end
 
   def admin?

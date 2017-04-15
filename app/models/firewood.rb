@@ -104,8 +104,8 @@ class Firewood < ApplicationRecord
       prev_mt_id: prev_mt_id,
       root_mt_id: root_mt_id,
       user_id: user_id,
-      name: user_name,
-      contents: contents,
+      name: ERB::Util.html_escape(user_name),
+      contents: ERB::Util.html_escape(contents),
       image_url: image_url_with_host,
       image_adult_flg: image_adult_flg,
       created_at: formatted_created_at

@@ -13,7 +13,7 @@ class FrontendControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_index
-    get frontend_index_url
+    get beta_url
     assert_response :success
   end
 end

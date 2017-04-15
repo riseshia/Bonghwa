@@ -5,7 +5,6 @@
 
   $.fn.customFile = function() {
     return this.each(function() {
-      console.log("fFFFF")
       var $file = $(this).addClass('custom-file-upload-hidden'), // the original file input
         $wrap = $('<div class="file-upload-wrapper input-group">'),
         $input = $('<input type="text" class="file-upload-input form-control" readonly/>'),

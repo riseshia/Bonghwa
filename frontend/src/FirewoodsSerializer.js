@@ -32,11 +32,17 @@ function parentsFor(fw) {
 }
 
 function serialize(obj) {
+  const user = Store.getState("user")
   const mentioned = obj.contents.split(" ")
                        .filter(token => (isMtTarget(token)))
-  const owned = Store.getState("user").user_id === obj.user_id
+  const regex = RegExp(`[@|!]${user.user_name}`)
+  const userNamehighlightedContent =
+    obj.contents.replace(regex, match => (
+      `<span class="font-weight-bold">${match}</span>`
+    ))
+  const owned = user.user_id === obj.user_id
   const data = {
-    contents: obj.contents,
+    contents: userNamehighlightedContent,
     createdAt: obj.created_at,
     id: obj.id,
     imageAdultFlg: obj.image_adult_flg,
@@ -47,8 +53,8 @@ function serialize(obj) {
     rootMtId: obj.root_mt_id,
     userId: obj.user_id,
     mentionedNames: mentioned,
-    persisted: obj.persisted === undefined ? dPersisted : obj.persisted,
     isDeletable: owned,
+    persisted: obj.persisted === undefined ? dPersisted : obj.persisted,
     inStack: obj.inStack === undefined ? false : obj.inStack
   }
   indexing(data)

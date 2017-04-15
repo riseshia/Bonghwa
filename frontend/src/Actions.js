@@ -14,11 +14,6 @@ const Actions = {
   },
   loadApplication() {
     return Agent.getWithAuth("app").then((json) => {
-      Store.fetchState("global", {
-        type: 1,
-        isImageAutoOpen: false,
-        isLiveStreaming: false
-      })
       Store.setState("user", json.user)
       Store.setState("firewoods", FirewoodsSerializer(json.fws, false))
       Store.setState("informations", json.infos)
@@ -36,6 +31,9 @@ const Actions = {
   },
   setupForm(vm) {
     Agent.setupForm(vm.form)
+  },
+  saveForm(data) {
+    Store.setState("form-state", data, true)
   },
   createFirewood(vm) {
     const formData = vm.formData()

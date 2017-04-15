@@ -25,6 +25,7 @@ class Store {
     } else {
       this.setState(key, defaultValue, true)
     }
+    return this.getState(key)
   }
 
   deliverAll() {

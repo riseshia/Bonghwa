@@ -5,6 +5,7 @@ import VueRouter from "vue-router"
 import App from "./App"
 import SignIn from "./SignIn"
 import Agent from "./Agent"
+import Store from "./Store"
 
 // Start Bootstrap & jQuery
 window.$ = require("jquery")
@@ -47,4 +48,10 @@ const routes = [
 ]
 const router = new VueRouter({ routes })
 
+Store.fetchState("global", {
+  type: 1,
+  isImageAutoOpen: false,
+  isLiveStreaming: false,
+  cachingForm: false
+})
 new Vue({ router }).$mount("#app")

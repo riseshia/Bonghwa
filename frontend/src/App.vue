@@ -5,6 +5,7 @@
       <div class="col-sm-9">
         <firewood-form
           :user="user"
+          :global="global"
         ></firewood-form>
         <informations></informations>
         <stack-status
@@ -29,6 +30,7 @@
 <script>
 import EventBus from "./EventBus"
 import Actions from "./Actions"
+import Store from "./Store"
 
 import Firewoods from "./components/Firewoods"
 import StackStatus from "./components/StackStatus"
@@ -73,7 +75,7 @@ export default {
   },
   data() {
     return {
-      global: {},
+      global: Store.getState("global"),
       app: {},
       user: {},
       firewoods: [],

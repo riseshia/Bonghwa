@@ -42,6 +42,13 @@
                   Live Stream
                 </a>
               </li>
+              <li>
+                <a href="#"
+                   @click.prevent.stop="toggleOption('cachingForm')">
+                  [{{ global.cachingForm ? "o" : "x" }}]
+                  메시지 임시 저장하기
+                </a>
+              </li>
             </ul>
           </li>
         </ul>

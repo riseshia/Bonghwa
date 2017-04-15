@@ -41,6 +41,7 @@
 <script>
 import EventBus from "../EventBus"
 import Actions from "../Actions"
+import Store from "../Store"
 
 const CONTENTS_MAX_LEN = 150
 
@@ -52,14 +53,18 @@ export default {
     Actions.setupForm(this)
     this.form.find("input[type=file]").customFile()
   },
-  props: ["user"],
+  props: ["user", "global"],
   data() {
-    return {
+    const defaultData = {
       adultFlg: false,
       prevMtId: 0,
       rootMtId: 0,
       contents: ""
     }
+    if (this.global.cachingForm) {
+      return Store.fetchState("form-state", defaultData)
+    }
+    return defaultData
   },
   computed: {
     remainCount() {
@@ -70,6 +75,9 @@ export default {
     contents(newContents) {
       if (newContents.length > CONTENTS_MAX_LEN) {
         this.contents = newContents.slice(0, CONTENTS_MAX_LEN)
+      }
+      if (this.global.cachingForm) {
+        Actions.saveForm(this.$data)
       }
     }
   },

@@ -9,7 +9,7 @@
         <span v-html="parsedContents"></span>
         <span
           v-if="imageUrl"
-          :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">[이미지]</span>
+          :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">{{ imageName }}</span>
         <a v-if="isDeletable" @click.stop.prevent="destroy"
            href="#">[x]
         </a>
@@ -64,6 +64,9 @@ export default {
     }
   },
   computed: {
+    imageName() {
+      return `[이미지 ${this.id}]`
+    },
     isMuted() {
       return this.isDeleted || !this.persisted || this.isDm
     },

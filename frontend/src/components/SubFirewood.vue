@@ -13,7 +13,7 @@
           <span v-html="fw.contents"></span>
           <span
             v-if="fw.imageUrl"
-            :class="{ 'text-danger': fw.imageAdultFlg }">[이미지]</span>
+            :class="{ 'text-danger': fw.imageAdultFlg }">{{ fw.imageName }}</span>
         </div>
       </div>
     </div>
@@ -37,6 +37,7 @@ export default {
           name: fw.name,
           contents: autolink(fw.contents, { classes }),
           imageAdultFlg: fw.imageAdultFlg,
+          imageName: `[이미지 ${fw.id}]`,
           imageUrl: fw.imageUrl,
           createdAt: fw.createdAt.split(" ")[1]
         }

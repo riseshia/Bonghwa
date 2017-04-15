@@ -181,14 +181,16 @@ export default {
 <style>
 @import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
+/* Bootstrap Overriding */
 .container-fluid {
   padding-left: 0;
   padding-right: 0;
 }
 
-body {
+body, .form-control, .btn {
   font-size: 0.9rem;
 }
+/* Bootstrap Overriding done */
 
 .nav-menu a {
   color: #333;

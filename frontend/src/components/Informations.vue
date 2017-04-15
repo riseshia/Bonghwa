@@ -55,13 +55,13 @@ export default {
 <style scoped>
 /* Mobile */
 .informations {
-  margin-top: 125px;
+  margin-top: 119px;
 }
 
 /* PC */
 @media (min-width: 576px) {
   .informations {
-    margin-top: 104px;
+    margin-top: 98px;
   }
 }
 

@@ -39,7 +39,6 @@ config/deploy/
 config/ssl
 Capfile
 Dockerfile
-Procfile
 
 ### OSX ###
 .DS_Store

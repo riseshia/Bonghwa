@@ -21,7 +21,7 @@
       </div>
       <div class="row no-gutters justify-content-between">
         <div class="col form-inline">
-          <input type="file" class="custom-file-upload" name="firewood[image]">
+          <input id="file-input" type="file" class="custom-file-upload" name="firewood[image]">
 
           <label class="form-check-label adult-flg text-danger">
             <input
@@ -104,8 +104,12 @@ export default {
         image_adult_flg: this.adultFlg
       }
     },
+    isValid() {
+      const fileInputEl = document.getElementById("file-input")
+      return fileInputEl.files.length || this.contents.length !== 0
+    },
     submit() {
-      if (this.contents.length === 0) {
+      if (!this.isValid()) {
         Actions.fetchFirewoods().then(() => {
           Actions.flushStack()
         })

@@ -75,6 +75,9 @@ export default {
     isMuted() {
       return this.isDeleted || !this.persisted || this.isDm
     },
+    isOpenable() {
+      return this.imageUrl || this.parents.length
+    },
     isOpened() {
       return this.isImgOpened || this.isTextOpened
     },
@@ -94,6 +97,7 @@ export default {
       })
     },
     toggleSelf() {
+      if (!this.isOpenable) { return }
       let nextState = true
       if (this.isOpened) {
         nextState = false

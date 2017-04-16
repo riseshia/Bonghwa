@@ -1,5 +1,6 @@
 import Agent from "./Agent"
 import Store from "./Store"
+import EventBus from "./EventBus"
 import FirewoodsSerializer from "./FirewoodsSerializer"
 
 const Actions = {
@@ -133,6 +134,13 @@ const Actions = {
     const global = Store.getState("global")
     global[key] = !global[key]
     Store.setState("global", global, true)
+
+    if (key === "isImageAutoOpen") {
+      this.toggleAllImage(global[key])
+    }
+  },
+  toggleAllImage(newState) {
+    EventBus.$emit("toggle-image-on-firewood", newState)
   }
 }
 

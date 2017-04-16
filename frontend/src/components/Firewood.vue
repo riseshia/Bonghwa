@@ -51,6 +51,11 @@ export default {
   components: {
     SubFirewood
   },
+  created() {
+    EventBus.$on("toggle-image-on-firewood", (newState) => {
+      this.isImgOpened = newState
+    })
+  },
   props: [
     "contents", "createdAt", "id", "imageAdultFlg", "imageUrl", "isDm",
     "name", "mentionedNames", "prevMtId", "rootMtId", "parents", "userId",

@@ -1,41 +1,43 @@
 <template>
-  <form class="form-horizontal bg-faded fixed-top firewood-form"
-        role="form"
-        id="new_firewood"
-        enctype="multipart/form-data"
-        action="aapi/firewoods"
-        accept-charset="UTF-8">
-    <div class="row no-gutters">
-      <div class="col-sm-12">
-        <div class="form-group">
-          <input
-            @keydown.enter.stop.prevent="submit"
-            v-model="contents"
-            id="contents"
-            type="text"
-            placeholder="Type..."
-            class="form-control">
+  <div class="form-box">
+    <form class="form-horizontal bg-faded fixed-top firewood-form"
+          role="form"
+          id="new_firewood"
+          enctype="multipart/form-data"
+          action="aapi/firewoods"
+          accept-charset="UTF-8">
+      <div class="row no-gutters">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <input
+              @keydown.enter.stop.prevent="submit"
+              v-model="contents"
+              id="contents"
+              type="text"
+              placeholder="Type..."
+              class="form-control">
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row no-gutters justify-content-between">
-      <div class="col form-inline">
-        <input type="file" class="custom-file-upload" name="firewood[image]">
+      <div class="row no-gutters justify-content-between">
+        <div class="col form-inline">
+          <input type="file" class="custom-file-upload" name="firewood[image]">
 
-        <label class="form-check-label adult-flg text-danger">
-          <input
-            v-model="adultFlg"
-            class="form-check-input" type="checkbox">
-            후방주의
-        </label>
+          <label class="form-check-label adult-flg text-danger">
+            <input
+              v-model="adultFlg"
+              class="form-check-input" type="checkbox">
+              후방주의
+          </label>
+        </div>
+        <div class="col-sm-auto">
+          <span>{{ remainCount }}</span>
+          <a @click.stop.prevent="submit"
+             class="btn btn-primary" href="#" role="button">Send</a>
+        </div>
       </div>
-      <div class="col-sm-auto">
-        <span>{{ remainCount }}</span>
-        <a @click.stop.prevent="submit"
-           class="btn btn-primary" href="#" role="button">Send</a>
-      </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -124,12 +126,19 @@ export default {
 
 <style scoped>
 /* Mobile */
+.form-box {
+  margin-top: 119px;
+}
 .firewood-form {
   padding: 10px;
 }
 
 /* PC */
 @media (min-width: 576px) {
+  .form-box {
+    margin-top: 98px;
+  }
+
   .firewood-form {
     width: 75%;
   }

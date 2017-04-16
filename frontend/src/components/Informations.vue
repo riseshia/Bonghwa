@@ -53,18 +53,6 @@ export default {
 </script>
 
 <style scoped>
-/* Mobile */
-.informations {
-  margin-top: 119px;
-}
-
-/* PC */
-@media (min-width: 576px) {
-  .informations {
-    margin-top: 98px;
-  }
-}
-
 .alert {
   border-radius: 0;
   border: 0px solid transparent;

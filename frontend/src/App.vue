@@ -1,12 +1,13 @@
 <template>
   <!-- Start Main Contents  -->
   <div id="app" class="container-fluid">
-    <div class="row no-gutters">
-      <div class="col-sm-9">
+    <div class="row no-gutters d-flex">
+      <div class="col-sm-9 flex-last flex-sm-first">
         <firewood-form
           :user="user"
           :global="global"
         ></firewood-form>
+
         <informations></informations>
         <stack-status
           :stackedCount="stackedCount"
@@ -68,6 +69,7 @@ export default {
     })
   },
   mounted() {
+    // Widget
     const script = document.createElement("script")
     /* eslint-disable quotes */
     script.innerHTML = `!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");`

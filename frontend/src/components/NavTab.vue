@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-3">
+  <div class="col-sm-3 flex-first flex-sm-last hidden-xs-down">
     <div class="row no-gutters nav-menu">
       <div class="col-sm-12">
         <h3 class="nav-brand bg-inverse">

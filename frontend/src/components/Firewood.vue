@@ -6,8 +6,8 @@
     <div class="col-sm-auto col-6 flex-sm-first flex-first name-area">
       <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
     </div>
-    <div class="col-sm col-12 flex-sm-unordered flex-last message-area">
-      <span v-html="parsedContents"></span>
+    <div class="col-sm col-12 flex-sm-unordered flex-last">
+      <span class="message" v-html="parsedContents"></span>
       <span
         v-if="imageUrl"
         :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">{{ imageName }}</span>
@@ -15,7 +15,7 @@
          href="#">[x]
       </a>
       <transition name="sliding">
-        <div class="col-sm-12" v-if="isImgOpened">
+        <div v-if="isImgOpened">
           <div v-if="isTextOpened && parents.length">
             <sub-firewood :firewoods="parents"></sub-firewood>
           </div>
@@ -127,7 +127,7 @@ export default {
   font-size: 80%;
 }
 
-.message-area {
+.message {
   text-indent: 5px;
 }
 

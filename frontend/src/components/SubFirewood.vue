@@ -5,15 +5,18 @@
         v-for="fw in parsedFirewoods"
         :key="fw.id"
         class="row no-gutters">
-        <div class="col-sm-auto meta-info">
-          {{ fw.createdAt }} -
+        <div class="col-sm-auto name-area">
           {{ fw.name }}
         </div>
         <div class="col message">
           <span v-html="fw.contents"></span>
+
           <span
             v-if="fw.imageUrl"
             :class="{ 'text-danger': fw.imageAdultFlg }">{{ fw.imageName }}</span>
+        </div>
+        <div class="col-sm-auto hidden-xs-down">
+          {{ fw.createdAt }}
         </div>
       </div>
     </div>
@@ -51,11 +54,9 @@ export default {
 .fw-parents {
   font-size: 90%;
 }
-.message::before {
+.name-area::after {
   content: ":";
-  padding-left: 3px;
-  padding-right: 3px;
-}
-.message {
+  padding-left: 2px;
+  padding-right: 2px;
 }
 </style>

@@ -23,7 +23,7 @@
           <div v-if="isImgOpened && imageUrl" class="row no-gutters">
             <div class="col-sm-12">
               <figure class="figure">
-                <img class="figure-img img-fluid rounded" :src="imageUrl">
+                <img class="figure-img" :src="imageUrl">
                 <figcaption class="figure-caption text-center">
                   <a :href="imageUrl" @click.stop="true"
                      target="_blank">크게 보기</a>
@@ -129,8 +129,7 @@ export default {
 
 /* Mobile */
 img {
-  max-width: 100%;
-  padding: 5px;
+  max-width: 95%;
 }
 
 /* PC */

@@ -1,23 +1,23 @@
 <template>
   <div
-    v-if="isVisible && informations.length > 0"
+    v-if="informations.length > 0"
     class="row no-gutters informations"
   >
-    <div class="col-sm-12">
-      <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <button type="button" class="close"
-                data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-        <h5>공지사항</h5>
-        <p
-          v-for="info in parsedInfomations" :key="info.id"
-          v-html="info.information"
-          style="margin-bottom: 0;">
-        </p>
+    <transition name="sliding">
+      <div
+        v-if="isVisible" @click="dismissSelf"
+        class="col-sm-12"
+      >
+        <div class="alert alert-info" role="alert">
+          <h5>공지사항</h5>
+          <p
+            v-for="info in parsedInfomations" :key="info.id"
+            v-html="info.information"
+            style="margin-bottom: 0;">
+          </p>
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -31,6 +31,7 @@ export default {
     const vm = this
     EventBus.$on("informations", (informations) => {
       vm.informations = informations
+      vm.isVisible = true
     })
   },
   data() {
@@ -48,6 +49,12 @@ export default {
         }
       ))
     }
+  },
+  methods: {
+    dismissSelf() {
+      console.log(1)
+      this.isVisible = false
+    }
   }
 }
 </script>
@@ -59,4 +66,3 @@ export default {
   margin-bottom: 0;
 }
 </style>
-

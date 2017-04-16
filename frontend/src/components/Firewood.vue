@@ -147,13 +147,4 @@ img {
     width: 100px;
   }
 }
-
-.sliding-enter-active, .sliding-leave-active {
-  transition: max-height .5s;
-  overflow: hidden;
-  max-height: 600px;
-}
-.sliding-enter, .sliding-leave-to {
-  max-height: 0;
-}
 </style>

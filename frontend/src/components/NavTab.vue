@@ -55,7 +55,7 @@
       </div>
     </div>
     <users></users>
-    <div class="row no-gutters widget-area">
+    <div class="row no-gutters widget-area hidden-sm-down">
       <div class="col-sm-12" id="widget">
         <a class="twitter-timeline"
            href="https://twitter.com/"

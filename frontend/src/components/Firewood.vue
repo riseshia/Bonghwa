@@ -35,7 +35,8 @@
       </transition>
     </div>
     <div class="col-sm-auto col-auto flex-unordered flex-sm-last datetime-area">
-      <span class="text-small">{{ createdAt }}</span>
+      <span class="text-small hidden-xs-down">{{ date }}</span>
+      <span class="text-small">{{ time }}</span>
     </div>
   </div>
 </template>
@@ -85,6 +86,12 @@ export default {
       const classes = []
       if (this.imageAdultFlg) { classes.push("text-danger") }
       return autolink(this.contents, { classes })
+    },
+    date() {
+      return this.createdAt.split(" ")[0]
+    },
+    time() {
+      return this.createdAt.split(" ")[1]
     }
   },
   methods: {

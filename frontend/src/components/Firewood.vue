@@ -1,42 +1,42 @@
 <template>
   <div
-    :class="{ row: true,  'no-gutters': true, firewood: true, 'text-muted': isMuted }"
+    :class="{ row: true, 'd-flex': true, 'justify-content-between': true, 'no-gutters': true, firewood: true, 'text-muted': isMuted }"
     @click="toggleSelf"
   >
-    <div class="col-sm-12 message d-flex justify-content-between">
-      <div>
-        <a href="#" @click.stop.prevent="addMention">{{ name }}</a> :
-        <span v-html="parsedContents"></span>
-        <span
-          v-if="imageUrl"
-          :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">{{ imageName }}</span>
-        <a v-if="isDeletable" @click.stop.prevent="destroy"
-           href="#">[x]
-        </a>
-      </div>
-      <div class="text-small">{{ createdAt }}</div>
+    <div class="col-sm-auto col-6 flex-sm-first flex-first name-area">
+      <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
     </div>
-    <transition name="sliding">
-      <div class="col-sm-12" v-if="isImgOpened">
-        <div v-if="isTextOpened && parents.length">
-          <sub-firewood
-            :firewoods="parents"
-          ></sub-firewood>
-        </div>
+    <div class="col-sm col-12 flex-sm-unordered flex-last message-area">
+      <span v-html="parsedContents"></span>
+      <span
+        v-if="imageUrl"
+        :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">{{ imageName }}</span>
+      <a v-if="isDeletable" @click.stop.prevent="destroy"
+         href="#">[x]
+      </a>
+      <transition name="sliding">
+        <div class="col-sm-12" v-if="isImgOpened">
+          <div v-if="isTextOpened && parents.length">
+            <sub-firewood :firewoods="parents"></sub-firewood>
+          </div>
 
-        <div v-if="isImgOpened && imageUrl" class="row no-gutters">
-          <div class="col-sm-12">
-            <figure class="figure">
-              <img class="figure-img img-fluid rounded" :src="imageUrl">
-              <figcaption class="figure-caption text-center">
-                <a :href="imageUrl" @click.stop="true"
-                   target="_blank">크게 보기</a>
-              </figcaption>
-            </figure>
+          <div v-if="isImgOpened && imageUrl" class="row no-gutters">
+            <div class="col-sm-12">
+              <figure class="figure">
+                <img class="figure-img img-fluid rounded" :src="imageUrl">
+                <figcaption class="figure-caption text-center">
+                  <a :href="imageUrl" @click.stop="true"
+                     target="_blank">크게 보기</a>
+                </figcaption>
+              </figure>
+            </div>
           </div>
         </div>
-      </div>
-    </transition>
+      </transition>
+    </div>
+    <div class="col-sm-auto col-auto flex-unordered flex-sm-last datetime-area">
+      <span class="text-small">{{ createdAt }}</span>
+    </div>
   </div>
 </template>
 
@@ -116,17 +116,15 @@ export default {
 <style scoped>
 .firewood {
   border-bottom: 1px solid #ddd;
-  padding-bottom: 2px;
-  padding-top: 3px;
-}
-
-.message {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 3px 7px 2px;
 }
 
 .text-small {
-  font-size: 90%;
+  font-size: 80%;
+}
+
+.message-area {
+  text-indent: 5px;
 }
 
 /* Mobile */
@@ -137,9 +135,17 @@ img {
 
 /* PC */
 @media (min-width: 576px) {
+  .text-small {
+    font-size: 90%;
+  }
+
   img {
-    max-height: 500px;
-    max-width: 500px;
+    max-height: 400px;
+    max-width: 400px;
+  }
+
+  .name-area {
+    width: 100px;
   }
 }
 

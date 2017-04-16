@@ -1,4 +1,5 @@
 import CacheStorage from "./CacheStorage"
+import Router from "./Router"
 
 class Agent {
   constructor() {
@@ -59,12 +60,21 @@ class Agent {
   }
 
   requestWithAuth(httpType, path, params = {}) {
+    const self = this
     return window.$.ajax({
       url: `${this.apiHost}/${path}`,
       type: httpType,
       headers: this.authHeaders(),
       dataType: "json",
       data: params
+    }).fail((res, status) => {
+      // Auth Error, so delete token
+      if (status === "parsererror") {
+        self.identifier = null
+        self.token = null
+        CacheStorage.delete("auth")
+        Router.push("/sign_in")
+      }
     })
   }
 

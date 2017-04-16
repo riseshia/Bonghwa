@@ -2,10 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from "vue"
 import VueRouter from "vue-router"
-import App from "./App"
-import SignIn from "./SignIn"
-import Agent from "./Agent"
 import Store from "./Store"
+import Router from "./Router"
 
 // Start Bootstrap & jQuery
 window.$ = require("jquery")
@@ -21,37 +19,10 @@ require("bootstrap")
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: "/",
-    component: App,
-    beforeEnter: (to, from, next) => {
-      if (Agent.isLogined()) {
-        next()
-      } else {
-        next("/sign_in")
-      }
-    }
-  },
-  {
-    path: "/sign_in",
-    component: SignIn,
-    beforeEnter: (to, from, next) => {
-      if (Agent.isLogined()) {
-        next("/")
-      } else {
-        next()
-      }
-    }
-  },
-  { path: "*", redirect: "/sign_in" }
-]
-const router = new VueRouter({ routes })
-
 Store.fetchState("global", {
   type: 1,
   isImageAutoOpen: false,
   isLiveStreaming: false,
   cachingForm: false
 })
-new Vue({ router }).$mount("#app")
+new Vue({ router: Router }).$mount("#app")

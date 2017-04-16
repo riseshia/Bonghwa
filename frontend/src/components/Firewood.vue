@@ -3,7 +3,7 @@
     :class="{ row: true, 'd-flex': true, 'justify-content-between': true, 'no-gutters': true, firewood: true, 'text-muted': isMuted }"
     @click="toggleSelf"
   >
-    <div class="col-sm-auto col-6 flex-sm-first flex-first name-area">
+    <div class="col-sm-auto col-auto flex-sm-first flex-first name-area">
       <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
     </div>
     <div class="col-sm col-12 flex-sm-unordered flex-last">

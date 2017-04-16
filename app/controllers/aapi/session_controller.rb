@@ -9,6 +9,7 @@ module Aapi
       info = permitted_params
       user = User.find_by(login_id: info[:login_id])
       if user&.valid_password?(info[:password])
+        sign_in user
         user.generate_token.reload
         render json: {
           status: "success",

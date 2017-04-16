@@ -124,9 +124,18 @@ export default {
   font-size: 90%;
 }
 
+/* Mobile */
 img {
-  max-height: 500px;
-  max-width: 500px;
+  max-width: 100%;
+  padding: 5px;
+}
+
+/* PC */
+@media (min-width: 576px) {
+  img {
+    max-height: 500px;
+    max-width: 500px;
+  }
 }
 
 .sliding-enter-active, .sliding-leave-active {

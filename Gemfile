@@ -47,7 +47,6 @@ group :development, :test do
 end
 
 group :development do
-  gem "foreman"
   gem "web-console"
 
   gem "foreman"

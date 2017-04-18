@@ -64,6 +64,7 @@ Temporary Items
 
 # Ignore application configuration
 /config/application.yml
+/frontend/config/prod.env.js
 
 # Development Environments
 .vagrant

@@ -138,6 +138,36 @@ export default {
 body, .form-control, .btn {
   font-size: 0.9rem;
 }
+
+body {
+  color: #495057; /* Gray-7 */
+}
+
+a {
+  color: #343a40; /* Gray-8 */
+}
+a:focus, a:hover {
+  color: #212529; /* Gray-9 */
+}
+
+.link-url {
+  color: #1c7cd6; /* Blue-7 */
+}
+.link-url:focus, .link-url:hover {
+  color: #1b6ec2; /* Blue-8 */
+}
+
+.link-url-danger {
+  color: #fa5252; /* Red-6 */
+}
+.link-url-danger:focus, .link-url-danger:hover {
+  color: #f03e3e; /* Red-7 */
+}
+
+.alert-info {
+  background-color: #ccedff; /* Blue-1 */
+  color: #1b6ec2; /* Blue-8 */
+}
 /* Bootstrap Overriding done */
 
 /* Global transtions */

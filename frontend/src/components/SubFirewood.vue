@@ -13,7 +13,7 @@
 
           <span
             v-if="fw.imageUrl"
-            :class="{ 'text-danger': fw.imageAdultFlg, 'text-primary': !fw.imageAdultFlg }">{{ fw.imageName }}</span>
+            :class="{ 'link-url-danger': fw.imageAdultFlg, 'link-url': !fw.imageAdultFlg }">{{ fw.imageName }}</span>
         </div>
         <div class="col-sm-auto hidden-xs-down">
           {{ fw.createdAt }}
@@ -33,7 +33,7 @@ export default {
     parsedFirewoods() {
       return this.firewoods.map((fw) => {
         const classes = []
-        if (fw.imageAdultFlg) { classes.push("text-danger") }
+        if (fw.imageAdultFlg) { classes.push("link-url-danger") }
 
         return {
           id: fw.id,

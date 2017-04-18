@@ -1,7 +1,7 @@
 <template>
   <div class="form-box">
     <div class="fixed-top">
-      <form class="form-horizontal bg-faded firewood-form"
+      <form class="form-horizontal firewood-form"
             role="form"
             id="new_firewood"
             enctype="multipart/form-data"
@@ -24,7 +24,7 @@
           <div class="col form-inline">
             <input id="file-input" type="file" class="custom-file-upload" name="firewood[image]">
 
-            <label class="form-check-label adult-flg text-danger">
+            <label class="form-check-label adult-flg link-url-danger">
               <input
                 v-model="adultFlg"
                 class="form-check-input" type="checkbox">
@@ -146,6 +146,8 @@ export default {
 
 .firewood-form {
   padding: 10px;
+  background-color: #f1f3f5; /* Gray-1 */
+  border-bottom: 1px solid #dee2e6; /* Gray-3 */
 }
 
 /* PC */
@@ -165,11 +167,5 @@ export default {
 
 .adult-flg {
   margin-left: 10px;
-}
-
-.alert {
-  border-radius: 0;
-  border: 0px solid transparent;
-  margin-bottom: 0;
 }
 </style>

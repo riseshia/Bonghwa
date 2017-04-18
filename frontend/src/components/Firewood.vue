@@ -10,9 +10,9 @@
       <span class="message" v-html="parsedContents"></span>
       <span
         v-if="imageUrl"
-        :class="{ 'text-danger': imageAdultFlg, 'text-primary': !imageAdultFlg }">{{ imageName }}</span>
+        :class="{ 'link-url-danger': imageAdultFlg, 'link-url': !imageAdultFlg }">{{ imageName }}</span>
       <a v-if="isDeletable" @click.stop.prevent="destroy"
-         href="#">[x]
+         class="link-url" href="#">[x]
       </a>
       <transition name="sliding">
         <div v-if="isImgOpened">
@@ -25,7 +25,7 @@
               <figure class="figure">
                 <img class="figure-img" :src="imageUrl">
                 <figcaption class="figure-caption text-center">
-                  <a :href="imageUrl" @click.stop="true"
+                  <a :href="imageUrl" @click.stop="true" class="link-url"
                      target="_blank">크게 보기</a>
                 </figcaption>
               </figure>
@@ -84,7 +84,7 @@ export default {
     },
     parsedContents() {
       const classes = []
-      if (this.imageAdultFlg) { classes.push("text-danger") }
+      if (this.imageAdultFlg) { classes.push("link-url-danger") }
       return autolink(this.contents, { classes })
     },
     date() {

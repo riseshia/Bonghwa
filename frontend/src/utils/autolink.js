@@ -3,7 +3,7 @@ const delimiter = /https?:\/\/\S+(\.[^\s<]+)/gi
 const buildAnker = (url, options) => {
   const href = url
   let shortenUrl = url
-  let classes = ["linkUrl"]
+  let classes = ["link-url"]
 
   if (options.classes) {
     classes = classes.concat(options.classes)

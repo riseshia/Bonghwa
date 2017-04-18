@@ -110,7 +110,7 @@ export default {
     },
     submit() {
       if (!this.isValid()) {
-        Actions.fetchFirewoods({ afterFlush: true })
+        Actions.fetchRecentFirewoods({ afterFlush: true })
       } else {
         Actions.createFirewood(this)
       }

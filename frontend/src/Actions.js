@@ -37,41 +37,6 @@ const Actions = {
   saveForm(data) {
     Store.setState("form-state", data, true)
   },
-  createFirewood(vm) {
-    const formData = vm.formData()
-    Dispatcher.request({
-      params: { firewood: formData },
-      after: "afterCreateFirewood",
-      context: Actions,
-      isForm: true
-    })
-    vm.clearForm()
-    // formData.persisted = false
-    // formData.name = Store.getState("user").user_name
-    // formData.created_at = "--/--/-- --:--:--"
-    // const pendedFws = FirewoodsSerializer([formData])
-    // const currentFws = Store.getState("firewoods")
-    // Store.setState("firewoods", pendedFws.concat(currentFws))
-  },
-  afterCreateFirewood() {
-    const type = Store.getState("global").type
-    const lastFwId = Store.getState("firewoods")[0].id
-    Agent.getWithAuth(
-      "firewoods/pulling",
-      { after: lastFwId, type }
-    ).then((json) => {
-      const newFws = FirewoodsSerializer(json.fws)
-      const fws = newFws.concat(Store.getState("firewoods")).filter((fw) => {
-        fw.inStack = false
-        return fw.persisted
-      })
-      Store.setState("firewoods", fws)
-      Actions.updateStackCount()
-
-      // Fetching for /nick
-      if (json.user) { Store.setState("user", json.user) }
-    })
-  },
   destroyFirewood(vm) {
     vm.isDeleted = true
     Agent.deleteWithAuth(`firewoods/${vm.id}`).done(() => {
@@ -141,16 +106,42 @@ const Actions = {
     })
   },
   afterFetchRecentFirewoods(json, options = {}) {
-    if (json.fws.length === 0) { return }
-    const isNotLiveStreaming = !Store.getState("global").isLiveStreaming
-    const newFws = FirewoodsSerializer(json.fws, isNotLiveStreaming)
-    const currentFws = Store.getState("firewoods")
-    Store.setState("firewoods", newFws.concat(currentFws))
-    Actions.updateStackCount()
+    if (json.fws.length !== 0) {
+      const currentFws = Store.getState("firewoods")
+      if (json.fws[0].id > currentFws[0].id) {
+        const isNotLiveStreaming = !Store.getState("global").isLiveStreaming
+        const newFws = FirewoodsSerializer(json.fws, isNotLiveStreaming)
+        Store.setState("firewoods", newFws.concat(currentFws))
+        Actions.updateStackCount()
+
+        // Fetching for /nick
+        if (json.user) { Store.setState("user", json.user) }
+      }
+    }
 
     if (options.afterFlush) {
       Actions.flushStack()
     }
+  },
+
+  createFirewood(vm) {
+    const formData = vm.formData()
+    Dispatcher.request({
+      params: { firewood: formData },
+      after: "afterCreateFirewood",
+      context: Actions,
+      isForm: true
+    })
+    vm.clearForm()
+    // formData.persisted = false
+    // formData.name = Store.getState("user").user_name
+    // formData.created_at = "--/--/-- --:--:--"
+    // const pendedFws = FirewoodsSerializer([formData])
+    // const currentFws = Store.getState("firewoods")
+    // Store.setState("firewoods", pendedFws.concat(currentFws))
+  },
+  afterCreateFirewood() {
+    Actions.fetchRecentFirewoods({ afterFlush: true })
   },
 
   fetchPrevFirewoods() {

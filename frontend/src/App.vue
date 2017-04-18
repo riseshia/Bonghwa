@@ -38,8 +38,8 @@ import StackStatus from "./components/StackStatus"
 import FirewoodForm from "./components/FirewoodForm"
 import Informations from "./components/Informations"
 import NavTab from "./components/NavTab"
-import NativeComponent from "./components/NativeComponent"
-import Channel from "./Channel"
+// import NativeComponent from "./components/NativeComponent"
+// import Channel from "./Channel"
 
 export default {
   name: "app",
@@ -92,12 +92,8 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(() => {
-      Actions.loadApplication().then(() => {
-        Channel.start()
-        NativeComponent.start()
-        Actions.refreashApplication()
-        next()
-      })
+      Actions.fetchApplication()
+      next()
     })
   },
   methods: {

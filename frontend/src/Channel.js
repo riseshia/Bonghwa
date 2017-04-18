@@ -14,9 +14,9 @@ const Channel = {
   start() {
     registerTimer(Actions.fetchUsers, 5000)
     registerTimer(Actions.fetchInformations, 30000)
-    registerTimer(Actions.fetchFirewoods, 1000)
+    registerTimer(Actions.fetchRecentFirewoods, 1000)
     os.on("enter", ".firewood:nth-last-child(10)", () => {
-      Actions.fetchScroll()
+      Actions.fetchPrevFirewoods()
     })
   }
 }

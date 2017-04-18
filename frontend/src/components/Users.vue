@@ -34,12 +34,21 @@ export default {
 }
 </script>
 
-<style scoped>
-.current-users {
-  padding: 20px 15px;
+<style lang="scss" scoped>
+h4 {
+  background-color: #212529;
+  color: #f8f9fa;
+  margin-bottom: 0;
+  padding: 10px 15px;
+  font-weight: normal;
 }
 
-li {
-  text-indent: 15px;
+ul {
+  padding: 5px 0;
+  margin-bottom: 0;
+
+  li {
+    text-indent: 15px;
+  }
 }
 </style>

@@ -39,8 +39,6 @@ import StackStatus from "./components/StackStatus"
 import FirewoodForm from "./components/FirewoodForm"
 import Informations from "./components/Informations"
 import NavTab from "./components/NavTab"
-// import NativeComponent from "./components/NativeComponent"
-// import Channel from "./Channel"
 
 export default {
   name: "app",
@@ -140,11 +138,11 @@ body, .form-control, .btn {
 }
 
 body {
-  color: #495057; /* Gray-7 */
+  color: #343a40; /* Gray-8 */
 }
 
 a {
-  color: #343a40; /* Gray-8 */
+  color: #212529; /* Gray-9 */
 
   &:focus, &:hover {
     color: #212529; /* Gray-9 */

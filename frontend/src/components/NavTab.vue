@@ -139,27 +139,29 @@ export default {
 }
 </script>
 
-<style scoped>
-.nav-menu a {
-  color: #333;
+<style lang="scss" scoped>
+.nav-menu {
+  a {
+    color: #333;
+  }
+
+  h3 {
+    margin-bottom: 0;
+    padding: 10px 20px;
+  }
 }
 
-.nav-menu h3 {
-  margin-bottom: 0;
-  padding: 10px 20px;
-}
+.nav-menu .nav-pills {
+  padding-bottom: 10px;
 
-.nav-menu .nav-pills .nav-link {
-  border-radius: 0;
-}
+  .nav-link {
+    border-radius: 0;
 
-.nav-menu .nav-pills .nav-link.active {
-  background-color: #ddd;
-  color: #333;
-}
-
-.dropdown-toggle {
-  padding-bottom: 2px;
+    &.active {
+      background-color: #dee2e6;
+      color: #343a40;
+    }
+  }
 }
 
 .dropdown-toggle::after {
@@ -180,6 +182,7 @@ export default {
 
 .widget-area {
   border-top: 1px solid #eee;
+  padding-top: 10px;
 }
 
 .nav-brand {

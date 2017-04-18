@@ -50,7 +50,7 @@ import Store from "../Store"
 import Notifier from "./Notifier"
 
 const CONTENTS_MAX_LEN = 150
-const MAX_FILE_SIZE = 5 * 1024 * 1024
+const MAX_FILE_SIZE = 6 * 1024 * 1024
 
 export default {
   name: "firewood-form",
@@ -121,7 +121,7 @@ export default {
       }
       const file = fileInputEl.files[0]
       if (file.size > MAX_FILE_SIZE) {
-        EventBus.$emit("notify", { message: "업로드 가능한 최대 용량은 5MB입니다." })
+        EventBus.$emit("notify", { message: "업로드 가능한 최대 용량은 6MB입니다." })
         return false
       }
       return true

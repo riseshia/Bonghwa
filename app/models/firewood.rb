@@ -46,7 +46,7 @@ class Firewood < ApplicationRecord
     where("is_dm IN (0, :user_id) OR user_id = :user_id", user_id: user_id)
   }
 
-  validates :image, file_size: { less_than: 5.megabytes }
+  validates :image, file_size: { less_than: 6.megabytes }
   validate :validate_dm, on: :dm
 
   TYPE_TO_SCOPE = {

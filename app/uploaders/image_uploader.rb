@@ -39,6 +39,10 @@ class ImageUploader < CarrierWave::Uploader::Base
     %w[jpg jpeg gif png]
   end
 
+  def max_pixel_dimensions
+    [8192, 8192]
+  end
+
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here,
   #  see uploader/store.rb for details.

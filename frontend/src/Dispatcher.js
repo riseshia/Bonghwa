@@ -18,7 +18,7 @@ const Dispatcher = {
     this.isIng = true
 
     const {
-      method, path, params, after, context, isForm, options
+      method, path, params, after, requested, context, isForm, options
     } = this.queue.shift()
     const thenCb = (json) => {
       context[after](json, options)
@@ -29,6 +29,9 @@ const Dispatcher = {
       Agent.submitForm(params, thenCb)
     } else {
       Agent.requestWithAuth(method, path, params).then(thenCb)
+    }
+    if (requested) {
+      context[requested]()
     }
   }
 }

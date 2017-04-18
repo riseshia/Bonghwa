@@ -129,10 +129,10 @@ const Actions = {
     Dispatcher.request({
       params: { firewood: formData },
       after: "afterCreateFirewood",
+      requested: "requestedCreateFirewood",
       context: Actions,
       isForm: true
     })
-    vm.clearForm()
     // formData.persisted = false
     // formData.name = Store.getState("user").user_name
     // formData.created_at = "--/--/-- --:--:--"
@@ -142,6 +142,9 @@ const Actions = {
   },
   afterCreateFirewood() {
     Actions.fetchRecentFirewoods({ afterFlush: true })
+  },
+  requestedCreateFirewood() {
+    EventBus.$emit("requeted-form")
   },
 
   fetchPrevFirewoods() {

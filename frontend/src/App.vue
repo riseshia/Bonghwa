@@ -22,6 +22,7 @@
       <nav-tab
         :app="app"
         :global="global"
+        :user="user"
       ></nav-tab>
     </div>
   </div>

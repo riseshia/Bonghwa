@@ -21,10 +21,6 @@
                @click.prevent.stop="changeType(3)">Me</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"
-               @click.prevent.stop="signOut">Exit</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link dropdown-toggle" href="#"
                @click.prevent.stop="toggleOptionsMenu">Options</a>
             <ul v-if="optionsOpened" class="list-unstyled options-menu">
@@ -48,6 +44,19 @@
                   [{{ global.cachingForm ? "o" : "x" }}]
                   메시지 임시 저장하기
                 </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle" href="#"
+               @click.prevent.stop="toggleEtcMenu">Etc</a>
+            <ul v-if="etcOpened" class="list-unstyled options-menu">
+              <li>
+                <a class="nav-link" :href="passwordChangePath">Password Change</a>
+              </li>
+              <li>
+                <a class="nav-link" href="#"
+                   @click.prevent.stop="signOut">Exit</a>
               </li>
             </ul>
           </li>
@@ -81,10 +90,16 @@ export default {
     script.innerHTML = `!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");`
     window.$("#widget").append(script)
   },
-  props: ["app", "global"],
+  props: ["app", "global", "user"],
   data() {
     return {
-      optionsOpened: false
+      optionsOpened: false,
+      etcOpened: false
+    }
+  },
+  computed: {
+    passwordChangePath() {
+      return `/users/${this.$props.user.user_id}/edit`
     }
   },
   methods: {
@@ -96,6 +111,9 @@ export default {
     },
     toggleOption(key) {
       Actions.toggleGlobalOption(key)
+    },
+    toggleEtcMenu() {
+      this.etcOpened = !this.etcOpened
     },
     navClassObject(type) {
       return {

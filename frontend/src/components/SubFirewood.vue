@@ -13,7 +13,7 @@
 
           <span
             v-if="fw.imageUrl"
-            :class="{ 'text-danger': fw.imageAdultFlg }">{{ fw.imageName }}</span>
+            :class="{ 'text-danger': fw.imageAdultFlg, 'text-primary': !fw.imageAdultFlg }">{{ fw.imageName }}</span>
         </div>
         <div class="col-sm-auto hidden-xs-down">
           {{ fw.createdAt }}

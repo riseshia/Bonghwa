@@ -138,6 +138,10 @@ export default {
   text-indent: 5px;
 }
 
+.datetime-area {
+  padding-left: 5px;
+}
+
 /* Mobile */
 img {
   max-width: 95%;

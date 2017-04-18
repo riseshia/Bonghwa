@@ -50,6 +50,7 @@ import Store from "../Store"
 import Notifier from "./Notifier"
 
 const CONTENTS_MAX_LEN = 150
+const MAX_FILE_SIZE = 5 * 1024 * 1024
 
 export default {
   name: "firewood-form",
@@ -115,7 +116,15 @@ export default {
     },
     isValid() {
       const fileInputEl = document.getElementById("file-input")
-      return fileInputEl.files.length || this.contents.length !== 0
+      if (fileInputEl.files.length === 0) {
+        return this.contents.length > 0
+      }
+      const file = fileInputEl.files[0]
+      if (file.size > MAX_FILE_SIZE) {
+        EventBus.$emit("notify", { message: "업로드 가능한 최대 용량은 5MB입니다." })
+        return false
+      }
+      return true
     },
     submit() {
       if (!this.isValid()) {

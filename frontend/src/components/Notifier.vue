@@ -1,8 +1,8 @@
 <template>
   <transition name="sliding">
-    <div v-if="isVisible" class="row no-gutters">
+    <div v-if="isVisible" class="row no-gutters notifier">
       <div class="col-sm-12">
-        <div class="alert alert-info text-center" role="alert">
+        <div class="text-center" role="alert">
           {{ message }}
         </div>
       </div>
@@ -43,15 +43,17 @@ export default {
     }
   },
   methods: {
-    buildMessage({ key, value }) {
-      let message = transTable[key]
+    buildMessage({ message, key, value }) {
+      if (message) { return message }
+
+      let builtMessage = transTable[key]
       if (value) {
-        message += "활성화되었습니다."
+        builtMessage += "활성화되었습니다."
       } else {
-        message += "비활성화되었습니다."
+        builtMessage += "비활성화되었습니다."
       }
 
-      return message
+      return builtMessage
     },
     dismissSelf() {
       this.isVisible = false
@@ -61,13 +63,8 @@ export default {
 </script>
 
 <style scoped>
-.alert {
-  border-radius: 0;
-  border: 0px solid transparent;
-  margin-bottom: 0;
-}
-
-.sliding-enter-active, .sliding-leave-active {
-  transition: max-height 1s;
+.notifier {
+  background-color: #a3daff; /* Blue-3 */
+  padding: 10px;
 }
 </style>

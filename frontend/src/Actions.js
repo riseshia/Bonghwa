@@ -60,6 +60,7 @@ const Actions = {
     const global = Store.getState("global")
     global[key] = !global[key]
     Store.setState("global", global, true)
+    EventBus.$emit("notify", { key, value: global[key] })
 
     if (key === "isImageAutoOpen") {
       this.toggleAllImage(global[key])

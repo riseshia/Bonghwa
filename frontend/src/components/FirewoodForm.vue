@@ -1,42 +1,45 @@
 <template>
   <div class="form-box">
-    <form class="form-horizontal bg-faded fixed-top firewood-form"
-          role="form"
-          id="new_firewood"
-          enctype="multipart/form-data"
-          action="aapi/firewoods"
-          accept-charset="UTF-8">
-      <div class="row no-gutters">
-        <div class="col-sm-12">
-          <div class="form-group">
-            <input
-              @keydown.enter.stop.prevent="submit"
-              v-model="contents"
-              id="contents"
-              type="text"
-              placeholder="Type..."
-              class="form-control">
+    <div class="fixed-top">
+      <form class="form-horizontal bg-faded firewood-form"
+            role="form"
+            id="new_firewood"
+            enctype="multipart/form-data"
+            action="aapi/firewoods"
+            accept-charset="UTF-8">
+        <div class="row no-gutters">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <input
+                @keydown.enter.stop.prevent="submit"
+                v-model="contents"
+                id="contents"
+                type="text"
+                placeholder="Type..."
+                class="form-control">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row no-gutters justify-content-between">
-        <div class="col form-inline">
-          <input id="file-input" type="file" class="custom-file-upload" name="firewood[image]">
+        <div class="row no-gutters justify-content-between">
+          <div class="col form-inline">
+            <input id="file-input" type="file" class="custom-file-upload" name="firewood[image]">
 
-          <label class="form-check-label adult-flg text-danger">
-            <input
-              v-model="adultFlg"
-              class="form-check-input" type="checkbox">
-              후방주의
-          </label>
+            <label class="form-check-label adult-flg text-danger">
+              <input
+                v-model="adultFlg"
+                class="form-check-input" type="checkbox">
+                후방주의
+            </label>
+          </div>
+          <div class="col-sm-auto">
+            <span>{{ remainCount }}</span>
+            <a @click.stop.prevent="submit"
+               class="btn btn-primary" href="#" role="button">Send</a>
+          </div>
         </div>
-        <div class="col-sm-auto">
-          <span>{{ remainCount }}</span>
-          <a @click.stop.prevent="submit"
-             class="btn btn-primary" href="#" role="button">Send</a>
-        </div>
-      </div>
-    </form>
+      </form>
+        <notifier></notifier>
+    </div>
   </div>
 </template>
 
@@ -44,11 +47,15 @@
 import EventBus from "../EventBus"
 import Actions from "../Actions"
 import Store from "../Store"
+import Notifier from "./Notifier"
 
 const CONTENTS_MAX_LEN = 150
 
 export default {
   name: "firewood-form",
+  components: {
+    Notifier
+  },
   mounted() {
     this.form = window.$("#new_firewood")
     EventBus.$on("add-mention", this.addMention)
@@ -132,6 +139,7 @@ export default {
 .form-box {
   margin-top: 119px;
 }
+
 .firewood-form {
   padding: 10px;
 }
@@ -142,7 +150,7 @@ export default {
     margin-top: 98px;
   }
 
-  .firewood-form {
+  .fixed-top {
     width: 75%;
   }
 }
@@ -153,5 +161,11 @@ export default {
 
 .adult-flg {
   margin-left: 10px;
+}
+
+.alert {
+  border-radius: 0;
+  border: 0px solid transparent;
+  margin-bottom: 0;
 }
 </style>

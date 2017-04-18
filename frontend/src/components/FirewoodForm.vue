@@ -60,6 +60,7 @@ export default {
     this.form = window.$("#new_firewood")
     EventBus.$on("add-mention", this.addMention)
     EventBus.$on("requeted-form", this.clearForm)
+    EventBus.$on("focus", this.focusForm)
     Actions.setupForm(this)
     this.form.find("input[type=file]").customFile()
   },
@@ -102,7 +103,7 @@ export default {
       }
       this.prevMtId = data.id
       this.rootMtId = data.rootMtId || data.id || 0
-      window.$("#contents").focus()
+      this.focusForm()
     },
     formData() {
       return {
@@ -122,6 +123,9 @@ export default {
       } else {
         Actions.createFirewood(this)
       }
+    },
+    focusForm() {
+      window.$("#contents").focus()
     },
     clearForm() {
       this.form.clearForm()

@@ -69,6 +69,9 @@ const Actions = {
   toggleAllImage(newState) {
     EventBus.$emit("toggle-image-on-firewood", newState)
   },
+  focusForm() {
+    EventBus.$emit("focus")
+  },
 
   fetchApplication() {
     Dispatcher.request({

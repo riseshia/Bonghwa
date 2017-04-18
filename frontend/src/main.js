@@ -4,6 +4,7 @@ import Vue from "vue"
 import VueRouter from "vue-router"
 import Store from "./Store"
 import Router from "./Router"
+import Keymap from "./Keymap"
 
 // Start Bootstrap & jQuery
 window.$ = require("jquery")
@@ -25,4 +26,6 @@ Store.fetchState("global", {
   isLiveStreaming: false,
   cachingForm: false
 })
+Keymap.register()
+
 new Vue({ router: Router }).$mount("#app")

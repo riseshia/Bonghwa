@@ -28,7 +28,7 @@
                 <a href="#"
                    @click.prevent.stop="toggleOption('isImageAutoOpen')">
                   [{{ global.isImageAutoOpen ? "o" : "x" }}]
-                  Image auto open
+                  Image auto open (2)
                 </a>
               </li>
               <li>
@@ -43,6 +43,11 @@
                    @click.prevent.stop="toggleOption('cachingForm')">
                   [{{ global.cachingForm ? "o" : "x" }}]
                   메시지 임시 저장하기
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  [ ] 입력창으로 커서 옮기기 (4)
                 </a>
               </li>
             </ul>

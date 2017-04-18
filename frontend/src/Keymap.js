@@ -6,6 +6,9 @@ export default {
     hotkeys("2", () => {
       Actions.toggleGlobalOption("isImageAutoOpen")
     })
+    hotkeys("3", () => {
+      Actions.toggleGlobalOption("isLiveStreaming")
+    })
     hotkeys("4", () => {
       Actions.focusForm()
       return false

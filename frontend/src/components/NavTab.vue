@@ -35,7 +35,7 @@
                 <a href="#"
                    @click.prevent.stop="toggleOption('isLiveStreaming')">
                   [{{ global.isLiveStreaming ? "o" : "x" }}]
-                  Live Stream
+                  Live Stream (3)
                 </a>
               </li>
               <li>

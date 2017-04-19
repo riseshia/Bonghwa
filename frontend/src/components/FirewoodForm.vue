@@ -155,7 +155,7 @@ export default {
 
 .firewood-form {
   padding: 10px;
-  background-color: #f1f3f5; /* Gray-1 */
+  background-color: #f8f9fa; /* Gray-0 */
   border-bottom: 1px solid #dee2e6; /* Gray-3 */
 }
 

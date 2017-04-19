@@ -36,8 +36,8 @@ export default {
 
 <style lang="scss" scoped>
 h4 {
-  background-color: #212529;
-  color: #f8f9fa;
+  background-color: #e9ecef;
+  color: #495057;
   margin-bottom: 0;
   padding: 10px 15px;
   font-weight: normal;

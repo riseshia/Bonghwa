@@ -1,9 +1,9 @@
 <template>
   <!-- Start Main Contents  -->
   <div id="app" class="container-fluid">
-    <div class="row clearfx">
-      <div class="col"></div>
-      <div class="col-sm-3">
+    <div class="row no-gutters">
+      <div class="col-1 col-sm"></div>
+      <div class="col-10 col-sm-3">
         <div style="height: 100px"></div>
         <h3 class="text-white" style="text-align: center;">Login</h3>
         <div style="height: 20px"></div>
@@ -30,7 +30,7 @@
           </div>
         </form>
       </div>
-      <div class="col"></div>
+      <div class="col-1 col-sm"></div>
     </div>
   </div>
   <!-- End Main Contents  -->

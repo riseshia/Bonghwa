@@ -12,11 +12,13 @@
             <div class="form-group">
               <textarea
                 @keydown.enter.stop.prevent="submit"
+                @focus="isFocused = true"
+                @blur="isFocused = false"
                 v-model="contents"
                 id="contents"
                 type="text"
                 placeholder="Type..."
-                class="form-control">
+                :class="{'form-control': true, expanded: isExpanded}">
               </textarea>
             </div>
           </div>
@@ -72,7 +74,8 @@ export default {
       adultFlg: false,
       prevMtId: 0,
       rootMtId: 0,
-      contents: ""
+      contents: "",
+      isFocused: false
     }
     if (this.global.cachingForm) {
       return Store.fetchState("form-state", defaultData)
@@ -82,6 +85,10 @@ export default {
   computed: {
     remainCount() {
       return CONTENTS_MAX_LEN - this.contents.length
+    },
+    isExpanded() {
+      if (this.contents.length > 0 || this.isFocused) { return true }
+      return false
     }
   },
   watch: {
@@ -189,7 +196,7 @@ textarea {
   textarea {
     height: 2.2rem;
 
-    &:focus {
+    &.expanded {
       height: 6.2rem;
     }
   }

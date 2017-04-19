@@ -19,6 +19,12 @@ class Agent {
     return this.token !== null
   }
 
+  clearSession() {
+    this.identifier = null
+    this.token = null
+    CacheStorage.delete("auth")
+  }
+
   authenticate(id, password) {
     const identifier = id
     return window.$.ajax({
@@ -61,6 +67,7 @@ class Agent {
 
   requestWithAuth(httpType, path, params = {}) {
     const self = this
+
     return window.$.ajax({
       url: `${this.apiHost}/${path}`,
       type: httpType,
@@ -70,9 +77,12 @@ class Agent {
     }).fail((res, status) => {
       // Auth Error, so delete token
       if (status === "parsererror") {
-        self.identifier = null
-        self.token = null
-        CacheStorage.delete("auth")
+        self.clearSession()
+        Router.push("/sign_in")
+      }
+    }).then((json) => {
+      if (json.error) {
+        self.clearSession()
         Router.push("/sign_in")
       }
     })

@@ -10,13 +10,14 @@
         <div class="row no-gutters">
           <div class="col-sm-12">
             <div class="form-group">
-              <input
+              <textarea
                 @keydown.enter.stop.prevent="submit"
                 v-model="contents"
                 id="contents"
                 type="text"
                 placeholder="Type..."
                 class="form-control">
+              </textarea>
             </div>
           </div>
         </div>
@@ -147,27 +148,24 @@ export default {
 }
 </script>
 
-<style scoped>
-/* Mobile */
-.form-box {
-  margin-top: 0;
-}
-
+<style lang="scss" scoped>
+/* PC */
 .firewood-form {
   padding: 10px;
   background-color: #f8f9fa; /* Gray-0 */
   border-bottom: 1px solid #dee2e6; /* Gray-3 */
 }
 
-/* PC */
-@media (min-width: 576px) {
-  .form-box {
-    margin-top: 99px;
-  }
+.form-box {
+  margin-top: 117px;
+}
 
-  .fixed-top {
-    width: 75%;
-  }
+.fixed-top {
+  width: 75%;
+}
+
+textarea {
+  height: 3.3rem;
 }
 
 .form-group {
@@ -176,5 +174,24 @@ export default {
 
 .adult-flg {
   margin-left: 10px;
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .form-box {
+    margin-top: 0;
+  }
+
+  .fixed-top {
+    width: 100%;
+  }
+
+  textarea {
+    height: 2.2rem;
+
+    &:focus {
+      height: 6.2rem;
+    }
+  }
 }
 </style>

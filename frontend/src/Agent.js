@@ -76,7 +76,7 @@ class Agent {
       data: params
     }).fail((res, status) => {
       // Auth Error, so delete token
-      if (status === "parsererror") {
+      if (res.status === 401 || status === "parsererror") {
         self.clearSession()
         Router.push("/sign_in")
       }

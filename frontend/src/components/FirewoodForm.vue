@@ -150,7 +150,7 @@ export default {
 <style scoped>
 /* Mobile */
 .form-box {
-  margin-top: 119px;
+  margin-top: 0;
 }
 
 .firewood-form {

@@ -52,7 +52,6 @@ export default {
   },
   methods: {
     dismissSelf() {
-      console.log(1)
       this.isVisible = false
     }
   }

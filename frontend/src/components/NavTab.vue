@@ -1,79 +1,88 @@
 <template>
-  <div class="col-sm-3 flex-first flex-sm-last hidden-xs-down">
-    <div class="row no-gutters nav-menu">
-      <div class="col-sm-12">
-        <h3 class="nav-brand bg-inverse">
-          <a class="text-white" target="_blank" :href="app.home_link">
-            {{ app.home_name }}
-          </a>
-        </h3>
-        <ul class="nav flex-column nav-pills">
-          <li class="nav-item">
-            <a :class="navClassObject(1)" href="#"
-               @click.prevent.stop="changeType(1)">Now</a>
-          </li>
-          <li class="nav-item">
-            <a :class="navClassObject(2)" href="#"
-               @click.prevent.stop="changeType(2)">Mt</a>
-          </li>
-          <li class="nav-item">
-            <a :class="navClassObject(3)" href="#"
-               @click.prevent.stop="changeType(3)">Me</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link dropdown-toggle" href="#"
-               @click.prevent.stop="toggleOptionsMenu">Options</a>
-            <ul v-if="optionsOpened" class="list-unstyled options-menu">
-              <li>
-                <a href="#"
-                   @click.prevent.stop="toggleOption('isImageAutoOpen')">
-                  [{{ global.isImageAutoOpen ? "o" : "x" }}]
-                  Image auto open (2)
-                </a>
-              </li>
-              <li>
-                <a href="#"
-                   @click.prevent.stop="toggleOption('isLiveStreaming')">
-                  [{{ global.isLiveStreaming ? "o" : "x" }}]
-                  Live Stream (3)
-                </a>
-              </li>
-              <li>
-                <a href="#"
-                   @click.prevent.stop="toggleOption('cachingForm')">
-                  [{{ global.cachingForm ? "o" : "x" }}]
-                  메시지 임시 저장하기
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  [ ] 입력창으로 커서 옮기기 (4)
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link dropdown-toggle" href="#"
-               @click.prevent.stop="toggleEtcMenu">Etc</a>
-            <ul v-if="etcOpened" class="list-unstyled options-menu">
-              <li>
-                <a class="nav-link" :href="passwordChangePath">Password Change</a>
-              </li>
-              <li>
-                <a class="nav-link" href="#"
-                   @click.prevent.stop="signOut">Exit</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+  <div class="col-sm-3 flex-first flex-sm-last">
+    <div class="padding-for-navtab"></div>
+
+    <div :class="{'navtab': true, 'navtab-in-mobile': navTabOpenedInMobile}">
+      <div class="row no-gutters nav-menu">
+        <div class="col-sm-12">
+          <h3 class="nav-brand bg-inverse">
+            <a class="text-white" target="_blank" :href="app.home_link">
+              {{ app.home_name }}
+            </a>
+          </h3>
+          <ul class="nav flex-column nav-pills">
+            <li class="nav-item">
+              <a :class="navClassObject(1)" href="#"
+                 @click.prevent.stop="changeType(1)">Now</a>
+            </li>
+            <li class="nav-item">
+              <a :class="navClassObject(2)" href="#"
+                 @click.prevent.stop="changeType(2)">Mt</a>
+            </li>
+            <li class="nav-item">
+              <a :class="navClassObject(3)" href="#"
+                 @click.prevent.stop="changeType(3)">Me</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link dropdown-toggle" href="#"
+                 @click.prevent.stop="toggleOptionsMenu">Options</a>
+              <ul v-if="optionsOpened" class="list-unstyled options-menu">
+                <li>
+                  <a href="#"
+                     @click.prevent.stop="toggleOption('isImageAutoOpen')">
+                    [{{ global.isImageAutoOpen ? "o" : "x" }}]
+                    Image auto open (2)
+                  </a>
+                </li>
+                <li>
+                  <a href="#"
+                     @click.prevent.stop="toggleOption('isLiveStreaming')">
+                    [{{ global.isLiveStreaming ? "o" : "x" }}]
+                    Live Stream (3)
+                  </a>
+                </li>
+                <li>
+                  <a href="#"
+                     @click.prevent.stop="toggleOption('cachingForm')">
+                    [{{ global.cachingForm ? "o" : "x" }}]
+                    메시지 임시 저장하기
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    [ ] 입력창으로 커서 옮기기 (4)
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link dropdown-toggle" href="#"
+                 @click.prevent.stop="toggleEtcMenu">Etc</a>
+              <ul v-if="etcOpened" class="list-unstyled options-menu">
+                <li>
+                  <a class="nav-link" :href="passwordChangePath">Password Change</a>
+                </li>
+                <li>
+                  <a class="nav-link" href="#"
+                     @click.prevent.stop="signOut">Exit</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <users></users>
+      <div class="row no-gutters widget-area hidden-sm-down">
+        <div class="col-sm-12" id="widget">
+          <a class="twitter-timeline"
+             href="https://twitter.com/"
+             :data-widget-id="app.widget_link">Widget</a>
+        </div>
       </div>
     </div>
-    <users></users>
-    <div class="row no-gutters widget-area hidden-sm-down">
-      <div class="col-sm-12" id="widget">
-        <a class="twitter-timeline"
-           href="https://twitter.com/"
-           :data-widget-id="app.widget_link">Widget</a>
+    <div class="row no-gutters mobile-navtab-toggle text-center hidden-sm-up">
+      <div class="col-sm-12" @click="toggleNavTabMenu">
+        {{ navTabOpenedInMobile ? "&gt;--&lt;" : "&lt;--&gt;" }}
       </div>
     </div>
   </div>
@@ -99,7 +108,8 @@ export default {
   data() {
     return {
       optionsOpened: false,
-      etcOpened: false
+      etcOpened: false,
+      navTabOpenedInMobile: false
     }
   },
   computed: {
@@ -119,6 +129,9 @@ export default {
     },
     toggleEtcMenu() {
       this.etcOpened = !this.etcOpened
+    },
+    toggleNavTabMenu() {
+      this.navTabOpenedInMobile = !this.navTabOpenedInMobile
     },
     navClassObject(type) {
       return {
@@ -140,6 +153,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* Mobile */
+@media (max-width: 576px) {
+  .navtab {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1s;
+  }
+
+  .navtab-in-mobile {
+    max-height: 1000px;
+    transition: max-height 1s;
+  }
+
+  .padding-for-navtab {
+    margin-top: 119px;
+  }
+
+  .mobile-navtab-toggle {
+    background-color: #343a40;
+    color: #e9ecef;
+    padding: 5px 0;
+  }
+}
+
+/* PC */
 .nav-menu {
   a {
     color: #333;

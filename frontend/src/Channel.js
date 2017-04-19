@@ -30,7 +30,7 @@ const Channel = {
       setTimer("users", Actions.fetchUsers, 5000)
     })
     EventBus.$on("fetch-informations-success", () => {
-      setTimer("informations", Actions.fetchInformations, 30000)
+      setTimer("informations", Actions.fetchInformations, 300000)
     })
     EventBus.$on("fetch-firewoods-success", () => {
       setTimer("firewoods", Actions.fetchRecentFirewoods, 1000)

@@ -162,7 +162,7 @@ export default {
 /* PC */
 @media (min-width: 576px) {
   .form-box {
-    margin-top: 98px;
+    margin-top: 99px;
   }
 
   .fixed-top {

@@ -167,7 +167,7 @@ export default {
   }
 
   .padding-for-navtab {
-    margin-top: 119px;
+    margin-top: 120px;
   }
 
   .mobile-navtab-toggle {

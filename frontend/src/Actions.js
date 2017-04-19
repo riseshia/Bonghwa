@@ -93,6 +93,9 @@ const Actions = {
     NativeComponent.start()
     Store.deliverAll()
   },
+  stopApplication() {
+    Channel.stop()
+  },
 
   fetchRecentFirewoods(options) {
     const lastFwId = Store.getState("firewoods")[0].id
@@ -126,6 +129,7 @@ const Actions = {
     if (options.afterFlush) {
       Actions.flushStack()
     }
+    EventBus.$emit("fetch-firewoods-success")
   },
 
   createFirewood(vm) {
@@ -180,6 +184,7 @@ const Actions = {
   },
   afterFetchUsers(json) {
     Store.setState("users", json.users)
+    EventBus.$emit("fetch-users-success")
   },
 
   fetchInformations() {
@@ -193,6 +198,7 @@ const Actions = {
   afterFetchInformations(json) {
     if (json.infos.length === 0) { return }
     Store.setState("informations", json.infos)
+    EventBus.$emit("fetch-informations-success")
   }
 }
 

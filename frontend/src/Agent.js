@@ -80,11 +80,6 @@ class Agent {
         self.clearSession()
         Router.push("/sign_in")
       }
-    }).then((json) => {
-      if (json.error) {
-        self.clearSession()
-        Router.push("/sign_in")
-      }
     })
   }
 

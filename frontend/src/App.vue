@@ -95,6 +95,11 @@ export default {
       next()
     })
   },
+  beforeRouteLeave(to, from, next) {
+    next(() => {
+      Actions.stopApplication()
+    })
+  },
   methods: {
     changeType(type) {
       Actions.changeType(type)
@@ -109,15 +114,6 @@ export default {
       return {
         'nav-link': true,
         active: this.global.type === type
-      }
-    },
-    signOut() {
-      /* eslint-disable no-alert */
-      if (confirm("정말로 로그아웃하시겠어요?")) {
-        const router = this.$router
-        Actions.destroySession().then(() => {
-          router.push("/sign_in")
-        })
       }
     }
   }

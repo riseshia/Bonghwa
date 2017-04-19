@@ -98,7 +98,7 @@ export default {
     addMention() {
       const prefix = this.isDm ? "!" : "@"
       EventBus.$emit("add-mention", {
-        names: this.mentionedNames.concat([prefix + this.name]),
+        names: [prefix + this.name].concat(this.mentionedNames),
         rootMtId: this.rootMtId,
         id: this.id
       })

@@ -29,6 +29,19 @@ function parentsFor(fw) {
   return parents
 }
 
+function addParent(obj) {
+  obj.parentNotEnough = false
+  const parents = obj.parents
+
+  if (parents.length === 0 && obj.rootMtId === 0) { return obj }
+  if (parents.length !== 0 && obj.rootMtId === parents[parents.length - 1].id) {
+    return obj
+  }
+  obj.parentNotEnough = true
+
+  return obj
+}
+
 function serialize(obj) {
   const user = Store.getState("user")
   const mentioned = obj.contents.split(" ")
@@ -46,11 +59,11 @@ function serialize(obj) {
     imageAdultFlg: obj.image_adult_flg,
     imageUrl: obj.image_url,
     isDm: obj.is_dm,
+    mentionedNames: mentioned,
     name: obj.name,
     prevMtId: obj.prev_mt_id,
     rootMtId: obj.root_mt_id,
     userId: obj.user_id,
-    mentionedNames: mentioned,
     isDeletable: owned,
     isLastRecent: obj.isLastRecent || false,
     status: obj.status,
@@ -67,6 +80,7 @@ export default function (fws, dStatus) {
   })
   serializedFws.forEach((fw) => {
     fw.parents = parentsFor(fw)
+    addParent(fw)
   })
   return serializedFws
 }

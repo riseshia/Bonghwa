@@ -63,7 +63,7 @@ export default {
   props: [
     "contents", "createdAt", "id", "imageAdultFlg", "imageUrl", "isDm",
     "name", "mentionedNames", "prevMtId", "rootMtId", "parents", "userId",
-    "isDeletable", "isImageAutoOpen", "status", "isLastRecent"
+    "isDeletable", "isImageAutoOpen", "status", "isLastRecent", "parentNotEnough"
   ],
   data() {
     return {
@@ -80,7 +80,7 @@ export default {
       return this.isDeleted || FirewoodFn.isPending(this) || this.isDm
     },
     isOpenable() {
-      return this.imageUrl || this.parents.length
+      return this.imageUrl || this.rootMtId !== 0
     },
     isOpened() {
       return this.isImgOpened || this.isTextOpened
@@ -119,10 +119,11 @@ export default {
     },
     toggleSelf() {
       if (!this.isOpenable) { return }
-      let nextState = true
-      if (this.isOpened) {
-        nextState = false
+      const nextState = !this.isOpened
+      if (nextState && this.parentNotEnough) {
+        Actions.fetchParents(this.id, this.rootMtId)
       }
+
       this.isImgOpened = nextState
       this.isTextOpened = nextState
     },

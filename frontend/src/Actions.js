@@ -156,6 +156,25 @@ const Actions = {
     EventBus.$emit("requeted-form")
   },
 
+  fetchParents(fwId, rootMtId) {
+    const fws = Store.getState("firewoods")
+    const fw = FirewoodFn.findbyId(fws, fwId)
+    Dispatcher.request({
+      method: "GET",
+      path: `firewoods/${rootMtId}/mentions`,
+      params: { target_id: fwId },
+      after: "afterFetchParents",
+      context: Actions,
+      options: { targetFw: fw }
+    })
+  },
+  afterFetchParents(json, { targetFw }) {
+    if (json.fws.length === 0) { return }
+    targetFw.parents = FirewoodFn.initializeInTL(json.fws)
+    const fws = Store.getState("firewoods")
+    Store.setState("firewoods", fws)
+  },
+
   fetchPrevFirewoods() {
     const fws = Store.getState("firewoods")
     if (fws.length < 50) { return }

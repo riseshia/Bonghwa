@@ -80,6 +80,16 @@ const FirewoodFn = {
     }
 
     return fws
+  },
+  findbyId(fws, id) {
+    for (let i = 0; i !== fws.length; i += 1) {
+      const fw = fws[i]
+      if (fw.id === id) {
+        return fw
+      }
+    }
+
+    return null
   }
 }
 

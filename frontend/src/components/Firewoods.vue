@@ -17,6 +17,7 @@
                 :status="fw.status"
                 :isLastRecent="fw.isLastRecent"
                 :isDeletable="fw.isDeletable"
+                :parentNotEnough="fw.parentNotEnough"
                 :isImageAutoOpen="isImageAutoOpen"
       ></firewood>
     </div>

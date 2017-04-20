@@ -136,7 +136,7 @@ export default {
     },
     submit() {
       if (!this.isValid()) {
-        Actions.fetchRecentFirewoods({ afterFlush: true })
+        Actions.fetchRecentFirewoods({ notUsingStack: true })
       } else {
         Actions.createFirewood(this)
       }

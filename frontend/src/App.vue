@@ -15,7 +15,7 @@
         <firewoods
           :isLiveStreaming="global.isLiveStreaming"
           :isImageAutoOpen="global.isImageAutoOpen"
-          :firewoods="visibleFws"
+          :firewoods="firewoods"
         ></firewoods>
       </div>
 
@@ -82,11 +82,6 @@ export default {
       firewoods: [],
       stackedCount: 0,
       optionsOpened: false
-    }
-  },
-  computed: {
-    visibleFws() {
-      return this.firewoods.filter(fw => (!fw.inStack))
     }
   },
   beforeRouteEnter(to, from, next) {

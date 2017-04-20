@@ -14,7 +14,7 @@ export default {
   props: ["stackedCount"],
   methods: {
     flushStack() {
-      Actions.flushStack()
+      Actions.flushStack({ needNotify: true })
     }
   }
 }

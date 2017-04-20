@@ -1,7 +1,7 @@
 import Agent from "./Agent"
 import Store from "./Store"
 import EventBus from "./EventBus"
-import FirewoodsSerializer from "./FirewoodsSerializer"
+import FirewoodFn from "./FirewoodFn"
 import Dispatcher from "./Dispatcher"
 import NativeComponent from "./components/NativeComponent"
 import Channel from "./Channel"
@@ -28,7 +28,7 @@ const Actions = {
     })
   },
   afterChangeType(json) {
-    Store.setState("firewoods", FirewoodsSerializer(json.fws, false))
+    Store.setState("firewoods", FirewoodFn.initializeInTL(json.fws))
   },
 
   setupForm(vm) {
@@ -38,21 +38,17 @@ const Actions = {
     Store.setState("form-state", data, true)
   },
   destroyFirewood(vm) {
-    vm.isDeleted = true
     Agent.deleteWithAuth(`firewoods/${vm.id}`).done(() => {
       const fws = Store.getState("firewoods").filter(fw => (fw.id !== vm.id))
       Store.setState("firewoods", fws)
     })
   },
   updateStackCount() {
-    const count = Store.getState("firewoods").filter(fw => (fw.inStack)).length
+    const count = Store.getState("firewoods").filter(fw => (FirewoodFn.inStack(fw))).length
     Store.setState("stackedCount", count)
   },
-  flushStack() {
-    const fws = Store.getState("firewoods").map((fw) => {
-      fw.inStack = false
-      return fw
-    })
+  flushStack(options = {}) {
+    const fws = FirewoodFn.flushAll(Store.getState("firewoods"), options)
     Store.setState("firewoods", fws)
     Actions.updateStackCount()
   },
@@ -87,7 +83,7 @@ const Actions = {
     Store.setState("user", json.user)
     Store.setState("users", json.users)
     Store.setState("informations", json.infos)
-    Store.setState("firewoods", FirewoodsSerializer(json.fws, false))
+    Store.setState("firewoods", FirewoodFn.initializeInTL(json.fws))
 
     Channel.start()
     NativeComponent.start()
@@ -97,11 +93,10 @@ const Actions = {
     Channel.stop()
   },
 
-  fetchRecentFirewoods(options) {
-    const lastFwId = Store.getState("firewoods")[0].id
-    // if Last is undefined means app is fetching new one, so we could skip
-    if (!lastFwId) { return }
+  fetchRecentFirewoods(options = {}) {
+    const lastFwId = FirewoodFn.lastPersisted(Store.getState("firewoods")).id
     const type = Store.getState("global").type
+    options.lastFwId = lastFwId
 
     Dispatcher.request({
       method: "GET",
@@ -114,10 +109,12 @@ const Actions = {
   },
   afterFetchRecentFirewoods(json, options = {}) {
     if (json.fws.length !== 0) {
-      const currentFws = Store.getState("firewoods")
+      const currentFws =
+        FirewoodFn.removePending(Store.getState("firewoods"), options)
+
       if (json.fws[0].id > currentFws[0].id) {
         const isNotLiveStreaming = !Store.getState("global").isLiveStreaming
-        const newFws = FirewoodsSerializer(json.fws, isNotLiveStreaming)
+        const newFws = FirewoodFn.initialize(json.fws, isNotLiveStreaming)
         Store.setState("firewoods", newFws.concat(currentFws))
         Actions.updateStackCount()
 
@@ -126,7 +123,7 @@ const Actions = {
       }
     }
 
-    if (options.afterFlush) {
+    if (options.notUsingStack) {
       Actions.flushStack()
     }
     EventBus.$emit("fetch-firewoods-success")
@@ -134,22 +131,23 @@ const Actions = {
 
   createFirewood(vm) {
     const formData = vm.formData()
+    formData.ts = +(new Date())
     Dispatcher.request({
       params: { firewood: formData },
       after: "afterCreateFirewood",
       requested: "requestedCreateFirewood",
       context: Actions,
-      isForm: true
+      isForm: true,
+      ts: formData.ts
     })
-    // formData.persisted = false
-    // formData.name = Store.getState("user").user_name
-    // formData.created_at = "--/--/-- --:--:--"
-    // const pendedFws = FirewoodsSerializer([formData])
-    // const currentFws = Store.getState("firewoods")
-    // Store.setState("firewoods", pendedFws.concat(currentFws))
+
+    const user = Store.getState("user")
+    const pendedFws = FirewoodFn.initializeDummy(formData, user)
+    const currentFws = Store.getState("firewoods")
+    Store.setState("firewoods", pendedFws.concat(currentFws))
   },
   afterCreateFirewood() {
-    Actions.fetchRecentFirewoods({ afterFlush: true })
+    Actions.fetchRecentFirewoods({ notUsingStack: true })
   },
   requestedCreateFirewood() {
     EventBus.$emit("requeted-form")
@@ -169,7 +167,7 @@ const Actions = {
   },
   afterFetchPrevFirewoods(json) {
     if (json.fws.length === 0) { return }
-    const newFws = FirewoodsSerializer(json.fws, false)
+    const newFws = FirewoodFn.initializeInTL(json.fws)
     const recentFws = Store.getState("firewoods").concat(newFws)
     Store.setState("firewoods", recentFws)
   },

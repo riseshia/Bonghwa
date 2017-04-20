@@ -1,7 +1,5 @@
 import Store from "./Store"
 
-const dPersisted = true
-
 function isMtTarget(token) {
   if (token.length < 3) { return false }
   return token[0] === "@" || token[0] === "!"
@@ -54,16 +52,17 @@ function serialize(obj) {
     userId: obj.user_id,
     mentionedNames: mentioned,
     isDeletable: owned,
-    persisted: obj.persisted === undefined ? dPersisted : obj.persisted,
-    inStack: obj.inStack === undefined ? false : obj.inStack
+    isLastRecent: obj.isLastRecent || false,
+    status: obj.status,
+    ts: obj.ts
   }
   indexing(data)
   return data
 }
 
-export default function (fws, inStack = true) {
+export default function (fws, dStatus) {
   const serializedFws = fws.map((fw) => {
-    fw.inStack = inStack
+    if (fw.status === undefined) { fw.status = dStatus }
     return serialize(fw)
   })
   serializedFws.forEach((fw) => {

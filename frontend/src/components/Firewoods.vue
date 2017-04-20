@@ -1,7 +1,7 @@
 <template>
   <div class="row no-gutters">
     <div class="col-sm-12">
-      <firewood v-for="fw in firewoods" :key="fw.id"
+      <firewood v-for="fw in timeline" :key="fw.id"
                 :id="fw.id"
                 :contents="fw.contents"
                 :createdAt="fw.createdAt"
@@ -14,15 +14,18 @@
                 :prevMtId="fw.prevMtId"
                 :rootMtId="fw.rootMtId"
                 :userId="fw.userId"
+                :status="fw.status"
+                :isLastRecent="fw.isLastRecent"
                 :isDeletable="fw.isDeletable"
                 :isImageAutoOpen="isImageAutoOpen"
-                :persisted="fw.persisted"
       ></firewood>
     </div>
   </div>
 </template>
 
 <script>
+import FirewoodFn from "../FirewoodFn"
+
 import Firewood from "./Firewood"
 
 export default {
@@ -30,10 +33,14 @@ export default {
   components: {
     Firewood
   },
-  props: ["firewoods", "isLiveStreaming", "isImageAutoOpen"]
+  props: ["firewoods", "isLiveStreaming", "isImageAutoOpen"],
+  computed: {
+    timeline() {
+      return this.firewoods.filter(fw => FirewoodFn.inTimeline(fw))
+    }
+  }
 }
 </script>
 
 <style>
 </style>
-

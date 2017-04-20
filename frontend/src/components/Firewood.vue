@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="{ row: true, 'd-flex': true, 'justify-content-between': true, 'no-gutters': true, firewood: true, 'text-muted': isMuted }"
-    @click="toggleSelf"
-  >
+  <div :class="classObject" @click="toggleSelf">
     <div class="col-sm-auto col-auto flex-sm-first flex-first name-area">
       <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
     </div>
@@ -38,11 +35,17 @@
       <span class="text-small hidden-xs-down">{{ date }}</span>
       <span class="text-small">{{ time }}</span>
     </div>
+    <div
+      v-if="isLastRecent"
+      class="col-sm-12 col-12 flex-last flex-sm-last text-center border-recent-fws">
+      New!!
+    </div>
   </div>
 </template>
 
 <script>
 import SubFirewood from "./SubFirewood"
+import FirewoodFn from "../FirewoodFn"
 import EventBus from "../EventBus"
 import Actions from "../Actions"
 import autolink from "../utils/autolink"
@@ -60,7 +63,7 @@ export default {
   props: [
     "contents", "createdAt", "id", "imageAdultFlg", "imageUrl", "isDm",
     "name", "mentionedNames", "prevMtId", "rootMtId", "parents", "userId",
-    "isDeletable", "persisted", "isImageAutoOpen"
+    "isDeletable", "isImageAutoOpen", "status", "isLastRecent"
   ],
   data() {
     return {
@@ -74,7 +77,7 @@ export default {
       return `[이미지 ${this.id}]`
     },
     isMuted() {
-      return this.isDeleted || !this.persisted || this.isDm
+      return this.isDeleted || FirewoodFn.isPending(this) || this.isDm
     },
     isOpenable() {
       return this.imageUrl || this.parents.length
@@ -86,6 +89,17 @@ export default {
       const classes = []
       if (this.imageAdultFlg) { classes.push("link-url-danger") }
       return autolink(this.contents, { classes })
+    },
+    classObject() {
+      return {
+        "d-flex": true,
+        "justify-content-between": true,
+        "no-gutters": true,
+        "text-muted": this.isMuted,
+        "last-recent-fw": this.isLastRecent,
+        firewood: true,
+        row: true
+      }
     },
     date() {
       return this.createdAt.split(" ")[0]
@@ -118,16 +132,25 @@ export default {
         return
       }
 
+      this.isDeleted = true
       Actions.destroyFirewood(this)
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .firewood {
   border-bottom: 1px solid #ddd;
   padding: 3px 7px 2px;
+
+  &.last-recent-fw {
+    border-bottom: 1px solid #ffc9c9;
+  }
+
+  .border-recent-fws {
+    color: #fa5252;
+  }
 }
 
 .text-small {

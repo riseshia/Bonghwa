@@ -25,7 +25,8 @@ const FirewoodFn = {
       contents: formData.contents,
       name: user_name,
       user_id,
-      created_at: "--/--/-- --:--:--"
+      created_at: "--/--/-- --:--:--",
+      ts: formData.ts
     }
     return FirewoodsSerializer([obj], STATUS.PENDING)
   },
@@ -67,15 +68,15 @@ const FirewoodFn = {
     return null
   },
   removePending(fws, { ts, lastFwId }) {
+    if (!ts) { return fws }
+
     for (let i = 0; i !== fws.length; i += 1) {
       const fw = fws[i]
       if (fw.ts === ts) {
         fws.splice(i, 1)
         break
       }
-      if (fw.id <= lastFwId) {
-        break
-      }
+      if (fw.id <= lastFwId) { break }
     }
 
     return fws

@@ -138,7 +138,10 @@ const Actions = {
       requested: "requestedCreateFirewood",
       context: Actions,
       isForm: true,
-      ts: formData.ts
+      options: {
+        notUsingStack: true,
+        ts: formData.ts
+      }
     })
 
     const user = Store.getState("user")
@@ -146,8 +149,8 @@ const Actions = {
     const currentFws = Store.getState("firewoods")
     Store.setState("firewoods", pendedFws.concat(currentFws))
   },
-  afterCreateFirewood() {
-    Actions.fetchRecentFirewoods({ notUsingStack: true })
+  afterCreateFirewood(json, options) {
+    Actions.fetchRecentFirewoods(options)
   },
   requestedCreateFirewood() {
     EventBus.$emit("requeted-form")

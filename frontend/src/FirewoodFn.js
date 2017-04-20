@@ -50,6 +50,10 @@ const FirewoodFn = {
       return fw
     })
     if (needNotify && lastRecentFw) {
+      // Reset
+      for (let i = 0; i !== newFws.length; i += 1) {
+        newFws[i].isLastRecent = false
+      }
       lastRecentFw.isLastRecent = true
     }
     return newFws

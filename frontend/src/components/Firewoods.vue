@@ -18,6 +18,7 @@
                 :isLastRecent="fw.isLastRecent"
                 :isDeletable="fw.isDeletable"
                 :parentNotEnough="fw.parentNotEnough"
+                :isMentioned="fw.isMentioned"
                 :isImageAutoOpen="isImageAutoOpen"
       ></firewood>
     </div>

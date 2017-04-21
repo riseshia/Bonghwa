@@ -68,6 +68,16 @@ const Actions = {
   focusForm() {
     EventBus.$emit("focus")
   },
+  focusFirewood(newId, oldId) {
+    const fws = Store.getState("firewoods")
+    if (oldId !== 0) {
+      FirewoodFn.findbyId(fws, oldId).isMentioned = false
+    }
+    if (newId !== 0) {
+      FirewoodFn.findbyId(fws, newId).isMentioned = true
+    }
+    Store.setState("firewoods", fws)
+  },
 
   fetchApplication() {
     Dispatcher.request({

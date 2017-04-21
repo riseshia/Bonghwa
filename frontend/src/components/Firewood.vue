@@ -63,7 +63,8 @@ export default {
   props: [
     "contents", "createdAt", "id", "imageAdultFlg", "imageUrl", "isDm",
     "name", "mentionedNames", "prevMtId", "rootMtId", "parents", "userId",
-    "isDeletable", "isImageAutoOpen", "status", "isLastRecent", "parentNotEnough"
+    "isDeletable", "isImageAutoOpen", "status", "isLastRecent",
+    "parentNotEnough", "isMentioned"
   ],
   data() {
     return {
@@ -97,6 +98,7 @@ export default {
         "no-gutters": true,
         "text-muted": this.isMuted,
         "last-recent-fw": this.isLastRecent,
+        mentioned: this.isMentioned,
         firewood: true,
         row: true
       }
@@ -151,6 +153,10 @@ export default {
 
   .border-recent-fws {
     color: #fa5252;
+  }
+
+  &.mentioned {
+    background-color: #e8f7ff;
   }
 }
 

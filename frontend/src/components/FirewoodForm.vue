@@ -99,6 +99,9 @@ export default {
       if (this.global.cachingForm) {
         Actions.saveForm(this.$data)
       }
+    },
+    prevMtId(newId, oldId) {
+      Actions.focusFirewood(newId, oldId)
     }
   },
   methods: {

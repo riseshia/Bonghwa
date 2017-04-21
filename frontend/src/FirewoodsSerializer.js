@@ -44,6 +44,7 @@ function addParent(obj) {
 
 function serialize(obj) {
   const user = Store.getState("user")
+  const formState = Store.getState("form-state") || {}
   const mentioned = obj.contents.split(" ")
                        .filter(token => (isMtTarget(token)))
   const regex = RegExp(`[@|!]${user.user_name}`)
@@ -65,6 +66,7 @@ function serialize(obj) {
     rootMtId: obj.root_mt_id,
     userId: obj.user_id,
     isDeletable: owned,
+    isMentioned: formState.prevMtId === obj.id,
     isLastRecent: obj.isLastRecent || false,
     status: obj.status,
     ts: obj.ts

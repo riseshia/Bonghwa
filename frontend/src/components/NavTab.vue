@@ -72,6 +72,11 @@
         </div>
       </div>
       <users></users>
+      <div class="row no-gutters last-updated text-center hidden-sm-down">
+        <div class="col-sm-12">
+          Last Updated at - {{ lastUpdated }}
+        </div>
+      </div>
       <div class="row no-gutters widget-area hidden-sm-down">
         <div class="col-sm-12" id="widget">
           <a class="twitter-timeline"
@@ -91,12 +96,16 @@
 
 <script>
 import Actions from "../Actions"
+import EventBus from "../EventBus"
 import Users from "./Users"
 
 export default {
   name: "nav-tab",
   components: {
     Users
+  },
+  created() {
+    EventBus.$on("fetch-firewoods-success", this.touchLastUpdated)
   },
   mounted() {
     const script = document.createElement("script")
@@ -109,7 +118,8 @@ export default {
     return {
       optionsOpened: false,
       etcOpened: false,
-      navTabOpenedInMobile: false
+      navTabOpenedInMobile: false,
+      lastUpdated: ""
     }
   },
   computed: {
@@ -118,6 +128,11 @@ export default {
     }
   },
   methods: {
+    touchLastUpdated() {
+      this.lastUpdated =
+        (new Date()).toLocaleString().split(" ").slice(1)
+        .join(" ")
+    },
     changeType(type) {
       Actions.changeType(type)
     },
@@ -216,6 +231,11 @@ export default {
 
 .options-menu {
   text-indent: 30px;
+}
+
+.last-updated {
+  color: #868e96;
+  margin: 15px 0 5px;
 }
 
 .widget-area {

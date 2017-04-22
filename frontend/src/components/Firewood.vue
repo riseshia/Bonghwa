@@ -98,7 +98,7 @@ export default {
         "no-gutters": true,
         "text-muted": this.isMuted,
         "last-recent-fw": this.isLastRecent,
-        mentioned: this.isMentioned,
+        mentioned: this.isMentioned && !FirewoodFn.isPending(this),
         firewood: true,
         row: true
       }

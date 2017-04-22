@@ -70,10 +70,10 @@ const Actions = {
   },
   focusFirewood(newId, oldId) {
     const fws = Store.getState("firewoods")
-    if (oldId !== 0) {
+    if (oldId) {
       FirewoodFn.findbyId(fws, oldId).isMentioned = false
     }
-    if (newId !== 0) {
+    if (newId) {
       FirewoodFn.findbyId(fws, newId).isMentioned = true
     }
     Store.setState("firewoods", fws)

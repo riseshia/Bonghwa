@@ -12,8 +12,6 @@ class DmConstraint
 end
 
 Rails.application.routes.draw do
-  get "beta", to: "frontend#index"
-
   devise_for :users, controllers: {
     sessions: "users/sessions",
     registrations: "users/registrations"
@@ -26,7 +24,8 @@ Rails.application.routes.draw do
     get "wait" => :wait
   end
 
-  root to:  "view#timeline"
+  get :beta, to: redirect("/")
+  root to:  "frontend#index"
   get :app, to: redirect("app.html")
 
   namespace :admin do

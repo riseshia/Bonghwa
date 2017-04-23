@@ -30,8 +30,18 @@ export default {
   beforeCreate() {
     const vm = this
     EventBus.$on("informations", (informations) => {
+      const oldI = vm.informations
+      const newI = informations
+      const oldILen = oldI.length
+      const newILen = newI.length
+
+      if (oldILen === 0 && newILen > 0) {
+        vm.isVisible = true
+      } else if (oldILen > 0 && newILen > 0 &&
+                 oldI[oldILen - 1].id < newI[newILen - 1].id) {
+        vm.isVisible = true
+      }
       vm.informations = informations
-      vm.isVisible = true
     })
   },
   data() {

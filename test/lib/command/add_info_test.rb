@@ -3,8 +3,8 @@ require "test_helper"
 
 module Command
   class AddInfoTest < ActiveSupport::TestCase
-    def dummy_params(arg, user)
-      { script: OpenStruct.new(arg: arg), user: user }
+    def dummy_params(args, user)
+      build_params("/공지추가 #{args}", user)
     end
 
     def test_no_permission

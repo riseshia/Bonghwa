@@ -13,7 +13,7 @@ module Command
       script = params[:script]
       user = params[:user]
       return "권한이 없습니다." unless user.admin?
-      return "내용을 입력해주세요." if script.arg.empty?
+      return "내용을 입력해주세요." if script.no_args?
       Info.create!(infomation: script.arg)
       "공지가 등록되었습니다."
     end

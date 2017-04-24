@@ -18,8 +18,10 @@ class User < ApplicationRecord
   # Admit last 20 second footprint is active
   def self.on_timeline(at_dt)
     before_20_sec = at_dt - 20
-    RedisWrapper.zrangebyscore("active-users", before_20_sec, at_dt)
-                .sort.map { |user_name| { "name" => ERB::Util.html_escape(user_name) } }
+    users = RedisWrapper.zrangebyscore("active-users", before_20_sec, at_dt)
+    users.sort.map do |user_name|
+      { "name" => ERB::Util.html_escape(user_name) }
+    end
   end
 
   def admin?

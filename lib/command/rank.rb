@@ -9,9 +9,10 @@ module Command
       "/등수" == input
     end
 
+    # rubocop:disable Metrics/MethodLength
     def run(params)
       script = params[:script]
-      if script.args.empty?
+      if script.no_args?
         rs = Firewood.select("user_name, count(id) as count")
                      .where("created_at > ?", Time.zone.now - 1.month)
                      .group(:user_name)

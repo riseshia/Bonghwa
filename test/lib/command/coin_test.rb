@@ -3,8 +3,8 @@ require "test_helper"
 
 module Command
   class CoinTest < ActiveSupport::TestCase
-    def dummy_params(args = [])
-      { script: OpenStruct.new(args: args) }
+    def dummy_params(args = "")
+      build_params("/코인 #{args}")
     end
 
     def test_coin_toss
@@ -13,7 +13,7 @@ module Command
     end
 
     def test_coin_toss_fail
-      actual = Coin.run(dummy_params(["param"]))
+      actual = Coin.run(dummy_params("param"))
       assert_equal "'/코인'은 인수를 받지 않습니다.", actual
     end
   end

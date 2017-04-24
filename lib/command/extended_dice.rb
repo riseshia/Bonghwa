@@ -11,7 +11,7 @@ module Command
 
     def run(params)
       script = params[:script]
-      return "이 명령어는 추가 인수를 받지 않습니다." unless script.args.empty?
+      return "이 명령어는 추가 인수를 받지 않습니다." unless script.no_args?
 
       _, num_of_face, num_of_dice = script.command.split(%r{\/|d}).map(&:to_i)
       if covered?(num_of_face, num_of_dice)

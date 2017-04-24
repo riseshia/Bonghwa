@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# FirewoodsCommon
 module FirewoodsCommon
   extend ActiveSupport::Concern
 
@@ -11,8 +14,7 @@ module FirewoodsCommon
 
   def fws_data(limit)
     scope = Firewood.fetch_scope_for_type(params[:type])
-    firewoods =
-      Firewood
+    Firewood
       .before(params[:before])
       .after(params[:after])
       .send(scope, current_user, limit)

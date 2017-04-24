@@ -8,7 +8,8 @@ namespace :frontend do
       from_static_path = frontend_path.join("dist", "static")
       dest_static_path = release_path.join("public", "static")
       from_index_path = frontend_path.join("dist", "index.html")
-      dest_index_path = release_path.join("app", "views", "frontend", "index.html")
+      dest_index_path = release_path.join("app", "views",
+                                          "frontend", "index.html")
 
       within frontend_path do
         execute :yarn

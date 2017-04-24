@@ -10,10 +10,10 @@ module Command
     end
 
     def run(params)
-      args = params[:script].args
-      return "명령어는 '/주사위 {면수:생략시 6}'입니다." if args.size > 1
+      script = params[:script]
+      return "명령어는 '/주사위 {면수:생략시 6}'입니다." if script.args_size > 1
 
-      dice_size = args.empty? ? 6 : args[0]&.to_i || 0
+      dice_size = script.no_args? ? 6 : script.first_arg.to_i
       if (1..100).cover?(dice_size)
         rd = Random.new
         "#{rd.rand(dice_size) + 1}이(가) 나왔습니다."

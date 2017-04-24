@@ -19,9 +19,10 @@ AllCops:
     - 'test/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
+    - 'frontend/**/*'
   UseCache: false
   DisplayStyleGuide: true
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
 Rails:
   Enabled: true
 Style/AsciiComments:

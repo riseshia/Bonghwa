@@ -4,23 +4,19 @@ require "test_helper"
 module Command
   class MyRankTest < ActiveSupport::TestCase
     def test_reject_args
-      params = dummy_params(user, "/내등수", ["arg1"])
+      params = build_params("/내등수 arg1", user)
       regexp = /이 명령어는 추가 인수를 받지 않습니다./
       assert_match regexp,
                    MyRank.run(params)
     end
 
     def test_gets_my_rank
-      params = dummy_params(user, "/내등수")
+      params = build_params("/내등수", user)
       regexp = /님이 던지신 장작은/
       assert_match regexp, MyRank.run(params)
     end
 
     private
-
-    def dummy_params(user, command, args = [])
-      { script: OpenStruct.new(args: args, command: command), user: user }
-    end
 
     def user
       users(:asahi)

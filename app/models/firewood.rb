@@ -17,34 +17,34 @@ class Firewood < ApplicationRecord
   delegate :url, to: :image, prefix: true, allow_nil: true
 
   # Public Scope
-  scope :mention, lambda { |user, count|
+  scope :mention, (lambda { |user, count|
     where("is_dm = ? OR contents like ?", user.id, "%@#{user.name}%")
       .order_by_id
       .limit(count)
-  }
-  scope :me, lambda { |user, limit|
+  })
+  scope :me, (lambda { |user, limit|
     where(user_id: user.id).order_by_id.limit(limit)
-  }
-  scope :trace, lambda { |user, limit|
+  })
+  scope :trace, (lambda { |user, limit|
     visible_by(user.id).order_by_id.limit(limit)
-  }
-  scope :mts_of, lambda { |root_mt_id, user_id, target_id, limit_num = 5|
+  })
+  scope :mts_of, (lambda { |root_mt_id, user_id, target_id, limit_num = 5|
     after_or_equal(root_mt_id)
       .before(target_id)
       .where("root_mt_id = :fw_id OR id = :fw_id", fw_id: root_mt_id)
       .visible_by(user_id)
       .order_by_id
       .limit(limit_num)
-  }
-  scope :order_by_id, -> { order(id: :desc) }
-  scope :after, ->(id = nil) { where("id > ?", id) if id }
-  scope :after_or_equal, ->(id = nil) { where("id >= ?", id) if id }
-  scope :before, ->(id = nil) { where("id < ?", id) if id }
+  })
+  scope :order_by_id, (-> { order(id: :desc) })
+  scope :after, (->(id = nil) { where("id > ?", id) if id })
+  scope :after_or_equal, (->(id = nil) { where("id >= ?", id) if id })
+  scope :before, (->(id = nil) { where("id < ?", id) if id })
 
   # Private Scope
-  scope :visible_by, lambda { |user_id|
+  scope :visible_by, (lambda { |user_id|
     where("is_dm IN (0, :user_id) OR user_id = :user_id", user_id: user_id)
-  }
+  })
 
   validates :image, file_size: { less_than: 6.megabytes }
   validate :validate_dm, on: :dm
@@ -97,6 +97,7 @@ class Firewood < ApplicationRecord
     created_at.strftime("%m/%d %T")
   end
 
+  # rubocop:disable Metrics/MethodLength
   def serialize
     {
       id: id,
@@ -113,10 +114,6 @@ class Firewood < ApplicationRecord
   end
 
   def image_url_with_host
-    if image_url
-      ENV["BW_IMAGE_HOST"] + image_url
-    else
-      nil
-    end
+    ENV["BW_IMAGE_HOST"] + image_url if image_url
   end
 end

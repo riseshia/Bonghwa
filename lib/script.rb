@@ -15,4 +15,16 @@ class Script
   def arg
     args.join(" ")
   end
+
+  def first_arg
+    @args.first
+  end
+
+  def args_size
+    @args.size
+  end
+
+  def no_args?
+    @args.empty?
+  end
 end

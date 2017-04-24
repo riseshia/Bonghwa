@@ -6,11 +6,11 @@ module Api
     before_action :touch_user
 
     def create
-      if params["firewood"]["contents"].match("^!.+")
+      if params["firewood"]["contents"].match?("^!.+")
         create_dm
       else
         firewood = Firewood.create!(fw_params)
-        if params["firewood"]["contents"].match("^/.+")
+        if params["firewood"]["contents"].match?("^/.+")
           app = App.first_with_cache
           Scripter.execute(firewood: firewood, user: current_user, app: app)
         end
@@ -42,7 +42,7 @@ module Api
         if dm_user.nil?
 
       Firewood.create({ is_dm: dm_user.id }.merge(fw_params))
-    rescue Exception => e
+    rescue StandardError => e
       Firewood.create({ is_dm: current_user.id }.merge(fw_params))
       Firewood.system_dm(user_id: current_user.id, message: e.message)
     end

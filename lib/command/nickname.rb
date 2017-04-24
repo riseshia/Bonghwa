@@ -9,6 +9,7 @@ module Command
       "/닉" == input
     end
 
+    # rubocop:disable Matrics/MethodLength
     def run(params)
       script = params[:script]
       user = User.find(params[:user].id)

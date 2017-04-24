@@ -12,7 +12,7 @@ class Agent {
       this.token = null
     }
     this.$form = null
-    this.apiHost = `${process.env.API_HOST}/aapi`
+    this.apiHost = `${process.env.API_HOST}/api`
   }
 
   isLogined() {

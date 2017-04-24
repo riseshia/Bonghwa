@@ -26,36 +26,6 @@
       <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
   <![endif]-->
 
-<!-- Mobile Menu Start -->
-<nav id="mobileNavmenu" class="navmenu navmenu-default navmenu-fixed-right offcanvas visible-xs-*" role="navigation">
-  <%= link_to @app.home_name, '#', class: "navmenu-brand" %>
-  <ul class="nav navmenu-nav">
-    <li id="users-mobile"></li>
-    <li class="active"><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
-    <li><%= link_to "Mt", "/#mt", class: "mt_nav all_nav" %></li>
-    <li><%= link_to "Me", "/#me", class: "me_nav all_nav" %></li>
-    <% if @user.admin? %>
-    <li><a href="<%= admin_users_path %>" id="etc-dropdown-users">Users</a></li>
-    <li><a href="<%= admin_app_path %>" id="etc-dropdown-admin">Admin</a></li>
-    <li class="divider"></li>
-    <% end %>
-    <li><a href="<%= user_path(@user) %>" id="etc-dropdown-setting">Profile</a></li>
-    <li><a href="<%= option_path %>" id="etc-dropdown-setting">Setting</a></li>
-    <li class="divider"></li>
-    <li><%= link_to "Exit", destroy_user_session_path, method: :delete %></li>
-    </li>
-  </ul>
-</nav>
-<div class="navbar navbar-default navbar-inverse navbar-fixed-top visible-xs-*">
-  <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target="#mobileNavmenu" data-canvas="body">
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-  </button>
-  <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navbar-brand" %>
-</div>
-<!-- Mobile Menu End -->
-
 <div class="container-fluid">
   <div class="row clearfix">
     <div class="col-md-12 column">
@@ -71,40 +41,21 @@
           <%= link_to @app.home_name, @app.home_link, target: "_blank", class: "navbar-brand" %>
         </div>
 
-        <div class="collapse navbar-collapse" id="div-nav-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><%= link_to "Now", "/#now", class: "now_nav all_nav"%></li>
-            <li><%= link_to "Mt", "/#mt", class: "mt_nav all_nav" %></li>
-            <li><%= link_to "Me", "/#me", class: "me_nav all_nav" %></li>
-          </ul>
-
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" id="hotkey-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">HotKey
-                <b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#" id="img_auto_open_op" data-key="2">[2]Image Auto open</a></li>
-                <li><a href="#" id="live_stream_op" data-key="3">[3]Live Stream</a></li>
-                <li><a href="#" id="focus_hotkey" data-key="4">[4]Focus</a></li>
-                <li><a href="#" id="refresh_hotkey" data-key="backspace">[<-]Refresh</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" id="etc-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Etc<b class="caret"></b></a>
-              <ul class="dropdown-menu" role="menu">
-                <% if @user.admin? %>
-                <li><a href="<%= admin_users_path %>" id="etc-dropdown-users">Users</a></li>
-                <li><a href="<%= admin_app_path %>" id="etc-dropdown-admin">Admin</a></li>
-                <li class="divider"></li>
-                <% end %>
-                <li><a href="<%= user_path(@user) %>" id="etc-dropdown-setting">Profile</a></li>
-                <li><a href="<%= option_path %>" id="etc-dropdown-setting">Setting</a></li>
-                <li class="divider"></li>
-                <li><%= link_to "Exit", destroy_user_session_path, method: :delete %></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
+        <% if @user.admin? %>
+          <div class="collapse navbar-collapse" id="div-nav-collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" id="etc-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Etc<b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="<%= admin_users_path %>" id="etc-dropdown-users">Users</a></li>
+                  <li><a href="<%= admin_app_path %>" id="etc-dropdown-admin">Admin</a></li>
+                  <li class="divider"></li>
+                  <li><%= link_to "Exit", destroy_user_session_path, method: :delete %></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        <% end %>
       </nav>
       <!-- Desktop Menu End -->
     </div>

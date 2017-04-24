@@ -1,16 +1,4 @@
 # frozen_string_literal: true
-class CmdConstraint
-  def matches?(request)
-    request.request_parameters["firewood"]["contents"].match("^/.+").present?
-  end
-end
-
-class DmConstraint
-  def matches?(request)
-    request.request_parameters["firewood"]["contents"].match("^!.+").present?
-  end
-end
-
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: "users/sessions",
@@ -18,15 +6,11 @@ Rails.application.routes.draw do
   }
 
   controller :view do
-    get "timeline" => :timeline
-    get "option" => :option
-    get "help" => :help
     get "wait" => :wait
   end
 
   get :beta, to: redirect("/")
   root to:  "frontend#index"
-  get :app, to: redirect("app.html")
 
   namespace :admin do
     resources :users, except: [:destroy, :new, :create] do
@@ -38,18 +22,6 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    post :new, to: "entry#create_dm", constraints: DmConstraint.new
-    post :new, to: "entry#create_cmd", constraints: CmdConstraint.new
-    post :new, to: "entry#create"
-    delete :destroy, to: "entry#destroy"
-
-    get :now, to: "entry#now"
-    get :trace, to: "entry#trace"
-    get :get_mt, to: "entry#mts"
-    get :pulling, to: "entry#pulling"
-  end
-
-  namespace :aapi do
     resource :session, only: %i(create destroy), controller: :session
     resources :infos, only: %i(index)
     resources :users, only: %i(index)

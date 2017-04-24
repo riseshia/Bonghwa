@@ -6,9 +6,7 @@ gem "puma"
 gem "rails", "5.0.2"
 
 gem "jquery-rails"
-gem "react-rails"
 gem "sprockets", ">= 3.0.0"
-gem "sprockets-es6"
 gem "therubyracer"
 
 gem "sass-rails"

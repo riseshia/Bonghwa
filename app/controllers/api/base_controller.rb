@@ -2,7 +2,7 @@
 
 module Api
   # Api::BaseController
-  class BaseController < ApplicationController
-    protect_from_forgery with: :null_session
+  class BaseController < ActionController::Base
+    acts_as_token_authentication_handler_for User
   end
 end

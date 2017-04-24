@@ -7,14 +7,14 @@ class ViewControllerTest < ActionController::TestCase
     sign_in user
   end
 
-  def test_timeline
-    get :timeline
+  def test_wait
+    get :wait
     assert_response 200
   end
 
   private
 
   def user
-    @user ||= users(:asahi)
+    @user ||= users(:gnunu)
   end
 end

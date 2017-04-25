@@ -55,7 +55,7 @@ module Api
       @_fw_params ||=
         params
         .require(:firewood)
-        .permit(:prev_mt_id, :root_mt_id, :contents, :image, :image_adult_flg)
+        .permit(:prev_mt_id, :root_mt_id, :contents, :image, :sensitive_flg)
         .to_h.merge(user_id: current_user.id, user_name: current_user.name)
     end
   end

@@ -122,7 +122,7 @@ export default {
         contents: this.contents,
         prev_mt_id: this.prevMtId,
         root_mt_id: this.rootMtId,
-        image_adult_flg: this.adultFlg
+        sensitive_flg: this.adultFlg
       }
     },
     isValid() {

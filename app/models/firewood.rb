@@ -108,7 +108,7 @@ class Firewood < ApplicationRecord
       name: ERB::Util.html_escape(user_name),
       contents: ERB::Util.html_escape(contents),
       image_url: image_url_with_host,
-      image_adult_flg: image_adult_flg,
+      sensitive_flg: sensitive_flg,
       created_at: formatted_created_at
     }
   end

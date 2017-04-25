@@ -7,7 +7,7 @@
       <span class="message" v-html="parsedContents"></span>
       <span
         v-if="imageUrl"
-        :class="{ 'link-url-danger': imageAdultFlg, 'link-url': !imageAdultFlg }">{{ imageName }}</span>
+        :class="{ 'link-url-danger': sensitiveFlg, 'link-url': !sensitiveFlg }">{{ imageName }}</span>
       <a v-if="isDeletable" @click.stop.prevent="destroy"
          class="link-url" href="#">[x]
       </a>
@@ -61,7 +61,7 @@ export default {
     })
   },
   props: [
-    "contents", "createdAt", "id", "imageAdultFlg", "imageUrl", "isDm",
+    "contents", "createdAt", "id", "sensitiveFlg", "imageUrl", "isDm",
     "name", "mentionedNames", "prevMtId", "rootMtId", "parents", "userId",
     "isDeletable", "isImageAutoOpen", "status", "isLastRecent",
     "parentNotEnough", "isMentioned"
@@ -88,7 +88,7 @@ export default {
     },
     parsedContents() {
       const classes = []
-      if (this.imageAdultFlg) { classes.push("link-url-danger") }
+      if (this.sensitiveFlg) { classes.push("link-url-danger") }
       return autolink(this.contents, { classes })
     },
     classObject() {

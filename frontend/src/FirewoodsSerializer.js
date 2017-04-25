@@ -57,7 +57,7 @@ function serialize(obj) {
     contents: userNamehighlightedContent,
     createdAt: obj.created_at,
     id: obj.id,
-    imageAdultFlg: obj.image_adult_flg,
+    sensitiveFlg: obj.sensitive_flg,
     imageUrl: obj.image_url,
     isDm: obj.is_dm,
     mentionedNames: mentioned,

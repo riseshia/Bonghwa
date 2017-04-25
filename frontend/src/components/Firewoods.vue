@@ -5,7 +5,7 @@
                 :id="fw.id"
                 :contents="fw.contents"
                 :createdAt="fw.createdAt"
-                :imageAdultFlg="fw.imageAdultFlg"
+                :sensitiveFlg="fw.sensitiveFlg"
                 :imageUrl="fw.imageUrl"
                 :isDm="fw.isDm"
                 :name="fw.name"

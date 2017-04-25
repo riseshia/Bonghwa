@@ -6,7 +6,7 @@
                 :contents="fw.contents"
                 :createdAt="fw.createdAt"
                 :sensitiveFlg="fw.sensitiveFlg"
-                :imageUrl="fw.imageUrl"
+                :image="fw.image"
                 :isDm="fw.isDm"
                 :name="fw.name"
                 :mentionedNames="fw.mentionedNames"

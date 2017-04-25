@@ -1,5 +1,7 @@
 import Store from "./Store"
 
+const assetHost = `${process.env.API_HOST}`
+
 function isMtTarget(token) {
   if (token.length < 3) { return false }
   return token[0] === "@" || token[0] === "!"
@@ -53,12 +55,17 @@ function serialize(obj) {
       `<span class="font-weight-bold">${match}</span>`
     ))
   const owned = user.user_id === obj.user_id
+
+  if (obj.image) {
+    obj.image.url = assetHost + obj.image.url
+  }
+
   const data = {
     contents: userNamehighlightedContent,
     createdAt: obj.created_at,
     id: obj.id,
     sensitiveFlg: obj.sensitive_flg,
-    imageUrl: obj.image_url,
+    image: obj.image,
     isDm: obj.is_dm,
     mentionedNames: mentioned,
     name: obj.name,

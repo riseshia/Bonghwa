@@ -6,7 +6,7 @@
     <div class="col-sm col-12 flex-sm-unordered flex-last">
       <span class="message" v-html="parsedContents"></span>
       <span
-        v-if="imageUrl"
+        v-if="hasImage"
         :class="{ 'link-url-danger': sensitiveFlg, 'link-url': !sensitiveFlg }">{{ imageName }}</span>
       <a v-if="isDeletable" @click.stop.prevent="destroy"
          class="link-url" href="#">[x]
@@ -17,7 +17,7 @@
             <sub-firewood :firewoods="parents"></sub-firewood>
           </div>
 
-          <div v-if="isImgOpened && imageUrl" class="row no-gutters">
+          <div v-if="isImgOpened && hasImage" class="row no-gutters">
             <div class="col-sm-12">
               <figure class="figure">
                 <img class="figure-img" :src="imageUrl">
@@ -61,7 +61,7 @@ export default {
     })
   },
   props: [
-    "contents", "createdAt", "id", "sensitiveFlg", "imageUrl", "isDm",
+    "contents", "createdAt", "id", "sensitiveFlg", "image", "isDm",
     "name", "mentionedNames", "prevMtId", "rootMtId", "parents", "userId",
     "isDeletable", "isImageAutoOpen", "status", "isLastRecent",
     "parentNotEnough", "isMentioned"
@@ -75,13 +75,19 @@ export default {
   },
   computed: {
     imageName() {
-      return `[이미지 ${this.id}]`
+      return this.image ? `[이미지: ${this.image.name}]` : ""
+    },
+    imageUrl() {
+      return this.image ? this.image.url : ""
+    },
+    hasImage() {
+      return this.image !== null
     },
     isMuted() {
       return this.isDeleted || FirewoodFn.isPending(this) || this.isDm
     },
     isOpenable() {
-      return this.imageUrl || this.rootMtId !== 0
+      return this.hasImage || this.rootMtId !== 0
     },
     isOpened() {
       return this.isImgOpened || this.isTextOpened

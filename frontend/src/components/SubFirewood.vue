@@ -40,8 +40,8 @@ export default {
           name: fw.name,
           contents: autolink(fw.contents, { classes }),
           sensitiveFlg: fw.sensitiveFlg,
-          imageName: `[이미지 ${fw.id}]`,
-          imageUrl: fw.imageUrl,
+          imageName: `[이미지: ${fw.image && fw.image.name}]`,
+          imageUrl: fw.image && fw.image.url,
           createdAt: fw.createdAt.split(" ")[1]
         }
       })

@@ -108,12 +108,25 @@ class Firewood < ApplicationRecord
       name: ERB::Util.html_escape(user_name),
       contents: ERB::Util.html_escape(contents),
       image_url: image_url_with_host,
+      image: serialized_image,
       sensitive_flg: sensitive_flg,
       created_at: formatted_created_at
     }
   end
 
+  def serialized_image
+    return nil unless image_url
+    {
+      url: image_url,
+      name: image_name
+    }
+  end
+
   def image_url_with_host
     ENV["BW_IMAGE_HOST"] + image_url if image_url
+  end
+
+  def image_name
+    image.file.filename
   end
 end

@@ -37,6 +37,7 @@ gem "mysql2", "~> 0.4"
 gem "sqlite3"
 
 gem "newrelic_rpm"
+gem "sentry-raven"
 
 group :development, :test do
   gem "byebug"

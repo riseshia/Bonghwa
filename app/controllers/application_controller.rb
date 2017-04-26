@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   before_action :set_context
   before_action :set_current_user
   before_action :block_unconfirmed
+  before_action :set_raven_context
+
   protect_from_forgery with: :exception
 
   protected
@@ -32,5 +34,10 @@ class ApplicationController < ActionController::Base
     redirect_to \
       wait_path,
       notice: "가입 대기 상태입니다. 관리자에게 문의해주세요."
+  end
+
+  def set_raven_context
+    Raven.user_context(id: current_user&.id) # or anything else in session
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 end

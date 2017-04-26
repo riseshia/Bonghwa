@@ -2,9 +2,18 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from "vue"
 import VueRouter from "vue-router"
+import Raven from "raven-js"
+import RavenVue from "raven-js/plugins/vue"
+
 import Store from "./Store"
 import Router from "./Router"
 import Keymap from "./Keymap"
+
+// Setup sentry
+Raven
+  .config(`${process.env.SENTRY_ID}`)
+  .addPlugin(RavenVue, Vue)
+  .install()
 
 // Start Bootstrap & jQuery
 window.$ = require("jquery")

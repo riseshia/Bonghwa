@@ -171,7 +171,7 @@ export default {
 }
 
 .message {
-  text-indent: 5px;
+  padding-left: 5px;
 }
 
 .datetime-area {

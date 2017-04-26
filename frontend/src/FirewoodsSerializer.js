@@ -57,7 +57,12 @@ function serialize(obj) {
   const owned = user.user_id === obj.user_id
 
   if (obj.image) {
-    obj.image.url = assetHost + obj.image.url
+    const image = obj.image
+    image.url = assetHost + image.url
+    if (image.name.length > 20) {
+      image.name = `${image.name.slice(0, 20)}...`
+    }
+    obj.image = image
   }
 
   const data = {

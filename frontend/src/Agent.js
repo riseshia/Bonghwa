@@ -1,6 +1,13 @@
 import CacheStorage from "./CacheStorage"
 import Router from "./Router"
 
+const withTimeStamp = (params) => {
+  if (!params.ts) {
+    params.ts = +(new Date())
+  }
+  return params
+}
+
 class Agent {
   constructor() {
     const cache = CacheStorage.get("auth")
@@ -73,7 +80,7 @@ class Agent {
       type: httpType,
       headers: this.authHeaders(),
       dataType: "json",
-      data: params
+      data: withTimeStamp(params)
     }).fail((res, status) => {
       // Auth Error, so delete token
       if (res.status === 401 || status === "parsererror") {

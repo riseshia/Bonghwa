@@ -89,7 +89,7 @@
              :data-widget-id="app.widget_link">Widget</a>
         </div>
       </div>
-      <div class="row no-gutters mobile-navtab-toggle text-center">
+      <div class="row no-gutters mobile-navtab-toggle text-center hidden-sm-up">
         <div class="col-sm-12" @click="toggleNavTabMenu">
           {{ navTabOpenedInMobile ? "&gt;--&lt;" : "&lt;--&gt;" }}
         </div>

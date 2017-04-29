@@ -172,6 +172,8 @@ export default {
 
 .message {
   padding-left: 5px;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 
 .datetime-area {

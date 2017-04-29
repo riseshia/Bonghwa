@@ -19,17 +19,29 @@ const addTrigger = (keyCode, callback) => {
   triggers.push({ key: keyCode, func: callback })
 }
 
+const inputTags = ["INPUT", "SELECT", "TEXTAREA"]
+const isTriggeredInput = (event) => {
+  const tagName = (event.target || event.srcElement).tagName
+  return inputTags.indexOf(tagName) > -1
+}
+
+const startMonitoring = () => {
+  addEvent(document, "keyup", (event) => {
+    const pressedKey = event.keyCode || event.which || event.charCode
+
+    if (isTriggeredInput(event)) { return }
+
+    triggers
+      .filter(({ key }) => (key === pressedKey))
+      .forEach(({ func }) => {
+        func(event)
+      })
+  })
+}
+
 export default {
   register() {
-    addEvent(document, "keyup", (event) => {
-      const pressedKey = event.keyCode || event.which || event.charCode
-
-      triggers
-        .filter(({ key }) => (key === pressedKey))
-        .forEach(({ func }) => {
-          func(event)
-        })
-    })
+    startMonitoring()
 
     addTrigger(keymaps["2"], () => {
       Actions.toggleGlobalOption("isImageAutoOpen")

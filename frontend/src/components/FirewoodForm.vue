@@ -96,6 +96,9 @@ export default {
       if (newContents.length > CONTENTS_MAX_LEN) {
         this.contents = newContents.slice(0, CONTENTS_MAX_LEN)
       }
+      if (!this.isValid()) {
+        this.clearForm()
+      }
       if (this.global.cachingForm) {
         Actions.saveForm(this.$data)
       }

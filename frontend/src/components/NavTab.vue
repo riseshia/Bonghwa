@@ -2,6 +2,11 @@
   <div class="col-sm-3 flex-first flex-sm-last">
     <div class="padding-for-navtab"></div>
 
+    <div class="row no-gutters mobile-navtab-toggle text-center hidden-sm-up">
+      <div class="col-sm-12" @click="toggleNavTabMenu">
+        {{ navTabOpenedInMobile ? "&gt;--&lt;" : "&lt;--&gt;" }}
+      </div>
+    </div>
     <div :class="{'navtab': true, 'navtab-in-mobile': navTabOpenedInMobile}">
       <div class="row no-gutters nav-menu">
         <div class="col-sm-12">
@@ -84,10 +89,10 @@
              :data-widget-id="app.widget_link">Widget</a>
         </div>
       </div>
-    </div>
-    <div class="row no-gutters mobile-navtab-toggle text-center hidden-sm-up">
-      <div class="col-sm-12" @click="toggleNavTabMenu">
-        {{ navTabOpenedInMobile ? "&gt;--&lt;" : "&lt;--&gt;" }}
+      <div class="row no-gutters mobile-navtab-toggle text-center">
+        <div class="col-sm-12" @click="toggleNavTabMenu">
+          {{ navTabOpenedInMobile ? "&gt;--&lt;" : "&lt;--&gt;" }}
+        </div>
       </div>
     </div>
   </div>

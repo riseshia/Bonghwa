@@ -3,13 +3,15 @@
 module Api
   # Api::AppController
   class AppController < Api::BaseController
+    include FirewoodsCommon
+
     def show
       current_user.update_login_info(Time.zone.now.to_i)
 
       render json: {
         users: users_data,
         infos: infos_data,
-        fws: fws_data,
+        fws: fws_data(50),
         app: app_data,
         user: user_data
       }
@@ -40,13 +42,6 @@ module Api
 
     def infos_data
       Info.all.map(&:serialize)
-    end
-
-    def fws_data
-      Firewood
-        .with_fav_for_user(current_user.id)
-        .trace(current_user, 50)
-        .map { |fw| fw.serialize(current_user) }
     end
   end
 end

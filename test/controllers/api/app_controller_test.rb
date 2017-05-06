@@ -9,7 +9,7 @@ module Api
     end
 
     def test_show
-      get :show, format: :json
+      get :show, params: { type: 1 },  format: :json
 
       assert_response :ok
       assert_response_json_has_keys %w(users infos fws app user)

@@ -80,10 +80,11 @@ const Actions = {
   },
 
   fetchApplication() {
+    const type = Store.getState("global").type
     Dispatcher.request({
       method: "GET",
       path: "app",
-      params: {},
+      params: { type },
       after: "afterFetchApplication",
       context: Actions
     })

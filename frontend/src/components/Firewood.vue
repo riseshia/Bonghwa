@@ -1,7 +1,7 @@
 <template>
   <div :class="classObject" @click="toggleSelf">
     <div class="col-sm-auto col-auto flex-sm-first flex-first name-area">
-      <a href="#" @click.stop.prevent="toggleFav">{{ isFaved ? "★" : "☆" }}</a>
+      <a href="#" @click.stop.prevent="toggleFav" :class="{ 'fav-btn': true, 'is-faved': isFaved }">{{ isFaved ? "★" : "☆" }}</a>
       <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
     </div>
     <div class="col-sm col-12 flex-sm-unordered flex-last">
@@ -176,6 +176,23 @@ export default {
 
 .text-small {
   font-size: 80%;
+}
+
+.fav-btn {
+  color: #868e96;
+  text-decoration: none;
+
+  &:hover {
+    color: #ffe066;
+  }
+
+  &.is-faved {
+    color: #ffe066;
+
+    &:hover {
+      color: #868e96;
+    }
+  }
 }
 
 .message {

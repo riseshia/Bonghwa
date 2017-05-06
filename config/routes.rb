@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resource :session, only: %i(create destroy), controller: :session
     resources :infos, only: %i(index)
     resources :users, only: %i(index)
+    resource :favorites, only: %i(create destroy)
     resource :app, only: %i(show), controller: :app
     resources :firewoods, only: %i(create destroy) do
       resources :mentions, only: %i(index), controller: "firewoods/mentions"

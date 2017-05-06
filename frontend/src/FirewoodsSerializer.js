@@ -77,6 +77,7 @@ function serialize(obj) {
     prevMtId: obj.prev_mt_id,
     rootMtId: obj.root_mt_id,
     userId: obj.user_id,
+    isFaved: obj.is_faved,
     isDeletable: owned,
     isMentioned: formState.prevMtId === obj.id,
     isLastRecent: obj.isLastRecent || false,

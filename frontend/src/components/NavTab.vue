@@ -29,6 +29,10 @@
                  @click.prevent.stop="changeType(3)">Me</a>
             </li>
             <li class="nav-item">
+              <a :class="navClassObject(4)" href="#"
+                 @click.prevent.stop="changeType(4)">Faved</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link dropdown-toggle" href="#"
                  @click.prevent.stop="toggleOptionsMenu">Options</a>
               <ul v-if="optionsOpened" class="list-unstyled options-menu">

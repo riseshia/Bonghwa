@@ -15,6 +15,7 @@ module FirewoodsCommon
   def fws_data(limit)
     scope = Firewood.fetch_scope_for_type(params[:type])
     Firewood
+      .with_fav_for_user(current_user.id)
       .before(params[:before])
       .after(params[:after])
       .send(scope, current_user, limit)

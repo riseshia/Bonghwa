@@ -9,7 +9,7 @@ module Api
         sign_in_via_api users(:asahi)
       end
 
-      %w[1 2 3].each do |t|
+      %w[1 2 3 4].each do |t|
         define_method "test_index_with_type_#{t}" do
           get :index, params: { type: t }, format: :json
 

@@ -10,6 +10,7 @@ AllCops:
   Include:
     - '**/Rakefile'
   Exclude:
+    - 'Gemfile'
     - 'bin/**/*'
     - 'config/**/*'
     - 'db/**/*'

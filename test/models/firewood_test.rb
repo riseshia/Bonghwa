@@ -42,6 +42,29 @@ class FirewoodTest < ActiveSupport::TestCase
     assert_equal 1, Firewood.trace(asahi, 1).count
   end
 
+  def test_scope_faved
+    asahi = users(:asahi)
+    target = firewoods(:good_morning_from_luna)
+    assert_difference "Firewood.faved(asahi, 5).count", 1 do
+      Favorite.create(user_id: asahi.id, firewood_id: target.id)
+    end
+  end
+
+  def test_scope_with_fav_for_user_with_no_fav
+    asahi = users(:asahi)
+    target = firewoods(:good_morning_from_luna)
+    fw = Firewood.with_fav_for_user(asahi.id).where(id: target.id).first
+    assert_nil fw.favorite_id
+  end
+
+  def test_scope_with_fav_for_user_with_fav
+    asahi = users(:asahi)
+    target = firewoods(:good_morning_from_luna)
+    fav = Favorite.create(user_id: asahi.id, firewood_id: target.id)
+    fw = Firewood.with_fav_for_user(asahi.id).where(id: target.id).first
+    assert_equal fav.id, fw.favorite_id
+  end
+
   def test_scope_after
     asahi = users(:asahi)
 

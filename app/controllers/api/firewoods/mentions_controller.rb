@@ -14,6 +14,7 @@ module Api
 
       def data
         Firewood
+          .with_fav_for_user(current_user.id)
           .mts_of(params[:firewood_id], current_user.id, params[:target_id])
           .map(&:serialize)
       end

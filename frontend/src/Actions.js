@@ -104,13 +104,18 @@ const Actions = {
   },
 
   fetchRecentFirewoods(options = {}) {
-    const lastFwId = FirewoodFn.lastPersisted(Store.getState("firewoods")).id
     const type = Store.getState("global").type
-    options.lastFwId = lastFwId
+    const passingParams = { type }
+
+    const lastFw = FirewoodFn.lastPersisted(Store.getState("firewoods"))
+    if (lastFw) {
+      passingParams.after = lastFw.id
+      options.lastFwId = lastFw.id
+    }
 
     Dispatcher.request({
       method: "GET",
-      params: { after: lastFwId, type },
+      params: passingParams,
       path: "firewoods/pulling",
       after: "afterFetchRecentFirewoods",
       context: Actions,
@@ -159,7 +164,7 @@ const Actions = {
     const currentFws = Store.getState("firewoods")
     Store.setState("firewoods", pendedFws.concat(currentFws))
   },
-  afterCreateFirewood(json, options) {
+  afterCreateFirewood(_, options) {
     Actions.fetchRecentFirewoods(options)
   },
   requestedCreateFirewood() {
@@ -229,6 +234,46 @@ const Actions = {
     if (json.infos.length === 0) { return }
     Store.setState("informations", json.infos)
     EventBus.$emit("fetch-informations-success")
+  },
+
+  createFavorite(fwId) {
+    Dispatcher.request({
+      method: "POST",
+      path: "favorites",
+      params: { firewood_id: fwId },
+      after: "afterCreateFavorite",
+      context: Actions,
+      options: { targetFwId: fwId }
+    })
+  },
+  afterCreateFavorite({ status }, { targetFwId }) {
+    if (status === "success") {
+      const fws = Store.getState("firewoods")
+      const fw = FirewoodFn.findbyId(fws, targetFwId)
+      fw.isFaved = true
+
+      Store.setState("firewoods", fws)
+    }
+  },
+
+  destroyFavorite(fwId) {
+    Dispatcher.request({
+      method: "DELETE",
+      path: "favorites",
+      params: { firewood_id: fwId },
+      after: "afterDestroyFavorite",
+      context: Actions,
+      options: { targetFwId: fwId }
+    })
+  },
+  afterDestroyFavorite({ status }, { targetFwId }) {
+    if (status === "success") {
+      const fws = Store.getState("firewoods")
+      const fw = FirewoodFn.findbyId(fws, targetFwId)
+      fw.isFaved = false
+
+      Store.setState("firewoods", fws)
+    }
   }
 }
 

@@ -17,6 +17,7 @@
                 :status="fw.status"
                 :isLastRecent="fw.isLastRecent"
                 :isDeletable="fw.isDeletable"
+                :isFaved="fw.isFaved"
                 :parentNotEnough="fw.parentNotEnough"
                 :isMentioned="fw.isMentioned"
                 :isImageAutoOpen="isImageAutoOpen"

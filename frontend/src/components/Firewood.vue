@@ -1,6 +1,7 @@
 <template>
   <div :class="classObject" @click="toggleSelf">
     <div class="col-sm-auto col-auto flex-sm-first flex-first name-area">
+      <a href="#" @click.stop.prevent="toggleFav">{{ isFaved ? "★" : "☆" }}</a>
       <a href="#" @click.stop.prevent="addMention">{{ name }}</a>
     </div>
     <div class="col-sm col-12 flex-sm-unordered flex-last">
@@ -64,7 +65,7 @@ export default {
     "contents", "createdAt", "id", "sensitiveFlg", "image", "isDm",
     "name", "mentionedNames", "prevMtId", "rootMtId", "parents", "userId",
     "isDeletable", "isImageAutoOpen", "status", "isLastRecent",
-    "parentNotEnough", "isMentioned"
+    "parentNotEnough", "isMentioned", "isFaved"
   ],
   data() {
     return {
@@ -134,6 +135,13 @@ export default {
 
       this.isImgOpened = nextState
       this.isTextOpened = nextState
+    },
+    toggleFav() {
+      if (this.isFaved) {
+        Actions.destroyFavorite(this.id)
+      } else {
+        Actions.createFavorite(this.id)
+      }
     },
     destroy() {
       /* eslint-disable no-alert */

@@ -12,6 +12,8 @@ class User < ApplicationRecord
   validates :login_id, presence: true, uniqueness: true
 
   has_many :firewoods
+  has_many :favorites
+  has_many :fav_fws, through: :favorites, source: :firewood
 
   before_create :default_recent_login
 

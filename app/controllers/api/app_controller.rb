@@ -43,7 +43,10 @@ module Api
     end
 
     def fws_data
-      Firewood.trace(current_user, 50).map(&:serialize)
+      Firewood
+        .with_fav_for_user(current_user.id)
+        .trace(current_user, 50)
+        .map(&:serialize)
     end
   end
 end

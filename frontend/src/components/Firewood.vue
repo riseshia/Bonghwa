@@ -221,8 +221,9 @@ img {
     max-width: 400px;
   }
 
-  .name-area {
-    width: 100px;
+  .name-area::after {
+    content: ":";
+    margin-left: 1px;
   }
 }
 </style>

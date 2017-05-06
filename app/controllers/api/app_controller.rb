@@ -46,7 +46,7 @@ module Api
       Firewood
         .with_fav_for_user(current_user.id)
         .trace(current_user, 50)
-        .map(&:serialize)
+        .map { |fw| fw.serialize(current_user) }
     end
   end
 end

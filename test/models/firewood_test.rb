@@ -54,15 +54,15 @@ class FirewoodTest < ActiveSupport::TestCase
     asahi = users(:asahi)
     target = firewoods(:good_morning_from_luna)
     fw = Firewood.with_fav_for_user(asahi.id).where(id: target.id).first
-    assert_nil fw.favorite_id
+    assert_nil fw.fav_user_id
   end
 
   def test_scope_with_fav_for_user_with_fav
     asahi = users(:asahi)
     target = firewoods(:good_morning_from_luna)
-    fav = Favorite.create(user_id: asahi.id, firewood_id: target.id)
+    Favorite.create(user_id: asahi.id, firewood_id: target.id)
     fw = Firewood.with_fav_for_user(asahi.id).where(id: target.id).first
-    assert_equal fav.id, fw.favorite_id
+    assert_equal asahi.id, fw.fav_user_id
   end
 
   def test_scope_after

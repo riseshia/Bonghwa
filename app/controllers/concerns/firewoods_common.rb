@@ -19,6 +19,6 @@ module FirewoodsCommon
       .before(params[:before])
       .after(params[:after])
       .send(scope, current_user, limit)
-      .map(&:serialize)
+      .map { |fw| fw.serialize(current_user) }
   end
 end

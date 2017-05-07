@@ -63,7 +63,7 @@ export default {
   mounted() {
     this.form = window.$("#new_firewood")
     EventBus.$on("add-mention", this.addMention)
-    EventBus.$on("requeted-form", this.clearForm)
+    EventBus.$on("requested-form", this.clearForm)
     EventBus.$on("focus", this.focusForm)
     Actions.setupForm(this)
     this.form.find("input[type=file]").customFile()

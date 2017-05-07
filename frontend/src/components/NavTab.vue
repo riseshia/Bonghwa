@@ -16,21 +16,9 @@
             </a>
           </h3>
           <ul class="nav flex-column nav-pills">
-            <li class="nav-item">
-              <a :class="navClassObject(1)" href="#"
-                 @click.prevent.stop="changeType(1)">Now</a>
-            </li>
-            <li class="nav-item">
-              <a :class="navClassObject(2)" href="#"
-                 @click.prevent.stop="changeType(2)">Mt</a>
-            </li>
-            <li class="nav-item">
-              <a :class="navClassObject(3)" href="#"
-                 @click.prevent.stop="changeType(3)">Me</a>
-            </li>
-            <li class="nav-item">
-              <a :class="navClassObject(4)" href="#"
-                 @click.prevent.stop="changeType(4)">Faved</a>
+            <li v-for="type in tlTypes" :key="type.id" class="nav-item">
+              <a :class="navClassObject(type.id)" href="#"
+                 @click.prevent.stop="changeType(type.id)">{{ type.name }}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link dropdown-toggle" href="#"
@@ -106,6 +94,7 @@
 <script>
 import Actions from "../Actions"
 import EventBus from "../EventBus"
+import TimelineTypeFn from "../TimelineTypeFn"
 import Users from "./Users"
 
 export default {
@@ -125,6 +114,7 @@ export default {
   props: ["app", "global", "user"],
   data() {
     return {
+      tlTypes: TimelineTypeFn.all(),
       optionsOpened: false,
       etcOpened: false,
       navTabOpenedInMobile: false,

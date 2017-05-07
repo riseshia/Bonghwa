@@ -2,6 +2,7 @@ import Agent from "./Agent"
 import Store from "./Store"
 import EventBus from "./EventBus"
 import FirewoodFn from "./FirewoodFn"
+import TimelineTypeFn from "./TimelineTypeFn"
 import Dispatcher from "./Dispatcher"
 import NativeComponent from "./components/NativeComponent"
 import Channel from "./Channel"
@@ -160,16 +161,21 @@ const Actions = {
       }
     })
 
-    const user = Store.getState("user")
-    const pendedFws = FirewoodFn.initializeDummy(formData, user)
-    const currentFws = Store.getState("firewoods")
-    Store.setState("firewoods", pendedFws.concat(currentFws))
+    const currentType = TimelineTypeFn.find(
+      Store.getState("global").type
+    )
+    if (currentType.needDummy) {
+      const user = Store.getState("user")
+      const pendedFws = FirewoodFn.initializeDummy(formData, user)
+      const currentFws = Store.getState("firewoods")
+      Store.setState("firewoods", pendedFws.concat(currentFws))
+    }
   },
   afterCreateFirewood(_, options) {
     Actions.fetchRecentFirewoods(options)
   },
   requestedCreateFirewood() {
-    EventBus.$emit("requeted-form")
+    EventBus.$emit("requested-form")
   },
 
   fetchParents(fwId, rootMtId) {

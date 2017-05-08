@@ -12,7 +12,7 @@ class Firewood < ApplicationRecord
   belongs_to :dm_user, foreign_key: :is_dm,
                        class_name: "User",
                        optional: true
-  has_many :favorites
+  has_many :favorites, dependent: :destroy
   has_many :faved_users, through: :favorites, source: :user
 
   mount_uploader :image, ImageUploader

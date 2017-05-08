@@ -3,6 +3,15 @@
 require "test_helper"
 
 class FirewoodTest < ActiveSupport::TestCase
+  def test_fav_destroy_when_firewood_do
+    fw = firewoods(:good_evening_from_luna)
+    user = users(:asahi)
+    fav = Favorite.create(user_id: user.id, firewood_id: fw.id)
+    fw.destroy
+    
+    assert_equal 0, fw.favorites.size
+  end
+
   def test_scope_mention_with_public_mention
     luna = users(:luna)
     asahi = users(:asahi)

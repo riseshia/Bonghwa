@@ -105,6 +105,10 @@ const Actions = {
     Channel.stop()
   },
 
+  forceFetchRecentFirewoods() {
+    EventBus.$emit("notify", { message: "최신 장작을 받아오고 있습니다." })
+    this.fetchRecentFirewoods({ notUsingStack: true })
+  },
   fetchRecentFirewoods(options = {}) {
     const type = Store.getState("global").type
     const passingParams = { type }

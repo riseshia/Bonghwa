@@ -124,7 +124,6 @@ class Firewood < ApplicationRecord
       name: ERB::Util.html_escape(user_name),
       contents: ERB::Util.html_escape(contents),
       is_faved: self[:fav_user_id] == user.id ? true : false,
-      image_url: image_url_with_host,
       image: serialized_image,
       sensitive_flg: sensitive_flg,
       created_at: formatted_created_at

@@ -47,6 +47,7 @@ class Firewood < ApplicationRecord
   })
   scope :with_fav_for_user, (lambda { |user_id|
     left_joins(:favorites)
+      .where(favorites: { user_id: [nil, user_id] })
       .select("firewoods.*, favorites.user_id AS fav_user_id")
   })
   scope :order_by_id, (-> { order(id: :desc) })

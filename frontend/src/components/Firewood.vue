@@ -126,7 +126,8 @@ export default {
         id: this.id
       })
     },
-    toggleSelf() {
+    toggleSelf(event) {
+      if (event.target.tagName.toLowerCase() === "a") { return }
       if (!this.isOpenable) { return }
       const nextState = !this.isOpened
       if (nextState && this.parentNotEnough) {

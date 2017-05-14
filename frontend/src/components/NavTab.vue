@@ -187,7 +187,8 @@ export default {
   .mobile-navtab-toggle {
     background-color: #343a40;
     color: #e9ecef;
-    padding: 5px 0;
+    padding: 8px 0;
+    height: 40px;
   }
 }
 

@@ -166,6 +166,9 @@ export default {
   .file-upload-input:not([title]) {
     display: none;
   }
+  .input-group-btn {
+    height: 35px;
+  }
 }
 </style>
 <style lang="scss" scoped>

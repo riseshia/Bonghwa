@@ -1,5 +1,5 @@
 <template>
-  <div class="form-box">
+  <div :class="{'form-box': true, expanded: isExpanded}">
     <div class="fixed-top">
       <form class="form-horizontal firewood-form"
             role="form"
@@ -18,7 +18,7 @@
                 id="contents"
                 type="text"
                 placeholder="Type..."
-                :class="{'form-control': true, expanded: isExpanded}">
+                class="form-control">
               </textarea>
             </div>
           </div>
@@ -200,6 +200,9 @@ textarea {
 @media (max-width: 576px) {
   .form-box {
     margin-top: 0;
+    &.expanded {
+      margin-top: 1.45rem;
+    }
   }
 
   .fixed-top {
@@ -208,10 +211,9 @@ textarea {
 
   textarea {
     height: 2.2rem;
-
-    &.expanded {
-      height: 6.2rem;
-    }
+  }
+  .expanded textarea {
+    height: 6.2rem;
   }
 }
 </style>

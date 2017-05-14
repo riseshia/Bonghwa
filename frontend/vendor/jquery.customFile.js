@@ -21,7 +21,7 @@
       });
 
       $wrap.insertAfter( $file )
-        .append( $file, $input, ( isIE ? $label : $button ) );
+        .append( ( isIE ? $label : $button ), $file, $input );
 
       // Prevent focus
       $file.attr('tabIndex', -1);

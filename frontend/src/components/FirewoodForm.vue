@@ -161,6 +161,13 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.file-upload-wrapper {
+  .file-upload-input:not([title]) {
+    display: none;
+  }
+}
+</style>
 <style lang="scss" scoped>
 /* PC */
 .firewood-form {

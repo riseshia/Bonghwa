@@ -3,10 +3,10 @@
 require "test_helper"
 
 class FirewoodTest < ActiveSupport::TestCase
-  def test_fav_destroy_when_firewood_do
+  def test_fav_destroy_when_firewood_does
     fw = firewoods(:good_evening_from_luna)
     user = users(:asahi)
-    fav = Favorite.create(user_id: user.id, firewood_id: fw.id)
+    Favorite.create(user_id: user.id, firewood_id: fw.id)
     fw.destroy
 
     assert_equal 0, fw.favorites.size

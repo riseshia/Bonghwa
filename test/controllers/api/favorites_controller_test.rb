@@ -11,9 +11,19 @@ module Api
       sign_in_via_api users(:asahi)
     end
 
-    def test_create_favorite_success
+    def test_create_favorite_success_from_normal_fw
       assert_difference "Favorite.count" do
         post :create, params: { firewood_id: @fw.id }, format: :json
+        assert_response :created
+      end
+    end
+
+    def test_create_favorite_success_from_dm
+      luna = users(:luna)
+      fw = dm(luna, @user, "紅茶を淹れてくれ")
+
+      assert_difference "Favorite.count" do
+        post :create, params: { firewood_id: fw.id }, format: :json
         assert_response :created
       end
     end

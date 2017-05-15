@@ -6,7 +6,7 @@ module Api
     def create
       fw = Firewood.find_by(id: passed_fw_id)
 
-      if fw&.visible?(current_user)
+      if fw&.visible?(current_user.id)
         Favorite.find_or_create_by!(
           firewood_id: passed_fw_id,
           user_id: current_user.id

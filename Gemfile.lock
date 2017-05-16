@@ -202,7 +202,7 @@ GEM
       slop (~> 3.4)
     public_suffix (2.0.5)
     puma (3.8.2)
-    rack (2.0.2)
+    rack (2.0.3)
     rack-cors (0.4.1)
     rack-test (0.6.3)
       rack (>= 1.0)

@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "puma"
-gem "rails", "5.0.2"
+gem "rails", "5.1.0"
 
 gem "jquery-rails"
 gem "sprockets", ">= 3.0.0"

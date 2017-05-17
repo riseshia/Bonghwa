@@ -59,32 +59,6 @@ class FirewoodTest < ActiveSupport::TestCase
     end
   end
 
-  def test_scope_with_fav_for_user_with_no_fav
-    asahi = users(:asahi)
-    target = firewoods(:good_morning_from_luna)
-    fw = Firewood.with_fav_for_user(asahi.id).where(id: target.id).first
-    assert_nil fw.fav_user_id
-  end
-
-  def test_scope_with_fav_for_user_with_fav
-    asahi = users(:asahi)
-    target = firewoods(:good_morning_from_luna)
-    Favorite.create(user_id: asahi.id, firewood_id: target.id)
-    fw = Firewood.with_fav_for_user(asahi.id).where(id: target.id).first
-    assert_equal asahi.id, fw.fav_user_id
-  end
-
-  def test_scope_with_fav_for_user_returns_one_fw_with_twice_fav
-    asahi = users(:asahi)
-    luna = users(:luna)
-    target = firewoods(:good_morning_from_luna)
-    [asahi, luna].each do |user|
-      Favorite.create(user_id: user.id, firewood_id: target.id)
-    end
-    fws = Firewood.with_fav_for_user(asahi.id).where(id: target.id)
-    assert_equal 1, fws.size
-  end
-
   def test_scope_after
     asahi = users(:asahi)
 

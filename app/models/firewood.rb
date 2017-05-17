@@ -45,11 +45,6 @@ class Firewood < ApplicationRecord
       .order_by_id
       .limit(limit_num)
   })
-  scope :with_fav_for_user, (lambda { |user_id|
-    left_joins(:favorites)
-      .where(favorites: { user_id: [nil, user_id] })
-      .select("firewoods.*, favorites.user_id AS fav_user_id")
-  })
   scope :order_by_id, (-> { order(id: :desc) })
   scope :after, (->(id = nil) { where("firewoods.id > ?", id) if id })
   scope :after_or_equal, (->(id = nil) { where("firewoods.id >= ?", id) if id })
@@ -113,6 +108,10 @@ class Firewood < ApplicationRecord
     created_at.strftime("%m/%d %T")
   end
 
+  def faved_by_user?(user)
+    favorites.any? { |fav| fav.user_id == user.id }
+  end
+
   # rubocop:disable Metrics/MethodLength
   def serialize(user)
     {
@@ -123,7 +122,7 @@ class Firewood < ApplicationRecord
       user_id: user_id,
       name: ERB::Util.html_escape(user_name),
       contents: ERB::Util.html_escape(contents),
-      is_faved: self[:fav_user_id] == user.id ? true : false,
+      is_faved: faved_by_user?(user),
       image: serialized_image,
       sensitive_flg: sensitive_flg,
       created_at: formatted_created_at

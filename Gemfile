@@ -36,8 +36,10 @@ gem "redis-rails"
 gem "mysql2", "~> 0.4"
 gem "sqlite3"
 
-gem "newrelic_rpm"
 gem "sentry-raven"
+group :production do
+  gem "newrelic_rpm"
+end
 
 group :development, :test do
   gem "byebug"

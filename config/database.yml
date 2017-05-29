@@ -30,7 +30,7 @@ test:
   database: bonghwa_test
   username: bonghwa_admin
   password: 
-  host: localhost
+  host: 127.0.0.1
 
 production:
   <<: *mysql

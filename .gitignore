@@ -29,16 +29,9 @@ pickle-email-*.html
 dump.rdb
 
 #server setting
-config/nginx.conf
-config/redis.conf
-config/unicorn.rb
-config/unicorn_init.sh
-config/nginx-engine.conf
 config/deploy.rb
 config/deploy/
-config/ssl
 Capfile
-Dockerfile
 
 ### OSX ###
 .DS_Store

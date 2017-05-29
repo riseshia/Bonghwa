@@ -3,14 +3,43 @@
 Bonghwa is a private SNS for small group.
 
 ## Environments
+
 * Ruby on Rails
+* Vue.js
 * Redis
 
+## Dev setup with docker
+
+```
+docker-compose up
+```
+
+It's enough. And you could use frontend page with port `5200`, and backend with `5100`
+
+### Initial Configuration
+
+```
+# Some env variables for dev
+cp config/application.yml.example config/application.yml
+
+# this will generate seed data
+bin/docker-manage.sh db:migrate db:seed
+```
+
+### Sign up new user
+
+- Fill form on `localhost:5100/users/sign_up` (Notice that you need to logout)
+- Login with admin account on `localhost:5100/users/sign_in` (don't care error page)
+- Access `localhost:5100/admin/users` and find user which you just added
+- Click `Level up`
+- Then you can use that user for frontend development.
+
 ## Code Status
+
 [![Build Status](https://travis-ci.org/riseshia/Bonghwa.svg?branch=master)](https://travis-ci.org/riseshia/Bonghwa)
 
 ## Code Climate
-[![Code Climate](https://codeclimate.com/github/riseshia/Bonghwa/badges/gpa.svg)](https://codeclimate.com/github/riseshia/Bonghwa)
+
 [![Coverage Status](https://coveralls.io/repos/github/riseshia/Bonghwa/badge.svg?branch=master)](https://coveralls.io/github/riseshia/Bonghwa?branch=master)
 
 ## License

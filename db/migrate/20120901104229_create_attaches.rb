@@ -1,4 +1,4 @@
-class CreateAttaches < ActiveRecord::Migration
+class CreateAttaches < ActiveRecord::Migration[4.2]
   def change
     create_table :attaches do |t|
 

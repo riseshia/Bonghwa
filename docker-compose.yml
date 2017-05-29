@@ -1,0 +1,48 @@
+version: '3'
+services:
+  redis:
+    image: redis:3.2.9
+    networks:
+      - default
+    ports:
+      - 6379:6379
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    command: ./docker-startup.sh
+    networks:
+      - default
+    volumes:
+      - ./frontend:/app
+      - node_modules:/app/node_modules
+    ports:
+      - 5200:8080
+
+  backend:
+    build: .
+    command: bin/docker-startup.sh
+    environment:
+      REDIS_HOST: redis
+    networks:
+      - default
+    ports:
+      - 5100:8000
+    volumes:
+      - .:/app
+      - bundle:/app/.bundle
+      - bundle_install:/app/vendor/bundle
+    depends_on:
+      - redis
+
+networks:
+  default:
+
+volumes:
+  bundle_install:
+    driver: local
+  bundle:
+    driver: local
+  node_modules:
+    driver: local

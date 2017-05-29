@@ -1,4 +1,4 @@
-class CreateFirewoods < ActiveRecord::Migration
+class CreateFirewoods < ActiveRecord::Migration[4.2]
   def change
     create_table :firewoods do |t|
       t.string :contents

@@ -16,9 +16,6 @@ App.create!(
   widget_link: nil
 )
 
-# add Help to Link
-Link.create!(link_to: '/help', name: 'Help')
-
 # create admin account
 User.create!(
   login_id: 'admin',

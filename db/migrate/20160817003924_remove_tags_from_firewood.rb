@@ -1,4 +1,4 @@
-class RemoveTagsFromFirewood < ActiveRecord::Migration
+class RemoveTagsFromFirewood < ActiveRecord::Migration[4.2]
   def up
     add_column :attaches, :adult_flg, :boolean, default: false, null: false
 

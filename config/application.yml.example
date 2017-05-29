@@ -1,0 +1,3 @@
+development:
+  BW_IMAGE_HOST: "http://localhost:5100"
+  SENTRY_ID: "https://9e99b6ab8c4a4b5592473b4aa1ec5523:3a42970f768b41f99f8cc912ab9f4ccd@sentry.io/162347"

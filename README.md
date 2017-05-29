@@ -2,12 +2,6 @@
 
 Bonghwa is a private SNS for small group.
 
-## Environments
-
-* Ruby on Rails
-* Vue.js
-* Redis
-
 ## Dev setup with docker
 
 ```
@@ -33,6 +27,17 @@ bin/docker-manage.sh db:migrate db:seed
 - Access `localhost:5100/admin/users` and find user which you just added
 - Click `Level up`
 - Then you can use that user for frontend development.
+
+### How to Contribute
+
+Here is general process.
+
+- Take issue (Optional)
+- Make patch
+- Open Pull Request
+- Request review
+
+PR will be merged and deployed after review approval.
 
 ## Code Status
 

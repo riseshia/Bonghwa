@@ -8,7 +8,7 @@ Bonghwa is a private SNS for small group.
 docker-compose up
 ```
 
-It's enough. And you could use frontend page with port `5200`, and backend with `5100`
+That's enough. And you could use frontend page with port `5200`, and backend with `5100`
 
 ### Initial Configuration
 

@@ -12,7 +12,7 @@ That's enough. And you could use frontend page with port `5200`, and backend wit
 
 ### Initial Configuration
 
-```
+```bash
 # Some env variables for dev
 cp config/application.yml.example config/application.yml
 

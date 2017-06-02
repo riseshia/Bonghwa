@@ -15,6 +15,7 @@ That's enough. And you could use frontend page with port `5200`, and backend wit
 ```bash
 # Some env variables for dev
 cp config/application.yml.example config/application.yml
+cp frontent/config/prod.env.js.example frontend/config/prod.env.js
 
 # this will generate seed data
 bin/docker-manage.sh db:migrate db:seed

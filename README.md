@@ -1,4 +1,4 @@
-# Bonghwa
+# Bonghwa (not maintained)
 
 Bonghwa is a private SNS for small group.
 
